@@ -1,0 +1,85 @@
+"""LaTeX equation sanitizer for repairing OCR artifacts and formatting formulas for SymPy."""
+
+from __future__ import annotations
+
+import re
+
+
+class EquationSanitizer:
+    """Sanitizer for cleaning and normalizing LaTeX mathematical expressions."""
+
+    # Regex patterns for cleanup
+    TAG_RE = re.compile(r"\\tag\{[^}]*\}|\([0-9]+(?:\.[0-9]+)*\)$")
+    LABEL_RE = re.compile(r"\\label\{[^}]*\}")
+    ENV_STRIP_RE = re.compile(
+        r"\\begin\{(?:equation|align|aligned|gather|displaymath)\*?\}"
+        r"([\s\S]*?)"
+        r"\\end\{(?:equation|align|aligned|gather|displaymath)\*?\}"
+    )
+    DOLLAR_STRIP_RE = re.compile(r"^\${1,2}|\${1,2}$")
+
+    # Common multi-letter domain metric variables mapped to subscripted symbols for SymPy
+    COMPOUND_SYMBOLS = [
+        ("RS", "R_{S}"),
+        ("RA", "R_{A}"),
+        ("HR", "H_{R}"),
+        ("BB", "B_{B}"),
+        ("SO", "S_{O}"),
+        ("IP", "I_{P}"),
+        ("AB", "A_{B}"),
+        ("TB", "T_{B}"),
+        ("OBP", "O_{BP}"),
+        ("SLG", "S_{LG}"),
+        ("OPS", "O_{PS}"),
+        ("FIP", "F_{IP}"),
+        ("wOBA", "w_{OBA}"),
+    ]
+
+    def sanitize(self, raw_latex: str, protect_compound_symbols: bool = True) -> str:
+        """Sanitize raw LaTeX string into a clean expression parseable by SymPy.
+
+        Args:
+            raw_latex: Raw LaTeX string (can include $$ delimiters, tags, or OCR glitches).
+            protect_compound_symbols: If True, maps domain metrics (RS, RA, etc.) to subscripted
+                symbols (R_{S}, R_{A}) so SymPy treats them as single variables rather than R*S.
+
+        Returns:
+            Cleaned LaTeX string suitable for SymPy parse_latex.
+        """
+        text = raw_latex.strip()
+
+        # 1. Strip outer delimiters ($$, $, \[...\])
+        if text.startswith(r"\[") and text.endswith(r"\]"):
+            text = text[2:-2].strip()
+        text = self.DOLLAR_STRIP_RE.sub("", text).strip()
+
+        # 2. Extract inner content from environments like \begin{equation} ... \end{equation}
+        env_match = self.ENV_STRIP_RE.search(text)
+        if env_match:
+            text = env_match.group(1).strip()
+
+        # 3. Strip equation labels and tags (e.g., \tag{1}, \label{eq:1}, (1.2))
+        text = self.TAG_RE.sub("", text).strip()
+        text = self.LABEL_RE.sub("", text).strip()
+
+        # 4. Normalize unicode math symbols
+        text = text.replace("×", r"\times ").replace("·", r"\cdot ").replace("−", "-")
+        text = text.replace("≤", r"\le ").replace("≥", r"\ge ").replace("≠", r"\ne ")
+
+        # 5. Fix common OCR spacing glitches around fractions and exponents
+        text = re.sub(r"\\frac\s*\{", r"\\frac{", text)
+        text = re.sub(r"\^\s*\{", r"^{", text)
+        text = re.sub(r"_\s*\{", r"_{", text)
+
+        # 6. Repair unescaped percent signs often in baseball rate stats
+        text = re.sub(r"(?<!\\)%", r"\%", text)
+
+        # 7. Protect compound multi-letter variables (e.g. \text{RS} or RS -> R_{S})
+        if protect_compound_symbols:
+            for symbol, replacement in self.COMPOUND_SYMBOLS:
+                # Replace \text{RS} or \mathrm{RS} with replacement
+                text = re.sub(rf"\\(?:text|mathrm|mathbf)\{{{symbol}\}}", replacement, text)
+                # Replace isolated word symbol (bounded by non-word characters or operators)
+                text = re.sub(rf"\b{symbol}\b", replacement, text)
+
+        return text.strip()

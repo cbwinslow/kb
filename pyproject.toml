@@ -1,0 +1,78 @@
+[project]
+name = "kb"
+version = "0.1.0"
+description = "Scientific Knowledge Base & Research Engine"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "docling>=2.0.0",
+    "fastmcp>=0.4.0",
+    "pydantic>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "asyncpg>=0.29.0",
+    "pgvector>=0.2.4",
+    "sympy>=1.12",
+    "pyarrow>=15.0.0",
+    "antlr4-python3-runtime==4.11.1",
+    "polars>=1.0.0",
+    "greenlet>=3.5.6",
+    "sentence-transformers>=6.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.5.0",
+    "pyright>=1.1.350",
+    "aiosqlite>=0.22.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[project.scripts]
+kb = "kb:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["kb"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+include = ["src", "tests"]
+exclude = [
+    "**/__pycache__",
+    ".venv",
+]
+reportMissingTypeStubs = false
+reportUnknownMemberType = false
+reportUnknownArgumentType = false
+reportUnknownVariableType = false
+reportUnknownParameterType = false
+reportUntypedFunctionDecorator = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
