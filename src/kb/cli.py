@@ -173,6 +173,123 @@ async def async_ingest(
     return 0
 
 
+async def async_ingest_batch(
+    dir_path: Path,
+    pattern: str = "*.pdf",
+    limit: int | None = None,
+    force: bool = False,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Batch ingests scientific papers from a directory hierarchy with deduplication."""
+    if not dir_path.exists():
+        print(f"[ERROR] Source directory not found: {dir_path}", file=sys.stderr)
+        return 1
+
+    from kb.enrich.openalex import OpenAlexClient
+    from kb.ingest.pipeline import (
+        BatchIngestionRunner,
+        DirectorySourceDiscoverer,
+        IngestionPipeline,
+    )
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    discoverer = DirectorySourceDiscoverer(root_dir=dir_path, pattern=pattern)
+    sources = discoverer.discover()
+    print(f"[*] Discovered {len(sources)} candidate papers in {dir_path}")
+
+    pipeline = IngestionPipeline(
+        db_manager=db_manager,
+        openalex_client=OpenAlexClient(),
+    )
+    runner = BatchIngestionRunner(pipeline=pipeline)
+
+    def on_progress(res: Any) -> None:
+        if res.status == "success":
+            print(
+                f"[INGESTED] {res.citekey} ({res.chunk_count} chunks, "
+                f"{res.formula_count} formulas, {res.table_count} tables)"
+            )
+        elif res.status == "skipped":
+            print(f"[SKIPPED] {res.citekey} - {res.reason}")
+        else:
+            print(f"[ERROR] {res.citekey} - {res.error}", file=sys.stderr)
+
+    stats = await runner.run(sources, max_papers=limit, force=force, on_progress=on_progress)
+
+    print("\n" + "=" * 60)
+    print("Batch Ingestion Summary:")
+    print(f"  Total scanned:         {stats.total_scanned}")
+    print(f"  Successfully ingested: {stats.total_ingested}")
+    print(f"  Skipped (duplicates):  {stats.total_skipped}")
+    print(f"  Errors:                {stats.total_errors}")
+    print(f"  Chunks created:        {stats.chunks_created}")
+    print(f"  Formulas extracted:    {stats.formulas_extracted}")
+    print(f"  Tables extracted:      {stats.tables_extracted}")
+    print("=" * 60)
+
+    if manager is None:
+        await db_manager.close()
+
+    return 0
+
+
+async def async_ingest_openalex(
+    query: str,
+    download_dir: Path | None = None,
+    limit: int = 50,
+    per_page: int = 50,
+    force: bool = False,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Discovers Open Access research papers via OpenAlex and runs batch ingestion."""
+    from kb.enrich.openalex import OpenAlexClient
+    from kb.ingest.pipeline import (
+        BatchIngestionRunner,
+        IngestionPipeline,
+        OpenAlexSourceDiscoverer,
+    )
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    target_dir = download_dir or Path("data/openalex_papers")
+    client = OpenAlexClient()
+    discoverer = OpenAlexSourceDiscoverer(openalex_client=client, download_dir=target_dir)
+
+    print(f"[*] Querying OpenAlex for query '{query}' (limit: {limit}, per-page: {per_page})...")
+    sources = await discoverer.discover(query=query, limit=limit, per_page=per_page)
+    print(f"[*] Retrieved {len(sources)} Open Access papers with full PDFs ready for pipeline.")
+
+    pipeline = IngestionPipeline(db_manager=db_manager, openalex_client=client)
+    runner = BatchIngestionRunner(pipeline=pipeline)
+
+    def on_progress(res: Any) -> None:
+        if res.status == "success":
+            print(f"[INGESTED] {res.citekey}: {res.title} ({res.chunk_count} chunks)")
+        elif res.status == "skipped":
+            print(f"[SKIPPED] {res.citekey} - {res.reason}")
+        else:
+            print(f"[ERROR] {res.citekey} - {res.error}", file=sys.stderr)
+
+    stats = await runner.run(sources, max_papers=limit, force=force, on_progress=on_progress)
+
+    print("\n" + "=" * 60)
+    print(f"OpenAlex Batch Ingestion for '{query}':")
+    print(f"  Successfully ingested: {stats.total_ingested}")
+    print(f"  Skipped (duplicates):  {stats.total_skipped}")
+    print(f"  Errors:                {stats.total_errors}")
+    print(f"  Chunks created:        {stats.chunks_created}")
+    print(f"  Formulas extracted:    {stats.formulas_extracted}")
+    print("=" * 60)
+
+    if manager is None:
+        await db_manager.close()
+
+    return 0
+
+
 async def async_embed(
     citekey: str | None = None,
     embed_all: bool = False,
@@ -406,12 +523,53 @@ def build_parser() -> argparse.ArgumentParser:
     db_sub.add_parser("init", help="Create database tables and vector extensions")
 
     # ingest command
-    ingest_parser = subparsers.add_parser("ingest", help="Ingest a scientific paper PDF")
-    ingest_parser.add_argument("pdf_path", type=Path, help="Path to the PDF file")
-    ingest_parser.add_argument("--citekey", type=str, required=True, help="BibTeX citation key")
+    ingest_parser = subparsers.add_parser("ingest", help="Ingest scientific papers into KB")
+    ingest_parser.add_argument(
+        "pdf_path",
+        type=Path,
+        nargs="?",
+        default=None,
+        help="Path to PDF file, or mode keyword ('batch', 'search-openalex')",
+    )
+    ingest_parser.add_argument(
+        "--citekey", type=str, default=None, help="BibTeX citation key (required for single PDF)"
+    )
     ingest_parser.add_argument("--title", type=str, default=None, help="Paper title")
     ingest_parser.add_argument("--authors", nargs="+", default=[], help="Authors list")
     ingest_parser.add_argument("--year", type=int, default=None, help="Publication year")
+    ingest_parser.add_argument(
+        "--dir", type=Path, default=None, help="Directory path for batch ingestion"
+    )
+    ingest_parser.add_argument(
+        "--pattern",
+        type=str,
+        default="*.pdf",
+        help="File pattern for batch discovery (default: *.pdf)",
+    )
+    ingest_parser.add_argument(
+        "--query",
+        type=str,
+        default=None,
+        help="Search query terms for OpenAlex OA batch discovery",
+    )
+    ingest_parser.add_argument(
+        "--download-dir",
+        type=Path,
+        default=None,
+        help="Staging directory for downloaded OpenAlex PDFs",
+    )
+    ingest_parser.add_argument(
+        "--limit", type=int, default=None, help="Maximum papers to ingest in batch run"
+    )
+    ingest_parser.add_argument(
+        "--per-page",
+        type=int,
+        default=50,
+        help="Results per OpenAlex request (default: 50)",
+    )
+    ingest_parser.add_argument(
+        "--force", action="store_true", help="Overwrite existing documents in database"
+    )
 
     # embed command
     embed_parser = subparsers.add_parser("embed", help="Compute dense vector embeddings for chunks")
@@ -529,16 +687,49 @@ def main(argv: Sequence[str] | None = None) -> None:
         else:
             parser.parse_args(["db", "--help"])
     elif args.subcommand == "ingest":
-        code = asyncio.run(
-            async_ingest(
-                pdf_path=args.pdf_path,
-                citekey=args.citekey,
-                title=args.title,
-                authors=args.authors,
-                year=args.year,
+        cmd_str = str(args.pdf_path or "")
+        if cmd_str == "batch" or args.dir is not None:
+            batch_dir = args.dir or Path(".")
+            code = asyncio.run(
+                async_ingest_batch(
+                    dir_path=batch_dir,
+                    pattern=args.pattern,
+                    limit=args.limit,
+                    force=args.force,
+                )
             )
-        )
-        sys.exit(code)
+            sys.exit(code)
+        elif cmd_str == "search-openalex" or args.query is not None:
+            query = args.query or "sabermetrics"
+            code = asyncio.run(
+                async_ingest_openalex(
+                    query=query,
+                    download_dir=args.download_dir,
+                    limit=args.limit or 50,
+                    per_page=args.per_page,
+                    force=args.force,
+                )
+            )
+            sys.exit(code)
+        else:
+            if not args.pdf_path:
+                parser.parse_args(["ingest", "--help"])
+            if not args.citekey:
+                print(
+                    "[ERROR] --citekey is required for single paper ingestion.",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+            code = asyncio.run(
+                async_ingest(
+                    pdf_path=args.pdf_path,
+                    citekey=args.citekey,
+                    title=args.title,
+                    authors=args.authors,
+                    year=args.year,
+                )
+            )
+            sys.exit(code)
     elif args.subcommand == "embed":
         code = asyncio.run(
             async_embed(

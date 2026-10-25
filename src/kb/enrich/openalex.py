@@ -67,6 +67,14 @@ class OpenAlexClient:
         self.timeout = timeout
         self.transport = transport
 
+    def get_headers(self) -> dict[str, str]:
+        """Returns polite User-Agent headers adhering to OpenAlex API conventions."""
+        return self._headers()
+
+    def parse_work_json(self, data: dict[str, Any]) -> OpenAlexWork:
+        """Parses an OpenAlex work JSON dictionary into an OpenAlexWork dataclass."""
+        return self._parse_work_json(data)
+
     def _headers(self) -> dict[str, str]:
         """Builds polite User-Agent headers adhering to OpenAlex API conventions."""
         headers = {
