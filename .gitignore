@@ -52,5 +52,6 @@ htmlcov/
 # Local state & logs
 data/.zotero_sync_state.json
 data/*.tmp
+data/fixtures/
 *.log
 .gemini/

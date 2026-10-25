@@ -12,7 +12,11 @@ from docling.datamodel.accelerator_options import (
     AcceleratorOptions,
 )
 from docling.datamodel.base_models import InputFormat
-from docling.datamodel.pipeline_options import PdfPipelineOptions
+from docling.datamodel.pipeline_options import (
+    PdfPipelineOptions,
+    TableFormerMode,
+    TableStructureOptions,
+)
 from docling.document_converter import (
     DocumentConverter,
     FormatOption,
@@ -72,24 +76,23 @@ class DoclingParser:
         """Resolve requested device to available hardware with automatic fallback."""
         cuda_available = torch.cuda.is_available()
 
-        if requested == "cuda":
-            if cuda_available:
-                dev_name = torch.cuda.get_device_name(0)
-                logger.info("Using NVIDIA CUDA acceleration on device: %s", dev_name)
-                return "cuda", AcceleratorDevice.CUDA
+        if requested in ("cuda", "auto") and cuda_available:
+            dev_name = torch.cuda.get_device_name(0)
+            logger.info("Using NVIDIA CUDA acceleration on device: %s", dev_name)
+            try:
+                # Enable TensorFloat32 on Ampere GPUs for 2x matrix multiplication throughput
+                torch.set_float32_matmul_precision("high")
+                torch.backends.cudnn.benchmark = True
+            except Exception as e:
+                logger.debug("Failed configuring cuDNN / matmul precision: %s", e)
+            return "cuda", AcceleratorDevice.CUDA
+
+        if requested == "cuda" and not cuda_available:
             logger.warning(
                 "CUDA requested but torch.cuda.is_available() is False. Falling back to CPU."
             )
-            return "cpu", AcceleratorDevice.CPU
 
-        if requested == "auto":
-            if cuda_available:
-                dev_name = torch.cuda.get_device_name(0)
-                logger.info("Auto-detected CUDA acceleration on device: %s", dev_name)
-                return "cuda", AcceleratorDevice.CUDA
-            logger.info("No CUDA GPU detected for PyTorch; using multi-threaded CPU acceleration.")
-            return "cpu", AcceleratorDevice.CPU
-
+        logger.info("Using multi-threaded CPU acceleration.")
         return "cpu", AcceleratorDevice.CPU
 
     def _build_converter(self) -> DocumentConverter:
@@ -98,6 +101,15 @@ class DoclingParser:
         pipeline_options.do_table_structure = self.do_table_structure
         pipeline_options.do_ocr = self.do_ocr
         pipeline_options.do_formula_enrichment = self.do_formula_enrichment
+        pipeline_options.layout_batch_size = 8
+        pipeline_options.table_batch_size = 8
+
+        if self.do_table_structure:
+            pipeline_options.table_structure_options = TableStructureOptions(
+                mode=TableFormerMode.FAST,
+                do_cell_matching=True,
+            )
+
         pipeline_options.accelerator_options = AcceleratorOptions(
             num_threads=self.num_threads,
             device=self._accel_device,
@@ -130,9 +142,13 @@ class DoclingParser:
         logger.info(
             "Parsing scientific PDF with Docling: %s (device: %s)", path.name, self.device_used
         )
-        conv_result = self.converter.convert(str(path))
-        docling_doc = conv_result.document
-        markdown_text = docling_doc.export_to_markdown()
+        try:
+            conv_result = self.converter.convert(str(path))
+            docling_doc = conv_result.document
+            markdown_text = docling_doc.export_to_markdown()
+        finally:
+            if self.device_used == "cuda" and torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
         num_pages = len(docling_doc.pages) if hasattr(docling_doc, "pages") else 0
 

@@ -88,16 +88,31 @@ async def run_corpus_ingestion(
     runner = BatchIngestionRunner(pipeline=pipeline)
 
     def on_progress(res: IngestionResult) -> None:
+        vram_info = ""
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                alloc_mb = torch.cuda.memory_allocated() / (1024**2)
+                res_mb = torch.cuda.memory_reserved() / (1024**2)
+                vram_info = f" | VRAM: {alloc_mb:.0f}MB alloc / {res_mb:.0f}MB res"
+        except ImportError:
+            pass
+
         if res.status == "success":
-            title_preview = (res.title or res.citekey)[:50]
+            title_preview = (res.title or res.citekey)[:40]
             print(
-                f"[INGESTED] {res.citekey:<22} | {res.chunk_count:3d} chunks | "
-                f"{res.formula_count:2d} formulas | {res.table_count:2d} tables | {title_preview}"
+                f"[INGESTED] {res.citekey:<22} in {res.duration_seconds:5.1f}s | "
+                f"{res.chunk_count:3d} chunks | {res.formula_count:2d} formulas | "
+                f"{res.table_count:2d} tbls{vram_info} | {title_preview}"
             )
         elif res.status == "skipped":
-            print(f"[SKIPPED]  {res.citekey:<22} | {res.reason}")
+            print(f"[SKIPPED]  {res.citekey:<22} in {res.duration_seconds:5.1f}s | {res.reason}")
         else:
-            print(f"[ERROR]    {res.citekey:<22} | {res.error}", file=sys.stderr)
+            print(
+                f"[ERROR]    {res.citekey:<22} in {res.duration_seconds:5.1f}s | {res.error}",
+                file=sys.stderr,
+            )
 
     print(f"\n[*] Starting ingestion pipeline (limit: {limit or 'ALL'}, force: {force})...\n")
     stats = await runner.run(

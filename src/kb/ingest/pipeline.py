@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
+import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -49,6 +50,7 @@ class IngestionResult:
     table_count: int = 0
     reason: str | None = None
     error: str | None = None
+    duration_seconds: float = 0.0
 
 
 @dataclass
@@ -330,6 +332,7 @@ class IngestionPipeline:
         table_extractor: TableExtractor | None = None,
         openalex_client: OpenAlexClient | None = None,
         fixtures_dir: Path | str = "data/fixtures",
+        gpu_memory_fraction: float | None = 0.55,
     ) -> None:
         self.db = db_manager
         self.embedder = embedder or LocalEmbeddingGenerator()
@@ -340,17 +343,32 @@ class IngestionPipeline:
         self.openalex_client = openalex_client
         self.fixtures_dir = Path(fixtures_dir)
 
+        if gpu_memory_fraction is not None:
+            try:
+                import torch
+
+                if torch.cuda.is_available():
+                    torch.cuda.set_per_process_memory_fraction(gpu_memory_fraction, 0)
+                    logger.info(
+                        "Configured CUDA per-process memory fraction to %.2f", gpu_memory_fraction
+                    )
+            except Exception as e:
+                logger.debug("Failed configuring CUDA per-process memory fraction: %s", e)
+
     async def ingest_source(
         self,
         source: PaperSource,
         force: bool = False,
     ) -> IngestionResult:
         """Ingests an individual PaperSource, handling deduplication and storage."""
+        start_time = time.monotonic()
+
         if not source.pdf_path.exists():
             return IngestionResult(
                 citekey=source.citekey,
                 status="error",
                 error=f"PDF file does not exist: {source.pdf_path}",
+                duration_seconds=round(time.monotonic() - start_time, 2),
             )
 
         # 0. Deduplication check
@@ -363,6 +381,7 @@ class IngestionPipeline:
                     status="skipped",
                     title=existing.title,
                     reason=f"Document '{source.citekey}' already exists in database.",
+                    duration_seconds=round(time.monotonic() - start_time, 2),
                 )
 
         # 1. Parse document structure
@@ -373,6 +392,7 @@ class IngestionPipeline:
                 citekey=source.citekey,
                 status="error",
                 error=f"Docling parsing error: {e}",
+                duration_seconds=round(time.monotonic() - start_time, 2),
             )
 
         # 2. Chunk document with derivation clustering
@@ -382,6 +402,7 @@ class IngestionPipeline:
                 citekey=source.citekey,
                 status="error",
                 error="Document yielded 0 structural chunks.",
+                duration_seconds=round(time.monotonic() - start_time, 2),
             )
 
         # 3. Extract mathematical formulas
@@ -400,9 +421,27 @@ class IngestionPipeline:
             tables, output_dir=doc_fixtures_dir
         )
 
+        # Clear CUDA cache before embedding to isolate memory
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except ImportError:
+            pass
+
         # 5. Compute vector embeddings
         chunk_texts = [c.enriched_text for c in enriched_chunks]
         embeddings = self.embedder.embed_texts(chunk_texts)
+
+        # Clear CUDA cache after embedding
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except ImportError:
+            pass
 
         # 6. Resolve OpenAlex enrichment if client configured
         openalex_work = None
@@ -469,9 +508,10 @@ class IngestionPipeline:
 
             # Store Formulas
             chunk_id_set = {c.chunk_id for c in enriched_chunks}
-            for f in extracted_formulas:
+            for f_idx, f in enumerate(extracted_formulas):
+                unique_formula_id = f"{source.citekey}_form_{f_idx:04d}_{f.formula_id}"
                 form_record = Formula(
-                    id=f.formula_id,
+                    id=unique_formula_id,
                     document_id=doc_record.id,
                     chunk_id=f.chunk_id if f.chunk_id in chunk_id_set else None,
                     citekey=source.citekey,
@@ -522,6 +562,7 @@ class IngestionPipeline:
             chunk_count=len(enriched_chunks),
             formula_count=len(extracted_formulas),
             table_count=len(tables),
+            duration_seconds=round(time.monotonic() - start_time, 2),
         )
 
 

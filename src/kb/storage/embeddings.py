@@ -63,16 +63,18 @@ class MockEmbeddingGenerator:
 
 
 class LocalEmbeddingGenerator:
-    """GPU-accelerated local embedding generator wrapping sentence-transformers."""
+    """GPU-accelerated embedding generator wrapping sentence-transformers with VRAM controls."""
 
     def __init__(
         self,
         model_name: str = DEFAULT_EMBEDDING_MODEL,
         device: str = "auto",
         normalize: bool = True,
+        max_seq_length: int = 1024,
     ) -> None:
         self.model_name = model_name
         self.normalize = normalize
+        self.max_seq_length = max_seq_length
         self._model: Any = None
 
         if device == "auto":
@@ -86,9 +88,10 @@ class LocalEmbeddingGenerator:
             self.device = device
 
         logger.info(
-            "Configured LocalEmbeddingGenerator with model %s on %s",
+            "Configured LocalEmbeddingGenerator with model %s on %s (max_seq_length=%d)",
             self.model_name,
             self.device,
+            self.max_seq_length,
         )
 
     @property
@@ -99,31 +102,53 @@ class LocalEmbeddingGenerator:
 
             logger.info("Loading embedding model %s onto %s...", self.model_name, self.device)
             self._model = SentenceTransformer(self.model_name, device=self.device)
+            if hasattr(self._model, "max_seq_length"):
+                self._model.max_seq_length = self.max_seq_length
         return self._model
 
-    def embed_texts(self, texts: list[str], batch_size: int = 16) -> list[list[float]]:
-        """Embeds a batch of texts into 1024-d normalized vectors."""
+    def embed_texts(self, texts: list[str], batch_size: int = 8) -> list[list[float]]:
+        """Embeds a batch of texts into 1024-d normalized vectors with VRAM protection."""
         if not texts:
             return []
 
-        embeddings = self.model.encode(
-            texts,
-            batch_size=batch_size,
-            show_progress_bar=False,
-            normalize_embeddings=self.normalize,
-            convert_to_numpy=True,
-        )
-        return [vec.tolist() for vec in embeddings]
+        try:
+            embeddings = self.model.encode(
+                texts,
+                batch_size=batch_size,
+                show_progress_bar=False,
+                normalize_embeddings=self.normalize,
+                convert_to_numpy=True,
+            )
+            return [vec.tolist() for vec in embeddings]
+        finally:
+            if self.device.startswith("cuda"):
+                try:
+                    import torch
+
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                except ImportError:
+                    pass
 
     def embed_query(self, text: str) -> list[float]:
         """Embeds a single query string into a 1024-d normalized vector."""
         if not text:
             return [0.0] * EMBEDDING_DIMENSION
 
-        embedding = self.model.encode(
-            text,
-            show_progress_bar=False,
-            normalize_embeddings=self.normalize,
-            convert_to_numpy=True,
-        )
-        return embedding.tolist()  # type: ignore[no-any-return]
+        try:
+            embedding = self.model.encode(
+                text,
+                show_progress_bar=False,
+                normalize_embeddings=self.normalize,
+                convert_to_numpy=True,
+            )
+            return embedding.tolist()  # type: ignore[no-any-return]
+        finally:
+            if self.device.startswith("cuda"):
+                try:
+                    import torch
+
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                except ImportError:
+                    pass
