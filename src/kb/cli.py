@@ -462,16 +462,19 @@ async def async_search(
     manager: DatabaseManager | None = None,
 ) -> int:
     """Executes hybrid vector + full-text search across ingested chunks."""
+    from kb.storage.embeddings import LocalEmbeddingGenerator
     from kb.storage.search import HybridSearchEngine
 
     db_manager = manager or DatabaseManager()
     engine = HybridSearchEngine(db_manager=db_manager)
+    embedder = LocalEmbeddingGenerator()
 
     print(f"[*] Running hybrid search for: '{query}' (limit={limit})...")
     async with db_manager.get_session() as session:
         hits = await engine.hybrid_search(
             session=session,
             query_text=query,
+            embedder=embedder,
             limit=limit,
             citekey=citekey,
         )
