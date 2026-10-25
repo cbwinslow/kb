@@ -55,5 +55,6 @@ data/*.tmp
 data/fixtures/
 data/openalex_papers/
 data/openalex_sources/
+data/arxiv_papers/
 *.log
 .gemini/
