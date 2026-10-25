@@ -148,7 +148,9 @@ class DoclingParser:
             max_num_pages,
         )
         try:
-            conv_result = self.converter.convert(str(path), max_num_pages=max_num_pages)
+            conv_result = self.converter.convert(
+                str(path), page_range=(1, max_num_pages)
+            )
             docling_doc = conv_result.document
             markdown_text = docling_doc.export_to_markdown()
         finally:

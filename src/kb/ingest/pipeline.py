@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import re
 import time
@@ -509,7 +510,10 @@ class IngestionPipeline:
             # Store Formulas
             chunk_id_set = {c.chunk_id for c in enriched_chunks}
             for f_idx, f in enumerate(extracted_formulas):
-                unique_formula_id = f"{source.citekey}_form_{f_idx:04d}_{f.formula_id}"
+                form_hash = hashlib.sha256(
+                    f"{source.citekey}_{f_idx}_{f.raw_latex}".encode()
+                ).hexdigest()[:24]
+                unique_formula_id = f"form_{form_hash}"
                 form_record = Formula(
                     id=unique_formula_id,
                     document_id=doc_record.id,
