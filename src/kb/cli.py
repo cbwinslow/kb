@@ -506,6 +506,175 @@ async def async_search(
     return 0
 
 
+async def async_code_compile(
+    formula_id: str | None = None,
+    citekey: str | None = None,
+    function_name: str | None = None,
+) -> int:
+    """Compile extracted formula(s) into Python and Polars expressions."""
+    from kb.codegen.compiler import FormulaCompiler
+
+    compiler = FormulaCompiler()
+    manager = DatabaseManager()
+
+    async with manager.session_factory() as session:
+        stmt = select(Formula).where(Formula.is_valid == True)  # noqa: E712
+        if formula_id:
+            stmt = stmt.where(Formula.id == formula_id)
+        if citekey:
+            stmt = stmt.where(Formula.citekey == citekey)
+        stmt = stmt.limit(5 if not formula_id else 1)
+
+        res = await session.execute(stmt)
+        formulas = list(res.scalars().all())
+
+        if not formulas:
+            print("[ERROR] No valid formulas found matching criteria.", file=sys.stderr)
+            await manager.close()
+            return 1
+
+        for f in formulas:
+            codegen = compiler.compile(
+                formula_id=f.id,
+                citekey=f.citekey,
+                raw_latex=f.raw_latex,
+                sympy_repr=f.sympy_repr,
+                function_name=function_name,
+            )
+            print("=" * 70)
+            print(f"Formula ID: {f.id} (Citekey: {f.citekey})")
+            print(f"LaTeX:      {f.raw_latex}")
+            print(f"Parameters: {codegen.parameters}")
+            print("-" * 70)
+            print(codegen.python_source)
+            if codegen.polars_expression:
+                print(f"Polars Expression: {codegen.polars_expression}")
+            print("=" * 70)
+
+    await manager.close()
+    return 0
+
+
+async def async_code_verify(
+    citekey: str | None = None,
+    formula_id: str | None = None,
+) -> int:
+    """Verify compiled formulas against empirical benchmark tables."""
+    from kb.codegen.compiler import FormulaCompiler
+    from kb.codegen.verifier import FormulaVerifier
+
+    compiler = FormulaCompiler()
+    verifier = FormulaVerifier(compiler=compiler)
+    manager = DatabaseManager()
+
+    async with manager.session_factory() as session:
+        stmt = select(Formula).where(Formula.is_valid == True)  # noqa: E712
+        if formula_id:
+            stmt = stmt.where(Formula.id == formula_id)
+        if citekey:
+            stmt = stmt.where(Formula.citekey == citekey)
+        stmt = stmt.limit(20)
+
+        res = await session.execute(stmt)
+        formulas = list(res.scalars().all())
+
+        if not formulas:
+            print("[ERROR] No valid formulas found to verify.", file=sys.stderr)
+            await manager.close()
+            return 1
+
+        print(f"[*] Verifying {len(formulas)} formulas against empirical benchmarks...")
+        passed = 0
+        for f in formulas:
+            codegen = compiler.compile(
+                formula_id=f.id,
+                citekey=f.citekey,
+                raw_latex=f.raw_latex,
+                sympy_repr=f.sympy_repr,
+            )
+            if not codegen.is_valid:
+                continue
+
+            tbl_stmt = (
+                select(BenchmarkTable)
+                .where(BenchmarkTable.citekey == f.citekey, BenchmarkTable.parquet_path.isnot(None))
+                .limit(1)
+            )
+            tbl = (await session.execute(tbl_stmt)).scalar_one_or_none()
+
+            if tbl and tbl.parquet_path and Path(tbl.parquet_path).exists():
+                v_res = verifier.verify_against_parquet(codegen, tbl.parquet_path)
+            else:
+                dummy_inputs = {p: [1.0, 2.0, 3.0] for p in codegen.parameters}
+                v_res = verifier.verify_with_inputs(codegen, dummy_inputs)
+
+            if v_res.passed:
+                passed += 1
+                status_str = f"[PASS] Formula {f.id[:10]} ({f.citekey}): {v_res.details}"
+            else:
+                status_str = f"[FAIL] Formula {f.id[:10]} ({f.citekey}): {v_res.details}"
+            print(status_str)
+
+        print(f"\n[SUMMARY] {passed}/{len(formulas)} formulas verified successfully.")
+
+    await manager.close()
+    return 0 if passed > 0 else 1
+
+
+async def async_ui_serve(host: str = "127.0.0.1", port: int = 8080) -> int:
+    """Launch the interactive web dashboard."""
+    import uvicorn
+
+    from kb.ui.app import create_app
+
+    print(f"[*] Starting Knowledge Base UI Dashboard at http://{host}:{port} ...")
+    app = create_app()
+    config = uvicorn.Config(app, host=host, port=port, log_level="info")
+    server = uvicorn.Server(config)
+    await server.serve()
+    return 0
+
+
+async def async_sync_harvest(
+    query: str = "baseball OR sabermetrics OR statcast",
+    limit: int = 5,
+    categories: list[str] | None = None,
+    daemon: bool = False,
+    interval: float = 3600.0,
+) -> int:
+    """Run the automated preprint harvester."""
+    from kb.sync.harvester import PreprintHarvester
+
+    harvester = PreprintHarvester()
+    if daemon:
+        print(f"[*] Launching preprint harvester daemon (interval={interval}s)...")
+        await harvester.run_daemon(
+            query=query, categories=categories, interval_seconds=interval, limit_per_cycle=limit
+        )
+    else:
+        print(f"[*] Running one-shot preprint harvest for '{query}' (limit={limit})...")
+        res = await harvester.harvest(query=query, categories=categories, limit=limit)
+        print(f"[SUMMARY] Scanned: {res.scanned}, New: {res.new_found}, Ingested: {res.ingested}, Skipped: {res.skipped}")
+        for detail in res.details:
+            print(f"  {detail}")
+    return 0
+
+
+async def async_ask(question: str, top_k: int = 5, as_json: bool = False) -> int:
+    """Execute question answering over the research corpus."""
+    import json
+
+    from kb.search.qa import CorpusQAEngine
+
+    engine = CorpusQAEngine()
+    ans = await engine.answer(question=question, top_k=top_k)
+    if as_json:
+        print(json.dumps(ans.to_dict(), indent=2))
+    else:
+        print(ans.format_terminal())
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -665,11 +834,55 @@ def build_parser() -> argparse.ArgumentParser:
         "--citekey", type=str, default=None, help="Filter search hits by citekey"
     )
 
+    # code command
+    code_parser = subparsers.add_parser(
+        "code", help="Knowledge-to-Code compilation and empirical verification"
+    )
+    code_sub = code_parser.add_subparsers(dest="code_subcommand")
+    code_compile_p = code_sub.add_parser("compile", help="Compile formula to Python & Polars code")
+    code_compile_p.add_argument("--formula-id", type=str, default=None, help="Formula ID to compile")
+    code_compile_p.add_argument("--citekey", type=str, default=None, help="Document citekey")
+    code_compile_p.add_argument("--name", type=str, default=None, help="Generated function name")
+
+    code_verify_p = code_sub.add_parser("verify", help="Verify formula against benchmark tables")
+    code_verify_p.add_argument("--citekey", type=str, default=None, help="Document citekey")
+    code_verify_p.add_argument("--formula-id", type=str, default=None, help="Formula ID")
+
+    # ui command
+    ui_parser = subparsers.add_parser("ui", help="Launch interactive web visual dashboard")
+    ui_sub = ui_parser.add_subparsers(dest="ui_subcommand")
+    ui_serve_p = ui_sub.add_parser("serve", help="Start web dashboard server")
+    ui_serve_p.add_argument("--host", type=str, default="127.0.0.1", help="Host interface (default: 127.0.0.1)")
+    ui_serve_p.add_argument("--port", type=int, default=8080, help="Port (default: 8080)")
+
+    # sync command
+    sync_parser = subparsers.add_parser("sync", help="Preprint synchronization and harvesting")
+    sync_sub = sync_parser.add_subparsers(dest="sync_subcommand")
+    sync_harvest_p = sync_sub.add_parser("harvest", help="Harvest fresh preprints from arXiv")
+    sync_harvest_p.add_argument(
+        "--query", type=str, default="baseball OR sabermetrics OR statcast", help="Search query string"
+    )
+    sync_harvest_p.add_argument("--limit", type=int, default=5, help="Maximum preprints to ingest (default: 5)")
+    sync_harvest_p.add_argument("--categories", nargs="+", default=None, help="arXiv category filters")
+    sync_harvest_p.add_argument("--daemon", action="store_true", help="Run as periodic background daemon")
+    sync_harvest_p.add_argument("--interval", type=float, default=3600.0, help="Daemon polling interval in seconds")
+
+    # ask command
+    ask_parser = subparsers.add_parser("ask", help="Evidence-grounded question answering over corpus")
+    ask_parser.add_argument("question", type=str, help="Research question to answer")
+    ask_parser.add_argument("--top-k", type=int, default=5, help="Top retrieved chunks (default: 5)")
+    ask_parser.add_argument("--json", action="store_true", help="Output raw JSON response")
+
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> None:
     """Main CLI entrypoint."""
+    if hasattr(sys.stdout, "reconfigure"):
+        getattr(sys.stdout, "reconfigure")(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        getattr(sys.stderr, "reconfigure")(encoding="utf-8")
+
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -784,6 +997,55 @@ def main(argv: Sequence[str] | None = None) -> None:
                 query=args.query,
                 limit=args.limit,
                 citekey=args.citekey,
+            )
+        )
+        sys.exit(code)
+    elif args.subcommand == "code":
+        if args.code_subcommand == "compile":
+            code = asyncio.run(
+                async_code_compile(
+                    formula_id=args.formula_id,
+                    citekey=args.citekey,
+                    function_name=args.name,
+                )
+            )
+            sys.exit(code)
+        elif args.code_subcommand == "verify":
+            code = asyncio.run(
+                async_code_verify(
+                    citekey=args.citekey,
+                    formula_id=args.formula_id,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["code", "--help"])
+    elif args.subcommand == "ui":
+        if args.ui_subcommand == "serve":
+            code = asyncio.run(async_ui_serve(host=args.host, port=args.port))
+            sys.exit(code)
+        else:
+            parser.parse_args(["ui", "--help"])
+    elif args.subcommand == "sync":
+        if args.sync_subcommand == "harvest":
+            code = asyncio.run(
+                async_sync_harvest(
+                    query=args.query,
+                    limit=args.limit,
+                    categories=args.categories,
+                    daemon=args.daemon,
+                    interval=args.interval,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["sync", "--help"])
+    elif args.subcommand == "ask":
+        code = asyncio.run(
+            async_ask(
+                question=args.question,
+                top_k=args.top_k,
+                as_json=args.json,
             )
         )
         sys.exit(code)

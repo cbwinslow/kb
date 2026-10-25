@@ -54,7 +54,9 @@ select = [
     "ARG", # flake8-unused-arguments
     "SIM", # flake8-simplify
 ]
-ignore = []
+ignore = [
+    "E501", # line length handled by formatting/templates
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["kb"]

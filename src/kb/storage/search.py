@@ -306,3 +306,24 @@ class HybridSearchEngine:
             )
 
         return final_results
+
+    async def search(
+        self,
+        session: AsyncSession,
+        query_text: str,
+        query_vector: list[float] | None = None,
+        embedder: EmbeddingProtocol | None = None,
+        limit: int = 10,
+        k: int = 60,
+        citekey: str | None = None,
+    ) -> list[SearchResult]:
+        """Convenience alias for hybrid_search."""
+        return await self.hybrid_search(
+            session=session,
+            query_text=query_text,
+            query_vector=query_vector,
+            embedder=embedder,
+            limit=limit,
+            k=k,
+            citekey=citekey,
+        )
