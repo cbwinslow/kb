@@ -586,6 +586,20 @@ class BatchIngestionRunner:
             if max_papers is not None and count >= max_papers:
                 break
 
+            # Host disk protection guard to prevent out-of-space on cbwwin
+            try:
+                import shutil
+
+                free_gb = shutil.disk_usage("C:\\").free / (1024**3)
+                if free_gb < 1.0:
+                    logger.error(
+                        "Host disk C: is critically low (%.2f GB free). Halting batch ingestion.",
+                        free_gb,
+                    )
+                    break
+            except Exception:
+                pass
+
             try:
                 result = await self.pipeline.ingest_source(src, force=force)
                 stats.record(result)

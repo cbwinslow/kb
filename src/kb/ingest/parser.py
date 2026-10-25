@@ -110,6 +110,7 @@ class DoclingParser:
                 do_cell_matching=True,
             )
 
+        pipeline_options.document_timeout = 300.0
         pipeline_options.accelerator_options = AcceleratorOptions(
             num_threads=self.num_threads,
             device=self._accel_device,
@@ -120,11 +121,12 @@ class DoclingParser:
         }
         return DocumentConverter(format_options=format_options)
 
-    def parse_pdf(self, file_path: str | Path) -> ParsedDocument:
+    def parse_pdf(self, file_path: str | Path, max_num_pages: int = 60) -> ParsedDocument:
         """Parse a PDF document into a structured Markdown document and Docling AST.
 
         Args:
             file_path: Path to the local PDF file.
+            max_num_pages: Cap on maximum pages to parse (default 60 for research papers).
 
         Returns:
             ParsedDocument with markdown, Docling AST, and metadata.
@@ -140,10 +142,13 @@ class DoclingParser:
             raise ValueError(f"Target file is not a PDF document: {path}")
 
         logger.info(
-            "Parsing scientific PDF with Docling: %s (device: %s)", path.name, self.device_used
+            "Parsing scientific PDF with Docling: %s (device: %s, max_pages: %d)",
+            path.name,
+            self.device_used,
+            max_num_pages,
         )
         try:
-            conv_result = self.converter.convert(str(path))
+            conv_result = self.converter.convert(str(path), max_num_pages=max_num_pages)
             docling_doc = conv_result.document
             markdown_text = docling_doc.export_to_markdown()
         finally:
