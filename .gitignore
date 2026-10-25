@@ -53,3 +53,4 @@ htmlcov/
 data/.zotero_sync_state.json
 data/*.tmp
 *.log
+.gemini/

@@ -7,7 +7,7 @@ import asyncio
 import sys
 from collections.abc import Sequence
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from kb.enrich.openalex import OpenAlexClient
@@ -283,6 +283,109 @@ async def async_enrich_openalex(
     return 0
 
 
+async def async_migrate_legacy(
+    dry_run: bool = False,
+    min_quality: int = 7,
+    min_relevance: int = 7,
+    sources: list[str] | None = None,
+    limit: int | None = None,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Audits and migrates high-quality documents and chunks from legacy schema."""
+    from kb.storage.legacy_adapter import LegacyMigrationAdapter
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    adapter = LegacyMigrationAdapter(db_manager=db_manager)
+    mode_label = "[DRY-RUN] " if dry_run else ""
+    print(
+        f"[*] {mode_label}Starting legacy homelab migration audit "
+        f"(min_quality={min_quality}, min_relevance={min_relevance})..."
+    )
+
+    def on_progress(current: int, total: int, cand: Any) -> None:
+        safe_title = cand.title[:45].encode("ascii", errors="replace").decode("ascii")
+        print(
+            f"    [{current}/{total}] {cand.source}: {safe_title} "
+            f"(Q:{cand.quality}, R:{cand.relevance})"
+        )
+
+    stats = await adapter.migrate_batch(
+        min_quality=min_quality,
+        min_relevance=min_relevance,
+        sources=sources,
+        limit=limit,
+        dry_run=dry_run,
+        on_progress=on_progress,
+    )
+
+    print("\n" + "=" * 55)
+    print(f"[*] {mode_label}Migration Summary:")
+    print(f"    Scanned Candidates:  {stats.scanned_candidates}")
+    print(f"    Migrated Documents:  {stats.migrated_documents}")
+    print(f"    Migrated Chunks:     {stats.migrated_chunks}")
+    print(
+        f"    Migrated Formulas:   {stats.migrated_formulas} "
+        f"({stats.valid_formulas} symbolically validated)"
+    )
+    print(f"    Failed Documents:    {stats.failed_documents}")
+    print("=" * 55)
+
+    if manager is None:
+        await db_manager.close()
+
+    return 0 if stats.failed_documents == 0 else 1
+
+
+async def async_search(
+    query: str,
+    limit: int = 5,
+    citekey: str | None = None,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Executes hybrid vector + full-text search across ingested chunks."""
+    from kb.storage.search import HybridSearchEngine
+
+    db_manager = manager or DatabaseManager()
+    engine = HybridSearchEngine(db_manager=db_manager)
+
+    print(f"[*] Running hybrid search for: '{query}' (limit={limit})...")
+    async with db_manager.get_session() as session:
+        hits = await engine.hybrid_search(
+            session=session,
+            query_text=query,
+            limit=limit,
+            citekey=citekey,
+        )
+
+    if not hits:
+        print("[*] No matching literature found.")
+        if manager is None:
+            await db_manager.close()
+        return 0
+
+    print(f"\n[SUCCESS] Found {len(hits)} matching chunks:\n")
+    for idx, hit in enumerate(hits, 1):
+        print(
+            f"--- Hit #{idx} [Citekey: {hit.citekey}] "
+            f"(RRF: {hit.rrf_score:.4f}, Dense: #{hit.dense_rank}, Sparse: #{hit.sparse_rank}) ---"
+        )
+        section = (
+            " > ".join(hit.section_path)
+            if hit.section_path
+            else (hit.parent_section or "Main")
+        )
+        print(f"Section: {section}")
+        preview = hit.text.replace("\n", " ")[:200]
+        safe_preview = preview.encode("ascii", errors="replace").decode("ascii")
+        print(f"Content: {safe_preview}...\n")
+
+    if manager is None:
+        await db_manager.close()
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -351,6 +454,56 @@ def build_parser() -> argparse.ArgumentParser:
         help="Enrich all stored documents",
     )
 
+    # migrate commands
+    migrate_parser = subparsers.add_parser(
+        "migrate", help="Data migration adapters for legacy schemas"
+    )
+    migrate_sub = migrate_parser.add_subparsers(dest="migrate_subcommand")
+    legacy_sub = migrate_sub.add_parser(
+        "legacy", help="Migrate research documents and pre-embedded chunks from public schema"
+    )
+    legacy_sub.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Simulate migration without modifying target tables",
+    )
+    legacy_sub.add_argument(
+        "--min-quality",
+        type=int,
+        default=7,
+        help="Minimum quality threshold score (default: 7)",
+    )
+    legacy_sub.add_argument(
+        "--min-relevance",
+        type=int,
+        default=7,
+        help="Minimum relevance threshold score (default: 7)",
+    )
+    legacy_sub.add_argument(
+        "--sources",
+        nargs="+",
+        default=None,
+        help="Allowed source domains (e.g. arxiv fangraphs-library)",
+    )
+    legacy_sub.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum candidate documents to migrate",
+    )
+
+    # search command
+    search_parser = subparsers.add_parser(
+        "search", help="Execute hybrid dense + sparse retrieval across chunks"
+    )
+    search_parser.add_argument("query", type=str, help="Search query string")
+    search_parser.add_argument(
+        "--limit", type=int, default=5, help="Number of search hits (default: 5)"
+    )
+    search_parser.add_argument(
+        "--citekey", type=str, default=None, help="Filter search hits by citekey"
+    )
+
     return parser
 
 
@@ -417,6 +570,29 @@ def main(argv: Sequence[str] | None = None) -> None:
             sys.exit(code)
         else:
             parser.parse_args(["enrich", "--help"])
+    elif args.subcommand == "migrate":
+        if args.migrate_subcommand == "legacy":
+            code = asyncio.run(
+                async_migrate_legacy(
+                    dry_run=args.dry_run,
+                    min_quality=args.min_quality,
+                    min_relevance=args.min_relevance,
+                    sources=args.sources,
+                    limit=args.limit,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["migrate", "--help"])
+    elif args.subcommand == "search":
+        code = asyncio.run(
+            async_search(
+                query=args.query,
+                limit=args.limit,
+                citekey=args.citekey,
+            )
+        )
+        sys.exit(code)
     else:
         parser.print_help()
 
