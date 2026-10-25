@@ -56,3 +56,10 @@ The system SHALL enforce rigorous post-chunking invariant assertions before pers
 #### Scenario: Token budget adherence without AST truncation
 - **WHEN** a section exceeds target embedding token boundaries
 - **THEN** chunker splits only at paragraph or sentence boundaries while preserving equations and tables as unbreakable atomic nodes
+
+### Requirement: OpenAlex Bibliometric Document Enrichment
+The system SHALL persist OpenAlex bibliometric fields, topic tags, and citation counts on ingested document records.
+
+#### Scenario: Storing OpenAlex identifiers and metrics
+- **WHEN** a document is enriched with OpenAlex metadata
+- **THEN** document record in the database stores `openalex_id`, `citation_count`, and a structured JSON list of topics and referenced work IDs

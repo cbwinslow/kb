@@ -59,6 +59,21 @@ class DatabaseManager:
             if self.is_postgres:
                 # Enable pgvector extension if available
                 await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
+                # Ensure newly added columns exist on kb_documents
+                await conn.execute(text(
+                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS openalex_id VARCHAR(128);"
+                ))
+                await conn.execute(text(
+                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS citation_count INTEGER;"
+                ))
+                await conn.execute(text(
+                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS "
+                    "topics JSONB DEFAULT '[]'::jsonb;"
+                ))
+                await conn.execute(text(
+                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS "
+                    "referenced_works JSONB DEFAULT '[]'::jsonb;"
+                ))
             await conn.run_sync(Base.metadata.create_all)
         logger.info("Database schema initialized successfully for %s", self.url.split("@")[-1])
 

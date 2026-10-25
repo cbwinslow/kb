@@ -8,6 +8,7 @@ from typing import Any
 from fastmcp import FastMCP
 from sqlalchemy import select
 
+from kb.enrich.openalex import OpenAlexClient
 from kb.storage.database import DatabaseManager
 from kb.storage.embeddings import EmbeddingProtocol, LocalEmbeddingGenerator
 from kb.storage.models import BenchmarkTable, Document, Formula
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 def create_mcp_server(
     db_manager: DatabaseManager | None = None,
     embedder: EmbeddingProtocol | None = None,
+    openalex_client: OpenAlexClient | None = None,
 ) -> FastMCP:
     """Creates and configures the FastMCP server with all KB query tools."""
     server = FastMCP(
@@ -30,6 +32,7 @@ def create_mcp_server(
 
     db = db_manager or DatabaseManager()
     active_embedder = embedder or LocalEmbeddingGenerator()
+    active_openalex = openalex_client or OpenAlexClient()
     search_engine = HybridSearchEngine(db)
 
     @server.tool(
@@ -189,6 +192,87 @@ def create_mcp_server(
                 f"}}"
             )
             return bibtex
+
+    @server.tool(
+        name="kb_get_citations",
+        description=(
+            "Retrieves papers citing or referenced by a scientific work in the knowledge base. "
+            "Returns titles, publication years, cited-by counts, and OpenAlex IDs."
+        ),
+    )
+    async def kb_get_citations(
+        citekey: str | None = None,
+        openalex_id: str | None = None,
+        limit: int = 10,
+    ) -> list[dict[str, Any]]:
+        """Finds papers citing the specified work via OpenAlex."""
+        target_id = openalex_id
+        if not target_id and citekey:
+            async with db.get_session() as session:
+                res = await session.execute(
+                    select(Document).where(Document.citekey == citekey)
+                )
+                doc = res.scalar_one_or_none()
+                if doc:
+                    target_id = doc.openalex_id
+
+        if not target_id:
+            return []
+
+        citing_works = await active_openalex.get_citations(target_id, limit=limit)
+        return [
+            {
+                "id": w.id,
+                "short_id": w.short_id,
+                "title": w.title,
+                "year": w.publication_year,
+                "cited_by_count": w.cited_by_count,
+                "authors": w.authors,
+                "doi": w.doi,
+            }
+            for w in citing_works
+        ]
+
+    @server.tool(
+        name="kb_get_related_papers",
+        description=(
+            "Retrieves related research papers by topic classification and citation lineage. "
+            "Returns related paper titles, topics, citation counts, and landing page URLs."
+        ),
+    )
+    async def kb_get_related_papers(
+        citekey: str | None = None,
+        openalex_id: str | None = None,
+        limit: int = 10,
+    ) -> list[dict[str, Any]]:
+        """Finds conceptually and methodologically related research papers via OpenAlex."""
+        target_id = openalex_id
+        if not target_id and citekey:
+            async with db.get_session() as session:
+                res = await session.execute(
+                    select(Document).where(Document.citekey == citekey)
+                )
+                doc = res.scalar_one_or_none()
+                if doc:
+                    target_id = doc.openalex_id
+
+        if not target_id:
+            return []
+
+        related_works = await active_openalex.get_related_papers(target_id, limit=limit)
+        return [
+            {
+                "id": w.id,
+                "short_id": w.short_id,
+                "title": w.title,
+                "year": w.publication_year,
+                "cited_by_count": w.cited_by_count,
+                "topics": [t["name"] for t in w.topics],
+                "landing_page_url": w.landing_page_url,
+                "authors": w.authors,
+            }
+            for w in related_works
+        ]
 
     return server
 

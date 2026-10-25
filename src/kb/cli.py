@@ -7,6 +7,10 @@ import asyncio
 import sys
 from collections.abc import Sequence
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from kb.enrich.openalex import OpenAlexClient
 
 from sqlalchemy import select
 
@@ -214,6 +218,71 @@ async def async_embed(
     return 0
 
 
+async def async_enrich_openalex(
+    citekey: str | None = None,
+    enrich_all: bool = False,
+    client: OpenAlexClient | None = None,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Enriches stored documents with OpenAlex bibliometric metadata and topics."""
+    from kb.enrich.openalex import OpenAlexClient
+
+    if not citekey and not enrich_all:
+        print("[ERROR] Specify --citekey <key> or --all to enrich documents.", file=sys.stderr)
+        return 1
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    openalex_client = client or OpenAlexClient()
+
+    async with db_manager.get_session() as session:
+        stmt = select(Document)
+        if citekey:
+            stmt = stmt.where(Document.citekey == citekey)
+
+        res = await session.execute(stmt)
+        docs = list(res.scalars().all())
+
+        if not docs:
+            print("[*] No documents found to enrich.")
+            if manager is None:
+                await db_manager.close()
+            return 0
+
+        print(f"[*] Querying OpenAlex for {len(docs)} documents...")
+        enriched_count = 0
+        for doc in docs:
+            print(f"[*] Resolving: {doc.citekey} - '{doc.title[:40]}'...")
+            work = await openalex_client.resolve_work(
+                doi=doc.doi,
+                arxiv_id=doc.arxiv_id,
+                title=doc.title,
+                authors=doc.authors,
+                year=doc.year,
+            )
+            if work:
+                doc.openalex_id = work.id
+                doc.citation_count = work.cited_by_count
+                doc.topics = work.topics
+                doc.referenced_works = work.referenced_works
+                enriched_count += 1
+                print(
+                    f"    [MATCH] OpenAlex ID: {work.short_id} | "
+                    f"Citations: {work.cited_by_count} | Topics: {len(work.topics)}"
+                )
+            else:
+                print(f"    [WARN] No match found on OpenAlex for {doc.citekey}")
+
+        await session.flush()
+
+    if manager is None:
+        await db_manager.close()
+
+    print(f"[SUCCESS] Successfully enriched {enriched_count}/{len(docs)} documents!")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -267,6 +336,19 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=None,
         help="Zotero data directory path",
+    )
+
+    # enrich commands
+    enrich_parser = subparsers.add_parser("enrich", help="Enrich documents with external metadata")
+    enrich_sub = enrich_parser.add_subparsers(dest="enrich_subcommand")
+    openalex_sub = enrich_sub.add_parser("openalex", help="Enrich documents from OpenAlex")
+    openalex_group = openalex_sub.add_mutually_exclusive_group(required=True)
+    openalex_group.add_argument("--citekey", type=str, help="Citation key to enrich")
+    openalex_group.add_argument(
+        "--all",
+        dest="enrich_all",
+        action="store_true",
+        help="Enrich all stored documents",
     )
 
     return parser
@@ -324,6 +406,17 @@ def main(argv: Sequence[str] | None = None) -> None:
                 sys.exit(0)
         else:
             parser.parse_args(["zotero", "--help"])
+    elif args.subcommand == "enrich":
+        if args.enrich_subcommand == "openalex":
+            code = asyncio.run(
+                async_enrich_openalex(
+                    citekey=args.citekey,
+                    enrich_all=args.enrich_all,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["enrich", "--help"])
     else:
         parser.print_help()
 

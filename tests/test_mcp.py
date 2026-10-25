@@ -7,6 +7,7 @@ import uuid
 import pytest
 
 from kb.cli import build_parser
+from kb.enrich.openalex import OpenAlexClient
 from kb.mcp.server import create_mcp_server
 from kb.storage import (
     BenchmarkTable,
@@ -16,6 +17,7 @@ from kb.storage import (
     Formula,
 )
 from kb.storage.embeddings import MockEmbeddingGenerator
+from tests.test_openalex import MockOpenAlexTransport
 
 
 @pytest.fixture
@@ -38,6 +40,8 @@ async def test_mcp_tools_registration(test_db_manager: DatabaseManager) -> None:
     assert "kb_get_formula" in tool_names
     assert "kb_get_benchmark_table" in tool_names
     assert "kb_get_bibtex" in tool_names
+    assert "kb_get_citations" in tool_names
+    assert "kb_get_related_papers" in tool_names
     await test_db_manager.close()
 
 
@@ -102,7 +106,12 @@ async def test_mcp_tools_execution(test_db_manager: DatabaseManager) -> None:
         session.add(table)
 
     mock_embedder = MockEmbeddingGenerator()
-    server = create_mcp_server(test_db_manager, embedder=mock_embedder)
+    mock_openalex = OpenAlexClient(transport=MockOpenAlexTransport())
+    server = create_mcp_server(
+        test_db_manager,
+        embedder=mock_embedder,
+        openalex_client=mock_openalex,
+    )
 
     # 1. Test kb_search_literature tool call
     search_res = await server.call_tool(
@@ -145,6 +154,15 @@ async def test_mcp_tools_execution(test_db_manager: DatabaseManager) -> None:
     assert "Steven J. Miller" in bibtex_text
     assert "math/0509698" in bibtex_text
 
+    # 5. Test kb_get_citations tool call
+    citations_res = await server.call_tool(
+        "kb_get_citations",
+        {"openalex_id": "W1533576069"},
+    )
+    assert not citations_res.is_error
+    assert len(citations_res.content) >= 1
+    assert "Sports Data Mining" in str(citations_res.content[0])
+
     await test_db_manager.close()
 
 
@@ -180,3 +198,9 @@ def test_cli_parser() -> None:
     assert str(args.pdf_path).endswith("miller2008.pdf")
     assert args.citekey == "miller2008"
     assert args.year == 2008
+
+    # enrich openalex
+    args = parser.parse_args(["enrich", "openalex", "--citekey", "miller2005"])
+    assert args.subcommand == "enrich"
+    assert args.enrich_subcommand == "openalex"
+    assert args.citekey == "miller2005"

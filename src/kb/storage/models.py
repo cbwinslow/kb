@@ -45,6 +45,14 @@ class Document(Base):
     arxiv_id: Mapped[str | None] = mapped_column(String(64), index=True, nullable=True)
     abstract: Mapped[str | None] = mapped_column(Text, nullable=True)
     file_path: Mapped[str | None] = mapped_column(Text, nullable=True)
+    openalex_id: Mapped[str | None] = mapped_column(String(128), index=True, nullable=True)
+    citation_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    topics: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), default=list
+    )
+    referenced_works: Mapped[list[str]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), default=list
+    )
     extra_metadata: Mapped[dict[str, Any]] = mapped_column(
         JSON().with_variant(JSONB, "postgresql"), default=dict
     )
