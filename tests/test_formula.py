@@ -129,3 +129,40 @@ def test_ast_generator_python_source(
     assert callable(pythag_fn)
     computed_ratio = float(pythag_fn(R_A=600.0, R_S=700.0))  # type: ignore[misc]
     assert math.isclose(computed_ratio, 490000 / 850000, rel_tol=1e-5)
+
+
+def test_extract_math_symbols_and_references() -> None:
+    """Verifies extraction of Greek symbols, domain variables, and equation references."""
+    from kb.math import (
+        extract_equation_references,
+        extract_math_symbols,
+        extract_variable_glossary,
+    )
+
+    sample_derivation = (
+        r"Consider the linear model $Y_{i} = \beta_{0} + \beta_{1} X_{i} + \epsilon_{i}$ "
+        r"with noise variance $\sigma^2$ and mean $\mu$. "
+        r"In sabermetric evaluation, we compare RS and RA using Equation (1). "
+        r"As shown in Eq. (2.3), substituting (1) into formula 4 yields optimal weights, "
+        r"where $RS$ denotes runs scored, and $RA$ is the runs allowed."
+    )
+
+    symbols = extract_math_symbols(sample_derivation)
+    assert "epsilon" in symbols
+    assert "sigma^2" in symbols
+    assert "mu" in symbols
+    assert "RS" in symbols
+    assert "RA" in symbols
+    assert "Y_{i}" in symbols or "X_{i}" in symbols
+
+    refs = extract_equation_references(sample_derivation)
+    assert "1" in refs
+    assert "2.3" in refs
+    assert "4" in refs
+
+    glossary = extract_variable_glossary(sample_derivation)
+    assert "RS" in glossary
+    assert "runs scored" in glossary["RS"]
+    assert "RA" in glossary
+    assert "runs allowed" in glossary["RA"]
+

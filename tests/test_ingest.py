@@ -146,3 +146,122 @@ def test_chunker_real_pdf_fixture_invariants() -> None:
 
     assert has_math_count > 0, "Real paper chunks should detect mathematical expressions"
     assert has_table_count > 0, "Real paper chunks should detect tables"
+
+
+def test_chunker_equation_cooccurrence_and_clustering() -> None:
+    """Verifies that derivation clustering binds equations and trailing variable definitions."""
+    doc = DoclingDocument(name="derivation_test")
+    doc.add_text(label=DocItemLabel.SECTION_HEADER, text="1. Derivation of Pythagorean Expectation")
+    doc.add_text(
+        label=DocItemLabel.TEXT,
+        text=r"We derive win expectancy $W$ using the empirical power formulation: "
+        r"$$W = \frac{RS^\gamma}{RS^\gamma + RA^\gamma}$$ (Equation 1)",
+    )
+    doc.add_text(
+        label=DocItemLabel.TEXT,
+        text=r"where $RS$ denotes runs scored, and $RA$ is the runs allowed, "
+        r"with scaling parameter $\gamma \approx 1.83$.",
+    )
+
+    # 1. With clustering enabled (default)
+    chunker = DocumentChunker(mode="hierarchical", cluster_derivations=True)
+    clustered_chunks = chunker.chunk_document(doc, citekey="tango2006")
+
+    _verify_provenance_invariants(clustered_chunks)
+    assert len(clustered_chunks) == 1
+    chunk = clustered_chunks[0]
+
+    assert chunk.has_math is True
+    assert "Equation 1" in chunk.raw_text
+    assert "where $RS$ denotes runs scored" in chunk.raw_text
+    assert "Symbols:" in chunk.enriched_text
+    assert "RS" in chunk.symbols
+    assert "RA" in chunk.symbols
+    assert "gamma" in chunk.symbols
+    assert "1" in chunk.referenced_equations
+    assert "RS" in chunk.variable_glossary
+
+    # 2. With clustering disabled
+    unclustered_chunker = DocumentChunker(mode="hierarchical", cluster_derivations=False)
+    split_chunks = unclustered_chunker.chunk_document(doc, citekey="tango2006")
+    _verify_provenance_invariants(split_chunks)
+    assert len(split_chunks) == 2
+
+
+@pytest.mark.asyncio
+async def test_derivation_symbol_search_retrieval() -> None:
+    """Verifies that symbol-enriched derivation chunks are retrievable by variable queries."""
+    import uuid
+
+    from kb.storage import (
+        Chunk,
+        DatabaseManager,
+        Document,
+        HybridSearchEngine,
+        MockEmbeddingGenerator,
+    )
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_search_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    doc = DoclingDocument(name="derivation_search_test")
+    doc.add_text(label=DocItemLabel.SECTION_HEADER, text="1. Pythagorean Scaling")
+    doc.add_text(
+        label=DocItemLabel.TEXT,
+        text=(
+            r"The model computes $W = \frac{RS^\gamma}{RS^\gamma + RA^\gamma}$ "
+            r"with scaling parameter $\gamma$."
+        ),
+    )
+
+    chunker = DocumentChunker(mode="hierarchical", cluster_derivations=True)
+    chunks = chunker.chunk_document(doc, citekey="tango2006")
+    assert len(chunks) == 1
+    c = chunks[0]
+
+    embedder = MockEmbeddingGenerator(dimension=1024)
+    query_vec = embedder.embed_query("scaling parameter gamma")
+    chunk_vec = embedder.embed_query(c.enriched_text)
+
+    async with db.get_session() as session:
+        doc_record = Document(
+            id="doc_tango",
+            citekey="tango2006",
+            title="Pythagorean Scaling",
+        )
+        session.add(doc_record)
+        await session.flush()
+
+        chunk_record = Chunk(
+            id=c.chunk_id,
+            document_id=doc_record.id,
+            chunk_index=0,
+            citekey="tango2006",
+            raw_text=c.raw_text,
+            enriched_text=c.enriched_text,
+            section_path=c.section_path,
+            parent_section=c.parent_section,
+            has_math=c.has_math,
+            has_table=c.has_table,
+            embedding=chunk_vec,
+        )
+        session.add(chunk_record)
+        await session.flush()
+
+    engine = HybridSearchEngine(db_manager=db)
+    async with db.get_session() as session:
+        hits = await engine.hybrid_search(
+            session=session,
+            query_text="scaling parameter gamma",
+            query_vector=query_vec,
+            limit=5,
+        )
+
+    assert len(hits) == 1
+    assert hits[0].chunk_id == c.chunk_id
+    assert "Symbols:" in hits[0].text
+
+    await db.close()
+

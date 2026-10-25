@@ -18,6 +18,11 @@ from docling_core.types.doc.items.text import FormulaItem
 from pydantic import BaseModel, ConfigDict, Field
 
 from kb.ingest.parser import ParsedDocument
+from kb.math.extractor import (
+    extract_equation_references,
+    extract_math_symbols,
+    extract_variable_glossary,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +65,15 @@ class EnrichedChunk(BaseModel):
     math_expressions: list[str] = Field(
         default_factory=list, description="Extracted mathematical expressions in this chunk"
     )
+    symbols: list[str] = Field(
+        default_factory=list, description="Extracted mathematical variables and parameters"
+    )
+    referenced_equations: list[str] = Field(
+        default_factory=list, description="Referenced equation numbers or labels"
+    )
+    variable_glossary: dict[str, str] = Field(
+        default_factory=dict, description="Extracted variable definitions and explanations"
+    )
     num_tokens: int = Field(default=0, description="Estimated token count of enriched text")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional chunk metadata")
 
@@ -72,6 +86,8 @@ class DocumentChunker:
         mode: str = "hierarchical",
         repeat_table_header: bool = True,
         always_emit_headings: bool = True,
+        cluster_derivations: bool = True,
+        max_derivation_tokens: int = 800,
     ) -> None:
         """Initialize DocumentChunker.
 
@@ -79,10 +95,14 @@ class DocumentChunker:
             mode: 'hierarchical' for pure AST boundary chunks, or 'hybrid' for token-budget chunks.
             repeat_table_header: Whether to repeat table column headers across split tables.
             always_emit_headings: Whether to always include section headers in chunk text.
+            cluster_derivations: Whether to cluster sequential equations and variable definitions.
+            max_derivation_tokens: Maximum token budget when merging derivation chunks.
         """
         self.mode = mode.lower()
         self.repeat_table_header = repeat_table_header
         self.always_emit_headings = always_emit_headings
+        self.cluster_derivations = cluster_derivations
+        self.max_derivation_tokens = max_derivation_tokens
 
         if self.mode == "hybrid":
             self._chunker = HybridChunker(
@@ -91,6 +111,115 @@ class DocumentChunker:
             )
         else:
             self._chunker = HierarchicalChunker()
+
+    def _build_enriched_header(
+        self,
+        doc_name: str,
+        citekey: str,
+        headings: list[str],
+        symbols: list[str],
+    ) -> str:
+        """Construct structured context breadcrumb header."""
+        header_parts: list[str] = [f'Document: "{doc_name}"']
+        if citekey:
+            header_parts.append(f"Citekey: {citekey}")
+        breadcrumb_str = " > ".join(headings) if headings else "Root"
+        header_parts.append(f"Section: {breadcrumb_str}")
+        if symbols:
+            # Include top 6 distinct symbols in breadcrumb
+            header_parts.append(f"Symbols: {', '.join(symbols[:6])}")
+        return f"[{' | '.join(header_parts)}]"
+
+    def _should_cluster(self, c1: EnrichedChunk, c2: EnrichedChunk) -> bool:
+        """Determine whether chunk c2 should be clustered into derivation chunk c1."""
+        # Must be in same section
+        if c1.section_path != c2.section_path:
+            return False
+
+        # If combined tokens exceeds max budget, cannot cluster
+        if (c1.num_tokens + c2.num_tokens) > self.max_derivation_tokens:
+            return False
+
+        # Case A: c1 has math, and c2 starts with variable definition or explanatory clause
+        text2_lower = c2.raw_text.lstrip().lower()
+        starts_with_definition = bool(
+            re.match(r"^(?:where|in which|let|with|here,?|and)\b", text2_lower)
+        )
+        if c1.has_math and starts_with_definition:
+            return True
+
+        # Case B: Both chunks are part of a continuous equation derivation sequence
+        if c1.has_math and c2.has_math:
+            return True
+
+        # Case C: c2 references an equation defined in c1
+        return any(ref in c1.raw_text for ref in c2.referenced_equations)
+
+    def _apply_clustering(
+        self,
+        chunks: list[EnrichedChunk],
+        doc_name: str,
+        citekey: str,
+        document_id: str,
+    ) -> list[EnrichedChunk]:
+        """Merge consecutive derivation chunks and update sequence pointers."""
+        if not chunks:
+            return []
+
+        clustered: list[EnrichedChunk] = []
+        current = chunks[0]
+
+        for nxt in chunks[1:]:
+            if self._should_cluster(current, nxt):
+                merged_raw = f"{current.raw_text}\n\n{nxt.raw_text}"
+                merged_math = list(dict.fromkeys(current.math_expressions + nxt.math_expressions))
+                merged_symbols = sorted(set(current.symbols + nxt.symbols))
+                merged_refs = sorted(set(current.referenced_equations + nxt.referenced_equations))
+                merged_glossary = {**current.variable_glossary, **nxt.variable_glossary}
+
+                header = self._build_enriched_header(
+                    doc_name=doc_name,
+                    citekey=citekey,
+                    headings=current.section_path,
+                    symbols=merged_symbols,
+                )
+                merged_enriched = f"{header}\n\n{merged_raw}"
+                merged_tokens = max(1, len(merged_enriched) // 4)
+
+                current = EnrichedChunk(
+                    chunk_id=current.chunk_id,
+                    document_id=document_id,
+                    citekey=citekey,
+                    chunk_index=current.chunk_index,
+                    raw_text=merged_raw,
+                    enriched_text=merged_enriched,
+                    section_path=current.section_path,
+                    parent_section=current.parent_section,
+                    previous_chunk_id=current.previous_chunk_id,
+                    next_chunk_id=nxt.next_chunk_id,
+                    has_math=current.has_math or nxt.has_math,
+                    has_table=current.has_table or nxt.has_table,
+                    math_expressions=merged_math,
+                    symbols=merged_symbols,
+                    referenced_equations=merged_refs,
+                    variable_glossary=merged_glossary,
+                    num_tokens=merged_tokens,
+                )
+            else:
+                clustered.append(current)
+                current = nxt
+
+        clustered.append(current)
+
+        # Re-index sequence IDs and relational pointers
+        total = len(clustered)
+        for idx, c in enumerate(clustered):
+            c.chunk_index = idx
+            c.chunk_id = f"{document_id}_chunk_{idx:04d}"
+            c.previous_chunk_id = f"{document_id}_chunk_{idx - 1:04d}" if idx > 0 else None
+            c.next_chunk_id = f"{document_id}_chunk_{idx + 1:04d}" if idx < total - 1 else None
+
+        return clustered
 
     def chunk_document(
         self,
@@ -137,14 +266,18 @@ class DocumentChunker:
             # Detect tabular data from AST items and markdown formatting
             has_table = self._detect_tables(base_chunk, raw_text)
 
-            # Build enriched breadcrumb header
-            breadcrumb_str = " > ".join(headings) if headings else "Root"
-            header_parts: list[str] = [f'Document: "{doc_name}"']
-            if citekey:
-                header_parts.append(f"Citekey: {citekey}")
-            header_parts.append(f"Section: {breadcrumb_str}")
+            # Extract symbols, references, and variable definitions
+            symbols = extract_math_symbols(raw_text)
+            referenced_eqs = extract_equation_references(raw_text)
+            glossary = extract_variable_glossary(raw_text)
 
-            breadcrumb_header = f"[{' | '.join(header_parts)}]"
+            # Build enriched breadcrumb header
+            breadcrumb_header = self._build_enriched_header(
+                doc_name=doc_name,
+                citekey=citekey,
+                headings=headings,
+                symbols=symbols,
+            )
             enriched_text = f"{breadcrumb_header}\n\n{raw_text}" if raw_text else breadcrumb_header
 
             # Rough token estimate (character length / 4)
@@ -167,9 +300,21 @@ class DocumentChunker:
                 has_math=has_math,
                 has_table=has_table,
                 math_expressions=math_exprs,
+                symbols=symbols,
+                referenced_equations=referenced_eqs,
+                variable_glossary=glossary,
                 num_tokens=num_tokens,
             )
             enriched_chunks.append(chunk)
+
+        # Apply derivation clustering if enabled
+        if self.cluster_derivations:
+            enriched_chunks = self._apply_clustering(
+                chunks=enriched_chunks,
+                doc_name=doc_name,
+                citekey=citekey,
+                document_id=document_id,
+            )
 
         math_count = sum(1 for c in enriched_chunks if c.has_math)
         table_count = sum(1 for c in enriched_chunks if c.has_table)

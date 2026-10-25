@@ -5,13 +5,15 @@ from __future__ import annotations
 import hashlib
 import logging
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field
 from sympy.core.relational import Equality
 from sympy.parsing.latex import parse_latex
 
-from kb.ingest.chunker import EnrichedChunk
+if TYPE_CHECKING:
+    from kb.ingest.chunker import EnrichedChunk
+
 from kb.math.sanitizer import EquationSanitizer
 
 logger = logging.getLogger(__name__)
@@ -195,3 +197,108 @@ class FormulaExtractor:
                 formulas.append(tf)
 
         return formulas
+
+
+# Standard LaTeX Greek alphabet macros
+GREEK_SYMBOLS: set[str] = {
+    r"\alpha", r"\beta", r"\gamma", r"\delta", r"\epsilon", r"\varepsilon",
+    r"\zeta", r"\eta", r"\theta", r"\vartheta", r"\iota", r"\kappa",
+    r"\lambda", r"\mu", r"\nu", r"\xi", r"\pi", r"\rho", r"\sigma",
+    r"\tau", r"\upsilon", r"\phi", r"\varphi", r"\chi", r"\psi", r"\omega",
+    r"\Gamma", r"\Delta", r"\Theta", r"\Lambda", r"\Xi", r"\Pi",
+    r"\Sigma", r"\Upsilon", r"\Phi", r"\Psi", r"\Omega",
+}
+
+# Common domain variables in sports analytics and statistical modeling
+COMMON_DOMAIN_VARIABLES: set[str] = {
+    "RS", "RA", "HR", "BB", "SO", "IP", "AB", "TB", "OBP", "SLG", "OPS",
+    "FIP", "wOBA", "wRC", "WAR", "BABIP", "tERA", "SIERA", "UZR", "DRS",
+}
+
+EQUATION_REF_RE = re.compile(
+    r"\b(?:Equation|Eq\.?|Eqs\.?|formula)\s*\(?([0-9]+(?:\.[0-9]+)*[a-z]?)\)?",
+    re.IGNORECASE,
+)
+
+VARIABLE_DEF_RE = re.compile(
+    r"(?:\b(?:where|in which|let|with)|,\s*and|;\s*and|,)\s+"
+    r"(\$?[a-zA-Z_\\{}^]+\$?)\s+(?:denotes|represents|is the|is a|being)\s+([^,\n\.]+)",
+    re.IGNORECASE,
+)
+
+
+def extract_math_symbols(text: str) -> list[str]:
+    """Extract distinct mathematical symbols, Greek letters, and domain parameters from text.
+
+    Args:
+        text: Text containing mathematical equations, variables, or definitions.
+
+    Returns:
+        Sorted unique list of symbol strings (e.g. ['RS', 'RA', 'gamma', 'mu', 'sigma^2']).
+    """
+    symbols: set[str] = set()
+
+    # 1. Greek letters
+    for greek in GREEK_SYMBOLS:
+        if greek in text:
+            symbols.add(greek.lstrip("\\"))
+
+    # 2. Domain variables
+    for var in COMMON_DOMAIN_VARIABLES:
+        if re.search(rf"\b{var}\b", text):
+            symbols.add(var)
+
+    # 3. Subscripted parameters like \mu_{i}, \sigma^2, Y_{ij}, \beta_1, X_i
+    subscript_matches = re.finditer(
+        r"(?:\$|\\|\b)([a-zA-Z])(?:_\{([a-zA-Z0-9_,]+)\}|_([a-zA-Z0-9]))", text
+    )
+    for m in subscript_matches:
+        base = m.group(1)
+        sub = m.group(2) or m.group(3)
+        symbols.add(f"{base}_{{{sub}}}")
+
+    # 4. Powers/variances like \sigma^2 or s^2
+    power_matches = re.finditer(r"(?:\$|\\|\b)([a-zA-Z]+)\^\{?([0-9]+)\}?", text)
+    for m in power_matches:
+        base = m.group(1).lstrip("\\")
+        pwr = m.group(2)
+        symbols.add(f"{base}^{pwr}")
+
+    return sorted(symbols)
+
+
+def extract_equation_references(text: str) -> list[str]:
+    """Extract equation label numbers or IDs referenced in the text.
+
+    Examples:
+        'as shown in Equation (1)' -> ['1']
+        'substituting Eq. (2.3) into (4)' -> ['2.3']
+
+    Args:
+        text: Text to search for equation references.
+
+    Returns:
+        Sorted unique list of equation label strings.
+    """
+    refs: set[str] = set()
+    for m in EQUATION_REF_RE.finditer(text):
+        label = m.group(1).strip()
+        if label:
+            refs.add(label)
+    return sorted(refs)
+
+
+def extract_variable_glossary(text: str) -> dict[str, str]:
+    """Extract mapping of variable symbols to their explanatory definitions from natural language.
+
+    Example:
+        'where $RS$ denotes runs scored, and $RA$ is the runs allowed' ->
+        {'RS': 'runs scored', 'RA': 'runs allowed'}
+    """
+    glossary: dict[str, str] = {}
+    for m in VARIABLE_DEF_RE.finditer(text):
+        var = m.group(1).strip("$").strip()
+        desc = m.group(2).strip()
+        if var and desc:
+            glossary[var] = desc
+    return glossary
