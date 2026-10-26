@@ -559,22 +559,24 @@ async def async_code_compile(
 async def async_code_verify(
     citekey: str | None = None,
     formula_id: str | None = None,
+    limit: int = 20,
 ) -> int:
     """Verify compiled formulas against empirical benchmark tables."""
     from kb.codegen.compiler import FormulaCompiler
     from kb.codegen.verifier import FormulaVerifier
+    from kb.config import settings
 
     compiler = FormulaCompiler()
     verifier = FormulaVerifier(compiler=compiler)
     manager = DatabaseManager()
 
     async with manager.session_factory() as session:
-        stmt = select(Formula).where(Formula.is_valid == True)  # noqa: E712
+        stmt = select(Formula).where(Formula.is_valid.is_(True))
         if formula_id:
             stmt = stmt.where(Formula.id == formula_id)
         if citekey:
             stmt = stmt.where(Formula.citekey == citekey)
-        stmt = stmt.limit(20)
+        stmt = stmt.limit(limit)
 
         res = await session.execute(stmt)
         formulas = list(res.scalars().all())
@@ -603,8 +605,22 @@ async def async_code_verify(
             )
             tbl = (await session.execute(tbl_stmt)).scalar_one_or_none()
 
-            if tbl and tbl.parquet_path and Path(tbl.parquet_path).exists():
-                v_res = verifier.verify_against_parquet(codegen, tbl.parquet_path)
+            pq_candidate: Path | None = None
+            if tbl and tbl.parquet_path:
+                p = Path(tbl.parquet_path)
+                if p.exists():
+                    pq_candidate = p
+                else:
+                    rel_p = settings.fixtures_dir / tbl.citekey / p.name
+                    if rel_p.exists():
+                        pq_candidate = rel_p
+                    else:
+                        rel_direct = settings.fixtures_dir / p.name
+                        if rel_direct.exists():
+                            pq_candidate = rel_direct
+
+            if pq_candidate:
+                v_res = verifier.verify_against_parquet(codegen, pq_candidate)
             else:
                 dummy_inputs = {p: [1.0, 2.0, 3.0] for p in codegen.parameters}
                 v_res = verifier.verify_with_inputs(codegen, dummy_inputs)
@@ -625,7 +641,7 @@ async def async_code_verify(
 async def async_code_export(
     output_path: Path,
     limit: int | None = None,
-    all_valid: bool = False,
+    only_equalities: bool = False,
 ) -> int:
     """Auto-generate standalone Python & Polars formula library from verified equations."""
     from kb.library.generator import FormulaLibraryGenerator
@@ -635,7 +651,7 @@ async def async_code_export(
     count = await generator.export_to_file(
         output_path=output_path,
         limit=limit,
-        require_equality=not all_valid,
+        require_equality=only_equalities,
     )
     if count > 0:
         print(
@@ -921,6 +937,7 @@ def build_parser() -> argparse.ArgumentParser:
     code_verify_p = code_sub.add_parser("verify", help="Verify formula against benchmark tables")
     code_verify_p.add_argument("--citekey", type=str, default=None, help="Document citekey")
     code_verify_p.add_argument("--formula-id", type=str, default=None, help="Formula ID")
+    code_verify_p.add_argument("--limit", type=int, default=20, help="Maximum formulas to verify (default: 20)")
 
     code_export_p = code_sub.add_parser(
         "export", help="Export verified formulas into standalone typed Python/Polars library"
@@ -933,7 +950,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     code_export_p.add_argument("--limit", type=int, default=None, help="Maximum formulas to export")
     code_export_p.add_argument(
-        "--all-valid", action="store_true", help="Include non-equality valid formulas"
+        "--only-equalities", action="store_true", help="Only export formulas with explicit equality (LHS = RHS)"
     )
 
     # ui command
@@ -1110,6 +1127,7 @@ def main(argv: Sequence[str] | None = None) -> None:
                 async_code_verify(
                     citekey=args.citekey,
                     formula_id=args.formula_id,
+                    limit=args.limit,
                 )
             )
             sys.exit(code)
@@ -1118,7 +1136,7 @@ def main(argv: Sequence[str] | None = None) -> None:
                 async_code_export(
                     output_path=args.output,
                     limit=args.limit,
-                    all_valid=args.all_valid,
+                    only_equalities=args.only_equalities,
                 )
             )
             sys.exit(code)

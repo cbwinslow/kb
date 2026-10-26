@@ -211,7 +211,7 @@ class FormulaLibraryGenerator:
         self,
         output_path: Path | str,
         limit: int | None = None,
-        require_equality: bool = True,
+        require_equality: bool = False,
     ) -> int:
         """Read formulas from the database, compile them, and write module to disk."""
         target = Path(output_path)
