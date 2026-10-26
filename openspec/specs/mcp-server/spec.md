@@ -39,3 +39,17 @@ The system SHALL provide an MCP tool (`kb_get_related_papers`) returning concept
 #### Scenario: Finding related literature
 - **WHEN** an AI assistant invokes `kb_get_related_papers` with a citekey or topic query
 - **THEN** system returns ranked related papers from OpenAlex with abstracts, citation counts, and open-access links
+
+### Requirement: Dynamic Formula Compilation MCP Tool
+The system SHALL provide an MCP tool (`kb_compile_formula`) that dynamically compiles a stored formula into executable Python code and a Polars expression on-demand.
+
+#### Scenario: Compiling formula from coding agent
+- **WHEN** an AI assistant invokes `kb_compile_formula` with a valid `formula_id`
+- **THEN** system returns the generated Python function code, function name, arguments, LaTeX representation, and Polars expression code
+
+### Requirement: Dynamic Formula Execution MCP Tool
+The system SHALL provide an MCP tool (`kb_execute_formula`) that dynamically computes numerical values for a formula given input variable values.
+
+#### Scenario: Executing formula with input dictionary
+- **WHEN** an AI assistant invokes `kb_execute_formula` with a `formula_id` and a dictionary of parameter values
+- **THEN** system calculates the output using SymPy lambdify and returns the numerical result

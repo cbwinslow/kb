@@ -185,3 +185,7 @@ class SSHSyncManager:
         except Exception as exc:
             logger.debug("Failed listing remote PDFs on %s: %s", self.host, exc)
             return []
+
+
+# Architectural alias
+SSHStorageSync = SSHSyncManager

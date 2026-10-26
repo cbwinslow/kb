@@ -33,3 +33,10 @@ The system SHALL extract mathematical variable symbols and detect inter-equation
 #### Scenario: Identifying inter-equation label cross-references
 - **WHEN** text or equation comments reference other equations in the document (e.g. "by Equation (1)" or "substituting (2) into (3)")
 - **THEN** system extracts the referenced equation labels and records relational cross-references
+
+### Requirement: Standalone Library Export and Polars Expression Generation
+The system SHALL batch-compile all verified mathematical formulas into a standalone, importable Python package (`kb-formulas`) containing typed Python function implementations, KaTeX docstrings, and Polars DataFrame column expressions.
+
+#### Scenario: Compiling formula library into standalone package
+- **WHEN** `kb code export` is executed
+- **THEN** system traverses all verified formulas, generates clean Python ASTs and Polars expressions with docstrings, and writes a zero-dependency module ready for wheel packaging

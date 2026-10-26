@@ -53,3 +53,15 @@ def test_ui_tables_endpoint(test_client: TestClient) -> None:
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
+
+
+def test_ui_eval_endpoint_missing_id(test_client: TestClient) -> None:
+    response = test_client.get("/api/eval")
+    assert response.status_code == 400
+    assert "Missing formula_id" in response.json()["error"]
+
+
+def test_ui_eval_endpoint_not_found(test_client: TestClient) -> None:
+    response = test_client.get("/api/eval?formula_id=999999999")
+    assert response.status_code == 404
+    assert "not found" in response.json()["error"]

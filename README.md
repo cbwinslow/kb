@@ -111,6 +111,18 @@ uv run kb sync harvest --query "baseball OR sabermetrics OR statcast" --limit 10
 uv run kb ingest path/to/paper.pdf --citekey author2026 --title "Advanced Run Expectancy"
 ```
 
+### Continuous Multi-Source Harvester Daemon
+```bash
+# Run continuous background harvester across OpenAlex and arXiv with automatic homelab push
+uv run kb sync daemon --interval 3600 --limit-per-query 5
+```
+
+### Observability & Structured Logging
+```bash
+# Enable verbose debug logs and persistent rotating file logging
+uv run kb --verbose --log-file logs/kb.log db check
+```
+
 ### Standalone Formula Library Export
 ```bash
 # Compile verified literature equations into standalone typed Python + Polars library
@@ -126,10 +138,11 @@ uv run kb search "Pythagorean expectation formula" --limit 5
 uv run kb ask "How is park-adjusted win probability calculated?"
 ```
 
-### Interactive UI Dashboard
+### Interactive UI Dashboard & Live Evaluation API
 ```bash
-# Launch interactive dashboard
+# Launch interactive dashboard and live formula evaluation server
 uv run kb ui serve --host 127.0.0.1 --port 8080
+# Endpoints include: /api/stats, /api/lineage, /api/formulas, /api/tables, /api/search, /api/eval
 ```
 
 ---
@@ -168,15 +181,15 @@ print(df_with_war)
 
 ## Testing & Quality Assurance
 
-Run the test suite:
+Run the complete 90-test automated test suite:
 ```bash
-uv run pytest tests/test_formula_library.py tests/test_ssh_sync.py tests/test_formula.py tests/test_codegen.py
+uv run pytest tests/
 ```
 
-Linting and type checking:
+Linting and strict type checking:
 ```bash
-uv run ruff check src/ tests/ scripts/
-uv run pyright src/kb/config.py src/kb/sync/ssh.py src/kb/library/generator.py src/kb/cli.py
+uv run ruff check src/ tests/ scripts/ packages/
+uv run pyright src/kb/config.py src/kb/logging.py src/kb/sync/ src/kb/ui/ src/kb/cli.py packages/kb_formulas/src/
 ```
 
 ---

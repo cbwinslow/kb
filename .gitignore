@@ -57,4 +57,5 @@ data/openalex_papers/
 data/openalex_sources/
 data/arxiv_papers/
 *.log
+logs/
 .gemini/

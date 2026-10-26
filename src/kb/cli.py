@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import io
+import logging
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -15,9 +16,12 @@ if TYPE_CHECKING:
 
 from sqlalchemy import select
 
+from kb.logging import setup_logging
 from kb.storage.database import DatabaseManager
 from kb.storage.embeddings import EmbeddingProtocol, LocalEmbeddingGenerator
 from kb.storage.models import BenchmarkTable, Chunk, Document, Formula
+
+logger = logging.getLogger("kb.cli")
 
 
 async def async_db_check() -> int:
@@ -25,9 +29,11 @@ async def async_db_check() -> int:
     manager = DatabaseManager()
     ok, message = await manager.check_connection()
     if ok:
+        logger.info("[OK] %s", message)
         print(f"[OK] {message}")
         await manager.close()
         return 0
+    logger.error("[ERROR] %s", message)
     print(f"[ERROR] {message}", file=sys.stderr)
     await manager.close()
     return 1
@@ -767,6 +773,26 @@ async def async_sync_harvest(
     return 0
 
 
+async def async_sync_daemon(
+    interval: float = 3600.0,
+    queries: list[str] | None = None,
+    limit_per_query: int = 5,
+    max_cycles: int | None = None,
+    enable_ssh: bool = True,
+) -> int:
+    """Run the continuous multi-source harvester daemon."""
+    from kb.sync.daemon import ContinuousHarvesterDaemon
+
+    daemon = ContinuousHarvesterDaemon(
+        interval_seconds=interval,
+        queries=queries,
+        limit_per_query=limit_per_query,
+        enable_ssh_push=enable_ssh,
+    )
+    await daemon.run(max_cycles=max_cycles)
+    return 0
+
+
 async def async_ask(question: str, top_k: int = 5, as_json: bool = False) -> int:
     """Execute question answering over the research corpus."""
     import json
@@ -788,6 +814,10 @@ def build_parser() -> argparse.ArgumentParser:
         prog="kb",
         description="Scientific Knowledge Base CLI & Research Engine",
     )
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose debug logging")
+    parser.add_argument("-q", "--quiet", action="store_true", help="Suppress output below error level")
+    parser.add_argument("--log-file", type=Path, default=None, help="Optional rotating log file destination")
+
     subparsers = parser.add_subparsers(dest="subcommand", help="Available subcommands")
 
     # mcp serve
@@ -996,6 +1026,13 @@ def build_parser() -> argparse.ArgumentParser:
     sync_push_p.add_argument("--no-fixtures", action="store_true", help="Skip syncing parquet fixtures")
     sync_push_p.add_argument("--no-pdfs", action="store_true", help="Skip syncing raw preprint PDFs")
 
+    sync_daemon_p = sync_sub.add_parser("daemon", help="Run continuous multi-source harvester daemon (OpenAlex + arXiv)")
+    sync_daemon_p.add_argument("--interval", type=float, default=3600.0, help="Daemon cycle interval in seconds (default: 3600)")
+    sync_daemon_p.add_argument("--queries", nargs="+", default=None, help="Custom query list to cycle through")
+    sync_daemon_p.add_argument("--limit-per-query", type=int, default=5, help="Limit papers per query (default: 5)")
+    sync_daemon_p.add_argument("--max-cycles", type=int, default=None, help="Maximum daemon cycles to run before exiting")
+    sync_daemon_p.add_argument("--no-ssh", action="store_true", help="Disable uploading PDFs to homelab storage")
+
     # ask command
     ask_parser = subparsers.add_parser("ask", help="Evidence-grounded question answering over corpus")
     ask_parser.add_argument("question", type=str, help="Research question to answer")
@@ -1014,6 +1051,12 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     parser = build_parser()
     args = parser.parse_args(argv)
+
+    setup_logging(
+        verbose=args.verbose,
+        quiet=args.quiet,
+        log_file=args.log_file,
+    )
 
     if args.subcommand == "mcp":
         if args.mcp_subcommand == "serve":
@@ -1185,6 +1228,17 @@ def main(argv: Sequence[str] | None = None) -> None:
                 async_sync_ssh_push(
                     fixtures=not args.no_fixtures,
                     pdfs=not args.no_pdfs,
+                )
+            )
+            sys.exit(code)
+        elif args.sync_subcommand == "daemon":
+            code = asyncio.run(
+                async_sync_daemon(
+                    interval=args.interval,
+                    queries=args.queries,
+                    limit_per_query=args.limit_per_query,
+                    max_cycles=args.max_cycles,
+                    enable_ssh=not args.no_ssh,
                 )
             )
             sys.exit(code)

@@ -218,6 +218,79 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                 ],
             })
 
+    async def eval_endpoint(request: Request) -> JSONResponse:
+        """Dynamically evaluate a formula given its ID and input values."""
+        try:
+            payload: dict[str, Any] = {}
+            if request.method == "POST":
+                try:
+                    payload = await request.json()
+                except Exception:
+                    payload = {}
+            else:
+                payload = dict(request.query_params)
+
+            formula_id_val = payload.get("formula_id")
+            if not formula_id_val:
+                return JSONResponse({"error": "Missing formula_id parameter"}, status_code=400)
+
+            formula_id = str(formula_id_val).strip()
+            inputs: dict[str, Any] = payload.get("inputs", {})
+            if isinstance(inputs, str):
+                import json
+
+                try:
+                    inputs = json.loads(inputs)
+                except Exception:
+                    inputs = {}
+
+            # Also accept inputs from flat query params
+            for k, v in payload.items():
+                if k not in ("formula_id", "inputs"):
+                    try:
+                        inputs[k] = float(v)
+                    except (ValueError, TypeError):
+                        inputs[k] = v
+
+            async with manager.session_factory() as session:
+                stmt = select(Formula).where(Formula.id == formula_id)
+                formula = (await session.execute(stmt)).scalar_one_or_none()
+                if not formula:
+                    return JSONResponse({"error": f"Formula {formula_id} not found"}, status_code=404)
+
+                from sympy.parsing.latex import parse_latex
+
+                expr = parse_latex(formula.sanitized_latex or formula.raw_latex)
+                if expr is None:
+                    return JSONResponse({"error": "Failed to parse formula"}, status_code=500)
+                target = getattr(expr, "rhs", expr)
+                if target is None:
+                    return JSONResponse({"error": "Failed to extract expression target"}, status_code=500)
+
+                # Map free symbols
+                sym_map = {str(s): s for s in target.free_symbols}
+                sub_dict: dict[Any, float] = {}
+                for k, v in inputs.items():
+                    if k in sym_map:
+                        sub_dict[sym_map[k]] = float(v)
+                    elif f"{{{k}}}" in sym_map:
+                        sub_dict[sym_map[f"{{{k}}}"]] = float(v)
+                    elif f"_{{{k}}}" in sym_map:
+                        sub_dict[sym_map[f"_{{{k}}}"]] = float(v)
+
+                eval_result = target.subs(sub_dict).evalf()
+                result_val = float(eval_result) if eval_result.is_number else str(eval_result)
+
+                return JSONResponse({
+                    "formula_id": formula.id,
+                    "citekey": formula.citekey,
+                    "latex": formula.raw_latex,
+                    "inputs": inputs,
+                    "result": result_val,
+                })
+        except Exception as exc:
+            return JSONResponse({"error": str(exc)}, status_code=500)
+
     async def index_view(_request: Request) -> HTMLResponse:
         """Serve the interactive single-page dashboard."""
         html_content = """<!DOCTYPE html>
@@ -572,6 +645,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/formulas", endpoint=get_formulas, methods=["GET"]),
         Route("/api/tables", endpoint=get_tables, methods=["GET"]),
         Route("/api/search", endpoint=search_endpoint, methods=["GET"]),
+        Route("/api/eval", endpoint=eval_endpoint, methods=["GET", "POST"]),
     ]
 
     return Starlette(routes=routes)
