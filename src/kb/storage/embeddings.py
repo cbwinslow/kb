@@ -7,9 +7,11 @@ import logging
 import math
 from typing import Any, Protocol, runtime_checkable
 
+from kb.config import settings
+
 logger = logging.getLogger(__name__)
 
-DEFAULT_EMBEDDING_MODEL = "BAAI/bge-m3"
+DEFAULT_EMBEDDING_MODEL = settings.embedding_model
 EMBEDDING_DIMENSION = 1024
 
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import re
+import shutil
 import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
@@ -14,6 +15,7 @@ from typing import Any, Protocol
 import httpx
 from sqlalchemy import select
 
+from kb.config import settings
 from kb.enrich.openalex import OpenAlexClient
 from kb.ingest.chunker import DocumentChunker
 from kb.ingest.parser import DoclingParser
@@ -590,15 +592,15 @@ class BatchIngestionRunner:
             if max_papers is not None and count >= max_papers:
                 break
 
-            # Host disk protection guard to prevent out-of-space on cbwwin
+            # Host disk protection guard to prevent out-of-space
             try:
-                import shutil
-
-                free_gb = shutil.disk_usage("C:\\").free / (1024**3)
-                if free_gb < 1.0:
+                check_path = self.pipeline.fixtures_dir if self.pipeline else Path.cwd()
+                free_gb = shutil.disk_usage(check_path).free / (1024**3)
+                if free_gb < settings.disk_min_free_gb:
                     logger.error(
-                        "Host disk C: is critically low (%.2f GB free). Halting batch ingestion.",
+                        "Storage disk is critically low (%.2f GB free < %.2f GB floor). Halting batch ingestion.",
                         free_gb,
+                        settings.disk_min_free_gb,
                     )
                     break
             except Exception:

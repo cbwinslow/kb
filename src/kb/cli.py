@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import io
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -621,6 +622,79 @@ async def async_code_verify(
     return 0 if passed > 0 else 1
 
 
+async def async_code_export(
+    output_path: Path,
+    limit: int | None = None,
+    all_valid: bool = False,
+) -> int:
+    """Auto-generate standalone Python & Polars formula library from verified equations."""
+    from kb.library.generator import FormulaLibraryGenerator
+
+    generator = FormulaLibraryGenerator()
+    print(f"[*] Compiling verified formulas into standalone library at {output_path}...")
+    count = await generator.export_to_file(
+        output_path=output_path,
+        limit=limit,
+        require_equality=not all_valid,
+    )
+    if count > 0:
+        print(
+            f"[SUCCESS] Exported {count} scientific formula functions with typed signatures, "
+            f"KaTeX docstrings, and Polars expressions to {output_path}!"
+        )
+        return 0
+    else:
+        print("[WARN] No formula functions were exported.", file=sys.stderr)
+        return 1
+
+
+async def async_sync_ssh_check() -> int:
+    """Check connectivity to remote homelab server via SSH/SFTP."""
+    from kb.sync.ssh import SSHSyncManager
+
+    sync_mgr = SSHSyncManager()
+    print("[*] Testing SSH/SFTP connection to homelab storage...")
+    success, msg = sync_mgr.test_connection()
+    if success:
+        print(f"[SUCCESS] {msg}")
+        return 0
+    else:
+        print(f"[ERROR] {msg}", file=sys.stderr)
+        return 1
+
+
+async def async_sync_ssh_push(fixtures: bool = True, pdfs: bool = True) -> int:
+    """Upload local fixtures and cached PDFs to homelab storage vault."""
+    from kb.config import settings
+    from kb.sync.ssh import SSHSyncManager
+
+    sync_mgr = SSHSyncManager()
+    if not sync_mgr.is_configured:
+        print("[ERROR] SSH is not configured. Check KB_SSH_* variables in .env.", file=sys.stderr)
+        return 1
+
+    print(f"[*] Archiving assets to remote homelab server ({sync_mgr.host})...")
+    total_uploaded = 0
+    if fixtures:
+        print(f"[*] Syncing fixtures from {settings.fixtures_dir} -> {sync_mgr.remote_fixtures_dir}...")
+        count = sync_mgr.upload_fixture_tree(settings.fixtures_dir)
+        print(f"[SUCCESS] Uploaded {count} fixture files.")
+        total_uploaded += count
+
+    if pdfs and settings.pdf_download_dir.exists():
+        pdf_files = list(settings.pdf_download_dir.glob("*.pdf"))
+        print(f"[*] Syncing {len(pdf_files)} PDFs from {settings.pdf_download_dir} -> {sync_mgr.remote_pdf_dir}...")
+        pdf_count = 0
+        for pdf_file in pdf_files:
+            if sync_mgr.upload_pdf(pdf_file):
+                pdf_count += 1
+        print(f"[SUCCESS] Uploaded {pdf_count} PDF files.")
+        total_uploaded += pdf_count
+
+    print(f"[SUCCESS] Remote push complete! Total items uploaded: {total_uploaded}")
+    return 0
+
+
 async def async_ui_serve(host: str = "127.0.0.1", port: int = 8080) -> int:
     """Launch the interactive web dashboard."""
     import uvicorn
@@ -691,7 +765,7 @@ def build_parser() -> argparse.ArgumentParser:
     # db commands
     db_parser = subparsers.add_parser("db", help="Database management commands")
     db_sub = db_parser.add_subparsers(dest="db_subcommand")
-    db_sub.add_parser("check", help="Test connectivity to PostgreSQL 16 on cbwdellr720")
+    db_sub.add_parser("check", help="Test connectivity to configured database (PostgreSQL or SQLite)")
     db_sub.add_parser("init", help="Create database tables and vector extensions")
 
     # ingest command
@@ -848,6 +922,20 @@ def build_parser() -> argparse.ArgumentParser:
     code_verify_p.add_argument("--citekey", type=str, default=None, help="Document citekey")
     code_verify_p.add_argument("--formula-id", type=str, default=None, help="Formula ID")
 
+    code_export_p = code_sub.add_parser(
+        "export", help="Export verified formulas into standalone typed Python/Polars library"
+    )
+    code_export_p.add_argument(
+        "--output",
+        type=Path,
+        default=Path("src/kb/library/generated.py"),
+        help="Output file path (default: src/kb/library/generated.py)",
+    )
+    code_export_p.add_argument("--limit", type=int, default=None, help="Maximum formulas to export")
+    code_export_p.add_argument(
+        "--all-valid", action="store_true", help="Include non-equality valid formulas"
+    )
+
     # ui command
     ui_parser = subparsers.add_parser("ui", help="Launch interactive web visual dashboard")
     ui_sub = ui_parser.add_subparsers(dest="ui_subcommand")
@@ -867,6 +955,13 @@ def build_parser() -> argparse.ArgumentParser:
     sync_harvest_p.add_argument("--daemon", action="store_true", help="Run as periodic background daemon")
     sync_harvest_p.add_argument("--interval", type=float, default=3600.0, help="Daemon polling interval in seconds")
 
+    sync_sub.add_parser("ssh-check", help="Test connectivity to remote homelab server via SSH/SFTP")
+    sync_push_p = sync_sub.add_parser(
+        "ssh-push", help="Upload local fixtures and cached PDFs to homelab storage vault"
+    )
+    sync_push_p.add_argument("--no-fixtures", action="store_true", help="Skip syncing parquet fixtures")
+    sync_push_p.add_argument("--no-pdfs", action="store_true", help="Skip syncing raw preprint PDFs")
+
     # ask command
     ask_parser = subparsers.add_parser("ask", help="Evidence-grounded question answering over corpus")
     ask_parser.add_argument("question", type=str, help="Research question to answer")
@@ -878,10 +973,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> None:
     """Main CLI entrypoint."""
-    if hasattr(sys.stdout, "reconfigure"):
-        getattr(sys.stdout, "reconfigure")(encoding="utf-8")
-    if hasattr(sys.stderr, "reconfigure"):
-        getattr(sys.stderr, "reconfigure")(encoding="utf-8")
+    if isinstance(sys.stdout, io.TextIOWrapper):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if isinstance(sys.stderr, io.TextIOWrapper):
+        sys.stderr.reconfigure(encoding="utf-8")
 
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -1018,6 +1113,15 @@ def main(argv: Sequence[str] | None = None) -> None:
                 )
             )
             sys.exit(code)
+        elif args.code_subcommand == "export":
+            code = asyncio.run(
+                async_code_export(
+                    output_path=args.output,
+                    limit=args.limit,
+                    all_valid=args.all_valid,
+                )
+            )
+            sys.exit(code)
         else:
             parser.parse_args(["code", "--help"])
     elif args.subcommand == "ui":
@@ -1035,6 +1139,17 @@ def main(argv: Sequence[str] | None = None) -> None:
                     categories=args.categories,
                     daemon=args.daemon,
                     interval=args.interval,
+                )
+            )
+            sys.exit(code)
+        elif args.sync_subcommand == "ssh-check":
+            code = asyncio.run(async_sync_ssh_check())
+            sys.exit(code)
+        elif args.sync_subcommand == "ssh-push":
+            code = asyncio.run(
+                async_sync_ssh_push(
+                    fixtures=not args.no_fixtures,
+                    pdfs=not args.no_pdfs,
                 )
             )
             sys.exit(code)

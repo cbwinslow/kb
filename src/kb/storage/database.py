@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import os
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -17,11 +16,12 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.pool import StaticPool
 
+from kb.config import settings
 from kb.storage.models import Base
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_DATABASE_URL = "postgresql+asyncpg://cbwinslow:123qweasd@cbwdellr720:5432/kb"
+DEFAULT_DATABASE_URL = settings.database_url
 
 
 class DatabaseManager:
@@ -33,7 +33,7 @@ class DatabaseManager:
         echo: bool = False,
         **engine_kwargs: Any,
     ) -> None:
-        self.url = database_url or os.getenv("KB_DATABASE_URL", DEFAULT_DATABASE_URL)
+        self.url = database_url or settings.database_url
         self.is_sqlite = self.url.startswith("sqlite")
         self.is_postgres = "postgresql" in self.url
 
@@ -90,7 +90,8 @@ class DatabaseManager:
                 result = await conn.execute(text("SELECT 1;"))
                 scalar = result.scalar()
                 if scalar == 1:
-                    backend = "PostgreSQL (cbwdellr720)" if self.is_postgres else "SQLite"
+                    host_info = self.url.split("@")[-1].split("/")[0] if "@" in self.url else "local"
+                    backend = f"PostgreSQL ({host_info})" if self.is_postgres else "SQLite"
                     return True, f"Connection established to {backend} [{self.url.split('@')[-1]}]"
                 return False, f"Unexpected response from database: {scalar}"
         except Exception as exc:

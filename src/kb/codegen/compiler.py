@@ -143,13 +143,21 @@ class FormulaCompiler:
     def _generate_polars_expression(self, py_expr: str, parameters: list[str]) -> str:
         """Translate a scalar python expression into a Polars expression string."""
         polars_expr = py_expr
-        # Replace math functions with polars column/expression functions
-        polars_expr = re.sub(r"\bmath\.sqrt\((.*?)\)", r"(\1).sqrt()", polars_expr)
-        polars_expr = re.sub(r"\bmath\.exp\((.*?)\)", r"(\1).exp()", polars_expr)
-        polars_expr = re.sub(r"\bmath\.log\((.*?)\)", r"(\1).log()", polars_expr)
 
-        # Replace parameters with pl.col("...")
-        for param in parameters:
-            polars_expr = re.sub(rf"\b{re.escape(param)}\b", f'pl.col("{param}")', polars_expr)
+        # Replace parameters first with pl.col("...") (avoiding math. constants like math.e, math.pi)
+        for param in sorted(parameters, key=len, reverse=True):
+            polars_expr = re.sub(rf"(?<!math\.)\b{re.escape(param)}\b", f'pl.col("{param}")', polars_expr)
+
+        # Replace math functions with polars column/expression functions
+        # If the argument contains pl.col, convert to method call; otherwise leave as math.<fn>
+        def _replace_math(match: re.Match[str], method: str) -> str:
+            inner = match.group(1).strip()
+            if "pl.col" in inner:
+                return f"({inner}).{method}()"
+            return f"math.{method}({inner})"
+
+        polars_expr = re.sub(r"\bmath\.sqrt\((.*?)\)", lambda m: _replace_math(m, "sqrt"), polars_expr)
+        polars_expr = re.sub(r"\bmath\.exp\((.*?)\)", lambda m: _replace_math(m, "exp"), polars_expr)
+        polars_expr = re.sub(r"\bmath\.log\((.*?)\)", lambda m: _replace_math(m, "log"), polars_expr)
 
         return polars_expr

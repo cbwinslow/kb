@@ -9,7 +9,9 @@ class EquationSanitizer:
     """Sanitizer for cleaning and normalizing LaTeX mathematical expressions."""
 
     # Regex patterns for cleanup
-    TAG_RE = re.compile(r"\\tag\{[^}]*\}|\([0-9]+(?:\.[0-9]+)*\)$")
+    TAG_RE = re.compile(
+        r"[\s,;.]*(?:\\tag\{[^}]*\}|\([0-9]+(?:\.[0-9]+)*\)|\([A-Za-z0-9]+\.[0-9]+\))[\s,;.]*$"
+    )
     LABEL_RE = re.compile(r"\\label\{[^}]*\}")
     ENV_STRIP_RE = re.compile(
         r"\\begin\{(?:equation|align|aligned|gather|displaymath)\*?\}"
@@ -33,7 +35,31 @@ class EquationSanitizer:
         ("OPS", "O_{PS}"),
         ("FIP", "F_{IP}"),
         ("wOBA", "w_{OBA}"),
+        ("WAR", "W_{AR}"),
     ]
+
+    UNICODE_GREEK_MAP = {
+        "α": r"\alpha ",
+        "β": r"\beta ",
+        "γ": r"\gamma ",
+        "δ": r"\delta ",
+        "ε": r"\epsilon ",
+        "θ": r"\theta ",
+        "λ": r"\lambda ",
+        "µ": r"\mu ",
+        "μ": r"\mu ",
+        "π": r"\pi ",
+        "σ": r"\sigma ",
+        "τ": r"\tau ",
+        "φ": r"\phi ",
+        "ω": r"\omega ",
+        "Γ": r"\Gamma ",
+        "Δ": r"\Delta ",
+        "Θ": r"\Theta ",
+        "Λ": r"\Lambda ",
+        "Σ": r"\Sigma ",
+        "Ω": r"\Omega ",
+    }
 
     def sanitize(self, raw_latex: str, protect_compound_symbols: bool = True) -> str:
         """Sanitize raw LaTeX string into a clean expression parseable by SymPy.
@@ -58,23 +84,42 @@ class EquationSanitizer:
         if env_match:
             text = env_match.group(1).strip()
 
-        # 3. Strip equation labels and tags (e.g., \tag{1}, \label{eq:1}, (1.2))
+        # 3. Strip equation labels and tags (e.g., \tag{1}, \label{eq:1}, (1.2), (2.1))
+        text = re.sub(r"\\tag\*?\{[^}]*\}", "", text).strip()
         text = self.TAG_RE.sub("", text).strip()
         text = self.LABEL_RE.sub("", text).strip()
 
-        # 4. Normalize unicode math symbols
+        # 4. Normalize unicode math and Greek symbols
+        for char, replacement in self.UNICODE_GREEK_MAP.items():
+            text = text.replace(char, replacement)
+
         text = text.replace("×", r"\times ").replace("·", r"\cdot ").replace("−", "-")
         text = text.replace("≤", r"\le ").replace("≥", r"\ge ").replace("≠", r"\ne ")
+        text = text.replace("∞", r"\infty ")
 
-        # 5. Fix common OCR spacing glitches around fractions and exponents
+        # 5. Remove OCR piecewise artifacts and trailing conditions
+        text = re.sub(r"[]", "", text)
+        text = re.sub(r"\\begin\{cases\}", "", text)
+        text = re.sub(r"\\end\{cases\}", "", text)
+        # Remove trailing English explanatory text commonly caught in formulas
+        text = re.sub(r"\\text\{otherwise\}|\botherwise\b", "", text, flags=re.IGNORECASE)
+        text = re.sub(r"\\text\{if\}\s*.*$|\bif\s+.*$", "", text, flags=re.IGNORECASE)
+
+        # 6. Fix common OCR spacing glitches around fractions, integrals, exponents
         text = re.sub(r"\\frac\s*\{", r"\\frac{", text)
         text = re.sub(r"\^\s*\{", r"^{", text)
         text = re.sub(r"_\s*\{", r"_{", text)
+        text = re.sub(r"∫\s*", r"\\int ", text)
+        text = re.sub(r"∑\s*", r"\\sum ", text)
 
-        # 6. Repair unescaped percent signs often in baseball rate stats
+        # 7. Strip trailing semicolons, commas, periods, and spacing tags
+        text = re.sub(r"\\(?:quad|qquad)\s*$", "", text)
+        text = re.sub(r"[\s,;.]+$", "", text).strip()
+
+        # 8. Repair unescaped percent signs
         text = re.sub(r"(?<!\\)%", r"\%", text)
 
-        # 7. Protect compound multi-letter variables (e.g. \text{RS} or RS -> R_{S})
+        # 9. Protect compound multi-letter variables (e.g. \text{RS} or RS -> R_{S})
         if protect_compound_symbols:
             for symbol, replacement in self.COMPOUND_SYMBOLS:
                 # Replace \text{RS} or \mathrm{RS} with replacement
