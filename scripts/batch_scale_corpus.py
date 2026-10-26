@@ -15,10 +15,12 @@ import httpx
 import torch
 from sqlalchemy import or_, select
 
+from kb.config import settings
 from kb.ingest.pipeline import BatchIngestionRunner, IngestionPipeline, IngestionResult, PaperSource
 from kb.storage.database import DatabaseManager
 from kb.storage.models import Document
 from kb.sync.harvester import PreprintHarvester
+from kb.sync.ssh import SSHSyncManager
 
 # Ensure UTF-8 stdout on Windows console
 if isinstance(sys.stdout, io.TextIOWrapper):
@@ -42,6 +44,15 @@ TARGET_SEARCH_QUERIES = [
     "win probability sports",
     "pitch recognition",
     "defensive positioning baseball",
+    "seam shifted wake",
+    "exit velocity launch angle",
+    "batted ball profile",
+    "spin axis gyro angle",
+    "expected weighted on-base average",
+    "leverage index baseball",
+    "pitch clock fatigue",
+    "bat tracking hawkeye",
+    "biomechanical pitching efficiency",
 ]
 
 DISK_FREE_FLOOR_GB = 2.0  # Safe floor on C: drive
@@ -91,10 +102,11 @@ async def main() -> None:
 
     db_manager = DatabaseManager()
     await db_manager.init_db()
+    ssh_sync = SSHSyncManager()
 
-    download_dir = Path("data/arxiv_papers")
+    download_dir = settings.pdf_download_dir
     download_dir.mkdir(parents=True, exist_ok=True)
-    fixtures_dir = Path("data/fixtures")
+    fixtures_dir = settings.fixtures_dir
     fixtures_dir.mkdir(parents=True, exist_ok=True)
 
     all_discovered: list[dict[str, Any]] = []
@@ -112,7 +124,7 @@ async def main() -> None:
                 papers = await harvester.query_arxiv(query=query, max_results=20)
                 all_discovered.extend(papers)
                 print(f"  [+] Query '{query:<28}': found {len(papers):2d} candidates")
-                await asyncio.sleep(0.5)  # Respectful arXiv pacing
+                await asyncio.sleep(3.2)  # Respectful arXiv pacing policy
             except Exception as e:
                 print(f"  [-] Query '{query:<28}': failed with {e}")
 
@@ -214,11 +226,18 @@ async def main() -> None:
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
-            # Clean up downloaded PDFs for successfully ingested papers to conserve drive C: space
+            # Archive raw preprints to remote homelab vault and clean up local workstation disk
             for s in sources:
                 if s.pdf_path and s.pdf_path.exists():
+                    if ssh_sync.is_configured:
+                        ssh_sync.upload_pdf(s.pdf_path)
                     with contextlib.suppress(Exception):
                         s.pdf_path.unlink()
+
+    if ssh_sync.is_configured:
+        print("[*] Syncing updated fixture tree to homelab storage vault...")
+        synced_fixtures = ssh_sync.upload_fixture_tree(settings.fixtures_dir)
+        print(f"[*] Archived {synced_fixtures} fixture files to {ssh_sync.remote_fixtures_dir}")
 
     print("\n" + "=" * 78)
     print("Corpus Expansion Harvesting Completed")

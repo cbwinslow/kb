@@ -285,6 +285,23 @@ async def async_ingest_openalex(
     print(f"  Formulas extracted:    {stats.formulas_extracted}")
     print("=" * 60)
 
+    # Archive downloaded PDFs to homelab storage vault and clean up local workstation disk
+    import contextlib
+
+    from kb.config import settings
+    from kb.sync.ssh import SSHSyncManager
+
+    ssh_sync = SSHSyncManager()
+    for s in sources:
+        if s.pdf_path and s.pdf_path.exists():
+            if ssh_sync.is_configured:
+                ssh_sync.upload_pdf(s.pdf_path)
+            with contextlib.suppress(Exception):
+                s.pdf_path.unlink()
+
+    if ssh_sync.is_configured:
+        ssh_sync.upload_fixture_tree(settings.fixtures_dir)
+
     if manager is None:
         await db_manager.close()
 

@@ -23,7 +23,7 @@ from kb.storage.models import Document
 
 logger = logging.getLogger(__name__)
 
-ARXIV_API_URL = "http://export.arxiv.org/api/query"
+ARXIV_API_URL = "https://export.arxiv.org/api/query"
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
 
 
@@ -106,9 +106,27 @@ class PreprintHarvester:
 
         client = self._external_client or httpx.AsyncClient(timeout=30.0, follow_redirects=True)
         try:
-            resp = await client.get(ARXIV_API_URL, params=params)
-            resp.raise_for_status()
-            return self.parse_atom_feed(resp.text)
+            for attempt in range(4):
+                try:
+                    resp = await client.get(ARXIV_API_URL, params=params)
+                    if resp.status_code == 429:
+                        wait_sec = 4.0 * (attempt + 1)
+                        logger.warning("arXiv rate-limit 429 received, sleeping %.1fs (attempt %d/4)...", wait_sec, attempt + 1)
+                        await asyncio.sleep(wait_sec)
+                        continue
+                    resp.raise_for_status()
+                    return self.parse_atom_feed(resp.text)
+                except httpx.HTTPStatusError as exc:
+                    if attempt == 3:
+                        logger.error("arXiv query failed after retries: %s", exc)
+                        return []
+                    await asyncio.sleep(3.0)
+                except Exception as exc:
+                    if attempt == 3:
+                        logger.error("arXiv connection error: %s", exc)
+                        return []
+                    await asyncio.sleep(3.0)
+            return []
         finally:
             if not self._external_client:
                 await client.aclose()

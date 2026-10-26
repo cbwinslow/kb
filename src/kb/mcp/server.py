@@ -8,6 +8,8 @@ from typing import Any
 from fastmcp import FastMCP
 from sqlalchemy import select
 
+from kb.codegen.compiler import FormulaCompiler
+from kb.codegen.verifier import FormulaVerifier
 from kb.enrich.openalex import OpenAlexClient
 from kb.storage.database import DatabaseManager
 from kb.storage.embeddings import EmbeddingProtocol, LocalEmbeddingGenerator
@@ -124,6 +126,82 @@ def create_mcp_server(
                     "rhs": f.rhs,
                 })
             return results
+
+    @server.tool(
+        name="kb_compile_formula",
+        description=(
+            "Compiles a scientific formula into executable Python code and a vectorized Polars expression. "
+            "Returns typed python_source, polars_expression, parameters, and validity status."
+        ),
+    )
+    async def kb_compile_formula(
+        formula_id: str | None = None,
+        citekey: str | None = None,
+    ) -> dict[str, Any]:
+        """Compile a formula to Python/Polars code."""
+        compiler = FormulaCompiler()
+        async with db.get_session() as session:
+            stmt = select(Formula).where(Formula.is_valid.is_(True))
+            if formula_id:
+                stmt = stmt.where(Formula.id == formula_id)
+            elif citekey:
+                stmt = stmt.where(Formula.citekey == citekey)
+            stmt = stmt.limit(1)
+
+            res = await session.execute(stmt)
+            f = res.scalar_one_or_none()
+            if not f:
+                return {"error": "Formula not found", "is_valid": False}
+
+            comp_res = compiler.compile(
+                formula_id=f.id,
+                citekey=f.citekey,
+                raw_latex=f.sanitized_latex or f.raw_latex,
+                sympy_repr=f.sympy_repr,
+            )
+            return comp_res.to_dict()
+
+    @server.tool(
+        name="kb_execute_formula",
+        description=(
+            "Executes a compiled scientific formula with numerical input parameters. "
+            "Returns the calculated float result and execution status."
+        ),
+    )
+    async def kb_execute_formula(
+        formula_id: str,
+        parameters: dict[str, float],
+    ) -> dict[str, Any]:
+        """Execute a formula dynamically with given numeric parameters."""
+        compiler = FormulaCompiler()
+        verifier = FormulaVerifier(compiler=compiler)
+        async with db.get_session() as session:
+            stmt = select(Formula).where(Formula.id == formula_id).limit(1)
+            res = await session.execute(stmt)
+            f = res.scalar_one_or_none()
+            if not f:
+                return {"error": f"Formula '{formula_id}' not found", "success": False}
+
+            comp_res = compiler.compile(
+                formula_id=f.id,
+                citekey=f.citekey,
+                raw_latex=f.sanitized_latex or f.raw_latex,
+                sympy_repr=f.sympy_repr,
+            )
+            if not comp_res.is_valid or not comp_res.python_source:
+                return {"error": comp_res.error or "Compilation failed", "success": False}
+
+            v_res = verifier.verify_with_inputs(comp_res, parameters)
+            if not v_res.passed or not v_res.predicted_samples:
+                return {"error": v_res.details, "success": False}
+
+            return {
+                "formula_id": formula_id,
+                "citekey": f.citekey,
+                "result": v_res.predicted_samples[0],
+                "parameters": parameters,
+                "success": True,
+            }
 
     @server.tool(
         name="kb_get_benchmark_table",

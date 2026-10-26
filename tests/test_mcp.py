@@ -38,6 +38,8 @@ async def test_mcp_tools_registration(test_db_manager: DatabaseManager) -> None:
 
     assert "kb_search_literature" in tool_names
     assert "kb_get_formula" in tool_names
+    assert "kb_compile_formula" in tool_names
+    assert "kb_execute_formula" in tool_names
     assert "kb_get_benchmark_table" in tool_names
     assert "kb_get_bibtex" in tool_names
     assert "kb_get_citations" in tool_names
