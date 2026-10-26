@@ -62,6 +62,7 @@ FastMCP Server (LAN / ZeroTier)
 * **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and Polars expressions.
 * **Storage Protocol**: Direct encrypted SSH/SFTP synchronization to homelab vault with automatic workstation disk space protection.
 * **Observability & QA**: Centralized rotating structured logging, execution telemetry, and ground-truth numerical accuracy verification.
+* **Benchmarking Engine**: `PerformanceBenchmarker` measuring scalar vs. Polars throughput, embedding latency, and corpus quality yields.
 * **Package Management**: `uv`.
 * **Quality Gates**: `ruff` (linting & formatting), `pyright` (strict typing), `pytest` (test suite).
 * **Architecture Decisions**: Fully documented in [`docs/DECISIONS.md`](../docs/DECISIONS.md).

@@ -808,6 +808,69 @@ async def async_ask(question: str, top_k: int = 5, as_json: bool = False) -> int
     return 0
 
 
+async def async_benchmark(
+    run_all: bool = True,
+    formulas: bool = False,
+    embeddings: bool = False,
+    search: bool = False,
+    quality: bool = False,
+    n_rows: int = 100_000,
+    n_chunks: int = 20,
+    as_json: bool = False,
+    output_path: Path | None = None,
+) -> int:
+    """Executes performance and quality benchmark suites."""
+    import datetime
+
+    from kb.benchmark.runner import BenchmarkSuiteResult, PerformanceBenchmarker
+
+    benchmarker = PerformanceBenchmarker()
+    now_str = datetime.datetime.now(datetime.UTC).isoformat()
+
+    # If no specific target requested, run all
+    if not (formulas or embeddings or search or quality):
+        run_all = True
+
+    formula_res = (
+        benchmarker.benchmark_formula_execution(n_rows=n_rows)
+        if (run_all or formulas)
+        else []
+    )
+    embedding_res = (
+        benchmarker.benchmark_embedding_throughput(n_chunks=n_chunks)
+        if (run_all or embeddings)
+        else None
+    )
+    search_res = (
+        await benchmarker.benchmark_search_latency()
+        if (run_all or search)
+        else None
+    )
+    quality_res = (
+        await benchmarker.benchmark_corpus_quality()
+        if (run_all or quality)
+        else None
+    )
+
+    result = BenchmarkSuiteResult(
+        timestamp=now_str,
+        formula_benchmarks=formula_res,
+        embedding_benchmark=embedding_res,
+        search_benchmark=search_res,
+        quality_benchmark=quality_res,
+    )
+
+    report_text = result.to_json() if as_json else result.to_markdown()
+    print(report_text)
+
+    if output_path:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(report_text, encoding="utf-8")
+        print(f"\n[OK] Benchmark report saved to {output_path}")
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -1039,6 +1102,18 @@ def build_parser() -> argparse.ArgumentParser:
     ask_parser.add_argument("--top-k", type=int, default=5, help="Top retrieved chunks (default: 5)")
     ask_parser.add_argument("--json", action="store_true", help="Output raw JSON response")
 
+    # benchmark command
+    bench_parser = subparsers.add_parser("benchmark", help="Run speed, latency, and quality benchmarks")
+    bench_parser.add_argument("--all", action="store_true", help="Run all benchmarks (default)")
+    bench_parser.add_argument("--formulas", action="store_true", help="Benchmark formula execution speed (Scalar vs Polars)")
+    bench_parser.add_argument("--embeddings", action="store_true", help="Benchmark embedding generation throughput")
+    bench_parser.add_argument("--search", action="store_true", help="Benchmark hybrid search query latency")
+    bench_parser.add_argument("--quality", action="store_true", help="Audit corpus formula mathematical quality and yield")
+    bench_parser.add_argument("--rows", type=int, default=100_000, help="Row count for formula benchmarking (default: 100,000)")
+    bench_parser.add_argument("--chunks", type=int, default=20, help="Chunk count for embedding benchmarking (default: 20)")
+    bench_parser.add_argument("--json", action="store_true", help="Output raw JSON results")
+    bench_parser.add_argument("--output", type=Path, default=None, help="Save report to specified file (.md or .json)")
+
     return parser
 
 
@@ -1250,6 +1325,21 @@ def main(argv: Sequence[str] | None = None) -> None:
                 question=args.question,
                 top_k=args.top_k,
                 as_json=args.json,
+            )
+        )
+        sys.exit(code)
+    elif args.subcommand == "benchmark":
+        code = asyncio.run(
+            async_benchmark(
+                run_all=args.all,
+                formulas=args.formulas,
+                embeddings=args.embeddings,
+                search=args.search,
+                quality=args.quality,
+                n_rows=args.rows,
+                n_chunks=args.chunks,
+                as_json=args.json,
+                output_path=args.output,
             )
         )
         sys.exit(code)

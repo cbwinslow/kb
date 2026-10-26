@@ -145,6 +145,18 @@ uv run kb ui serve --host 127.0.0.1 --port 8080
 # Endpoints include: /api/stats, /api/lineage, /api/formulas, /api/tables, /api/search, /api/eval
 ```
 
+### Performance & Quality Benchmarking Suite
+```bash
+# Run complete benchmark suite (Scalar vs. Polars speed, embedding latency, search, quality)
+uv run kb benchmark --all
+
+# Benchmark formula execution throughput on 100,000 rows
+uv run kb benchmark --formulas --rows 100000
+
+# Audit corpus formula mathematical quality and compilation yield
+uv run kb benchmark --quality
+```
+
 ---
 
 ## Standalone Formula Library Usage

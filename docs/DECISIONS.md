@@ -23,6 +23,7 @@ This document records the architectural, technical, and mathematical decisions m
 - [ADR-015: Ground-Truth Formula Accuracy Benchmark Verification Suite](#adr-015-ground-truth-formula-accuracy-benchmark-verification-suite)
 - [ADR-016: Centralized Structured Logging & Stage Timing Telemetry](#adr-016-centralized-structured-logging--stage-timing-telemetry)
 - [ADR-017: Mandatory OpenSpec Discipline and Documentation Integrity](#adr-017-mandatory-openspec-discipline-and-documentation-integrity)
+- [ADR-018: Performance & Quality Benchmarking Suite](#adr-018-performance--quality-benchmarking-suite)
 
 ---
 
@@ -188,3 +189,15 @@ This document records the architectural, technical, and mathematical decisions m
   - Main specs in `openspec/specs/` and `docs/DECISIONS.md` must be kept in continuous synchronization with code changes.
   - Zero tolerance for undocumented code or unverified modifications.
 - **Consequences**: Complete traceability, reproducibility, and architectural clarity across all development cycles.
+
+---
+
+## ADR-018: Performance & Quality Benchmarking Suite
+- **Status**: Accepted
+- **Context**: As the corpus scaled to 260 papers and 457 compiled functions, developers and quantitative pipelines lacked systematic empirical measurements comparing Python scalar loops against vectorized Polars expressions, as well as embedding latency, search response times, and formula validation yields.
+- **Decision**: Implement `PerformanceBenchmarker` (`src/kb/benchmark/runner.py`) and the `kb benchmark` CLI command:
+  - **Formula Execution Speed**: Measures scalar loop vs. vectorized Polars expression throughput across $N$ rows (e.g. 100,000 rows) and computes speedup factors.
+  - **Embedding Throughput**: Profiles BGE-M3 latency (ms/chunk) and chunks/second across CUDA and CPU.
+  - **Hybrid Search Latency**: Measures P50, P95, and maximum latency for RRF retrieval.
+  - **Corpus Quality Scorecard**: Computes AST verification yield, equality ratios, and compilable function counts across all stored formulas.
+- **Consequences**: Quantifies performance gains (demonstrating up to 4x–100x speedups using Polars expressions) and provides automated quality assurance against regressions.
