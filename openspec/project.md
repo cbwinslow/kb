@@ -57,7 +57,11 @@ FastMCP Server (LAN / ZeroTier)
 * **Symbolic Math Engine**: `sympy` (`sympy.parsing.latex`) for mathematical verification and Python AST generation.
 * **Embeddings & Search**: `BAAI/bge-m3` (dense vectors + sparse lexical weights) with Reciprocal Rank Fusion (RRF) in PostgreSQL.
 * **Relational & Vector Store**: PostgreSQL 16 + `pgvector` via `SQLAlchemy 2.0` (async) and `asyncpg`.
-* **Agent Integration**: `FastMCP` (Model Context Protocol).
+* **Agent Integration**: `FastMCP` (Model Context Protocol) with dynamic AST compilation and live calculation execution.
 * **Bibliographic Truth**: Zotero local SQLite / Web API integration with Better BibTeX citation keys.
+* **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and Polars expressions.
+* **Storage Protocol**: Direct encrypted SSH/SFTP synchronization to homelab vault with automatic workstation disk space protection.
+* **Observability & QA**: Centralized rotating structured logging, execution telemetry, and ground-truth numerical accuracy verification.
 * **Package Management**: `uv`.
 * **Quality Gates**: `ruff` (linting & formatting), `pyright` (strict typing), `pytest` (test suite).
+* **Architecture Decisions**: Fully documented in [`docs/DECISIONS.md`](../docs/DECISIONS.md).

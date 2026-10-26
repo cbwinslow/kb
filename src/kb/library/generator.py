@@ -42,7 +42,8 @@ class FormulaLibraryGenerator:
         self.db_manager = db_manager or DatabaseManager()
         self.compiler = FormulaCompiler()
 
-    def _sanitize_name(self, text: str) -> str:
+    @staticmethod
+    def sanitize_name(text: str) -> str:
         """Sanitize an arbitrary symbol or LaTeX fragment to a valid Python identifier."""
         # Strip LaTeX math tags and formatting
         cleaned = re.sub(r"\\[a-zA-Z]+", "", text)
@@ -53,6 +54,8 @@ class FormulaLibraryGenerator:
         if cleaned[0].isdigit():
             cleaned = f"val_{cleaned}"
         return cleaned
+
+    _sanitize_name = sanitize_name
 
     def _derive_function_names(self, formula: Formula) -> tuple[str, str]:
         """Derive readable scalar and Polars function names from formula metadata."""

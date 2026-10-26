@@ -1,12 +1,13 @@
 # AGENTS.md — Development & Architecture Guidelines for kb
 
-## 1. Mandatory OpenSpec Discipline
+## 1. Mandatory OpenSpec Discipline & Architecture Decisions
 - **Every major feature, architectural evolution, or tooling addition MUST use OpenSpec.**
 - Before implementing substantial functionality:
   1. Create or update an OpenSpec change folder under `openspec/changes/<change-id>/` containing `proposal.md`, `design.md`, `tasks.md`, and delta specs under `specs/`.
   2. Implement tasks step-by-step with continuous test-driven verification.
-  3. Keep `openspec/specs/` and project documentation in sync.
+  3. Keep `openspec/specs/`, `docs/DECISIONS.md`, and project documentation in sync.
   4. Archive completed changes cleanly under `openspec/changes/archive/`.
+- **Maintain `docs/DECISIONS.md`**: Whenever a technical or architectural trade-off is made, record it as a formal ADR in `docs/DECISIONS.md`.
 - Never bypass documentation or spec creation.
 
 ## 2. Comprehensive Documentation Standards

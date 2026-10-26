@@ -49,10 +49,10 @@ def sample_document() -> Document:
 def test_sanitize_name():
     """Verify LaTeX math fragments are cleaned to valid identifiers."""
     gen = FormulaLibraryGenerator(db_manager=MagicMock())
-    assert gen._sanitize_name(r"\alpha") == "metric"
-    assert gen._sanitize_name("wOBA") == "woba"
-    assert gen._sanitize_name("WAR_rep") == "war_rep"
-    assert gen._sanitize_name("1205.4750") == "val_1205_4750"
+    assert gen.sanitize_name(r"\alpha") == "metric"
+    assert gen.sanitize_name("wOBA") == "woba"
+    assert gen.sanitize_name("WAR_rep") == "war_rep"
+    assert gen.sanitize_name("1205.4750") == "val_1205_4750"
 
 
 def test_compile_formula(sample_formula: Formula, sample_document: Document):

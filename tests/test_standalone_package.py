@@ -1,3 +1,4 @@
+# pyright: reportMissingImports=false
 """Unit tests for standalone kb_formulas package."""
 
 from __future__ import annotations
