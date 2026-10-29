@@ -81,3 +81,28 @@ def test_sanitize_compound_metrics(sanitizer: EquationSanitizer) -> None:
     assert "A_{B}" in clean
     expr = parse_latex(clean)
     assert expr is not None
+
+
+def test_sanitize_mathematical_bold_greek(sanitizer: EquationSanitizer) -> None:
+    # \U0001D6FD is Mathematical Bold Small Beta, \U0001D6FC is Alpha, \U0001D706 is Lambda
+    raw = "\U0001d6fc = \U0001d6fd_1 + \U0001d706_2"
+    clean = sanitizer.sanitize(raw)
+    assert r"\alpha" in clean
+    assert r"\beta" in clean
+    assert r"\lambda" in clean
+    expr = parse_latex(clean)
+    assert expr is not None
+
+
+def test_sanitize_extended_operators_and_accents(sanitizer: EquationSanitizer) -> None:
+    # \u2206 Increment, \u22a4 Transpose, \u27e8/\u27e9 angle brackets, \u20d7 vector arrow, \uf8ec PUA
+    raw = "y = \u2206x\u20d7 + A\u22a4 \u27e8v\u27e9 \uf8ec\uf8f4"
+    clean = sanitizer.sanitize(raw)
+    assert r"\Delta" in clean
+    assert "^T" in clean
+    assert r"\langle" in clean
+    assert r"\rangle" in clean
+    assert "\uf8ec" not in clean
+    assert "\u20d7" not in clean
+    expr = parse_latex(clean)
+    assert expr is not None

@@ -295,3 +295,25 @@ This document records the architectural, technical, and mathematical decisions m
   - Immediately recovers over 54%–64% of previously unparsed scientific formulas without re-downloading or re-OCR'ing original PDFs.
   - Provides researchers and developers with automated quality transparency across the literature knowledge graph.
 
+---
+
+## ADR-025: Universal Equation Sanitizer 2.0 & OpenAlex Citation Graph Codification
+- **Status**: Accepted
+- **Context**:
+  - Detailed diagnostic auditing of the remaining 2,366 unparsed formulas in PostgreSQL revealed an execution order inversion in `clean_unicode` (Greek replacement was executed before NFKD decomposition, preventing mathematical bold/italic Greek characters in Unicode Plane 1 from converting to LaTeX macros) and missing mathematical operators (`\u2206` Increment/Delta, `\u2126` Ohm/Omega, `\u2207` Nabla, `\u2020` Dagger, `\u22a4` Transpose, `\u27e8`/`\u27e9` angle brackets, combining accents, and Docling PUA font artifacts).
+  - OpenAlex papers contained rich `referenced_works` bibliometric data, but lacked first-class citation link entities (`kb_citations`) and figure models (`kb_figures`) in PostgreSQL, preventing researchers from tracing paper-to-paper derivation paths and preserving chart assets.
+- **Decision**:
+  1. **Equation Sanitizer 2.0 Pipeline** (`src/kb/math/sanitizer.py`):
+     - Restructured `clean_unicode` into 5 explicit stages: Stage 1 NFKD decomposition, Stage 2 PUA font and combining accent stripping, Stage 3 operator and relation translation, Stage 4 Greek letter conversion, Stage 5 subscript/superscript normalization.
+     - Added mappings for Increment (`\Delta`), Ohm (`\Omega`), Nabla (`\nabla`), Dagger (`\dagger`), Transpose (`^T`), and mathematical angle brackets (`\langle`, `\rangle`).
+  2. **Corpus Repair Wave 2**:
+     - Executed live migration via `kb formulas repair`, recovering **803 additional formulas** and elevating total valid SymPy AST yield in PostgreSQL to **4,326 valid formulas (73.46%)** and **2,220 equality relations**.
+  3. **OpenAlex Citation Graph & Figures Codification**:
+     - Added `CitationLink` (`kb_citations`) and `Figure` (`kb_figures`) models to `src/kb/storage/models.py`.
+     - Implemented `CitationGraphBuilder` in `src/kb/sync/citations.py` and CLI command `kb sync citations` to backfill inter-paper citation links across existing documents.
+     - Exposed citation statistics in GraphQL (`DocumentType`) and REST API (`/api/documents`).
+- **Consequences**:
+  - Elevates valid SymPy formula yield from 17.7% to 73.5% across the entire scientific corpus (+3,284 valid formulas recovered).
+  - Establishes a true inter-paper citation network allowing multi-hop paper and formula lineage.
+
+

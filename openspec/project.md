@@ -61,6 +61,12 @@ FastMCP Server (LAN / ZeroTier)
 * **Bibliographic Truth**: Zotero local SQLite / Web API integration with Better BibTeX citation keys.
 * **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and Polars expressions.
 * **Storage Protocol**: Direct encrypted SSH/SFTP synchronization to homelab vault with automatic workstation disk space protection.
+* **Semantic Symbol Ontology**: `SymbolOntology` managing canonical concept registries, author variable aliases, and zero-copy DataFrame column binding for Polars/Pandas.
+* **Equation Chaining & Solver**: `FormulaChainingEngine` providing recursive cross-paper variable substitution, closed-form equation generation, and simultaneous linear system solving via SymPy.
+* **Web Glossary Harvester**: `WebGlossaryHarvester` for ingesting HTML web articles and canonical sabermetric glossaries (FanGraphs, Tom Tango) into clean Markdown with LaTeX math preservation.
+* **Knowledge Graph & GraphQL**: Multi-layer relational GraphQL API schema (`strawberry-graphql`) connecting Documents, Formulas, Variables, Canonical Concepts, Benchmark Tables, and Derivation Chains.
+* **Formula Coverage & Repair**: `FormulaCoverageAnalyzer` and `CorpusFormulaRepairer` auditing formula yield, symbol utilization (LHS vs RHS), non-ASCII character distributions, and progressive in-place AST recovery.
+* **Interactive Web Dashboard**: Starlette web application (`kb ui serve`) with interactive Lineage DAG, Formula Playground with parameter sensitivity curves, Knowledge-to-Code generator, and Coverage Scorecard.
 * **Observability & QA**: Centralized rotating structured logging, execution telemetry, and ground-truth numerical accuracy verification.
 * **Benchmarking Engine**: `PerformanceBenchmarker` measuring scalar vs. Polars throughput, embedding latency, and corpus quality yields.
 * **Package Management**: `uv`.

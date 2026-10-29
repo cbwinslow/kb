@@ -127,6 +127,15 @@ class EquationSanitizer:
         "⇒": r"\Rightarrow ",
         "↔": r"\leftrightarrow ",
         "⇔": r"\Leftrightarrow ",
+        "∆": r"\Delta ",
+        "∇": r"\nabla ",
+        "Ω": r"\Omega ",
+        "†": r"\dagger ",
+        "⊤": r"^T",
+        "⟨": r"\langle ",
+        "⟩": r"\rangle ",
+        "〈": r"\langle ",
+        "〉": r"\rangle ",
         "\ufffd": " ",
     }
 
@@ -202,32 +211,51 @@ class EquationSanitizer:
     def clean_unicode(self, text: str) -> str:
         """Replace Unicode Greek, math operators, sub/superscripts, and decompose mathematical alphanumerics.
 
+        Stage 1: Decompose Mathematical Alphanumerics (U+1D400 - U+1D7FF) to base ASCII/Greek.
+        Stage 2: Strip Docling font-slicing PUA glyphs and combining accents.
+        Stage 3: Translate mathematical operators and relational symbols.
+        Stage 4: Translate Greek letters (including those produced from Stage 1).
+        Stage 5: Normalize subscripts and superscripts.
+
         Args:
             text: LaTeX text containing potential Unicode characters.
 
         Returns:
             Normalized ASCII LaTeX string.
         """
-        for char, rep in self.UNICODE_OPERATORS_MAP.items():
-            text = text.replace(char, rep)
-
-        for char, rep in self.UNICODE_GREEK_MAP.items():
-            text = text.replace(char, rep)
-
-        for char, rep in self.UNICODE_SUBSCRIPTS.items():
-            text = text.replace(char, rep)
-
-        for char, rep in self.UNICODE_SUPERSCRIPTS.items():
-            text = text.replace(char, rep)
-
-        # Decompose Mathematical Alphanumerics (U+1D400 - U+1D7FF) to ASCII base characters
+        # Stage 1: NFKD decomposition of Mathematical Alphanumerics (U+1D400 - U+1D7FF)
         chars: list[str] = []
         for c in text:
             if 0x1D400 <= ord(c) <= 0x1D7FF:
                 chars.append(unicodedata.normalize("NFKD", c))
             else:
                 chars.append(c)
-        return "".join(chars)
+        text = "".join(chars)
+
+        # Stage 2: Strip Private Use Area OCR font fragments and combining accents
+        text = re.sub(r"[\uf8e0-\uf8ff]", "", text)
+        text = text.replace("\u20d7", "")  # combining right arrow above (vector accent)
+        text = text.replace("\u02d9", "")  # dot above (time derivative)
+        text = text.replace("\xaf", "")  # macron / overline (mean)
+        text = text.replace("\u0302", "")  # combining circumflex (hat / estimator)
+        text = text.replace("\ufe01", "")  # variation selector 2
+
+        # Stage 3: Translate operators and relational symbols
+        for char, rep in self.UNICODE_OPERATORS_MAP.items():
+            text = text.replace(char, rep)
+
+        # Stage 4: Translate Greek letters (now catches decomposed math Greek)
+        for char, rep in self.UNICODE_GREEK_MAP.items():
+            text = text.replace(char, rep)
+
+        # Stage 5: Subscripts and superscripts
+        for char, rep in self.UNICODE_SUBSCRIPTS.items():
+            text = text.replace(char, rep)
+
+        for char, rep in self.UNICODE_SUPERSCRIPTS.items():
+            text = text.replace(char, rep)
+
+        return text
 
     def unwrap_macros(self, text: str) -> str:
         """Unwrap font formatting and operator macros that ANTLR parser chokes on.

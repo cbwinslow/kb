@@ -71,6 +71,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                         "arxiv_id": d.arxiv_id,
                         "num_formulas": len(d.formulas),
                         "num_tables": len(d.benchmark_tables),
+                        "num_citations": len(d.outgoing_citations)
+                        if hasattr(d, "outgoing_citations")
+                        else 0,
                     }
                     for d in docs
                 ]

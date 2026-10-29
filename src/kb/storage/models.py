@@ -71,6 +71,22 @@ class Document(Base):
     benchmark_tables: Mapped[list[BenchmarkTable]] = relationship(
         back_populates="document", cascade="all, delete-orphan", lazy="selectin"
     )
+    figures: Mapped[list[Figure]] = relationship(
+        back_populates="document", cascade="all, delete-orphan", lazy="selectin"
+    )
+    outgoing_citations: Mapped[list[CitationLink]] = relationship(
+        "CitationLink",
+        foreign_keys="[CitationLink.citing_document_id]",
+        back_populates="citing_document",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+    incoming_citations: Mapped[list[CitationLink]] = relationship(
+        "CitationLink",
+        foreign_keys="[CitationLink.cited_document_id]",
+        back_populates="cited_document",
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
         return f"<Document citekey={self.citekey!r} title={self.title[:40]!r}>"
@@ -114,6 +130,9 @@ class Chunk(Base):
         back_populates="chunk", cascade="all, delete-orphan", lazy="selectin"
     )
     benchmark_tables: Mapped[list[BenchmarkTable]] = relationship(
+        back_populates="chunk", cascade="all, delete-orphan", lazy="selectin"
+    )
+    figures: Mapped[list[Figure]] = relationship(
         back_populates="chunk", cascade="all, delete-orphan", lazy="selectin"
     )
 
@@ -198,3 +217,66 @@ class BenchmarkTable(Base):
             f"<BenchmarkTable id={self.id!r} citekey={self.citekey!r} "
             f"shape=({self.num_rows}, {self.num_cols})>"
         )
+
+
+class CitationLink(Base):
+    """Represents a citation relationship between academic papers."""
+
+    __tablename__ = "kb_citations"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    citing_document_id: Mapped[str] = mapped_column(
+        ForeignKey("kb_documents.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    cited_document_id: Mapped[str | None] = mapped_column(
+        ForeignKey("kb_documents.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    cited_openalex_id: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(UTC)
+    )
+
+    # Relationships
+    citing_document: Mapped[Document] = relationship(
+        "Document", foreign_keys=[citing_document_id], back_populates="outgoing_citations"
+    )
+    cited_document: Mapped[Document | None] = relationship(
+        "Document", foreign_keys=[cited_document_id], back_populates="incoming_citations"
+    )
+
+    def __repr__(self) -> str:
+        return (
+            f"<CitationLink citing={self.citing_document_id[:8]!r} "
+            f"cited_doc={self.cited_document_id[:8] if self.cited_document_id else 'external'!r}>"
+        )
+
+
+class Figure(Base):
+    """Represents an extracted figure, chart, or visual asset from scientific literature."""
+
+    __tablename__ = "kb_figures"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
+    document_id: Mapped[str] = mapped_column(
+        ForeignKey("kb_documents.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    chunk_id: Mapped[str | None] = mapped_column(
+        ForeignKey("kb_chunks.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    citekey: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
+    caption: Mapped[str | None] = mapped_column(Text, nullable=True)
+    figure_index: Mapped[int] = mapped_column(Integer, default=0)
+    image_path: Mapped[str | None] = mapped_column(Text, nullable=True)
+    structure_metadata: Mapped[dict[str, Any]] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), default=dict
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(UTC)
+    )
+
+    # Relationships
+    document: Mapped[Document] = relationship(back_populates="figures")
+    chunk: Mapped[Chunk | None] = relationship(back_populates="figures")
+
+    def __repr__(self) -> str:
+        return f"<Figure id={self.id!r} citekey={self.citekey!r} idx={self.figure_index}>"

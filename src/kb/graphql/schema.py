@@ -58,6 +58,9 @@ class DocumentType:
     authors: list[str]
     formula_count: int
     table_count: int
+    citation_count: int = 0
+    incoming_citation_count: int = 0
+    outgoing_citation_count: int = 0
 
 
 @strawberry.type
@@ -315,6 +318,13 @@ class Query:
                         authors=d.authors or [],
                         formula_count=f_cnt,
                         table_count=t_cnt,
+                        citation_count=d.citation_count or 0,
+                        incoming_citation_count=len(d.incoming_citations)
+                        if hasattr(d, "incoming_citations")
+                        else 0,
+                        outgoing_citation_count=len(d.outgoing_citations)
+                        if hasattr(d, "outgoing_citations")
+                        else 0,
                     )
                 )
             return results

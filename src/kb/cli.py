@@ -850,6 +850,31 @@ async def async_sync_daemon(
     return 0
 
 
+async def async_sync_citations() -> int:
+    """Build or refresh paper-to-paper citation network in PostgreSQL."""
+    from kb.sync.citations import CitationGraphBuilder
+
+    manager = DatabaseManager()
+    await manager.init_db()
+
+    print("[*] Resolving and populating paper-to-paper citation graph...")
+    builder = CitationGraphBuilder(db_manager=manager)
+    async with manager.session_factory() as session:
+        res = await builder.build_citation_graph(session=session)
+
+    print("\n[OK] Citation Graph Construction Complete:")
+    print("=" * 60)
+    print(f"  Total Documents Examined : {res.total_documents:,}")
+    print(f"  Citation Edges Created   : {res.total_edges_created:,}")
+    print(f"  Internal Corpus Edges    : {res.internal_edges:,}")
+    print(f"  External Reference Edges : {res.external_edges:,}")
+    print(f"  Processing Time          : {res.duration_seconds:.2f}s")
+    print("=" * 60)
+
+    await manager.close()
+    return 0
+
+
 async def async_ask(question: str, top_k: int = 5, as_json: bool = False) -> int:
     """Execute question answering over the research corpus."""
     import json
@@ -1508,6 +1533,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-ssh", action="store_true", help="Disable uploading PDFs to homelab storage"
     )
 
+    sync_sub.add_parser(
+        "citations", help="Build or refresh paper-to-paper citation network in PostgreSQL"
+    )
+
     # ask command
     ask_parser = subparsers.add_parser(
         "ask", help="Evidence-grounded question answering over corpus"
@@ -1823,6 +1852,9 @@ def main(argv: Sequence[str] | None = None) -> None:
                     enable_ssh=not args.no_ssh,
                 )
             )
+            sys.exit(code)
+        elif args.sync_subcommand == "citations":
+            code = asyncio.run(async_sync_citations())
             sys.exit(code)
         else:
             parser.parse_args(["sync", "--help"])
