@@ -10,6 +10,7 @@ from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
     DateTime,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -168,6 +169,11 @@ class Formula(Base):
     is_equality: Mapped[bool] = mapped_column(Boolean, default=False)
     lhs: Mapped[str | None] = mapped_column(Text, nullable=True)
     rhs: Mapped[str | None] = mapped_column(Text, nullable=True)
+    validation_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    validation_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    validation_details: Mapped[dict[str, Any] | None] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(UTC)
     )

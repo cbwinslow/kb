@@ -36,6 +36,12 @@ from kb.math.repair import (
     RepairResult,
 )
 from kb.math.sanitizer import EquationSanitizer
+from kb.math.validation import (
+    FormulaQualityGate,
+    FormulaQualityScorecard,
+    ValidationCheckResult,
+    ValidationTier,
+)
 
 __all__ = [
     "CanonicalConcept",
@@ -53,9 +59,13 @@ __all__ = [
     "FormulaCoverageReport",
     "FormulaExtractor",
     "FormulaLineageGraph",
+    "FormulaQualityGate",
+    "FormulaQualityScorecard",
     "RepairResult",
     "SubstitutionStep",
     "SymbolOntology",
+    "ValidationCheckResult",
+    "ValidationTier",
     "extract_equation_references",
     "extract_math_symbols",
     "extract_variable_glossary",

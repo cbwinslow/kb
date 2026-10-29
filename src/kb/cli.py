@@ -1171,6 +1171,125 @@ async def async_formulas_repair(
     return 0
 
 
+async def async_formulas_validate(
+    formula_id: str | None = None,
+    citekey: str | None = None,
+    validate_all: bool = False,
+    min_score: float | None = None,
+    as_json: bool = False,
+    limit: int | None = None,
+) -> int:
+    """Execute multi-tier mathematical quality gate across single formulas or corpus."""
+    import json
+
+    from sqlalchemy import select
+
+    _ = validate_all
+
+    from kb.math.validation import FormulaQualityGate
+    from kb.storage.models import Formula
+
+    manager = DatabaseManager()
+    await manager.init_db()
+    gate = FormulaQualityGate()
+
+    async with manager.session_factory() as session:
+        if formula_id:
+            stmt = select(Formula).where(Formula.id == formula_id)
+            res = await session.execute(stmt)
+            f = res.scalar_one_or_none()
+            if not f:
+                print(f"[ERROR] Formula not found with ID: {formula_id}", file=sys.stderr)
+                await manager.close()
+                return 1
+
+            card = gate.validate_formula(f)
+            # Update database record
+            f.validation_score = card.total_score
+            f.validation_status = card.status
+            f.validation_details = card.to_dict()
+            await session.commit()
+
+            if as_json:
+                print(json.dumps(card.to_dict(), indent=2))
+            else:
+                print(card.to_markdown())
+            await manager.close()
+            return 0
+
+        # Batch validation query
+        stmt = select(Formula).where(Formula.is_valid.is_(True))
+        if citekey:
+            stmt = stmt.where(Formula.citekey == citekey)
+        if limit:
+            stmt = stmt.limit(limit)
+
+        res = await session.execute(stmt)
+        formulas = list(res.scalars().all())
+
+        if not formulas:
+            print("[*] No matching valid formulas found to validate.")
+            await manager.close()
+            return 0
+
+        print(f"[*] Validating {len(formulas)} formulas through multi-tier quality gate...")
+        cards: list[Any] = []
+        grade_dist = {"A": 0, "B": 0, "C": 0, "D": 0, "F": 0}
+        total_score_sum = 0.0
+
+        for idx, f in enumerate(formulas, 1):
+            card = gate.validate_formula(f)
+            cards.append(card)
+            grade_dist[card.letter_grade] = grade_dist.get(card.letter_grade, 0) + 1
+            total_score_sum += card.total_score
+
+            f.validation_score = card.total_score
+            f.validation_status = card.status
+            f.validation_details = card.to_dict()
+
+            if idx % 100 == 0 or idx == len(formulas):
+                await session.flush()
+                print(
+                    f"    Progress: {idx}/{len(formulas)} ({idx / len(formulas) * 100:.1f}%)",
+                    end="\r",
+                    flush=True,
+                )
+
+        await session.commit()
+        print()
+
+    await manager.close()
+
+    # Filter by min_score if requested
+    if min_score is not None:
+        filtered_cards = [c for c in cards if c.total_score >= min_score]
+    else:
+        filtered_cards = cards
+
+    if as_json:
+        out = {
+            "total_validated": len(cards),
+            "mean_score": round(total_score_sum / max(1, len(cards)), 2),
+            "grade_distribution": grade_dist,
+            "results": [c.to_dict() for c in filtered_cards],
+        }
+        print(json.dumps(out, indent=2))
+    else:
+        avg = total_score_sum / max(1, len(cards))
+        print("=" * 60)
+        print("Mathematical Quality Gate Validation Summary:")
+        print(f"  Total Formulas Evaluated : {len(cards):,}")
+        print(f"  Mean Corpus Quality Score: {avg:.1f} / 100")
+        print("  Grade Distribution:")
+        for grade in ["A", "B", "C", "D", "F"]:
+            cnt = grade_dist.get(grade, 0)
+            pct = cnt / max(1, len(cards)) * 100.0
+            print(f"    Grade {grade}: {cnt:5d} ({pct:5.1f}%)")
+        print("=" * 60)
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -1466,6 +1585,47 @@ def build_parser() -> argparse.ArgumentParser:
     )
     rep_p.add_argument(
         "--limit", type=int, default=None, help="Maximum formulas to repair (default: all)"
+    )
+
+    val_p = formulas_sub.add_parser(
+        "validate",
+        help="Multi-tier mathematical quality gate and validation for formulas",
+    )
+    val_p.add_argument(
+        "--id",
+        dest="formula_id",
+        type=str,
+        default=None,
+        help="Specific formula ID to validate",
+    )
+    val_p.add_argument(
+        "--citekey",
+        type=str,
+        default=None,
+        help="Validate all formulas belonging to a citekey",
+    )
+    val_p.add_argument(
+        "--all",
+        action="store_true",
+        dest="validate_all",
+        help="Validate all valid formulas across the corpus and persist scores to DB",
+    )
+    val_p.add_argument(
+        "--min-score",
+        type=float,
+        default=None,
+        help="Filter formulas with score >= threshold",
+    )
+    val_p.add_argument(
+        "--json",
+        action="store_true",
+        help="Output validation results in JSON format",
+    )
+    val_p.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum formulas to validate (default: all)",
     )
 
     # ui command
@@ -1807,6 +1967,18 @@ def main(argv: Sequence[str] | None = None) -> None:
                     batch_size=args.batch_size,
                     dry_run=args.dry_run,
                     repair_all=args.repair_all,
+                    limit=args.limit,
+                )
+            )
+            sys.exit(code)
+        elif args.formulas_subcommand == "validate":
+            code = asyncio.run(
+                async_formulas_validate(
+                    formula_id=args.formula_id,
+                    citekey=args.citekey,
+                    validate_all=args.validate_all,
+                    min_score=args.min_score,
+                    as_json=args.json,
                     limit=args.limit,
                 )
             )

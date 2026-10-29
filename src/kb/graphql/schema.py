@@ -29,6 +29,32 @@ class FormulaType:
     python_code: str | None = None
     polars_code: str | None = None
     document_title: str | None = None
+    validation_score: float | None = None
+    validation_status: str | None = None
+    letter_grade: str | None = None
+
+
+@strawberry.type
+class ValidationCheckType:
+    name: str
+    tier: str
+    passed: bool
+    score: float
+    max_score: float
+    message: str
+
+
+@strawberry.type
+class ValidationScorecardType:
+    formula_id: str
+    citekey: str
+    total_score: float
+    letter_grade: str
+    status: str
+    is_valid: bool
+    tier_scores_json: str
+    checks: list[ValidationCheckType]
+    recommendations: list[str]
 
 
 @strawberry.type
@@ -210,6 +236,19 @@ class Query:
                         python_code=py_code,
                         polars_code=pl_code,
                         document_title=doc_title,
+                        validation_score=f.validation_score,
+                        validation_status=f.validation_status,
+                        letter_grade="A"
+                        if (f.validation_score or 0) >= 88
+                        else "B"
+                        if (f.validation_score or 0) >= 75
+                        else "C"
+                        if (f.validation_score or 0) >= 60
+                        else "D"
+                        if (f.validation_score or 0) >= 45
+                        else "F"
+                        if f.validation_score is not None
+                        else None,
                     )
                 )
             return results
@@ -253,6 +292,19 @@ class Query:
                 python_code=py_code,
                 polars_code=pl_code,
                 document_title=doc_title,
+                validation_score=f.validation_score,
+                validation_status=f.validation_status,
+                letter_grade="A"
+                if (f.validation_score or 0) >= 88
+                else "B"
+                if (f.validation_score or 0) >= 75
+                else "C"
+                if (f.validation_score or 0) >= 60
+                else "D"
+                if (f.validation_score or 0) >= 45
+                else "F"
+                if f.validation_score is not None
+                else None,
             )
 
     @strawberry.field
@@ -476,6 +528,50 @@ class Query:
             nodes=list(nodes_dict.values()),
             edges=edges,
         )
+
+    @strawberry.field
+    async def validate_formula(self, id: str) -> ValidationScorecardType | None:
+        """Run multi-tier validation gate on a formula and return full scorecard."""
+        import json
+
+        from kb.math.validation import FormulaQualityGate
+
+        db = DatabaseManager()
+        gate = FormulaQualityGate()
+        async with db.get_session() as session:
+            stmt = select(Formula).where(Formula.id == id)
+            f = (await session.execute(stmt)).scalar_one_or_none()
+            if not f:
+                return None
+            card = gate.validate_formula(f)
+            # Update database record
+            f.validation_score = card.total_score
+            f.validation_status = card.status
+            f.validation_details = card.to_dict()
+            await session.commit()
+
+            checks = [
+                ValidationCheckType(
+                    name=c.name,
+                    tier=c.tier.value,
+                    passed=c.passed,
+                    score=c.score,
+                    max_score=c.max_score,
+                    message=c.message,
+                )
+                for c in card.checks
+            ]
+            return ValidationScorecardType(
+                formula_id=card.formula_id,
+                citekey=card.citekey,
+                total_score=card.total_score,
+                letter_grade=card.letter_grade,
+                status=card.status,
+                is_valid=card.is_valid,
+                tier_scores_json=json.dumps(card.tier_scores),
+                checks=checks,
+                recommendations=card.recommendations,
+            )
 
 
 schema = strawberry.Schema(query=Query)

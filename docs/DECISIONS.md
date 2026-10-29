@@ -316,4 +316,29 @@ This document records the architectural, technical, and mathematical decisions m
   - Elevates valid SymPy formula yield from 17.7% to 73.5% across the entire scientific corpus (+3,284 valid formulas recovered).
   - Establishes a true inter-paper citation network allowing multi-hop paper and formula lineage.
 
+---
+
+## ADR-026: Multi-Tier Mathematical Quality Gate & Validation Engine
+- **Status**: Accepted
+- **Context**:
+  - While corpus yield reached 73.5% (4,326 valid formulas), syntactic parsing alone does not guarantee mathematical soundness, correct SymPy symbol encoding, dimensional sanity, or empirical reliability.
+  - The system lacked automated mechanisms to answer: *"How do we know what we have is mathematically correct? How do we validate our results and ensure SymPy symbols/ASTs are properly encoded?"*
+  - Specific failure modes in scraped formulas include unnoticed multi-letter symbol splitting (e.g. $w \cdot O \cdot B \cdot A$ instead of $wOBA$), rate vs. count dimensional mismatches, cyclic LHS recursion in definitions, and hidden mathematical singularities or non-physical outputs (NaNs, negative probabilities).
+- **Decision**:
+  1. **Multi-Tier Quality Gate Engine (`src/kb/math/validation.py`)**:
+     - **Tier 1 (25 pts) AST Invertibility & Round-Trip Fidelity**: Converts SymPy AST to LaTeX (`sympy.latex(expr)`), re-parses with `FormulaExtractor`, and verifies symbol set identity and structural stability. Detects algebraic contradictions ($x = x + 1$) collapsing to boolean degeneracies.
+     - **Tier 2 (25 pts) Symbol Tokenization & Dimensional Consistency**: Detects fragmented sabermetric acronyms ($wOBA, ERA, FIP, BABIP, WHIP, WAR$) appearing as multiplied single-letter variables, verifies ontology coverage against `SymbolOntology`, and catches cyclic LHS recursion in RHS definitions.
+     - **Tier 3 (25 pts) Boundary Invariants & Monotonicity Analysis**: Computes analytical partial derivatives ($\frac{\partial f}{\partial x_i}$) with SymPy to verify sign direction, and grid-samples parameter space to ensure no NaNs, infinities, or complex values arise within plausible domain intervals.
+     - **Tier 4 (25 pts) Empirical Benchmark Evaluation**: Binds formula parameters to extracted tables in `kb_benchmark_tables` via `SymbolOntology` and tests predictions against ground truth (or evaluates normalized numerical baseline).
+  2. **Standardized Scorecard & Database Schema**:
+     - Produces `FormulaQualityScorecard` with composite 0-100 score, letter grade (A-F), status (`verified`, `provisional`, `degraded`, `failed`), and actionable diagnostic recommendations.
+     - Extended `Formula` model with `validation_score`, `validation_status`, and `validation_details` JSONB.
+  3. **CLI, GraphQL & UI Integration**:
+     - Introduced `kb formulas validate [--id <id>] [--citekey <key>] [--all] [--min-score <score>] [--json]`.
+     - Exposed `validateFormula` query resolver in GraphQL schema and `/api/validate` REST endpoint.
+     - Displayed quality badges (Grade & score) on formula cards in Web UI.
+- **Consequences**:
+  - Validates formulas mathematically, structurally, and empirically, transforming raw extracted LaTeX into reliable, production-ready scientific equations with quantifiable quality metrics.
+
+
 

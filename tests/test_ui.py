@@ -147,3 +147,16 @@ def test_ui_coverage_endpoint(test_client: TestClient) -> None:
     assert "unique_symbols" in data
     assert "character_accounting" in data
     assert "error_taxonomy" in data
+
+
+def test_ui_validate_endpoint(test_client: TestClient) -> None:
+    """Verify /api/validate endpoint scores formulas and returns quality scorecard."""
+    response = test_client.get(r"/api/validate?latex=W%20%3D%20\frac{R_S^2}{R_S^2%20%2B%20R_A^2}")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total_score" in data
+    assert "letter_grade" in data
+    assert "tier_scores" in data
+    assert "checks" in data
+    assert data["total_score"] >= 88.0
+    assert data["letter_grade"] == "A"

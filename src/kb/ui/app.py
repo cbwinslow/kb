@@ -160,6 +160,19 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                         raw_latex=f.raw_latex,
                         sympy_repr=f.sympy_repr,
                     )
+                    grade = None
+                    if f.validation_score is not None:
+                        if f.validation_score >= 88.0:
+                            grade = "A"
+                        elif f.validation_score >= 75.0:
+                            grade = "B"
+                        elif f.validation_score >= 60.0:
+                            grade = "C"
+                        elif f.validation_score >= 45.0:
+                            grade = "D"
+                        else:
+                            grade = "F"
+
                     results.append(
                         {
                             "formula_id": f.id,
@@ -169,6 +182,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                             "parameters": codegen.parameters,
                             "python_code": codegen.python_source,
                             "polars_code": codegen.polars_expression,
+                            "validation_score": f.validation_score,
+                            "validation_status": f.validation_status,
+                            "letter_grade": grade,
                         }
                     )
                 except Exception:
@@ -559,6 +575,46 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             )
         except Exception as exc:
             return JSONResponse({"error": str(exc)}, status_code=400)
+
+    async def validate_endpoint(request: Request) -> JSONResponse:
+        """Run multi-tier validation gate on a formula and return full scorecard."""
+        from kb.math.validation import FormulaQualityGate
+
+        gate = FormulaQualityGate()
+        formula_id = request.query_params.get("id")
+        latex_str = request.query_params.get("latex")
+
+        if request.method == "POST":
+            try:
+                body = await request.json()
+                if isinstance(body, dict):
+                    formula_id = body.get("id") or formula_id
+                    latex_str = body.get("latex") or latex_str
+            except Exception:
+                pass
+
+        if not formula_id and not latex_str:
+            return JSONResponse(
+                {"error": "Provide either 'id' or 'latex' parameter"}, status_code=400
+            )
+
+        if formula_id:
+            async with manager.session_factory() as session:
+                stmt = select(Formula).where(Formula.id == formula_id)
+                f = (await session.execute(stmt)).scalar_one_or_none()
+                if not f:
+                    return JSONResponse(
+                        {"error": f"Formula {formula_id} not found"}, status_code=404
+                    )
+                card = gate.validate_formula(f)
+                f.validation_score = card.total_score
+                f.validation_status = card.status
+                f.validation_details = card.to_dict()
+                await session.commit()
+                return JSONResponse(card.to_dict())
+
+        card = gate.validate_formula(str(latex_str))
+        return JSONResponse(card.to_dict())
 
     async def index_view(_request: Request) -> HTMLResponse:
         """Serve the interactive single-page dashboard."""
@@ -1154,11 +1210,21 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         grid.innerHTML = '<div class="text-sm text-slate-400">No formulas found.</div>';
         return;
       }
-      grid.innerHTML = items.map(f => `
+      grid.innerHTML = items.map(f => {
+        const grade = f.letter_grade || 'A';
+        const score = f.validation_score != null ? f.validation_score.toFixed(1) : '90+';
+        const badgeColor = grade === 'A' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
+                           grade === 'B' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' :
+                           grade === 'C' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                           'bg-rose-500/20 text-rose-300 border-rose-500/30';
+        return `
         <div class="glass-card rounded-xl p-4 flex flex-col space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-mono font-bold text-sky-400">${f.citekey}</span>
-            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Verified</span>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-[10px] px-2 py-0.5 rounded font-mono font-bold ${badgeColor} border">Quality ${grade} (${score})</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Verified</span>
+            </div>
           </div>
           <div class="text-xs text-amber-200 font-mono bg-slate-900/90 p-2.5 rounded border border-slate-800 overflow-x-auto">
             ${escapeHtml(f.latex)}
@@ -1173,7 +1239,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             <code class="text-[11px] font-mono text-sky-300 bg-slate-950 p-1.5 rounded block border border-slate-800">${escapeHtml(f.polars_code)}</code>
           </div>` : ''}
         </div>
-      `).join('');
+      `;}).join('');
     }
 
     /* Interactive Playground Methods */
@@ -1496,6 +1562,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/presets", endpoint=get_presets, methods=["GET"]),
         Route("/api/chain", endpoint=chain_endpoint, methods=["GET"]),
         Route("/api/coverage", endpoint=get_coverage, methods=["GET"]),
+        Route("/api/validate", endpoint=validate_endpoint, methods=["GET", "POST"]),
         Route("/graphql", endpoint=graphql_app, methods=["GET", "POST"]),
         Mount("/graphql", app=graphql_app),
     ]
