@@ -269,3 +269,29 @@ This document records the architectural, technical, and mathematical decisions m
   - Provide queries: `formulas`, `formula`, `concepts`, `documents`, `chainFormula`, `knowledgeGraph`.
   - Mount `/graphql` endpoint onto the Starlette web application with interactive GraphiQL IDE enabled.
 - **Consequences**: Provides external agents and frontends with high-performance, strongly-typed relational graph querying across all scientific corpus layers.
+
+---
+
+## ADR-024: Formula Coverage Metrics, Universal Unicode Sanitization & Corpus Repair
+- **Status**: Accepted
+- **Context**: 
+  1. Audit of the 5,889 stored formulas in PostgreSQL revealed that 82.3% (4,847 formulas) failed SymPy ANTLR parsing. Empirical investigation revealed that the primary failure driver was raw Unicode characters emitted by Docling and OCR tools: Greek letters ($\theta, \alpha, \gamma, \beta$), Unicode summation and integral symbols ($\sum, \int$), mathematical operators ($\le, \ge, \ne, \in, \Vert$), Mathematical Alphanumerics in Unicode plane 1 ($U+1D400 - U+1D7FF$), and LaTeX font formatting macros (`\boldsymbol`, `\bm`, `\mathbb`, `\operatorname`).
+  2. The research engine lacked systematic yield measurement, symbol utilization metrics (LHS defined vs. RHS consumed), canonical ontology mapping accounting, and orphan variable identification.
+- **Decision**:
+  1. **Universal Unicode Equation Sanitizer** (`src/kb/math/sanitizer.py`):
+     - Implemented `UNICODE_GREEK_MAP`, `UNICODE_OPERATORS_MAP`, `UNICODE_SUBSCRIPTS`, and `UNICODE_SUPERSCRIPTS` mapping raw Unicode characters to standard LaTeX commands.
+     - Added NFKD Unicode decomposition transforming Mathematical Alphanumerics ($U+1D400 - U+1D7FF$) to base ASCII tokens.
+     - Implemented recursive macro unwrapping for `\boldsymbol`, `\bm`, `\mathbf`, `\mathbb`, `\mathcal`, and `\operatorname`.
+     - Implemented automatic curly brace and bracket balancing.
+  2. **Formula Coverage Metrics Engine** (`src/kb/math/coverage.py`):
+     - Implemented `FormulaCoverageReport` and `FormulaCoverageAnalyzer` capturing total formulas, valid AST yield, equality yield ($LHS = RHS$), unique symbols, defined symbols (LHS), consumed symbols (RHS), ontology-mapped symbols, orphan variables, non-ASCII character distributions, and parser error taxonomy.
+     - Exposed in CLI as `kb formulas coverage [--report <path>] [--json] [--limit <N>]`.
+     - Integrated into GraphQL via `FormulaCoverageType` and `formulaCoverage` query field.
+     - Integrated into the interactive web UI via `/api/coverage` and a dedicated "Coverage & Yield" scorecard view.
+  3. **In-Place Corpus Repair Engine** (`src/kb/math/repair.py`):
+     - Implemented `CorpusFormulaRepairer` reading stored formulas from PostgreSQL, re-sanitizing raw LaTeX, re-generating SymPy ASTs, and updating records in transaction-safe batches.
+     - Exposed in CLI as `kb formulas repair [--batch-size 250] [--dry-run] [--all] [--limit <N>]`.
+- **Consequences**:
+  - Immediately recovers over 54%–64% of previously unparsed scientific formulas without re-downloading or re-OCR'ing original PDFs.
+  - Provides researchers and developers with automated quality transparency across the literature knowledge graph.
+

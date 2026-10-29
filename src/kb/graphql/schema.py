@@ -107,6 +107,24 @@ class GraphEdgeType:
 
 
 @strawberry.type
+class FormulaCoverageType:
+    total_formulas: int
+    valid_formulas: int
+    invalid_formulas: int
+    equality_formulas: int
+    parse_yield_pct: float
+    equality_yield_pct: float
+    unique_symbols_count: int
+    defined_symbols_count: int
+    consumed_symbols_count: int
+    ontology_mapped_symbols_count: int
+    orphan_symbols_count: int
+    top_orphan_symbols: list[str]
+    top_characters: list[str]
+    top_errors: list[str]
+
+
+@strawberry.type
 class KnowledgeGraphType:
     nodes: list[GraphNodeType]
     edges: list[GraphEdgeType]
@@ -114,6 +132,33 @@ class KnowledgeGraphType:
 
 @strawberry.type
 class Query:
+    @strawberry.field
+    async def formula_coverage(
+        self,
+        limit: int | None = None,
+    ) -> FormulaCoverageType:
+        """Query formula parsing yield, symbol utilization, and non-ASCII coverage."""
+        from kb.math.coverage import FormulaCoverageAnalyzer
+
+        analyzer = FormulaCoverageAnalyzer()
+        report = await analyzer.analyze_corpus(limit=limit)
+        return FormulaCoverageType(
+            total_formulas=report.total_formulas,
+            valid_formulas=report.valid_formulas,
+            invalid_formulas=report.invalid_formulas,
+            equality_formulas=report.equality_formulas,
+            parse_yield_pct=report.parse_yield_pct,
+            equality_yield_pct=report.equality_yield_pct,
+            unique_symbols_count=len(report.unique_symbols),
+            defined_symbols_count=len(report.defined_symbols),
+            consumed_symbols_count=len(report.consumed_symbols),
+            ontology_mapped_symbols_count=len(report.ontology_mapped_symbols),
+            orphan_symbols_count=len(report.orphan_symbols),
+            top_orphan_symbols=report.orphan_symbols[:20],
+            top_characters=[f"{k}: {v}" for k, v in list(report.character_accounting.items())[:15]],
+            top_errors=[f"{k}: {v}" for k, v in list(report.error_taxonomy.items())[:10]],
+        )
+
     @strawberry.field
     async def formulas(
         self,

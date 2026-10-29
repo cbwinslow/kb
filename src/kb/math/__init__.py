@@ -6,6 +6,10 @@ from kb.math.chaining import (
     FormulaChainingEngine,
     SubstitutionStep,
 )
+from kb.math.coverage import (
+    FormulaCoverageAnalyzer,
+    FormulaCoverageReport,
+)
 from kb.math.extractor import (
     ExtractedFormula,
     FormulaExtractor,
@@ -27,12 +31,17 @@ from kb.math.ontology import (
     map_dataframe_columns,
     resolve_canonical,
 )
+from kb.math.repair import (
+    CorpusFormulaRepairer,
+    RepairResult,
+)
 from kb.math.sanitizer import EquationSanitizer
 
 __all__ = [
     "CanonicalConcept",
     "ChainedFormulaResult",
     "ConceptDefinition",
+    "CorpusFormulaRepairer",
     "DerivationEdge",
     "DerivationNode",
     "DerivationRelation",
@@ -40,8 +49,11 @@ __all__ = [
     "ExtractedFormula",
     "FormulaChainingEngine",
     "FormulaCodeGenerator",
+    "FormulaCoverageAnalyzer",
+    "FormulaCoverageReport",
     "FormulaExtractor",
     "FormulaLineageGraph",
+    "RepairResult",
     "SubstitutionStep",
     "SymbolOntology",
     "extract_equation_references",

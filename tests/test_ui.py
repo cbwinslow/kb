@@ -134,3 +134,16 @@ def test_ui_graphql_endpoint(test_client: TestClient) -> None:
     assert "data" in data
     assert "concepts" in data["data"]
     assert len(data["data"]["concepts"]) > 0
+
+
+def test_ui_coverage_endpoint(test_client: TestClient) -> None:
+    """Verify /api/coverage returns formula coverage report."""
+    response = test_client.get("/api/coverage?limit=20")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total_formulas" in data
+    assert "valid_formulas" in data
+    assert "parse_yield_pct" in data
+    assert "unique_symbols" in data
+    assert "character_accounting" in data
+    assert "error_taxonomy" in data

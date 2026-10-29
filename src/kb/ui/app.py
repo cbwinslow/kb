@@ -237,6 +237,16 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                 }
             )
 
+    async def get_coverage(request: Request) -> JSONResponse:
+        """Return comprehensive formula coverage metrics."""
+        limit_param = request.query_params.get("limit")
+        limit = int(limit_param) if limit_param else None
+        from kb.math.coverage import FormulaCoverageAnalyzer
+
+        analyzer = FormulaCoverageAnalyzer(ontology=ontology)
+        report = await analyzer.analyze_corpus(limit=limit)
+        return JSONResponse(report.model_dump())
+
     async def eval_endpoint(request: Request) -> JSONResponse:
         """Dynamically evaluate a formula given its ID or raw LaTeX and input values."""
         try:
@@ -603,6 +613,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     <button onclick="switchTab('playground')" id="tab-btn-playground" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Formula Playground</button>
     <button onclick="switchTab('tables')" id="tab-btn-tables" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Benchmark Tables</button>
     <button onclick="switchTab('search')" id="tab-btn-search" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Hybrid Retrieval</button>
+    <button onclick="switchTab('coverage')" id="tab-btn-coverage" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Coverage & Yield</button>
   </div>
 
   <!-- Main Viewports -->
@@ -806,6 +817,56 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         <p class="text-xs text-slate-400">Enter a query above to execute hybrid dense + sparse retrieval across the corpus.</p>
       </div>
     </section>
+
+    <!-- View 6: Coverage & Yield Scorecard -->
+    <section id="view-coverage" class="flex-1 hidden flex flex-col space-y-4 overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-semibold text-slate-200">Mathematical Formula & Variable Coverage Scorecard</h2>
+          <p class="text-xs text-slate-400">Yield tracking, symbol definitions vs. usages, canonical ontology bindings, and non-ASCII character distributions.</p>
+        </div>
+        <button onclick="loadCoverage()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-slate-200 text-xs">Refresh Coverage</button>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-card p-4 rounded-xl border border-slate-700">
+          <div class="text-xs text-slate-400 uppercase font-semibold">SymPy AST Yield</div>
+          <div id="cov-parse-yield" class="text-2xl font-bold text-sky-400 mt-1">...</div>
+          <div id="cov-parse-counts" class="text-xs text-slate-400 mt-1">... valid / ... total</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl border border-slate-700">
+          <div class="text-xs text-slate-400 uppercase font-semibold">Equality Relations</div>
+          <div id="cov-eq-yield" class="text-2xl font-bold text-emerald-400 mt-1">...</div>
+          <div id="cov-eq-counts" class="text-xs text-slate-400 mt-1">... LHS = RHS</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl border border-slate-700">
+          <div class="text-xs text-slate-400 uppercase font-semibold">Unique Symbols</div>
+          <div id="cov-unique-symbols" class="text-2xl font-bold text-indigo-400 mt-1">...</div>
+          <div id="cov-symbols-breakdown" class="text-xs text-slate-400 mt-1">... defined / ... consumed</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl border border-slate-700">
+          <div class="text-xs text-slate-400 uppercase font-semibold">Ontology Mappings</div>
+          <div id="cov-mapped-symbols" class="text-2xl font-bold text-amber-400 mt-1">...</div>
+          <div id="cov-orphan-symbols" class="text-xs text-rose-400 mt-1">... unconstrained orphans</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Tables -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- Top Non-ASCII Characters -->
+        <div class="glass-card p-4 rounded-xl border border-slate-700">
+          <h3 class="text-sm font-semibold text-slate-300 mb-2">Non-ASCII Character Accounting</h3>
+          <div id="cov-chars-table" class="text-xs text-slate-400">Loading characters...</div>
+        </div>
+
+        <!-- Parser Error Taxonomy -->
+        <div class="glass-card p-4 rounded-xl border border-slate-700">
+          <h3 class="text-sm font-semibold text-slate-300 mb-2">Parser Error Taxonomy</h3>
+          <div id="cov-errors-table" class="text-xs text-slate-400">Loading error distribution...</div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -817,7 +878,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     let playgroundInputs = {};
 
     function switchTab(tabId) {
-      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search'].forEach(t => {
+      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage'].forEach(t => {
         const viewEl = document.getElementById(`view-${t}`);
         const btnEl = document.getElementById(`tab-btn-${t}`);
         if (viewEl) viewEl.classList.add('hidden');
@@ -833,6 +894,51 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       if (tabId === 'chaining') initChaining();
       if (tabId === 'playground') initPlayground();
       if (tabId === 'tables') loadTables();
+      if (tabId === 'coverage') loadCoverage();
+    }
+
+    async function loadCoverage() {
+      try {
+        const res = await fetch('/api/coverage');
+        const data = await res.json();
+        document.getElementById('cov-parse-yield').innerText = `${data.parse_yield_pct.toFixed(1)}%`;
+        document.getElementById('cov-parse-counts').innerText = `${data.valid_formulas.toLocaleString()} valid / ${data.total_formulas.toLocaleString()} total`;
+        document.getElementById('cov-eq-yield').innerText = `${data.equality_yield_pct.toFixed(1)}%`;
+        document.getElementById('cov-eq-counts').innerText = `${data.equality_formulas.toLocaleString()} LHS = RHS`;
+        document.getElementById('cov-unique-symbols').innerText = data.unique_symbols.length.toLocaleString();
+        document.getElementById('cov-symbols-breakdown').innerText = `${data.defined_symbols.length} defined / ${data.consumed_symbols.length} consumed`;
+        document.getElementById('cov-mapped-symbols').innerText = data.ontology_mapped_symbols.length.toLocaleString();
+        document.getElementById('cov-orphan-symbols').innerText = `${data.orphan_symbols.length} unconstrained orphans`;
+
+        // Render Characters Table
+        const charsEntries = Object.entries(data.character_accounting || {}).slice(0, 15);
+        if (charsEntries.length === 0) {
+          document.getElementById('cov-chars-table').innerHTML = '<p class="text-slate-500">No non-ASCII characters recorded.</p>';
+        } else {
+          let html = '<table class="w-full text-left border-collapse"><thead><tr class="border-b border-slate-700 text-slate-400"><th class="py-1">Char</th><th class="py-1">Hex</th><th class="py-1">Count</th></tr></thead><tbody>';
+          charsEntries.forEach(([ch, cnt]) => {
+            const hex = 'U+' + ch.charCodeAt(0).toString(16).toUpperCase().padStart(4, '0');
+            html += `<tr class="border-b border-slate-800"><td class="py-1 font-mono text-sky-400">${ch}</td><td class="py-1 font-mono text-slate-400">${hex}</td><td class="py-1 text-slate-300">${cnt.toLocaleString()}</td></tr>`;
+          });
+          html += '</tbody></table>';
+          document.getElementById('cov-chars-table').innerHTML = html;
+        }
+
+        // Render Errors Table
+        const errEntries = Object.entries(data.error_taxonomy || {}).slice(0, 10);
+        if (errEntries.length === 0) {
+          document.getElementById('cov-errors-table').innerHTML = '<p class="text-emerald-400">Zero parsing errors recorded!</p>';
+        } else {
+          let html = '<table class="w-full text-left border-collapse"><thead><tr class="border-b border-slate-700 text-slate-400"><th class="py-1">Error Category</th><th class="py-1">Count</th></tr></thead><tbody>';
+          errEntries.forEach(([cat, cnt]) => {
+            html += `<tr class="border-b border-slate-800"><td class="py-1 font-mono text-rose-400 text-xs">${cat}</td><td class="py-1 text-slate-300">${cnt.toLocaleString()}</td></tr>`;
+          });
+          html += '</tbody></table>';
+          document.getElementById('cov-errors-table').innerHTML = html;
+        }
+      } catch (err) {
+        console.error('Failed to load coverage metrics', err);
+      }
     }
 
     async function initChaining() {
@@ -1386,6 +1492,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/eval", endpoint=eval_endpoint, methods=["GET", "POST"]),
         Route("/api/presets", endpoint=get_presets, methods=["GET"]),
         Route("/api/chain", endpoint=chain_endpoint, methods=["GET"]),
+        Route("/api/coverage", endpoint=get_coverage, methods=["GET"]),
         Route("/graphql", endpoint=graphql_app, methods=["GET", "POST"]),
         Mount("/graphql", app=graphql_app),
     ]

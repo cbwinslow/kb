@@ -1060,6 +1060,92 @@ async def async_formulas_solve(
         return 1
 
 
+async def async_formulas_coverage(
+    report_path: str | None = None,
+    as_json: bool = False,
+    limit: int | None = None,
+) -> int:
+    """Audit formula parsing yield, symbol utilization, and non-ASCII characters."""
+    from kb.math.coverage import FormulaCoverageAnalyzer
+
+    manager = DatabaseManager()
+    await manager.init_db()
+
+    print("[*] Auditing mathematical formula and variable coverage across corpus...")
+    analyzer = FormulaCoverageAnalyzer()
+    async with manager.session_factory() as session:
+        report = await analyzer.analyze_corpus(limit=limit, session=session)
+
+    output_str = report.to_json() if as_json else report.to_markdown()
+
+    print(output_str)
+
+    if report_path:
+        out_file = Path(report_path)
+        out_file.parent.mkdir(parents=True, exist_ok=True)
+        out_file.write_text(output_str, encoding="utf-8")
+        print(f"\n[OK] Coverage report saved to: {out_file.resolve()}")
+
+    await manager.close()
+    return 0
+
+
+async def async_formulas_repair(
+    batch_size: int = 250,
+    dry_run: bool = False,
+    repair_all: bool = False,
+    limit: int | None = None,
+) -> int:
+    """In-place repair and re-parsing of corpus formulas in PostgreSQL."""
+    from kb.math.repair import CorpusFormulaRepairer
+
+    manager = DatabaseManager()
+    await manager.init_db()
+
+    mode_str = "DRY RUN (simulation only)" if dry_run else "LIVE MIGRATION (persisting to DB)"
+    target_str = "ALL formulas" if repair_all else "only invalid formulas (is_valid = False)"
+    print(f"[*] Starting corpus formula repair: {mode_str}")
+    print(f"    Targeting: {target_str} (batch_size={batch_size}, limit={limit or 'unlimited'})")
+
+    repairer = CorpusFormulaRepairer()
+
+    def progress_cb(processed: int, recovered: int, total: int) -> None:
+        pct = (processed / total * 100.0) if total > 0 else 0.0
+        print(
+            f"    Progress: {processed}/{total} ({pct:.1f}%) | Newly Recovered: {recovered}",
+            end="\r",
+            flush=True,
+        )
+
+    async with manager.session_factory() as session:
+        res = await repairer.repair_corpus(
+            batch_size=batch_size,
+            dry_run=dry_run,
+            only_invalid=not repair_all,
+            limit=limit,
+            session=session,
+            progress_callback=progress_cb,
+        )
+
+    print()
+    print("\n[OK] Corpus Formula Repair Summary:")
+    print("=" * 60)
+    print(f"  Mode              : {'DRY RUN' if res.dry_run else 'PERSISTED'}")
+    print(f"  Total Scanned     : {res.total_scanned:,}")
+    print(f"  Previously Valid  : {res.previously_valid:,}")
+    print(f"  Newly Recovered   : {res.newly_recovered:,}")
+    print(f"  Still Invalid     : {res.still_invalid:,}")
+    print(f"  Updated Records   : {res.updated_records:,}")
+    print(f"  Elapsed Time      : {res.duration_seconds:.2f}s")
+    if res.total_scanned > 0:
+        rec_pct = (res.newly_recovered / res.total_scanned) * 100.0
+        print(f"  Recovery Rate     : {rec_pct:.2f}% of scanned")
+    print("=" * 60)
+
+    await manager.close()
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -1319,6 +1405,42 @@ def build_parser() -> argparse.ArgumentParser:
     )
     solve_p.add_argument(
         "--symbols", nargs="+", required=True, help="Target variable symbols to solve for"
+    )
+
+    cov_p = formulas_sub.add_parser(
+        "coverage",
+        help="Audit formula parsing yield, symbol utilization, and non-ASCII character metrics",
+    )
+    cov_p.add_argument(
+        "--report", type=str, default=None, help="Output path to save markdown coverage report"
+    )
+    cov_p.add_argument("--json", action="store_true", help="Output coverage metrics as JSON")
+    cov_p.add_argument(
+        "--limit", type=int, default=None, help="Maximum formulas to scan (default: all)"
+    )
+
+    rep_p = formulas_sub.add_parser(
+        "repair", help="In-place repair and re-parsing of corpus formulas in PostgreSQL"
+    )
+    rep_p.add_argument(
+        "--batch-size",
+        type=int,
+        default=250,
+        help="Batch size for database update commits (default: 250)",
+    )
+    rep_p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Simulate repair and report yield without writing to database",
+    )
+    rep_p.add_argument(
+        "--all",
+        action="store_true",
+        dest="repair_all",
+        help="Repair all formulas (default: only invalid ones)",
+    )
+    rep_p.add_argument(
+        "--limit", type=int, default=None, help="Maximum formulas to repair (default: all)"
     )
 
     # ui command
@@ -1638,6 +1760,25 @@ def main(argv: Sequence[str] | None = None) -> None:
                 async_formulas_solve(
                     formula_ids=args.ids,
                     target_symbols=args.symbols,
+                )
+            )
+            sys.exit(code)
+        elif args.formulas_subcommand == "coverage":
+            code = asyncio.run(
+                async_formulas_coverage(
+                    report_path=args.report,
+                    as_json=args.json,
+                    limit=args.limit,
+                )
+            )
+            sys.exit(code)
+        elif args.formulas_subcommand == "repair":
+            code = asyncio.run(
+                async_formulas_repair(
+                    batch_size=args.batch_size,
+                    dry_run=args.dry_run,
+                    repair_all=args.repair_all,
+                    limit=args.limit,
                 )
             )
             sys.exit(code)

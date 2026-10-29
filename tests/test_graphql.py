@@ -84,3 +84,28 @@ async def test_graphql_query_knowledge_graph() -> None:
     kg = result.data["knowledgeGraph"]
     assert "nodes" in kg
     assert "edges" in kg
+
+
+@pytest.mark.asyncio
+async def test_graphql_query_formula_coverage() -> None:
+    """Verifies formula coverage query in GraphQL."""
+    query = """
+    query {
+        formulaCoverage(limit: 20) {
+            totalFormulas
+            validFormulas
+            parseYieldPct
+            uniqueSymbolsCount
+            topCharacters
+            topErrors
+        }
+    }
+    """
+    result = await schema.execute(query)
+    assert result.errors is None
+    assert result.data is not None
+    cov = result.data["formulaCoverage"]
+    assert "totalFormulas" in cov
+    assert "validFormulas" in cov
+    assert "parseYieldPct" in cov
+    assert "uniqueSymbolsCount" in cov
