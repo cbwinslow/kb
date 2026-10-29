@@ -178,6 +178,8 @@ def test_formula_model_validation_fields() -> None:
 @pytest.mark.asyncio
 async def test_graphql_validate_formula_schema() -> None:
     """Verify validateFormula field is exposed on GraphQL Query schema."""
+    from unittest.mock import AsyncMock, MagicMock, patch
+
     from kb.graphql.schema import schema
 
     query = """
@@ -189,6 +191,13 @@ async def test_graphql_validate_formula_schema() -> None:
         }
     }
     """
-    res = await schema.execute(query)
-    assert res.errors is None
-    assert res.data == {"validateFormula": None}
+    mock_session = AsyncMock()
+    mock_result = MagicMock()
+    mock_result.scalar_one_or_none.return_value = None
+    mock_session.execute.return_value = mock_result
+
+    with patch("kb.storage.database.DatabaseManager.get_session") as mock_get_session:
+        mock_get_session.return_value.__aenter__.return_value = mock_session
+        res = await schema.execute(query)
+        assert res.errors is None
+        assert res.data == {"validateFormula": None}

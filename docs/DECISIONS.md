@@ -340,5 +340,35 @@ This document records the architectural, technical, and mathematical decisions m
 - **Consequences**:
   - Validates formulas mathematically, structurally, and empirically, transforming raw extracted LaTeX into reliable, production-ready scientific equations with quantifiable quality metrics.
 
+---
+
+## ADR-027: Sabermetric Reference & Statcast 2.0 Bat Tracking Glossary Expansion
+- **Status**: Accepted
+- **Context**:
+  - While Fangraphs provided foundational linear weights and fielding independent pitching equations ($wOBA, FIP$), modern sabermetrics and tracking systems rely heavily on:
+    1. Tom Tango's 24-state Run Expectancy matrix ($RE_{24}$) and event linear weights delta ($\Delta RE = RE_{end} - RE_{start} + R_{play}$).
+    2. Leverage Index ($LI$) measuring the swing of win expectancy for a given game state.
+    3. Baseball Prospectus Deserved Runs Created Plus ($DRC+$) and Deserved Run Average ($DRA$) utilizing empirical Bayes shrinkage across component outcomes.
+    4. Baseball-Reference WAR positional adjustments and runs-to-wins conversion.
+    5. Statcast 2.0 Bat Tracking mechanics: collision elasticity, exit velocity as a function of pitch speed and bat speed ($v_{exit} = q \cdot v_{pitch} + (1 + e) \cdot v_{bat}$), squared-up rate, and blast rate.
+  - The symbol ontology lacked canonical definitions and aliases for modern bat tracking metrics (`BAT_SPEED`, `SWING_LENGTH`, `ATTACK_ANGLE`, `FAST_SWING_RATE`, `BLAST_RATE`, `SQUARED_UP_RATE`, `LEVERAGE_INDEX`, `RUN_EXPECTANCY`), preventing the AST engine and benchmark runners from binding these parameters to datasets.
+- **Decision**:
+  1. **Canonical Concept Registration (`src/kb/math/ontology.py`)**:
+     - Extended `ConceptType` and registered canonical definitions for `BAT_SPEED`, `SWING_LENGTH`, `ATTACK_ANGLE`, `FAST_SWING_RATE`, `BLAST_RATE`, `SQUARED_UP_RATE`, `EXIT_VELOCITY`, `LEVERAGE_INDEX`, `RUN_EXPECTANCY`.
+     - Bound aliases across Statcast CSV headers (`bat_speed`, `swing_length`, `attack_angle`, `ev`, `exit_velo`, `leverage_index`, `run_exp`).
+  2. **Sabermetric & Statcast Presets (`src/kb/sync/web.py`)**:
+     - Added 5 high-fidelity presets to `SABERMETRIC_GLOSSARY_PRESETS`:
+       - `RE24`: $\Delta RE = RE_{end} - RE_{start} + R$
+       - `Leverage_Index`: $LI = \frac{\Delta WP_{max} - \Delta WP_{min}}{E_{WP}}$
+       - `DRC_Plus`: $DRC_{plus} = 100 \cdot \frac{DRC / PA}{lgDRC / lgPA}$
+       - `BRef_WAR`: $WAR = \frac{Runs_{bat} + Runs_{br} + Runs_{field} + Runs_{pos} + Runs_{rep}}{Runs_{win}}$
+       - `Statcast_Bat_Tracking`: $v_{exit} = q \cdot v_{pitch} + (1 + e) \cdot v_{bat}$, $Rate_{blast} = \frac{Count_{blast}}{Swings}$, $Rate_{sq} = \frac{Count_{squared\_up}}{Swings}$.
+  3. **Symbol Preservation & Subscript Notation**:
+     - Used subscripted multi-letter identifier formatting in LaTeX templates to avoid SymPy tokenization multiplication bugs while allowing exact invertibility.
+- **Consequences**:
+  - Enriches the scientific knowledge base with historical foundation and cutting-edge 2024-2026 bat tracking mechanics.
+  - Enables instant parameter binding and validation for modern Hawk-Eye / Statcast tracking datasets.
+
+
 
 

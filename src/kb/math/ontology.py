@@ -43,6 +43,15 @@ class CanonicalConcept(StrEnum):
     STOLEN_BASES = "stolen_bases"
     CAUGHT_STEALING = "caught_stealing"
     ERRORS = "errors"
+    BAT_SPEED = "bat_speed"
+    SWING_LENGTH = "swing_length"
+    ATTACK_ANGLE = "attack_angle"
+    FAST_SWING_RATE = "fast_swing_rate"
+    BLAST_RATE = "blast_rate"
+    SQUARED_UP_RATE = "squared_up_rate"
+    EXIT_VELOCITY = "exit_velocity"
+    LEVERAGE_INDEX = "leverage_index"
+    RUN_EXPECTANCY = "run_expectancy"
 
 
 @dataclass(frozen=True)
@@ -538,6 +547,81 @@ class SymbolOntology:
                     "\\alpha",
                 ],
                 description="Pythagorean expectation exponent parameter.",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.BAT_SPEED,
+                latex_repr="v_{bat}",
+                aliases=["v_{bat}", "v_bat", "bat_speed", "BatSpeed", "batspeed", "vbat"],
+                description="Statcast bat tracking swing speed at point of contact (mph).",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.SWING_LENGTH,
+                latex_repr="l_{swing}",
+                aliases=["l_{swing}", "l_swing", "swing_length", "SwingLength", "swinglength"],
+                description="Distance traveled by the sweet spot of the bat from start of swing to contact (ft).",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.ATTACK_ANGLE,
+                latex_repr="\\theta_{attack}",
+                aliases=[
+                    "\\theta_{attack}",
+                    "theta_attack",
+                    "attack_angle",
+                    "AttackAngle",
+                    "launch_angle_bat",
+                ],
+                description="Vertical angle of bat's path at point of contact (degrees).",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.FAST_SWING_RATE,
+                latex_repr="FSR",
+                aliases=["FSR", "fast_swing_rate", "FastSwingRate", "fast_swing_pct"],
+                description="Percentage of competitive swings reaching 75+ mph.",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.BLAST_RATE,
+                latex_repr="BlastRate",
+                aliases=["BlastRate", "blast_rate", "blast_pct", "BlastPct", "blasts"],
+                description="Percentage of contact events combining 75+ mph bat speed with 80%+ squared-up rate.",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.SQUARED_UP_RATE,
+                latex_repr="SquaredUp",
+                aliases=["SquaredUp", "squared_up_rate", "squared_up", "sq_up", "squared_up_pct"],
+                description="Ratio of observed exit velocity to maximum physical collision exit velocity potential.",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.EXIT_VELOCITY,
+                latex_repr="v_{exit}",
+                aliases=[
+                    "v_{exit}",
+                    "v_exit",
+                    "EV",
+                    "exit_velocity",
+                    "launch_speed",
+                    "ExitVelocity",
+                ],
+                description="Speed of the baseball off the bat upon batted ball event (mph).",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.LEVERAGE_INDEX,
+                latex_repr="LI",
+                aliases=["LI", "li", "leverage_index", "LeverageIndex", "pLI", "gmLI", "inLI"],
+                description="Quantitative measure of the swing's win expectation importance in a game.",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.RUN_EXPECTANCY,
+                latex_repr="RE",
+                aliases=[
+                    "RE",
+                    "re",
+                    "run_expectancy",
+                    "RunExpectancy",
+                    "RE24",
+                    "\\Delta RE",
+                    "delta_re",
+                ],
+                description="Expected runs scored from a specific base-out state through the end of the inning.",
             ),
         ]
 

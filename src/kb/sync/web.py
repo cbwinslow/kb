@@ -228,6 +228,148 @@ Where:
 - $RA$ is runs allowed
 """,
     },
+    "RE24": {
+        "citekey": "tangotiger_re24_glossary",
+        "title": "Tom Tango: 24-State Run Expectancy Matrix (RE24) and Transition Values",
+        "url": "http://www.tangotiger.net/re24.html",
+        "authors": ["Tom Tango", "Mitchel Lichtman", "Andrew Dolphin"],
+        "year": 2026,
+        "markdown": """# 24-State Run Expectancy (RE24)
+
+Run Expectancy (RE24) models the average number of runs scored from any base-out state through the end of the half-inning. There are 24 distinct states (3 out states $\\times$ 8 base-runner configurations).
+
+## Run Expectancy Delta Equation
+
+The offensive or pitching run value of any plate appearance or play is the change in run expectancy plus any runs scored on the play:
+
+$$\\Delta RE = RE_{end} - RE_{start} + R_{play}$$
+
+Where:
+- $RE_{start}$ is the expected runs of the initial base-out state
+- $RE_{end}$ is the expected runs of the resulting base-out state
+- $R_{play}$ is the number of runs scored during the play (0 to 4)
+
+## Linear Weights Derivation
+
+Linear weights values (such as the coefficients in wOBA) are empirical averages of $\\Delta RE$ across all instances of that batting event over a season:
+
+$$w_{event} = \\frac{1}{N_{event}} \\cdot \\sum_{k=1}^{N_{event}} \\Delta RE_k$$
+""",
+    },
+    "Leverage_Index": {
+        "citekey": "tangotiger_leverage_index_glossary",
+        "title": "Tom Tango: Leverage Index (LI) and Win Probability Added",
+        "url": "http://www.tangotiger.net/li.html",
+        "authors": ["Tom Tango"],
+        "year": 2026,
+        "markdown": """# Leverage Index (LI)
+
+Leverage Index quantifies the critical importance of a specific game state relative to an average situation. An average play has a leverage index of 1.0.
+
+## Mathematical Definition
+
+The leverage of a game state is the swing in win probability between the best and worst possible immediate play outcomes, normalized by the average swing across all game states:
+
+$$LI = \\frac{\\Delta WP_{max} - \\Delta WP_{min}}{E_{WP}}$$
+
+Where:
+- $\\Delta WP_{max}$ is the change in win probability resulting from the most favorable outcome
+- $\\Delta WP_{min}$ is the change in win probability resulting from the least favorable outcome
+- $E_{WP}$ is the expected change in win probability for an average major league plate appearance
+
+## Game-Level Leverage
+
+The average leverage experienced by a pitcher or batter across an entire contest:
+
+$$gmLI = \\frac{1}{M} \\cdot \\sum_{j=1}^{M} LI_j$$
+""",
+    },
+    "DRC_Plus": {
+        "citekey": "bp_drc_plus_glossary",
+        "title": "Baseball Prospectus: Deserved Runs Created Plus (DRC+) and DRA",
+        "url": "https://www.baseballprospectus.com/news/article/45387/introducing-drc/",
+        "authors": ["Jonathan Judge", "Baseball Prospectus"],
+        "year": 2026,
+        "markdown": """# Deserved Runs Created Plus (DRC+)
+
+Deserved Runs Created Plus (DRC+) is Baseball Prospectus's premier offensive metric. Unlike traditional linear weights which evaluate observed outcomes, DRC+ uses empirical Bayesian multi-level modeling to isolate batter true talent from opposing pitcher quality, defense, catcher framing, umpire strike zones, and park environment.
+
+## DRC Index Formulation
+
+$$DRC_{plus} = 100 \\cdot \\left(\\frac{DRC_{PA}}{lgDRC_{PA}}\\right)$$
+
+Where:
+- $DRC_{PA}$ is the batter's deserved runs created per plate appearance
+- $lgDRC_{PA}$ is the league average deserved runs created per plate appearance
+
+## Deserved Run Average (DRA) Relation
+
+For pitchers, Deserved Run Average scales true talent run prevention to an ERA scale:
+
+$$DRA = \\left(\\frac{DRA_{RA}}{lgRA}\\right) \\cdot lgERA$$
+""",
+    },
+    "BRef_WAR": {
+        "citekey": "bref_war_components_glossary",
+        "title": "Baseball-Reference: Wins Above Replacement (WAR) Component Architecture",
+        "url": "https://www.baseball-reference.com/about/war_explained.shtml",
+        "authors": ["Sean Forman", "Baseball-Reference"],
+        "year": 2026,
+        "markdown": """# Baseball-Reference WAR Architecture
+
+Baseball-Reference WAR (bWAR / rWAR) decomposes player contribution into distinct components: batting runs, baserunning runs, double play avoidance runs, defensive runs saved, positional adjustment, and replacement runs.
+
+## Position Player WAR Equation
+
+$$WAR = \\frac{BatRuns + BaserunningRuns + DefRuns + PosRuns + RepRuns}{RPW}$$
+
+Where:
+- $BatRuns$ is batting runs relative to league average
+- $DefRuns$ is defensive runs saved (DRS)
+- $PosRuns$ is positional adjustment runs
+- $RepRuns$ is replacement level runs
+- $RPW$ is runs per win factor
+
+## Positional Run Adjustment
+
+$$PosRuns = \\left(\\frac{Inn_{pos}}{1458}\\right) \\cdot Value_{pos}$$
+""",
+    },
+    "Statcast_Bat_Tracking": {
+        "citekey": "statcast_bat_tracking_glossary",
+        "title": "MLB Statcast 2.0: Bat Tracking Collision Physics and Swing Mechanics",
+        "url": "https://www.mlb.com/news/statcast-bat-tracking-metrics-explained",
+        "authors": ["Tom Tango", "MLB Advanced Media", "David Kagan"],
+        "year": 2026,
+        "markdown": """# MLB Statcast 2.0 Bat Tracking
+
+Introduced by MLB Statcast in 2024, bat tracking uses high-speed optical Hawk-Eye cameras to capture the physical trajectory of the bat head throughout the swing.
+
+## Collision Exit Velocity Physics
+
+The maximum achievable exit velocity $v_{exit}$ off a baseball bat collision is governed by the conservation of momentum and coefficient of restitution:
+
+$$v_{exit} = q \\cdot v_{pitch} + (1 + e) \\cdot v_{bat}$$
+
+Where:
+- $v_{bat}$ is bat speed at the sweet spot at impact (typically 65 to 85 mph)
+- $v_{pitch}$ is pitch velocity at the plate (typically 80 to 102 mph)
+- $q$ is the pitch collision efficiency factor (~0.20 for round wooden bats)
+- $e$ is the collision coefficient of restitution (~0.22 to 0.25)
+
+## Squared-Up Percentage
+
+Squared-Up Rate measures how close a batter came to achieving the maximum exit velocity possible given their bat speed and pitch speed:
+
+$$SquaredUp = \\frac{v_{exit}}{v_{exit, max}}$$
+
+## Blast Percentage
+
+A 'Blast' represents an optimal combination of high swing power and centered contact. It is defined as a competitive swing that achieves both:
+1. Bat speed $v_{bat} \\ge 75\\text{ mph}$
+2. Squared-up contact $SquaredUp \\ge 0.80$
+""",
+    },
 }
 
 

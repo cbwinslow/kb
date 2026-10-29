@@ -121,3 +121,25 @@ def test_custom_concept_registration() -> None:
 
     assert ont.resolve_canonical("fielding_errors") == CanonicalConcept.ERRORS
     assert ont.resolve_canonical("errs") == CanonicalConcept.ERRORS
+
+
+def test_statcast_and_situational_resolution() -> None:
+    """Verify resolution of modern Statcast 2.0 and situational sabermetric metrics."""
+    ont = get_symbol_ontology()
+
+    # Bat Tracking & Physics
+    assert ont.resolve_canonical("v_bat") == CanonicalConcept.BAT_SPEED
+    assert ont.resolve_canonical("bat_speed") == CanonicalConcept.BAT_SPEED
+    assert ont.resolve_canonical("swing_length") == CanonicalConcept.SWING_LENGTH
+    assert ont.resolve_canonical("attack_angle") == CanonicalConcept.ATTACK_ANGLE
+    assert ont.resolve_canonical("fast_swing_rate") == CanonicalConcept.FAST_SWING_RATE
+    assert ont.resolve_canonical("blast_rate") == CanonicalConcept.BLAST_RATE
+    assert ont.resolve_canonical("squared_up") == CanonicalConcept.SQUARED_UP_RATE
+    assert ont.resolve_canonical("exit_velocity") == CanonicalConcept.EXIT_VELOCITY
+    assert ont.resolve_canonical("launch_speed") == CanonicalConcept.EXIT_VELOCITY
+
+    # Situational Metrics
+    assert ont.resolve_canonical("LI") == CanonicalConcept.LEVERAGE_INDEX
+    assert ont.resolve_canonical("leverage_index") == CanonicalConcept.LEVERAGE_INDEX
+    assert ont.resolve_canonical("RE") == CanonicalConcept.RUN_EXPECTANCY
+    assert ont.resolve_canonical("run_expectancy") == CanonicalConcept.RUN_EXPECTANCY

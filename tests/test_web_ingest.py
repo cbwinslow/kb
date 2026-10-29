@@ -155,3 +155,46 @@ async def test_ingest_preset_canonical_formulas() -> None:
         assert woba_form[0].is_valid
 
     await db.close()
+
+
+@pytest.mark.asyncio
+async def test_ingest_statcast_and_re24_presets() -> None:
+    """Verifies that Statcast bat tracking and Tom Tango RE24 presets ingest valid formulas."""
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_statcast_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    embedder = MockEmbeddingGenerator(dimension=1024)
+    pipeline = IngestionPipeline(db_manager=db, embedder=embedder)
+    harvester = WebGlossaryHarvester()
+
+    assert "RE24" in SABERMETRIC_GLOSSARY_PRESETS
+    assert "Statcast_Bat_Tracking" in SABERMETRIC_GLOSSARY_PRESETS
+
+    # Ingest RE24
+    res_re = await harvester.ingest_preset("RE24", pipeline=pipeline)
+    assert res_re.status == "success"
+    assert res_re.formula_count >= 1
+
+    # Ingest Statcast Bat Tracking
+    res_sc = await harvester.ingest_preset("Statcast_Bat_Tracking", pipeline=pipeline)
+    assert res_sc.status == "success"
+    assert res_sc.formula_count >= 1
+
+    async with db.get_session() as session:
+        # Check Statcast formulas
+        sc_formulas = list(
+            (
+                await session.execute(
+                    select(Formula).where(Formula.citekey == "statcast_bat_tracking_glossary")
+                )
+            )
+            .scalars()
+            .all()
+        )
+        assert len(sc_formulas) >= 1
+        valid_sc = [f for f in sc_formulas if f.is_valid]
+        assert len(valid_sc) >= 1
+
+    await db.close()

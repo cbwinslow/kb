@@ -1238,7 +1238,19 @@ async def async_formulas_validate(
         total_score_sum = 0.0
 
         for idx, f in enumerate(formulas, 1):
-            card = gate.validate_formula(f)
+            try:
+                card = gate.validate_formula(f)
+            except Exception as err:
+                card = gate.validate_formula(r"\text{error}")
+                card.formula_id = f.id
+                card.citekey = f.citekey
+                card.raw_latex = f.raw_latex
+                card.sanitized_latex = f.sanitized_latex
+                card.status = "failed"
+                card.letter_grade = "F"
+                card.total_score = 0.0
+                card.recommendations = [f"Validation exception: {err}"]
+
             cards.append(card)
             grade_dist[card.letter_grade] = grade_dist.get(card.letter_grade, 0) + 1
             total_score_sum += card.total_score
