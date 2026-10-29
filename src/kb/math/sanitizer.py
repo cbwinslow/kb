@@ -93,9 +93,31 @@ class EquationSanitizer:
         for char, replacement in self.UNICODE_GREEK_MAP.items():
             text = text.replace(char, replacement)
 
+        unicode_subs = {
+            "₀": "_0",
+            "₁": "_1",
+            "₂": "_2",
+            "₃": "_3",
+            "₄": "_4",
+            "₅": "_5",
+            "₆": "_6",
+            "₇": "_7",
+            "₈": "_8",
+            "₉": "_9",
+        }
+        for sub_char, sub_rep in unicode_subs.items():
+            text = text.replace(sub_char, sub_rep)
+
         text = text.replace("×", r"\times ").replace("·", r"\cdot ").replace("−", "-")
         text = text.replace("≤", r"\le ").replace("≥", r"\ge ").replace("≠", r"\ne ")
-        text = text.replace("∞", r"\infty ")
+        text = text.replace("∞", r"\infty ").replace("‖", "|").replace("…", r"\dots ")
+
+        # Ensure standard math function names have backslashes if missing
+        text = re.sub(
+            r"(?<!\\)\b(arccos|arcsin|arctan|cos|sin|tan|log|ln|exp)\b",
+            r"\\\1",
+            text,
+        )
 
         # 5. Remove OCR piecewise artifacts and trailing conditions
         text = re.sub(r"[]", "", text)

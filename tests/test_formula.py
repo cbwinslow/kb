@@ -165,3 +165,14 @@ def test_extract_math_symbols_and_references() -> None:
     assert "runs scored" in glossary["RS"]
     assert "RA" in glossary
     assert "runs allowed" in glossary["RA"]
+
+
+def test_sanitizer_unicode_and_functions(sanitizer: EquationSanitizer) -> None:
+    """Verifies that unicode math characters and bare functions are sanitized to valid LaTeX."""
+    raw = "θ(y) = arccos(x) + ‖v‖ + y₂ …"
+    sanitized = sanitizer.sanitize(raw)
+    assert r"\theta" in sanitized
+    assert r"\arccos" in sanitized
+    assert "|v|" in sanitized
+    assert "y_2" in sanitized
+    assert r"\dots" in sanitized

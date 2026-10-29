@@ -287,9 +287,13 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             if not raw_latex_str:
                 return JSONResponse({"error": "No formula LaTeX available"}, status_code=400)
 
+            import warnings
+
             from sympy.parsing.latex import parse_latex
 
-            expr = parse_latex(raw_latex_str)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=SyntaxWarning)
+                expr = parse_latex(raw_latex_str)
             if expr is None:
                 return JSONResponse({"error": "Failed to parse formula"}, status_code=500)
             target = getattr(expr, "rhs", expr)

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import re
+import warnings
 
 from sympy import Equality, Expr, sympify
 from sympy.printing.pycode import pycode
@@ -56,7 +57,9 @@ class FormulaCompiler:
             expr_obj: Expr | Equality | None = None
             if sympy_repr:
                 try:
-                    expr_obj = sympify(sympy_repr)
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore", category=SyntaxWarning)
+                        expr_obj = sympify(sympy_repr)
                 except Exception:
                     expr_obj = None
 
@@ -103,7 +106,7 @@ class FormulaCompiler:
             sig_params = ", ".join(f"{p}: float" for p in param_list)
             python_source = (
                 f"def {fn_name}({sig_params}) -> float:\n"
-                f'    """{docstring}"""\n'
+                f'    r"""{docstring}"""\n'
                 f"    import math\n"
                 f"    return float({raw_py_expr})\n"
             )

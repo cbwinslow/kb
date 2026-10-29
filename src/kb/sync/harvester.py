@@ -88,9 +88,29 @@ class PreprintHarvester:
         """Query arXiv Atom API for candidate research preprints."""
         search_terms: list[str] = []
         if query:
-            clean_q = re.sub(r"[^\w\s]", "", query).strip()
-            terms = [f'all:"{t}"' for t in clean_q.split()]
-            search_terms.append(" AND ".join(terms))
+            if " OR " in query:
+                or_clauses: list[str] = []
+                for subq in query.split(" OR "):
+                    sub_clean = re.sub(r"[^\w\s]", "", subq).strip()
+                    if sub_clean:
+                        sub_terms = [
+                            f'all:"{t}"'
+                            for t in sub_clean.split()
+                            if t.upper() not in ("OR", "AND")
+                        ]
+                        if sub_terms:
+                            or_clauses.append(
+                                f"({' AND '.join(sub_terms)})"
+                                if len(sub_terms) > 1
+                                else sub_terms[0]
+                            )
+                if or_clauses:
+                    search_terms.append(f"({' OR '.join(or_clauses)})")
+            else:
+                clean_q = re.sub(r"[^\w\s]", "", query).strip()
+                terms = [f'all:"{t}"' for t in clean_q.split() if t.upper() not in ("OR", "AND")]
+                if terms:
+                    search_terms.append(" AND ".join(terms))
 
         if categories:
             cat_filter = " OR ".join(f"cat:{c}" for c in categories)

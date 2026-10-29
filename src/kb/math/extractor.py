@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import re
+import warnings
 from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -94,7 +95,9 @@ class FormulaExtractor:
             )
 
         try:
-            parsed = parse_latex(sanitized)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=SyntaxWarning)
+                parsed = parse_latex(sanitized)
             if parsed is None:
                 raise ValueError("SymPy parse_latex returned None")
 
