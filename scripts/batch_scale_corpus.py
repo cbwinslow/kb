@@ -162,10 +162,14 @@ async def main() -> None:
             # Check disk space
             free_gb = get_free_disk_gb(Path("C:/"))
             if free_gb < DISK_FREE_FLOOR_GB:
-                print(f"[!] Warning: Low disk space on C: ({free_gb:.2f} GB free). Aborting further downloads.")
+                print(
+                    f"[!] Warning: Low disk space on C: ({free_gb:.2f} GB free). Aborting further downloads."
+                )
                 break
 
-            print(f"\n[*] Processing Batch {i // batch_size + 1} ({len(batch)} papers) | Disk free: {free_gb:.2f} GB")
+            print(
+                f"\n[*] Processing Batch {i // batch_size + 1} ({len(batch)} papers) | Disk free: {free_gb:.2f} GB"
+            )
 
             for p in batch:
                 arxiv_id = p["arxiv_id"]

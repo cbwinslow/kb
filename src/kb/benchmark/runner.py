@@ -97,11 +97,13 @@ class BenchmarkSuiteResult:
         ]
 
         if self.formula_benchmarks:
-            lines.extend([
-                "## 1. Formula Execution Speed (Scalar Python vs. Vectorized Polars)",
-                "| Formula | Rows | Scalar (ms) | Polars (ms) | Scalar Throughput | Polars Throughput | Speedup |",
-                "|---|---|---|---|---|---|---|",
-            ])
+            lines.extend(
+                [
+                    "## 1. Formula Execution Speed (Scalar Python vs. Vectorized Polars)",
+                    "| Formula | Rows | Scalar (ms) | Polars (ms) | Scalar Throughput | Polars Throughput | Speedup |",
+                    "|---|---|---|---|---|---|---|",
+                ]
+            )
             for f in self.formula_benchmarks:
                 lines.append(
                     f"| `{f.function_name}` | {f.n_rows:,} | {f.scalar_time_ms:.2f} ms | "
@@ -112,38 +114,44 @@ class BenchmarkSuiteResult:
 
         if self.embedding_benchmark:
             e = self.embedding_benchmark
-            lines.extend([
-                "## 2. Dense Vector Embedding Generation (BGE-M3)",
-                f"- **Device**: `{e.device}`",
-                f"- **Chunks Processed**: {e.n_chunks}",
-                f"- **Latency per Chunk**: {e.latency_per_chunk_ms:.2f} ms",
-                f"- **Throughput**: {e.throughput_chunks_per_sec:.2f} chunks/sec",
-                f"- **Total Time**: {e.total_time_ms:.2f} ms",
-                "",
-            ])
+            lines.extend(
+                [
+                    "## 2. Dense Vector Embedding Generation (BGE-M3)",
+                    f"- **Device**: `{e.device}`",
+                    f"- **Chunks Processed**: {e.n_chunks}",
+                    f"- **Latency per Chunk**: {e.latency_per_chunk_ms:.2f} ms",
+                    f"- **Throughput**: {e.throughput_chunks_per_sec:.2f} chunks/sec",
+                    f"- **Total Time**: {e.total_time_ms:.2f} ms",
+                    "",
+                ]
+            )
 
         if self.search_benchmark:
             s = self.search_benchmark
-            lines.extend([
-                "## 3. Hybrid Search Latency (RRF Fusion)",
-                f"- **Queries Evaluated**: {s.n_queries}",
-                f"- **Mean Latency**: {s.mean_latency_ms:.2f} ms",
-                f"- **P50 (Median)**: {s.p50_latency_ms:.2f} ms",
-                f"- **P95 Latency**: {s.p95_latency_ms:.2f} ms",
-                f"- **Max Latency**: {s.max_latency_ms:.2f} ms",
-                "",
-            ])
+            lines.extend(
+                [
+                    "## 3. Hybrid Search Latency (RRF Fusion)",
+                    f"- **Queries Evaluated**: {s.n_queries}",
+                    f"- **Mean Latency**: {s.mean_latency_ms:.2f} ms",
+                    f"- **P50 (Median)**: {s.p50_latency_ms:.2f} ms",
+                    f"- **P95 Latency**: {s.p95_latency_ms:.2f} ms",
+                    f"- **Max Latency**: {s.max_latency_ms:.2f} ms",
+                    "",
+                ]
+            )
 
         if self.quality_benchmark:
             q = self.quality_benchmark
-            lines.extend([
-                "## 4. Corpus Formula Quality Scorecard",
-                f"- **Total Formulas**: {q.total_formulas:,}",
-                f"- **Verified Valid**: {q.verified_valid:,} ({q.valid_ratio * 100:.1f}%)",
-                f"- **Explicit Equalities**: {q.equalities_count:,} ({q.equality_ratio * 100:.1f}%)",
-                f"- **Compilable Functions**: {q.compilable_count:,} ({q.compilation_ratio * 100:.1f}%)",
-                "",
-            ])
+            lines.extend(
+                [
+                    "## 4. Corpus Formula Quality Scorecard",
+                    f"- **Total Formulas**: {q.total_formulas:,}",
+                    f"- **Verified Valid**: {q.verified_valid:,} ({q.valid_ratio * 100:.1f}%)",
+                    f"- **Explicit Equalities**: {q.equalities_count:,} ({q.equality_ratio * 100:.1f}%)",
+                    f"- **Compilable Functions**: {q.compilable_count:,} ({q.compilation_ratio * 100:.1f}%)",
+                    "",
+                ]
+            )
 
         return "\n".join(lines)
 
@@ -155,19 +163,19 @@ class PerformanceBenchmarker:
         self.manager = db_manager or DatabaseManager()
         self.compiler = FormulaCompiler()
 
-    def benchmark_formula_execution(
-        self, n_rows: int = 100_000
-    ) -> list[FormulaBenchmarkResult]:
+    def benchmark_formula_execution(self, n_rows: int = 100_000) -> list[FormulaBenchmarkResult]:
         """Benchmarks pure Python loop vs. vectorized Polars expression across standard formulas."""
         logger.info("Benchmarking formula execution across %d rows...", n_rows)
         results: list[FormulaBenchmarkResult] = []
 
         # Benchmark 1: Pythagorean Expectation: W = R^g / (R^g + RA^g)
-        df_pyth = pl.DataFrame({
-            "R": [700.0 + (i % 100) for i in range(n_rows)],
-            "RA": [650.0 + (i % 80) for i in range(n_rows)],
-            "gamma": [1.83] * n_rows,
-        })
+        df_pyth = pl.DataFrame(
+            {
+                "R": [700.0 + (i % 100) for i in range(n_rows)],
+                "RA": [650.0 + (i % 80) for i in range(n_rows)],
+                "gamma": [1.83] * n_rows,
+            }
+        )
 
         # Scalar timing
         r_list = df_pyth["R"].to_list()
@@ -176,8 +184,7 @@ class PerformanceBenchmarker:
 
         start = time.perf_counter()
         _scalar_out = [
-            (r**g) / (r**g + ra**g)
-            for r, ra, g in zip(r_list, ra_list, gamma_list, strict=True)
+            (r**g) / (r**g + ra**g) for r, ra, g in zip(r_list, ra_list, gamma_list, strict=True)
         ]
         scalar_ms = (time.perf_counter() - start) * 1000.0
 
@@ -206,14 +213,16 @@ class PerformanceBenchmarker:
         )
 
         # Benchmark 2: FIP = (13*HR + 3*(BB + HBP) - 2*K) / IP + C
-        df_fip = pl.DataFrame({
-            "HR": [20.0 + (i % 15) for i in range(n_rows)],
-            "BB": [50.0 + (i % 25) for i in range(n_rows)],
-            "HBP": [5.0 + (i % 5) for i in range(n_rows)],
-            "K": [180.0 + (i % 40) for i in range(n_rows)],
-            "IP": [200.0 + (i % 30) for i in range(n_rows)],
-            "C": [3.10] * n_rows,
-        })
+        df_fip = pl.DataFrame(
+            {
+                "HR": [20.0 + (i % 15) for i in range(n_rows)],
+                "BB": [50.0 + (i % 25) for i in range(n_rows)],
+                "HBP": [5.0 + (i % 5) for i in range(n_rows)],
+                "K": [180.0 + (i % 40) for i in range(n_rows)],
+                "IP": [200.0 + (i % 30) for i in range(n_rows)],
+                "C": [3.10] * n_rows,
+            }
+        )
 
         hr_l = df_fip["HR"].to_list()
         bb_l = df_fip["BB"].to_list()
@@ -230,10 +239,8 @@ class PerformanceBenchmarker:
         scalar_fip_ms = (time.perf_counter() - start) * 1000.0
 
         fip_expr = (
-            (13.0 * pl.col("HR") + 3.0 * (pl.col("BB") + pl.col("HBP")) - 2.0 * pl.col("K"))
-            / pl.col("IP")
-            + pl.col("C")
-        )
+            13.0 * pl.col("HR") + 3.0 * (pl.col("BB") + pl.col("HBP")) - 2.0 * pl.col("K")
+        ) / pl.col("IP") + pl.col("C")
         start = time.perf_counter()
         _df_fip_out = df_fip.with_columns(fip_expr.alias("FIP"))
         polars_fip_ms = (time.perf_counter() - start) * 1000.0

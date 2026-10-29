@@ -89,14 +89,16 @@ class OpenAlexClient:
         """Parses an OpenAlex work JSON dictionary into an OpenAlexWork dataclass."""
         topics: list[dict[str, Any]] = []
         for t in data.get("topics", []):
-            topics.append({
-                "id": t.get("id"),
-                "name": t.get("display_name"),
-                "score": float(t.get("score", 0.0)),
-                "subfield": t.get("subfield", {}).get("display_name", ""),
-                "field": t.get("field", {}).get("display_name", ""),
-                "domain": t.get("domain", {}).get("display_name", ""),
-            })
+            topics.append(
+                {
+                    "id": t.get("id"),
+                    "name": t.get("display_name"),
+                    "score": float(t.get("score", 0.0)),
+                    "subfield": t.get("subfield", {}).get("display_name", ""),
+                    "field": t.get("field", {}).get("display_name", ""),
+                    "domain": t.get("domain", {}).get("display_name", ""),
+                }
+            )
 
         authors: list[str] = []
         for authorship in data.get("authorships", []):
@@ -208,9 +210,7 @@ class OpenAlexClient:
 
             # Prioritize candidate matching author last name and closest publication year
             if year and candidates:
-                candidates.sort(
-                    key=lambda c: abs((c.get("publication_year") or 9999) - year)
-                )
+                candidates.sort(key=lambda c: abs((c.get("publication_year") or 9999) - year))
 
             if authors and len(authors) > 0:
                 first_author_last = authors[0].split()[-1].lower()

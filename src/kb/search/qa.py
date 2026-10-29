@@ -60,12 +60,14 @@ class ResearchAnswer:
         else:
             lines.append("  (No mathematical formulas extracted for this query)")
 
-        lines.extend([
-            "",
-            "-" * 78,
-            "EMPIRICAL BENCHMARK FIXTURES:",
-            "-" * 78,
-        ])
+        lines.extend(
+            [
+                "",
+                "-" * 78,
+                "EMPIRICAL BENCHMARK FIXTURES:",
+                "-" * 78,
+            ]
+        )
         if self.relevant_tables:
             for t in self.relevant_tables[:3]:
                 cols = ", ".join(t.get("columns", [])[:6])
@@ -74,15 +76,19 @@ class ResearchAnswer:
         else:
             lines.append("  (No benchmark tables matched for this query)")
 
-        lines.extend([
-            "",
-            "-" * 78,
-            "GROUNDING CITATIONS:",
-            "-" * 78,
-        ])
+        lines.extend(
+            [
+                "",
+                "-" * 78,
+                "GROUNDING CITATIONS:",
+                "-" * 78,
+            ]
+        )
         for src in self.cited_sources:
             authors_str = ", ".join(src.get("authors", [])[:3])
-            lines.append(f"• [{src['citekey']}] \"{src['title']}\" ({src.get('year', 'n.d.')}) - {authors_str}")
+            lines.append(
+                f'• [{src["citekey"]}] "{src["title"]}" ({src.get("year", "n.d.")}) - {authors_str}'
+            )
 
         lines.append("=" * 78)
         return "\n".join(lines)

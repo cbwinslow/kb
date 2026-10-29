@@ -202,4 +202,3 @@ async def test_async_enrich_openalex() -> None:
         assert updated_doc.citation_count == 50
 
     await manager.close()
-

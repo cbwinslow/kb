@@ -135,7 +135,11 @@ class FormulaLibraryGenerator:
             return None
 
         # Filter out complex/imaginary expressions
-        if "1j" in comp_res.python_source or "I" in comp_res.parameters or "complex" in comp_res.python_source:
+        if (
+            "1j" in comp_res.python_source
+            or "I" in comp_res.parameters
+            or "complex" in comp_res.python_source
+        ):
             return None
 
         # Filter out reserved keywords or namespace collisions
@@ -148,7 +152,9 @@ class FormulaLibraryGenerator:
         # Build clean scalar function
         sig_params = ", ".join(f"{p}: float" for p in comp_res.parameters)
         # Extract the return expression from compiler.python_source
-        return_match = re.search(r"return float\((.*?)\)\s*$", comp_res.python_source, re.MULTILINE | re.DOTALL)
+        return_match = re.search(
+            r"return float\((.*?)\)\s*$", comp_res.python_source, re.MULTILINE | re.DOTALL
+        )
         if not return_match:
             return None
         core_expr = return_match.group(1).strip()
@@ -198,9 +204,7 @@ class FormulaLibraryGenerator:
             "from __future__ import annotations\n\n"
             "import math\n\n"
             "import polars as pl\n\n"
-            "__all__ = [\n"
-            + "\n".join(all_exports)
-            + "\n]\n\n"
+            "__all__ = [\n" + "\n".join(all_exports) + "\n]\n\n"
         )
 
         body_blocks: list[str] = []

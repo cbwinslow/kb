@@ -126,7 +126,10 @@ class FormulaVerifier:
             abs_errors = [abs(p - e) for p, e in zip(predicted, expected_outputs, strict=True)]
             mae = sum(abs_errors) / len(abs_errors)
             max_rel = max(
-                (err / (abs(e) + 1e-9) for err, e in zip(abs_errors, expected_outputs, strict=True)),
+                (
+                    err / (abs(e) + 1e-9)
+                    for err, e in zip(abs_errors, expected_outputs, strict=True)
+                ),
                 default=0.0,
             )
             passed = mae <= tolerance
@@ -218,8 +221,7 @@ class FormulaVerifier:
                 matches = [
                     c
                     for c in df.columns
-                    if param.lower() in c.lower()
-                    or norm_param in c.replace("_", "").lower()
+                    if param.lower() in c.lower() or norm_param in c.replace("_", "").lower()
                 ]
                 if matches:
                     col_name = matches[0]

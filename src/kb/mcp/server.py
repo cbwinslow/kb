@@ -62,21 +62,23 @@ def create_mcp_server(
 
             hits: list[dict[str, Any]] = []
             for r in results:
-                hits.append({
-                    "chunk_id": r.chunk_id,
-                    "document_id": r.document_id,
-                    "citekey": r.citekey,
-                    "section_path": r.section_path,
-                    "parent_section": r.parent_section,
-                    "text": r.text,
-                    "rrf_score": r.rrf_score,
-                    "dense_rank": r.dense_rank,
-                    "sparse_rank": r.sparse_rank,
-                    "dense_score": r.dense_score,
-                    "sparse_score": r.sparse_score,
-                    "has_math": r.has_math,
-                    "has_table": r.has_table,
-                })
+                hits.append(
+                    {
+                        "chunk_id": r.chunk_id,
+                        "document_id": r.document_id,
+                        "citekey": r.citekey,
+                        "section_path": r.section_path,
+                        "parent_section": r.parent_section,
+                        "text": r.text,
+                        "rrf_score": r.rrf_score,
+                        "dense_rank": r.dense_rank,
+                        "sparse_rank": r.sparse_rank,
+                        "dense_score": r.dense_score,
+                        "sparse_score": r.sparse_score,
+                        "has_math": r.has_math,
+                        "has_table": r.has_table,
+                    }
+                )
             return hits
 
     @server.tool(
@@ -112,19 +114,21 @@ def create_mcp_server(
                     if not (in_symbols or in_latex):
                         continue
 
-                results.append({
-                    "formula_id": f.id,
-                    "citekey": f.citekey,
-                    "document_id": f.document_id,
-                    "raw_latex": f.raw_latex,
-                    "sanitized_latex": f.sanitized_latex,
-                    "sympy_repr": f.sympy_repr,
-                    "symbols": f.symbols,
-                    "is_valid": f.is_valid,
-                    "is_equality": f.is_equality,
-                    "lhs": f.lhs,
-                    "rhs": f.rhs,
-                })
+                results.append(
+                    {
+                        "formula_id": f.id,
+                        "citekey": f.citekey,
+                        "document_id": f.document_id,
+                        "raw_latex": f.raw_latex,
+                        "sanitized_latex": f.sanitized_latex,
+                        "sympy_repr": f.sympy_repr,
+                        "symbols": f.symbols,
+                        "is_valid": f.is_valid,
+                        "is_equality": f.is_equality,
+                        "lhs": f.lhs,
+                        "rhs": f.rhs,
+                    }
+                )
             return results
 
     @server.tool(
@@ -228,17 +232,19 @@ def create_mcp_server(
 
             results: list[dict[str, Any]] = []
             for t in tables:
-                results.append({
-                    "table_id": t.id,
-                    "citekey": t.citekey,
-                    "caption": t.caption,
-                    "num_rows": t.num_rows,
-                    "num_cols": t.num_cols,
-                    "column_names": t.column_names,
-                    "parquet_path": t.parquet_path,
-                    "csv_path": t.csv_path,
-                    "schema_metadata": t.schema_metadata,
-                })
+                results.append(
+                    {
+                        "table_id": t.id,
+                        "citekey": t.citekey,
+                        "caption": t.caption,
+                        "num_rows": t.num_rows,
+                        "num_cols": t.num_cols,
+                        "column_names": t.column_names,
+                        "parquet_path": t.parquet_path,
+                        "csv_path": t.csv_path,
+                        "schema_metadata": t.schema_metadata,
+                    }
+                )
             return results
 
     @server.tool(
@@ -287,9 +293,7 @@ def create_mcp_server(
         target_id = openalex_id
         if not target_id and citekey:
             async with db.get_session() as session:
-                res = await session.execute(
-                    select(Document).where(Document.citekey == citekey)
-                )
+                res = await session.execute(select(Document).where(Document.citekey == citekey))
                 doc = res.scalar_one_or_none()
                 if doc:
                     target_id = doc.openalex_id
@@ -327,9 +331,7 @@ def create_mcp_server(
         target_id = openalex_id
         if not target_id and citekey:
             async with db.get_session() as session:
-                res = await session.execute(
-                    select(Document).where(Document.citekey == citekey)
-                )
+                res = await session.execute(select(Document).where(Document.citekey == citekey))
                 doc = res.scalar_one_or_none()
                 if doc:
                     target_id = doc.openalex_id

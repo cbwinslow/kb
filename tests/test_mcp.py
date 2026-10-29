@@ -188,14 +188,16 @@ def test_cli_parser() -> None:
     assert args.db_subcommand == "init"
 
     # ingest
-    args = parser.parse_args([
-        "ingest",
-        "data/fixtures/miller2008.pdf",
-        "--citekey",
-        "miller2008",
-        "--year",
-        "2008",
-    ])
+    args = parser.parse_args(
+        [
+            "ingest",
+            "data/fixtures/miller2008.pdf",
+            "--citekey",
+            "miller2008",
+            "--year",
+            "2008",
+        ]
+    )
     assert args.subcommand == "ingest"
     assert str(args.pdf_path).endswith("miller2008.pdf")
     assert args.citekey == "miller2008"

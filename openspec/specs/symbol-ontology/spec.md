@@ -1,0 +1,18 @@
+# Specification: Semantic Symbol Ontology & Column Mapping
+
+## Scope & Purpose
+Provides an authoritative semantic mapping layer bridging academic literature mathematical notations (heterogeneous author LaTeX variables like $R_S, \text{RS}, R, r, H_R, \text{HR}, I_P, \text{IP}$) with standard data engineering columns found in empirical sabermetric datasets (such as Retrosheet, Statcast, Chadwick, and `baseballpy`).
+
+## Requirements
+1. **Canonical Concept Registry**:
+   - MUST maintain definitions for canonical baseball concepts including `runs_scored`, `runs_allowed`, `home_runs`, `innings_pitched`, `strikeouts`, `walks`, `hits`, `at_bats`, `plate_appearances`, `singles`, `doubles`, `triples`, `win_pct`, and `gamma`.
+   - Each concept MUST include canonical identifiers, typical LaTeX display forms, aliases, descriptions, and value domains.
+2. **Robust Symbol Resolution**:
+   - `SymbolOntology.resolve_canonical(symbol: str)` MUST resolve variations including LaTeX formatted strings (`R_S`, `\text{RS}`, `\mathrm{HR}`), subscripts, and case variations.
+   - Ambiguous or unknown symbols MUST fall back gracefully without raising unexpected unhandled exceptions.
+3. **DataFrame Binding**:
+   - `SymbolOntology.bind_dataframe(df, formula_symbols)` MUST automatically inspect incoming DataFrame columns (supporting Polars `pl.DataFrame` and Pandas `pd.DataFrame`) and map matching canonical columns to the formula's parameter names.
+   - If a column already matches, it MUST be preserved.
+   - If an alias exists in the DataFrame, it MUST be made accessible under the formula parameter name via alias column creation or renaming.
+4. **Integration**:
+   - MUST be exposed for programmatic use in `kb.math.ontology` and available for formula evaluation pipelines.

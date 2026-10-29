@@ -36,9 +36,7 @@ class SSHSyncManager:
     def is_configured(self) -> bool:
         """Returns True if minimum SSH connection credentials are provided."""
         has_host = bool(self.host and self.user)
-        has_auth = bool(
-            (self.key_path and self.key_path.exists()) or self.password
-        )
+        has_auth = bool((self.key_path and self.key_path.exists()) or self.password)
         return has_host and has_auth
 
     def _create_client(self) -> paramiko.SSHClient:

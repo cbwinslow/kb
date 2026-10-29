@@ -141,4 +141,3 @@ async def test_async_embed_backfill() -> None:
     )
     assert code_second == 0
     await manager.close()
-

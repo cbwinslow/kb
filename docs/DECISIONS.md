@@ -201,3 +201,31 @@ This document records the architectural, technical, and mathematical decisions m
   - **Hybrid Search Latency**: Measures P50, P95, and maximum latency for RRF retrieval.
   - **Corpus Quality Scorecard**: Computes AST verification yield, equality ratios, and compilable function counts across all stored formulas.
 - **Consequences**: Quantifies performance gains (demonstrating up to 4x–100x speedups using Polars expressions) and provides automated quality assurance against regressions.
+
+---
+
+## ADR-019: Semantic Symbol Ontology & Empirical Column Mapping
+- **Status**: Accepted
+- **Context**: Sabermetric research literature uses inconsistent mathematical symbols for the same underlying concepts ($R_S, \text{RS}, R, r \to \text{runs\_scored}$; $H_R, \text{HR}, hr \to \text{home\_runs}$; $I_P, \text{IP} \to \text{innings\_pitched}$). Downstream users attempting to evaluate compiled formulas on raw tabular data from Retrosheet, Statcast, Lahman, or `baseballpy` had to manually rename columns.
+- **Decision**: Implement `SymbolOntology` and `bind_dataframe` in `src/kb/math/ontology.py`:
+  - Authoritative `CanonicalConcept` registry indexing 24+ standard baseball metrics and their LaTeX/plain-text variants.
+  - Multi-stage normalization engine handling LaTeX font commands (`\text{}`, `\mathrm{}`), math mode tokens, subscripts, and casing.
+  - Zero-copy DataFrame column binding for both Polars (`pl.DataFrame`) and Pandas (`pd.DataFrame`), automatically aliasing source columns to formula parameter names.
+  - CLI integration via `kb code ontology` for symbol inspection and column resolution.
+- **Consequences**: Enables zero-configuration execution of scientific formula ASTs directly on arbitrary empirical DataFrames without manual column preprocessing.
+
+---
+
+## ADR-020: CI/CD Packaging & Interactive Web UI Calculation Playground
+- **Status**: Accepted
+- **Context**: The standalone formula package `packages/kb_formulas` lacked automated CI testing and PyPI distribution workflows. Furthermore, the web UI (`kb ui serve`) supported formula browsing and lineage inspection, but lacked an interactive sandbox for dynamic parameter variation, sensitivity response curves, and instant formula experimentation.
+- **Decision**:
+  - Implement GitHub Actions CI (`.github/workflows/ci.yml`) covering Ubuntu and Windows matrices with Ruff, Pyright, and Pytest.
+  - Implement release publishing pipeline (`.github/workflows/publish-formulas.yml`) triggering on version tags to build wheels and source distributions with `uv build`.
+  - Add interactive "Formula Playground" tab to `src/kb/ui/app.py` with:
+    - Canonical presets (Pythagorean Expectation, FIP, wOBA) and custom LaTeX evaluator.
+    - Synchronized range sliders and numeric input fields.
+    - Reactive real-time AJAX evaluations against `/api/eval`.
+    - Live SVG sensitivity response curve charting parameter sweeps with highlighted live operating points.
+    - Strict compartmentalization preserving all existing UI tabs (`lineage`, `formulas`, `tables`, `search`) and API behaviors.
+- **Consequences**: Ensures cross-platform build stability, automated PyPI release readiness, and provides users with an intuitive real-time simulation workbench.

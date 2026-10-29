@@ -64,7 +64,9 @@ class ContinuousHarvesterDaemon:
         client = OpenAlexClient()
         pipeline = IngestionPipeline(db_manager=self.manager, openalex_client=client)
         batch_runner = BatchIngestionRunner(pipeline=pipeline)
-        discoverer = OpenAlexSourceDiscoverer(openalex_client=client, download_dir=self.download_dir)
+        discoverer = OpenAlexSourceDiscoverer(
+            openalex_client=client, download_dir=self.download_dir
+        )
 
         for query in self.queries:
             logger.info("Querying OpenAlex for '%s'...", query)

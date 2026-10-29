@@ -60,20 +60,28 @@ class DatabaseManager:
                 # Enable pgvector extension if available
                 await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
                 # Ensure newly added columns exist on kb_documents
-                await conn.execute(text(
-                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS openalex_id VARCHAR(128);"
-                ))
-                await conn.execute(text(
-                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS citation_count INTEGER;"
-                ))
-                await conn.execute(text(
-                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS "
-                    "topics JSONB DEFAULT '[]'::jsonb;"
-                ))
-                await conn.execute(text(
-                    "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS "
-                    "referenced_works JSONB DEFAULT '[]'::jsonb;"
-                ))
+                await conn.execute(
+                    text(
+                        "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS openalex_id VARCHAR(128);"
+                    )
+                )
+                await conn.execute(
+                    text(
+                        "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS citation_count INTEGER;"
+                    )
+                )
+                await conn.execute(
+                    text(
+                        "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS "
+                        "topics JSONB DEFAULT '[]'::jsonb;"
+                    )
+                )
+                await conn.execute(
+                    text(
+                        "ALTER TABLE kb_documents ADD COLUMN IF NOT EXISTS "
+                        "referenced_works JSONB DEFAULT '[]'::jsonb;"
+                    )
+                )
             await conn.run_sync(Base.metadata.create_all)
         logger.info("Database schema initialized successfully for %s", self.url.split("@")[-1])
 
@@ -90,7 +98,9 @@ class DatabaseManager:
                 result = await conn.execute(text("SELECT 1;"))
                 scalar = result.scalar()
                 if scalar == 1:
-                    host_info = self.url.split("@")[-1].split("/")[0] if "@" in self.url else "local"
+                    host_info = (
+                        self.url.split("@")[-1].split("/")[0] if "@" in self.url else "local"
+                    )
                     backend = f"PostgreSQL ({host_info})" if self.is_postgres else "SQLite"
                     return True, f"Connection established to {backend} [{self.url.split('@')[-1]}]"
                 return False, f"Unexpected response from database: {scalar}"

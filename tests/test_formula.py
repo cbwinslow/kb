@@ -165,4 +165,3 @@ def test_extract_math_symbols_and_references() -> None:
     assert "runs scored" in glossary["RS"]
     assert "RA" in glossary
     assert "runs allowed" in glossary["RA"]
-

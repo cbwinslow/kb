@@ -14,9 +14,19 @@ from kb.math.lineage import (
     DerivationRelation,
     FormulaLineageGraph,
 )
+from kb.math.ontology import (
+    CanonicalConcept,
+    ConceptDefinition,
+    SymbolOntology,
+    get_symbol_ontology,
+    map_dataframe_columns,
+    resolve_canonical,
+)
 from kb.math.sanitizer import EquationSanitizer
 
 __all__ = [
+    "CanonicalConcept",
+    "ConceptDefinition",
     "DerivationEdge",
     "DerivationNode",
     "DerivationRelation",
@@ -25,7 +35,11 @@ __all__ = [
     "FormulaCodeGenerator",
     "FormulaExtractor",
     "FormulaLineageGraph",
+    "SymbolOntology",
     "extract_equation_references",
     "extract_math_symbols",
     "extract_variable_glossary",
+    "get_symbol_ontology",
+    "map_dataframe_columns",
+    "resolve_canonical",
 ]

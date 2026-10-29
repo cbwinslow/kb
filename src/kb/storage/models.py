@@ -32,9 +32,7 @@ class Document(Base):
 
     __tablename__ = "kb_documents"
 
-    id: Mapped[str] = mapped_column(
-        String(64), primary_key=True, default=lambda: str(uuid.uuid4())
-    )
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
     citekey: Mapped[str] = mapped_column(String(128), unique=True, index=True, nullable=False)
     title: Mapped[str] = mapped_column(Text, nullable=False)
     authors: Mapped[list[str]] = mapped_column(
@@ -83,9 +81,7 @@ class Chunk(Base):
 
     __tablename__ = "kb_chunks"
 
-    id: Mapped[str] = mapped_column(
-        String(64), primary_key=True, default=lambda: str(uuid.uuid4())
-    )
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
     document_id: Mapped[str] = mapped_column(
         ForeignKey("kb_documents.id", ondelete="CASCADE"), index=True, nullable=False
     )
@@ -135,9 +131,7 @@ class Formula(Base):
 
     __tablename__ = "kb_formulas"
 
-    id: Mapped[str] = mapped_column(
-        String(64), primary_key=True, default=lambda: str(uuid.uuid4())
-    )
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
     document_id: Mapped[str] = mapped_column(
         ForeignKey("kb_documents.id", ondelete="CASCADE"), index=True, nullable=False
     )
@@ -172,9 +166,7 @@ class BenchmarkTable(Base):
 
     __tablename__ = "kb_benchmark_tables"
 
-    id: Mapped[str] = mapped_column(
-        String(64), primary_key=True, default=lambda: str(uuid.uuid4())
-    )
+    id: Mapped[str] = mapped_column(String(64), primary_key=True, default=lambda: str(uuid.uuid4()))
     document_id: Mapped[str] = mapped_column(
         ForeignKey("kb_documents.id", ondelete="CASCADE"), index=True, nullable=False
     )

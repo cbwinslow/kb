@@ -928,6 +928,7 @@ __all__ = [
     "expr_q_i_j_form_9",
 ]
 
+
 def calc_miller2005_f0dbf0(P: float, b: float, o: float, r: float) -> float:
     r"""Compute mathematical metric extracted from miller2005.
 
@@ -950,12 +951,12 @@ def calc_miller2005_f0dbf0(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller2005_f0dbf0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller2005_f0dbf0`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller2005_04a82a(P: float, b: float, o: float, r: float) -> float:
@@ -980,12 +981,12 @@ def calc_miller2005_04a82a(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller2005_04a82a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller2005_04a82a`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller2005_a3864f(P: float, b: float, o: float, r: float) -> float:
@@ -1010,12 +1011,12 @@ def calc_miller2005_a3864f(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller2005_a3864f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller2005_a3864f`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller2005_329993(X: float, r: float) -> float:
@@ -1038,12 +1039,12 @@ def calc_miller2005_329993(X: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(X*r)
+    return float(X * r)
 
 
 def expr_miller2005_329993() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller2005_329993`."""
-    return (pl.col("X")*pl.col("r"))
+    return pl.col("X") * pl.col("r")
 
 
 def calc_miller2005_effa17(r: float) -> float:
@@ -1065,12 +1066,12 @@ def calc_miller2005_effa17(r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*r)
+    return float(math.e * r)
 
 
 def expr_miller2005_effa17() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller2005_effa17`."""
-    return (math.e*pl.col("r"))
+    return math.e * pl.col("r")
 
 
 def calc_jensen2009_33f50d(P: float) -> float:
@@ -1097,7 +1098,7 @@ def calc_jensen2009_33f50d(P: float) -> float:
 
 def expr_jensen2009_33f50d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_jensen2009_33f50d`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_0802_4317_formul(P: float) -> float:
@@ -1124,7 +1125,7 @@ def calc_val_0802_4317_formul(P: float) -> float:
 
 def expr_val_0802_4317_formul() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_0802_4317_formul`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_1205_4750_1205_4(r: float) -> float:
@@ -1146,12 +1147,12 @@ def calc_val_1205_4750_1205_4(r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(11*r**4)
+    return float(11 * r**4)
 
 
 def expr_val_1205_4750_1205_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1205_4750_1205_4`."""
-    return (11*pl.col("r")**4)
+    return 11 * pl.col("r") ** 4
 
 
 def calc_val_1208_1725_1208_1(A: float, G: float, S: float) -> float:
@@ -1175,15 +1176,23 @@ def calc_val_1208_1725_1208_1(A: float, G: float, S: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(G*(A*(G*(A*(G*(S*(G*S)))))))
+    return float(G * (A * (G * (A * (G * (S * (G * S)))))))
 
 
 def expr_val_1208_1725_1208_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1208_1725_1208_1`."""
-    return (pl.col("G")*(pl.col("A")*(pl.col("G")*(pl.col("A")*(pl.col("G")*(pl.col("S")*(pl.col("G")*pl.col("S"))))))))
+    return pl.col("G") * (
+        pl.col("A")
+        * (
+            pl.col("G")
+            * (pl.col("A") * (pl.col("G") * (pl.col("S") * (pl.col("G") * pl.col("S")))))
+        )
+    )
 
 
-def calc_w_a_r_q_1312_7(A: float, R: float, e: float, l: float, p: float, q: float, r: float) -> float:
+def calc_w_a_r_q_1312_7(
+    A: float, R: float, e: float, l: float, p: float, q: float, r: float
+) -> float:
     r"""Compute mathematical metric extracted from 1312_7158.
 
     **Source**:
@@ -1208,12 +1217,14 @@ def calc_w_a_r_q_1312_7(A: float, R: float, e: float, l: float, p: float, q: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(-10*A**2*R*e*l*p*q*r + A**2*R*q)
+    return float(-10 * A**2 * R * e * l * p * q * r + A**2 * R * q)
 
 
 def expr_w_a_r_q_1312_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_a_r_q_1312_7`."""
-    return (-10*pl.col("A")**2*pl.col("R")*pl.col("e")*pl.col("l")*pl.col("p")*pl.col("q")*pl.col("r") + pl.col("A")**2*pl.col("R")*pl.col("q"))
+    return -10 * pl.col("A") ** 2 * pl.col("R") * pl.col("e") * pl.col("l") * pl.col("p") * pl.col(
+        "q"
+    ) * pl.col("r") + pl.col("A") ** 2 * pl.col("R") * pl.col("q")
 
 
 def calc_w_p_c_t_p_r_s_r_a_1312_7(R_A: float, R_S: float, p: float) -> float:
@@ -1237,12 +1248,12 @@ def calc_w_p_c_t_p_r_s_r_a_1312_7(R_A: float, R_S: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(p*(R_A*R_S) + 11)
+    return float(p * (R_A * R_S) + 11)
 
 
 def expr_w_p_c_t_p_r_s_r_a_1312_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_p_c_t_p_r_s_r_a_1312_7`."""
-    return (pl.col("p")*(pl.col("R_A")*pl.col("R_S")) + 11)
+    return pl.col("p") * (pl.col("R_A") * pl.col("R_S")) + 11
 
 
 def calc_val_1406_3402_1406_3(A: float, R: float, S: float) -> float:
@@ -1266,12 +1277,14 @@ def calc_val_1406_3402_1406_3(A: float, R: float, S: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*(2*A) + R*(S*(2*(R*(2*S)))))
+    return float(R * (2 * A) + R * (S * (2 * (R * (2 * S)))))
 
 
 def expr_val_1406_3402_1406_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1406_3402_1406_3`."""
-    return (pl.col("R")*(2*pl.col("A")) + pl.col("R")*(pl.col("S")*(2*(pl.col("R")*(2*pl.col("S"))))))
+    return pl.col("R") * (2 * pl.col("A")) + pl.col("R") * (
+        pl.col("S") * (2 * (pl.col("R") * (2 * pl.col("S"))))
+    )
 
 
 def calc_val_1603_00050_1603_0(P: float) -> float:
@@ -1298,7 +1311,7 @@ def calc_val_1603_00050_1603_0(P: float) -> float:
 
 def expr_val_1603_00050_1603_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1603_00050_1603_0`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_d_a_h_1603_0(A: float, D: float, H: float) -> float:
@@ -1322,12 +1335,12 @@ def calc_d_a_h_1603_0(A: float, D: float, H: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-A*D + D*H)
+    return float(-A * D + D * H)
 
 
 def expr_d_a_h_1603_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_d_a_h_1603_0`."""
-    return (-pl.col("A")*pl.col("D") + pl.col("D")*pl.col("H"))
+    return -pl.col("A") * pl.col("D") + pl.col("D") * pl.col("H")
 
 
 def calc_val_1704_00823_1704_0(g: float, l: float, o: float) -> float:
@@ -1351,12 +1364,12 @@ def calc_val_1704_00823_1704_0(g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*l*o)
+    return float(g * l * o)
 
 
 def expr_val_1704_00823_1704_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1704_00823_1704_0`."""
-    return (pl.col("g")*pl.col("l")*pl.col("o"))
+    return pl.col("g") * pl.col("l") * pl.col("o")
 
 
 def calc_val_1706_10272_1706_1(P: float) -> float:
@@ -1383,7 +1396,7 @@ def calc_val_1706_10272_1706_1(P: float) -> float:
 
 def expr_val_1706_10272_1706_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1706_10272_1706_1`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2005_07742_2005_0(f: float, h: float) -> float:
@@ -1406,12 +1419,12 @@ def calc_val_2005_07742_2005_0(f: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*h)
+    return float(f * h)
 
 
 def expr_val_2005_07742_2005_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2005_07742_2005_0`."""
-    return (pl.col("f")*pl.col("h"))
+    return pl.col("f") * pl.col("h")
 
 
 def calc_val_1811_07259_1811_0(P: float) -> float:
@@ -1438,7 +1451,7 @@ def calc_val_1811_07259_1811_0(P: float) -> float:
 
 def expr_val_1811_07259_1811_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1811_07259_1811_0`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2004_08428_2004_0(L: float, P: float, S: float) -> float:
@@ -1462,12 +1475,12 @@ def calc_val_2004_08428_2004_0(L: float, P: float, S: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*(L*S))
+    return float(P * (L * S))
 
 
 def expr_val_2004_08428_2004_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2004_08428_2004_0`."""
-    return (pl.col("P")*(pl.col("L")*pl.col("S")))
+    return pl.col("P") * (pl.col("L") * pl.col("S"))
 
 
 def calc_val_2103_12094_2103_1(i: float, k: float, p: float) -> float:
@@ -1491,12 +1504,12 @@ def calc_val_2103_12094_2103_1(i: float, k: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*k*p)
+    return float(i * k * p)
 
 
 def expr_val_2103_12094_2103_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2103_12094_2103_1`."""
-    return (pl.col("i")*pl.col("k")*pl.col("p"))
+    return pl.col("i") * pl.col("k") * pl.col("p")
 
 
 def calc_val_2109_09287_2109_0(i: float, p: float) -> float:
@@ -1519,15 +1532,27 @@ def calc_val_2109_09287_2109_0(i: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*p)
+    return float(i * p)
 
 
 def expr_val_2109_09287_2109_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2109_09287_2109_0`."""
-    return (pl.col("i")*pl.col("p"))
+    return pl.col("i") * pl.col("p")
 
 
-def calc_val_2112_14846_2112_1(a: float, c: float, dw: float, e: float, g: float, i: float, n: float, p: float, r: float, t: float, x: float) -> float:
+def calc_val_2112_14846_2112_1(
+    a: float,
+    c: float,
+    dw: float,
+    e: float,
+    g: float,
+    i: float,
+    n: float,
+    p: float,
+    r: float,
+    t: float,
+    x: float,
+) -> float:
     r"""Compute mathematical metric extracted from 2112_14846.
 
     **Source**:
@@ -1556,15 +1581,30 @@ def calc_val_2112_14846_2112_1(a: float, c: float, dw: float, e: float, g: float
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*a*c**2*dw*e**5*g*i**2*n**2*p**2*r*t**2*x)
+    return float(math.e * a * c**2 * dw * e**5 * g * i**2 * n**2 * p**2 * r * t**2 * x)
 
 
 def expr_val_2112_14846_2112_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2112_14846_2112_1`."""
-    return (math.e*pl.col("a")*pl.col("c")**2*pl.col("dw")*pl.col("e")**5*pl.col("g")*pl.col("i")**2*pl.col("n")**2*pl.col("p")**2*pl.col("r")*pl.col("t")**2*pl.col("x"))
+    return (
+        math.e
+        * pl.col("a")
+        * pl.col("c") ** 2
+        * pl.col("dw")
+        * pl.col("e") ** 5
+        * pl.col("g")
+        * pl.col("i") ** 2
+        * pl.col("n") ** 2
+        * pl.col("p") ** 2
+        * pl.col("r")
+        * pl.col("t") ** 2
+        * pl.col("x")
+    )
 
 
-def calc_val_2201_01168_2201_0(c: float, dw: float, e: float, i: float, n: float, p: float, s: float, t: float, x: float) -> float:
+def calc_val_2201_01168_2201_0(
+    c: float, dw: float, e: float, i: float, n: float, p: float, s: float, t: float, x: float
+) -> float:
     r"""Compute mathematical metric extracted from 2201_01168.
 
     **Source**:
@@ -1591,12 +1631,23 @@ def calc_val_2201_01168_2201_0(c: float, dw: float, e: float, i: float, n: float
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*c*dw*e**2*i**2*n*p*s*t*x)
+    return float(math.e * c * dw * e**2 * i**2 * n * p * s * t * x)
 
 
 def expr_val_2201_01168_2201_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2201_01168_2201_0`."""
-    return (math.e*pl.col("c")*pl.col("dw")*pl.col("e")**2*pl.col("i")**2*pl.col("n")*pl.col("p")*pl.col("s")*pl.col("t")*pl.col("x"))
+    return (
+        math.e
+        * pl.col("c")
+        * pl.col("dw")
+        * pl.col("e") ** 2
+        * pl.col("i") ** 2
+        * pl.col("n")
+        * pl.col("p")
+        * pl.col("s")
+        * pl.col("t")
+        * pl.col("x")
+    )
 
 
 def calc_val_2207_11332_2207_1(F: float, X: float, i: float) -> float:
@@ -1620,12 +1671,12 @@ def calc_val_2207_11332_2207_1(F: float, X: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(F - X*i)
+    return float(F - X * i)
 
 
 def expr_val_2207_11332_2207_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2207_11332_2207_1`."""
-    return (pl.col("F") - pl.col("X")*pl.col("i"))
+    return pl.col("F") - pl.col("X") * pl.col("i")
 
 
 def calc_t_2210_0(B: float, U: float, m: float) -> float:
@@ -1649,12 +1700,12 @@ def calc_t_2210_0(B: float, U: float, m: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*(m + 1) + U)
+    return float(B * (m + 1) + U)
 
 
 def expr_t_2210_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_2210_0`."""
-    return (pl.col("B")*(pl.col("m") + 1) + pl.col("U"))
+    return pl.col("B") * (pl.col("m") + 1) + pl.col("U")
 
 
 def calc_val_2210_06724_2210_0(g: float, l: float, o: float) -> float:
@@ -1678,12 +1729,12 @@ def calc_val_2210_06724_2210_0(g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*l*o)
+    return float(g * l * o)
 
 
 def expr_val_2210_06724_2210_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2210_06724_2210_0`."""
-    return (pl.col("g")*pl.col("l")*pl.col("o"))
+    return pl.col("g") * pl.col("l") * pl.col("o")
 
 
 def calc_val_2310_01184_2310_0(P: float, b: float, o: float, r: float) -> float:
@@ -1708,12 +1759,12 @@ def calc_val_2310_01184_2310_0(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_val_2310_01184_2310_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2310_01184_2310_0`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_val_2209_07274_2209_0(X: float, i: float) -> float:
@@ -1736,12 +1787,12 @@ def calc_val_2209_07274_2209_0(X: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(X*i**2)
+    return float(X * i**2)
 
 
 def expr_val_2209_07274_2209_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2209_07274_2209_0`."""
-    return (pl.col("X")*pl.col("i")**2)
+    return pl.col("X") * pl.col("i") ** 2
 
 
 def calc_val_2510_25961_2510_2(P: float, r: float) -> float:
@@ -1764,12 +1815,12 @@ def calc_val_2510_25961_2510_2(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_val_2510_25961_2510_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2510_25961_2510_2`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2507_01238_2507_0(g: float, l: float, o: float) -> float:
@@ -1793,15 +1844,27 @@ def calc_val_2507_01238_2507_0(g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*l*o)
+    return float(g * l * o)
 
 
 def expr_val_2507_01238_2507_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2507_01238_2507_0`."""
-    return (pl.col("g")*pl.col("l")*pl.col("o"))
+    return pl.col("g") * pl.col("l") * pl.col("o")
 
 
-def calc_val_2511_02815_2511_0(a: float, c: float, d: float, e: float, l: float, n: float, o: float, r: float, s: float, u: float, w: float) -> float:
+def calc_val_2511_02815_2511_0(
+    a: float,
+    c: float,
+    d: float,
+    e: float,
+    l: float,
+    n: float,
+    o: float,
+    r: float,
+    s: float,
+    u: float,
+    w: float,
+) -> float:
     r"""Compute mathematical metric extracted from 2511_02815.
 
     **Source**:
@@ -1830,12 +1893,35 @@ def calc_val_2511_02815_2511_0(a: float, c: float, d: float, e: float, l: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(a*d*e*l**2*n*o*r*s*u*w + 4*c**2*d**2*e**2*n**2*o**2*r**4*s**4*u**2)
+    return float(
+        a * d * e * l**2 * n * o * r * s * u * w
+        + 4 * c**2 * d**2 * e**2 * n**2 * o**2 * r**4 * s**4 * u**2
+    )
 
 
 def expr_val_2511_02815_2511_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2511_02815_2511_0`."""
-    return (pl.col("a")*pl.col("d")*pl.col("e")*pl.col("l")**2*pl.col("n")*pl.col("o")*pl.col("r")*pl.col("s")*pl.col("u")*pl.col("w") + 4*pl.col("c")**2*pl.col("d")**2*pl.col("e")**2*pl.col("n")**2*pl.col("o")**2*pl.col("r")**4*pl.col("s")**4*pl.col("u")**2)
+    return (
+        pl.col("a")
+        * pl.col("d")
+        * pl.col("e")
+        * pl.col("l") ** 2
+        * pl.col("n")
+        * pl.col("o")
+        * pl.col("r")
+        * pl.col("s")
+        * pl.col("u")
+        * pl.col("w")
+        + 4
+        * pl.col("c") ** 2
+        * pl.col("d") ** 2
+        * pl.col("e") ** 2
+        * pl.col("n") ** 2
+        * pl.col("o") ** 2
+        * pl.col("r") ** 4
+        * pl.col("s") ** 4
+        * pl.col("u") ** 2
+    )
 
 
 def calc_val_2511_17733_2511_1(K: float) -> float:
@@ -1857,12 +1943,12 @@ def calc_val_2511_17733_2511_1(K: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(28*K)
+    return float(28 * K)
 
 
 def expr_val_2511_17733_2511_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2511_17733_2511_1`."""
-    return (28*pl.col("K"))
+    return 28 * pl.col("K")
 
 
 def calc_w_1_2511_1(h: float, k: float) -> float:
@@ -1885,12 +1971,12 @@ def calc_w_1_2511_1(h: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(3*h*k - 1)
+    return float(3 * h * k - 1)
 
 
 def expr_w_1_2511_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_1_2511_1`."""
-    return (3*pl.col("h")*pl.col("k") - 1)
+    return 3 * pl.col("h") * pl.col("k") - 1
 
 
 def calc_l_x_2511_1(x: float) -> float:
@@ -1917,7 +2003,7 @@ def calc_l_x_2511_1(x: float) -> float:
 
 def expr_l_x_2511_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_x_2511_1`."""
-    return (pl.col("x"))
+    return pl.col("x")
 
 
 def calc_r_x_2511_1(n: float, x: float) -> float:
@@ -1940,12 +2026,12 @@ def calc_r_x_2511_1(n: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(n*x)
+    return float(n * x)
 
 
 def expr_r_x_2511_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_x_2511_1`."""
-    return (pl.col("n")*pl.col("x"))
+    return pl.col("n") * pl.col("x")
 
 
 def calc_f_l_x_2511_1(L: float, f: float) -> float:
@@ -1968,12 +2054,12 @@ def calc_f_l_x_2511_1(L: float, f: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(L*f)
+    return float(L * f)
 
 
 def expr_f_l_x_2511_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_l_x_2511_1`."""
-    return (pl.col("L")*pl.col("f"))
+    return pl.col("L") * pl.col("f")
 
 
 def calc_f_r_x_2511_1(R: float, f: float) -> float:
@@ -1996,12 +2082,12 @@ def calc_f_r_x_2511_1(R: float, f: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*f)
+    return float(R * f)
 
 
 def expr_f_r_x_2511_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_r_x_2511_1`."""
-    return (pl.col("R")*pl.col("f"))
+    return pl.col("R") * pl.col("f")
 
 
 def calc_i_n_de_x_2603_2(z: float) -> float:
@@ -2023,12 +2109,12 @@ def calc_i_n_de_x_2603_2(z: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(20*z + 100)
+    return float(20 * z + 100)
 
 
 def expr_i_n_de_x_2603_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_i_n_de_x_2603_2`."""
-    return (20*pl.col("z") + 100)
+    return 20 * pl.col("z") + 100
 
 
 def calc_beyond_runs_expectancy_jsm2014_beyond(P: float, b: float, o: float, r: float) -> float:
@@ -2053,12 +2139,12 @@ def calc_beyond_runs_expectancy_jsm2014_beyond(P: float, b: float, o: float, r: 
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_beyond_runs_expectancy_jsm2014_beyond() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_beyond_runs_expectancy_jsm2014_beyond`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_brier_1950_mwr_brier_(r: float) -> float:
@@ -2085,7 +2171,7 @@ def calc_brier_1950_mwr_brier_(r: float) -> float:
 
 def expr_brier_1950_mwr_brier_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_brier_1950_mwr_brier_`."""
-    return (pl.col("r"))
+    return pl.col("r")
 
 
 def calc_p_brier_(B: float, c: float, f: float, t: float, z: float) -> float:
@@ -2111,12 +2197,12 @@ def calc_p_brier_(B: float, c: float, f: float, t: float, z: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-B*c*f*t*z)
+    return float(-B * c * f * t * z)
 
 
 def expr_p_brier_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_brier_`."""
-    return (-pl.col("B")*pl.col("c")*pl.col("f")*pl.col("t")*pl.col("z"))
+    return -pl.col("B") * pl.col("c") * pl.col("f") * pl.col("t") * pl.col("z")
 
 
 def calc_p_t_brier_(i: float, l: float, p: float) -> float:
@@ -2140,12 +2226,12 @@ def calc_p_t_brier_(i: float, l: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-i*p + l)
+    return float(-i * p + l)
 
 
 def expr_p_t_brier_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_t_brier_`."""
-    return (-pl.col("i")*pl.col("p") + pl.col("l"))
+    return -pl.col("i") * pl.col("p") + pl.col("l")
 
 
 def calc_r_i_j_brown_(H: float, N: float, i: float, j: float) -> float:
@@ -2170,12 +2256,12 @@ def calc_r_i_j_brown_(H: float, N: float, i: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(H*(j*(i*(N*(i*j)))))
+    return float(H * (j * (i * (N * (i * j)))))
 
 
 def expr_r_i_j_brown_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_i_j_brown_`."""
-    return (pl.col("H")*(pl.col("j")*(pl.col("i")*(pl.col("N")*(pl.col("i")*pl.col("j"))))))
+    return pl.col("H") * (pl.col("j") * (pl.col("i") * (pl.col("N") * (pl.col("i") * pl.col("j")))))
 
 
 def calc_v_a_r_x_1_i_x_2_i_brown_(N: float, i: float) -> float:
@@ -2198,12 +2284,12 @@ def calc_v_a_r_x_1_i_x_2_i_brown_(N: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(14*(N*(1*i)) + 14*(N*(2*i)))
+    return float(14 * (N * (1 * i)) + 14 * (N * (2 * i)))
 
 
 def expr_v_a_r_x_1_i_x_2_i_brown_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_v_a_r_x_1_i_x_2_i_brown_`."""
-    return (14*(pl.col("N")*(1*pl.col("i"))) + 14*(pl.col("N")*(2*pl.col("i"))))
+    return 14 * (pl.col("N") * (1 * pl.col("i"))) + 14 * (pl.col("N") * (2 * pl.col("i")))
 
 
 def calc_p_i_brown_(U: float, i: float) -> float:
@@ -2226,12 +2312,12 @@ def calc_p_i_brown_(U: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-U*i + 1)
+    return float(-U * i + 1)
 
 
 def expr_p_i_brown_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_brown_`."""
-    return (-pl.col("U")*pl.col("i") + 1)
+    return -pl.col("U") * pl.col("i") + 1
 
 
 def calc_bt_secondary_many_routes_2023_bt_sec(j: float, k: float, l: float, p: float) -> float:
@@ -2256,12 +2342,12 @@ def calc_bt_secondary_many_routes_2023_bt_sec(j: float, k: float, l: float, p: f
     Returns:
         float: Calculated metric value.
     """
-    return float((j*k*p > j*l*p))
+    return float((j * k * p > j * l * p))
 
 
 def expr_bt_secondary_many_routes_2023_bt_sec() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_bt_secondary_many_routes_2023_bt_sec`."""
-    return ((pl.col("j")*pl.col("k")*pl.col("p") > pl.col("j")*pl.col("l")*pl.col("p")))
+    return pl.col("j") * pl.col("k") * pl.col("p") > pl.col("j") * pl.col("l") * pl.col("p")
 
 
 def calc_p_i_j_p_i_j_p_j_k_p_j_k_bt_sec(i: float, k: float, p: float) -> float:
@@ -2285,12 +2371,12 @@ def calc_p_i_j_p_i_j_p_j_k_p_j_k_bt_sec(i: float, k: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i**2*k**2*p**2)
+    return float(i**2 * k**2 * p**2)
 
 
 def expr_p_i_j_p_i_j_p_j_k_p_j_k_bt_sec() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_j_p_i_j_p_j_k_p_j_k_bt_sec`."""
-    return (pl.col("i")**2*pl.col("k")**2*pl.col("p")**2)
+    return pl.col("i") ** 2 * pl.col("k") ** 2 * pl.col("p") ** 2
 
 
 def calc_f_x_bt_sec(x: float) -> float:
@@ -2312,12 +2398,12 @@ def calc_f_x_bt_sec(x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*x)
+    return float(2 * x)
 
 
 def expr_f_x_bt_sec() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_x_bt_sec`."""
-    return (2*pl.col("x"))
+    return 2 * pl.col("x")
 
 
 def calc_p_i_j_bt_sec(P: float) -> float:
@@ -2344,7 +2430,7 @@ def calc_p_i_j_bt_sec(P: float) -> float:
 
 def expr_p_i_j_bt_sec() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_j_bt_sec`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_c_i_j_bt_sec(a: float, i: float, j: float, s: float) -> float:
@@ -2369,12 +2455,12 @@ def calc_c_i_j_bt_sec(a: float, i: float, j: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*i**2*j*s)
+    return float(a * i**2 * j * s)
 
 
 def expr_c_i_j_bt_sec() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_i_j_bt_sec`."""
-    return (pl.col("a")*pl.col("i")**2*pl.col("j")*pl.col("s"))
+    return pl.col("a") * pl.col("i") ** 2 * pl.col("j") * pl.col("s")
 
 
 def calc_c_bt_sec(A: float, S: float) -> float:
@@ -2397,12 +2483,12 @@ def calc_c_bt_sec(A: float, S: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*S)
+    return float(A * S)
 
 
 def expr_c_bt_sec() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_bt_sec`."""
-    return (pl.col("A")*pl.col("S"))
+    return pl.col("A") * pl.col("S")
 
 
 def calc_val_1_diebol(T: float) -> float:
@@ -2429,7 +2515,7 @@ def calc_val_1_diebol(T: float) -> float:
 
 def expr_val_1_diebol() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1_diebol`."""
-    return (pl.col("T"))
+    return pl.col("T")
 
 
 def calc_diebold_mariano_1995_diebol(S: float) -> float:
@@ -2451,12 +2537,12 @@ def calc_diebold_mariano_1995_diebol(S: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*S)
+    return float(2 * S)
 
 
 def expr_diebold_mariano_1995_diebol() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_diebold_mariano_1995_diebol`."""
-    return (2*pl.col("S"))
+    return 2 * pl.col("S")
 
 
 def calc_f_diebol(T: float, e: float, i: float, j: float) -> float:
@@ -2481,12 +2567,12 @@ def calc_f_diebol(T: float, e: float, i: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*e**2*i**2*j**2)
+    return float(T * e**2 * i**2 * j**2)
 
 
 def expr_f_diebol() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_diebol`."""
-    return (pl.col("T")*pl.col("e")**2*pl.col("i")**2*pl.col("j")**2)
+    return pl.col("T") * pl.col("e") ** 2 * pl.col("i") ** 2 * pl.col("j") ** 2
 
 
 def calc_r_diebol(P: float, p: float) -> float:
@@ -2509,12 +2595,12 @@ def calc_r_diebol(P: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*P*p)
+    return float(math.e * P * p)
 
 
 def expr_r_diebol() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_diebol`."""
-    return (math.e*pl.col("P")*pl.col("p"))
+    return math.e * pl.col("P") * pl.col("p")
 
 
 def calc_efron_morris_1975_jasa_efron_(a: float, dx: float, n: float) -> float:
@@ -2538,12 +2624,12 @@ def calc_efron_morris_1975_jasa_efron_(a: float, dx: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*dx*n)
+    return float(a * dx * n)
 
 
 def expr_efron_morris_1975_jasa_efron_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_efron_morris_1975_jasa_efron_`."""
-    return (pl.col("a")*pl.col("dx")*pl.col("n"))
+    return pl.col("a") * pl.col("dx") * pl.col("n")
 
 
 def calc_a_p_m_efron_(P: float) -> float:
@@ -2570,7 +2656,7 @@ def calc_a_p_m_efron_(P: float) -> float:
 
 def expr_a_p_m_efron_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_p_m_efron_`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_egidi_2018_arxiv1802_egidi_(a: float, t: float) -> float:
@@ -2593,12 +2679,12 @@ def calc_egidi_2018_arxiv1802_egidi_(a: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*t**3)
+    return float(a * t**3)
 
 
 def expr_egidi_2018_arxiv1802_egidi_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_egidi_2018_arxiv1802_egidi_`."""
-    return (pl.col("a")*pl.col("t")**3)
+    return pl.col("a") * pl.col("t") ** 3
 
 
 def calc_b_p_egidi_(P: float) -> float:
@@ -2625,7 +2711,7 @@ def calc_b_p_egidi_(P: float) -> float:
 
 def expr_b_p_egidi_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_b_p_egidi_`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_glickman_2001_jas_dynamic_paired_glickm(m: float, t: float, u: float) -> float:
@@ -2649,15 +2735,26 @@ def calc_glickman_2001_jas_dynamic_paired_glickm(m: float, t: float, u: float) -
     Returns:
         float: Calculated metric value.
     """
-    return float(2*t*u*(210*m + 210*t*u))
+    return float(2 * t * u * (210 * m + 210 * t * u))
 
 
 def expr_glickman_2001_jas_dynamic_paired_glickm() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_glickman_2001_jas_dynamic_paired_glickm`."""
-    return (2*pl.col("t")*pl.col("u")*(210*pl.col("m") + 210*pl.col("t")*pl.col("u")))
+    return 2 * pl.col("t") * pl.col("u") * (210 * pl.col("m") + 210 * pl.col("t") * pl.col("u"))
 
 
-def calc_s_s_k_i_l_l_n_gneiti(S: float, c: float, e: float, f: float, n: float, o: float, p: float, r: float, s: float, t: float) -> float:
+def calc_s_s_k_i_l_l_n_gneiti(
+    S: float,
+    c: float,
+    e: float,
+    f: float,
+    n: float,
+    o: float,
+    p: float,
+    r: float,
+    s: float,
+    t: float,
+) -> float:
     r"""Compute mathematical metric extracted from gneiting_raftery_2007_jasa.
 
     **Source**:
@@ -2685,12 +2782,29 @@ def calc_s_s_k_i_l_l_n_gneiti(S: float, c: float, e: float, f: float, n: float, 
     Returns:
         float: Calculated metric value.
     """
-    return float(-S*r*(e*(f*n)) + (S*(f*(c*(s*(n*t)))) - S*r*(e*(f*(n*(S*(o*(p*(n*t)))))))))
+    return float(
+        -S * r * (e * (f * n))
+        + (S * (f * (c * (s * (n * t)))) - S * r * (e * (f * (n * (S * (o * (p * (n * t))))))))
+    )
 
 
 def expr_s_s_k_i_l_l_n_gneiti() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_s_k_i_l_l_n_gneiti`."""
-    return (-pl.col("S")*pl.col("r")*(pl.col("e")*(pl.col("f")*pl.col("n"))) + (pl.col("S")*(pl.col("f")*(pl.col("c")*(pl.col("s")*(pl.col("n")*pl.col("t"))))) - pl.col("S")*pl.col("r")*(pl.col("e")*(pl.col("f")*(pl.col("n")*(pl.col("S")*(pl.col("o")*(pl.col("p")*(pl.col("n")*pl.col("t"))))))))))
+    return -pl.col("S") * pl.col("r") * (pl.col("e") * (pl.col("f") * pl.col("n"))) + (
+        pl.col("S") * (pl.col("f") * (pl.col("c") * (pl.col("s") * (pl.col("n") * pl.col("t")))))
+        - pl.col("S")
+        * pl.col("r")
+        * (
+            pl.col("e")
+            * (
+                pl.col("f")
+                * (
+                    pl.col("n")
+                    * (pl.col("S") * (pl.col("o") * (pl.col("p") * (pl.col("n") * pl.col("t")))))
+                )
+            )
+        )
+    )
 
 
 def calc_s_c_p_1_gneiti(c: float) -> float:
@@ -2712,15 +2826,26 @@ def calc_s_c_p_1_gneiti(c: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(1*(1 - c))
+    return float(1 * (1 - c))
 
 
 def expr_s_c_p_1_gneiti() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_c_p_1_gneiti`."""
-    return (1*(1 - pl.col("c")))
+    return 1 * (1 - pl.col("c"))
 
 
-def calc_g_p_gneiti(P: float, S: float, a: float, de: float, g: float, i: float, l: float, m: float, o: float, t: float) -> float:
+def calc_g_p_gneiti(
+    P: float,
+    S: float,
+    a: float,
+    de: float,
+    g: float,
+    i: float,
+    l: float,
+    m: float,
+    o: float,
+    t: float,
+) -> float:
     r"""Compute mathematical metric extracted from gneiting_raftery_2007_jasa.
 
     **Source**:
@@ -2748,12 +2873,27 @@ def calc_g_p_gneiti(P: float, S: float, a: float, de: float, g: float, i: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(-l*o*(g*(de*(t*(S*(i*(g*(m*((1*P)*a)))))))) - m)
+    return float(-l * o * (g * (de * (t * (S * (i * (g * (m * ((1 * P) * a)))))))) - m)
 
 
 def expr_g_p_gneiti() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_g_p_gneiti`."""
-    return (-pl.col("l")*pl.col("o")*(pl.col("g")*(pl.col("de")*(pl.col("t")*(pl.col("S")*(pl.col("i")*(pl.col("g")*(pl.col("m")*((1*pl.col("P"))*pl.col("a"))))))))) - pl.col("m"))
+    return -pl.col("l") * pl.col("o") * (
+        pl.col("g")
+        * (
+            pl.col("de")
+            * (
+                pl.col("t")
+                * (
+                    pl.col("S")
+                    * (
+                        pl.col("i")
+                        * (pl.col("g") * (pl.col("m") * ((1 * pl.col("P")) * pl.col("a"))))
+                    )
+                )
+            )
+        )
+    ) - pl.col("m")
 
 
 def calc_gneiting_raftery_2007_jasa_gneiti(P: float) -> float:
@@ -2775,12 +2915,12 @@ def calc_gneiting_raftery_2007_jasa_gneiti(P: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*math.e*P)
+    return float(2 * math.e * P)
 
 
 def expr_gneiting_raftery_2007_jasa_gneiti() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_gneiting_raftery_2007_jasa_gneiti`."""
-    return (2*math.e*pl.col("P"))
+    return 2 * math.e * pl.col("P")
 
 
 def calc_b_gneiti(P: float) -> float:
@@ -2807,7 +2947,7 @@ def calc_b_gneiti(P: float) -> float:
 
 def expr_b_gneiti() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_b_gneiti`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_l_o_b_g_gneiti(H: float, L: float, g: float, o: float) -> float:
@@ -2832,12 +2972,12 @@ def calc_l_o_b_g_gneiti(H: float, L: float, g: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-H*L*g*o)
+    return float(-H * L * g * o)
 
 
 def expr_l_o_b_g_gneiti() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_o_b_g_gneiti`."""
-    return (-pl.col("H")*pl.col("L")*pl.col("g")*pl.col("o"))
+    return -pl.col("H") * pl.col("L") * pl.col("g") * pl.col("o")
 
 
 def calc_guo_2017_calibration_guo_20(P: float) -> float:
@@ -2864,7 +3004,7 @@ def calc_guo_2017_calibration_guo_20(P: float) -> float:
 
 def expr_guo_2017_calibration_guo_20() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_guo_2017_calibration_guo_20`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_s_2_harvey(Z: float, n: float, r: float) -> float:
@@ -2888,12 +3028,12 @@ def calc_s_2_harvey(Z: float, n: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((1 - Z*r)/(n - 1) - 1/(2*r))
+    return float((1 - Z * r) / (n - 1) - 1 / (2 * r))
 
 
 def expr_s_2_harvey() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_2_harvey`."""
-    return ((1 - pl.col("Z")*pl.col("r"))/(pl.col("n") - 1) - 1/(2*pl.col("r")))
+    return (1 - pl.col("Z") * pl.col("r")) / (pl.col("n") - 1) - 1 / (2 * pl.col("r"))
 
 
 def calc_harvey_leybourne_newbold_1997_harvey(h: float) -> float:
@@ -2920,7 +3060,7 @@ def calc_harvey_leybourne_newbold_1997_harvey(h: float) -> float:
 
 def expr_harvey_leybourne_newbold_1997_harvey() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_harvey_leybourne_newbold_1997_harvey`."""
-    return (pl.col("h"))
+    return pl.col("h")
 
 
 def calc_val_1_12_2_harvey(n: float) -> float:
@@ -2947,7 +3087,7 @@ def calc_val_1_12_2_harvey(n: float) -> float:
 
 def expr_val_1_12_2_harvey() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1_12_2_harvey`."""
-    return (pl.col("n"))
+    return pl.col("n")
 
 
 def calc_maher_1982_maher_(i: float, j: float) -> float:
@@ -2970,12 +3110,12 @@ def calc_maher_1982_maher_(i: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*j + i)
+    return float(i * j + i)
 
 
 def expr_maher_1982_maher_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_maher_1982_maher_`."""
-    return (pl.col("i")*pl.col("j") + pl.col("i"))
+    return pl.col("i") * pl.col("j") + pl.col("i")
 
 
 def calc_c_i_maher_(u: float, x: float) -> float:
@@ -2998,12 +3138,12 @@ def calc_c_i_maher_(u: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(u*x)
+    return float(u * x)
 
 
 def expr_c_i_maher_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_i_maher_`."""
-    return (pl.col("u")*pl.col("x"))
+    return pl.col("u") * pl.col("x")
 
 
 def calc_z_l_y_u_c_c_u_x_i_k_2_j_r_maher_(i: float, j: float) -> float:
@@ -3026,12 +3166,12 @@ def calc_z_l_y_u_c_c_u_x_i_k_2_j_r_maher_(i: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-i**2*j)
+    return float(-(i**2) * j)
 
 
 def expr_z_l_y_u_c_c_u_x_i_k_2_j_r_maher_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_z_l_y_u_c_c_u_x_i_k_2_j_r_maher_`."""
-    return (-pl.col("i")**2*pl.col("j"))
+    return -(pl.col("i") ** 2) * pl.col("j")
 
 
 def calc_maher_secondary_dependence_2021_maher_(A: float, p: float, r: float) -> float:
@@ -3055,12 +3195,12 @@ def calc_maher_secondary_dependence_2021_maher_(A: float, p: float, r: float) ->
     Returns:
         float: Calculated metric value.
     """
-    return float(A*p*r)
+    return float(A * p * r)
 
 
 def expr_maher_secondary_dependence_2021_maher_() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_maher_secondary_dependence_2021_maher_`."""
-    return (pl.col("A")*pl.col("p")*pl.col("r"))
+    return pl.col("A") * pl.col("p") * pl.col("r")
 
 
 def calc_math_0509698_form_f(P: float, b: float, o: float, r: float) -> float:
@@ -3085,12 +3225,12 @@ def calc_math_0509698_form_f(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_math_0509698_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_math_0509698_form_f`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_math_0509698_form_9(P: float, b: float, o: float, r: float) -> float:
@@ -3115,12 +3255,12 @@ def calc_math_0509698_form_9(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_math_0509698_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_math_0509698_form_9`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_math_0509698_form_7(P: float, b: float, o: float, r: float) -> float:
@@ -3145,12 +3285,12 @@ def calc_math_0509698_form_7(P: float, b: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_math_0509698_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_math_0509698_form_7`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_math_0509698_form_d(r: float) -> float:
@@ -3172,12 +3312,12 @@ def calc_math_0509698_form_d(r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*r)
+    return float(math.e * r)
 
 
 def expr_math_0509698_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_math_0509698_form_d`."""
-    return (math.e*pl.col("r"))
+    return math.e * pl.col("r")
 
 
 def calc_miller_2005_pythag_derivation_form_9(P: float, b: float, o: float, r: float) -> float:
@@ -3202,12 +3342,12 @@ def calc_miller_2005_pythag_derivation_form_9(P: float, b: float, o: float, r: f
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller_2005_pythag_derivation_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2005_pythag_derivation_form_9`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller_2005_pythag_derivation_form_d(P: float, b: float, o: float, r: float) -> float:
@@ -3232,12 +3372,12 @@ def calc_miller_2005_pythag_derivation_form_d(P: float, b: float, o: float, r: f
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller_2005_pythag_derivation_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2005_pythag_derivation_form_d`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller_2005_pythag_derivation_form_8(X: float, r: float) -> float:
@@ -3260,12 +3400,12 @@ def calc_miller_2005_pythag_derivation_form_8(X: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(X*r)
+    return float(X * r)
 
 
 def expr_miller_2005_pythag_derivation_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2005_pythag_derivation_form_8`."""
-    return (pl.col("X")*pl.col("r"))
+    return pl.col("X") * pl.col("r")
 
 
 def calc_miller_2005_pythag_derivation_form_2(r: float) -> float:
@@ -3287,12 +3427,12 @@ def calc_miller_2005_pythag_derivation_form_2(r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*r)
+    return float(math.e * r)
 
 
 def expr_miller_2005_pythag_derivation_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2005_pythag_derivation_form_2`."""
-    return (math.e*pl.col("r"))
+    return math.e * pl.col("r")
 
 
 def calc_miller_2007_pythag_weibull_form_1(P: float, b: float, o: float, r: float) -> float:
@@ -3317,12 +3457,12 @@ def calc_miller_2007_pythag_weibull_form_1(P: float, b: float, o: float, r: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller_2007_pythag_weibull_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2007_pythag_weibull_form_1`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller_2007_pythag_weibull_form_2(P: float, b: float, o: float, r: float) -> float:
@@ -3347,12 +3487,12 @@ def calc_miller_2007_pythag_weibull_form_2(P: float, b: float, o: float, r: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller_2007_pythag_weibull_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2007_pythag_weibull_form_2`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller_2007_pythag_weibull_form_5(P: float, b: float, o: float, r: float) -> float:
@@ -3377,12 +3517,12 @@ def calc_miller_2007_pythag_weibull_form_5(P: float, b: float, o: float, r: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(P*b*o*r)
+    return float(P * b * o * r)
 
 
 def expr_miller_2007_pythag_weibull_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2007_pythag_weibull_form_5`."""
-    return (pl.col("P")*pl.col("b")*pl.col("o")*pl.col("r"))
+    return pl.col("P") * pl.col("b") * pl.col("o") * pl.col("r")
 
 
 def calc_miller_2007_pythag_weibull_form_3(X: float, r: float) -> float:
@@ -3405,12 +3545,12 @@ def calc_miller_2007_pythag_weibull_form_3(X: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(X*r)
+    return float(X * r)
 
 
 def expr_miller_2007_pythag_weibull_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2007_pythag_weibull_form_3`."""
-    return (pl.col("X")*pl.col("r"))
+    return pl.col("X") * pl.col("r")
 
 
 def calc_naeini_2015_aaai_form_5(P: float) -> float:
@@ -3437,7 +3577,7 @@ def calc_naeini_2015_aaai_form_5(P: float) -> float:
 
 def expr_naeini_2015_aaai_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_naeini_2015_aaai_form_5`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_naeini_2015_aaai_form_7(P: float) -> float:
@@ -3464,7 +3604,7 @@ def calc_naeini_2015_aaai_form_7(P: float) -> float:
 
 def expr_naeini_2015_aaai_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_naeini_2015_aaai_form_7`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_t_form_c(B: float, U: float, m: float) -> float:
@@ -3488,12 +3628,12 @@ def calc_t_form_c(B: float, U: float, m: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*(m + 1) + U)
+    return float(B * (m + 1) + U)
 
 
 def expr_t_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_form_c`."""
-    return (pl.col("B")*(pl.col("m") + 1) + pl.col("U"))
+    return pl.col("B") * (pl.col("m") + 1) + pl.col("U")
 
 
 def calc_f_x_form_5(P: float, g: float, l: float, o: float) -> float:
@@ -3518,12 +3658,12 @@ def calc_f_x_form_5(P: float, g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(12*P*g*l*o)
+    return float(12 * P * g * l * o)
 
 
 def expr_f_x_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_x_form_5`."""
-    return (12*pl.col("P")*pl.col("g")*pl.col("l")*pl.col("o"))
+    return 12 * pl.col("P") * pl.col("g") * pl.col("l") * pl.col("o")
 
 
 def calc_niculescu_mizil_caruana_2005_form_d(P: float) -> float:
@@ -3550,7 +3690,7 @@ def calc_niculescu_mizil_caruana_2005_form_d(P: float) -> float:
 
 def expr_niculescu_mizil_caruana_2005_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_niculescu_mizil_caruana_2005_form_d`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_niculescu_mizil_caruana_2005_form_2(P: float) -> float:
@@ -3577,10 +3717,12 @@ def calc_niculescu_mizil_caruana_2005_form_2(P: float) -> float:
 
 def expr_niculescu_mizil_caruana_2005_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_niculescu_mizil_caruana_2005_form_2`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
-def calc_niculescu_mizil_caruana_2005_form_c(A: float, a: float, g: float, i: float, m: float, n: float, r: float) -> float:
+def calc_niculescu_mizil_caruana_2005_form_c(
+    A: float, a: float, g: float, i: float, m: float, n: float, r: float
+) -> float:
     r"""Compute mathematical metric extracted from niculescu_mizil_caruana_2005.
 
     **Source**:
@@ -3605,12 +3747,20 @@ def calc_niculescu_mizil_caruana_2005_form_c(A: float, a: float, g: float, i: fl
     Returns:
         float: Calculated metric value.
     """
-    return float(A*a*g*i*m*n*r)
+    return float(A * a * g * i * m * n * r)
 
 
 def expr_niculescu_mizil_caruana_2005_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_niculescu_mizil_caruana_2005_form_c`."""
-    return (pl.col("A")*pl.col("a")*pl.col("g")*pl.col("i")*pl.col("m")*pl.col("n")*pl.col("r"))
+    return (
+        pl.col("A")
+        * pl.col("a")
+        * pl.col("g")
+        * pl.col("i")
+        * pl.col("m")
+        * pl.col("n")
+        * pl.col("r")
+    )
 
 
 def calc_niculescu_mizil_caruana_2005_form_b(y: float) -> float:
@@ -3637,7 +3787,7 @@ def calc_niculescu_mizil_caruana_2005_form_b(y: float) -> float:
 
 def expr_niculescu_mizil_caruana_2005_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_niculescu_mizil_caruana_2005_form_b`."""
-    return (pl.col("y"))
+    return pl.col("y")
 
 
 def calc_retrosheet_lin_winning_advantage_form_6(n: float, s: float) -> float:
@@ -3660,12 +3810,12 @@ def calc_retrosheet_lin_winning_advantage_form_6(n: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(n*s)
+    return float(n * s)
 
 
 def expr_retrosheet_lin_winning_advantage_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_retrosheet_lin_winning_advantage_form_6`."""
-    return (pl.col("n")*pl.col("s"))
+    return pl.col("n") * pl.col("s")
 
 
 def calc_retrosheet_lin_winning_advantage_form_d(n: float, s: float) -> float:
@@ -3688,12 +3838,12 @@ def calc_retrosheet_lin_winning_advantage_form_d(n: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(n*s)
+    return float(n * s)
 
 
 def expr_retrosheet_lin_winning_advantage_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_retrosheet_lin_winning_advantage_form_d`."""
-    return (pl.col("n")*pl.col("s"))
+    return pl.col("n") * pl.col("s")
 
 
 def calc_shin_family_2024_cambridge_form_b(e: float, h: float, r: float, w: float) -> float:
@@ -3718,12 +3868,12 @@ def calc_shin_family_2024_cambridge_form_b(e: float, h: float, r: float, w: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(e**2*h*r*w)
+    return float(e**2 * h * r * w)
 
 
 def expr_shin_family_2024_cambridge_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_shin_family_2024_cambridge_form_b`."""
-    return (pl.col("e")**2*pl.col("h")*pl.col("r")*pl.col("w"))
+    return pl.col("e") ** 2 * pl.col("h") * pl.col("r") * pl.col("w")
 
 
 def calc_h_p_form_6(U: float, e: float) -> float:
@@ -3751,7 +3901,7 @@ def calc_h_p_form_6(U: float, e: float) -> float:
 
 def expr_h_p_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_h_p_form_6`."""
-    return (-pl.col("U") + pl.col("e") + 11)
+    return -pl.col("U") + pl.col("e") + 11
 
 
 def calc_val_2601_11904_form_c(P: float) -> float:
@@ -3778,7 +3928,7 @@ def calc_val_2601_11904_form_c(P: float) -> float:
 
 def expr_val_2601_11904_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_11904_form_c`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2609_06739_form_9(b: float, h: float) -> float:
@@ -3801,12 +3951,12 @@ def calc_val_2609_06739_form_9(b: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*h)
+    return float(b * h)
 
 
 def expr_val_2609_06739_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_9`."""
-    return (pl.col("b")*pl.col("h"))
+    return pl.col("b") * pl.col("h")
 
 
 def calc_val_2609_06739_form_f(B: float, g: float) -> float:
@@ -3829,12 +3979,12 @@ def calc_val_2609_06739_form_f(B: float, g: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*g)
+    return float(B * g)
 
 
 def expr_val_2609_06739_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_f`."""
-    return (pl.col("B")*pl.col("g"))
+    return pl.col("B") * pl.col("g")
 
 
 def calc_val_2609_06739_form_4(B: float, g: float) -> float:
@@ -3857,12 +4007,12 @@ def calc_val_2609_06739_form_4(B: float, g: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*g)
+    return float(B * g)
 
 
 def expr_val_2609_06739_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_4`."""
-    return (pl.col("B")*pl.col("g"))
+    return pl.col("B") * pl.col("g")
 
 
 def calc_val_2609_06739_form_c(b: float, h: float) -> float:
@@ -3885,12 +4035,12 @@ def calc_val_2609_06739_form_c(b: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*h)
+    return float(b * h)
 
 
 def expr_val_2609_06739_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_c`."""
-    return (pl.col("b")*pl.col("h"))
+    return pl.col("b") * pl.col("h")
 
 
 def calc_val_2609_06739_form_d(b: float, h: float) -> float:
@@ -3913,12 +4063,12 @@ def calc_val_2609_06739_form_d(b: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*h)
+    return float(b * h)
 
 
 def expr_val_2609_06739_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_d`."""
-    return (pl.col("b")*pl.col("h"))
+    return pl.col("b") * pl.col("h")
 
 
 def calc_val_2609_06739_form_2(b: float, h: float) -> float:
@@ -3941,12 +4091,12 @@ def calc_val_2609_06739_form_2(b: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*h)
+    return float(b * h)
 
 
 def expr_val_2609_06739_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_2`."""
-    return (pl.col("b")*pl.col("h"))
+    return pl.col("b") * pl.col("h")
 
 
 def calc_val_2609_06739_form_1(b: float, v: float) -> float:
@@ -3969,12 +4119,12 @@ def calc_val_2609_06739_form_1(b: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*v)
+    return float(b * v)
 
 
 def expr_val_2609_06739_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_1`."""
-    return (pl.col("b")*pl.col("v"))
+    return pl.col("b") * pl.col("v")
 
 
 def calc_val_2609_06739_form_5(b: float, h: float) -> float:
@@ -3997,12 +4147,12 @@ def calc_val_2609_06739_form_5(b: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*h)
+    return float(b * h)
 
 
 def expr_val_2609_06739_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_5`."""
-    return (pl.col("b")*pl.col("h"))
+    return pl.col("b") * pl.col("h")
 
 
 def calc_q_s_form_9(P: float, r: float) -> float:
@@ -4025,12 +4175,12 @@ def calc_q_s_form_9(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_q_s_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_q_s_form_9`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2609_06739_form_0(P: float, r: float) -> float:
@@ -4053,12 +4203,12 @@ def calc_val_2609_06739_form_0(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_val_2609_06739_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_0`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2609_03786_form_5(P: float, r: float) -> float:
@@ -4081,12 +4231,12 @@ def calc_val_2609_03786_form_5(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_val_2609_03786_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_03786_form_5`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2607_29041_form_1(P: float, g: float, l: float, o: float) -> float:
@@ -4111,12 +4261,12 @@ def calc_val_2607_29041_form_1(P: float, g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*g*l*o)
+    return float(P * g * l * o)
 
 
 def expr_val_2607_29041_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_1`."""
-    return (pl.col("P")*pl.col("g")*pl.col("l")*pl.col("o"))
+    return pl.col("P") * pl.col("g") * pl.col("l") * pl.col("o")
 
 
 def calc_w_e_s_form_9(N: float, W: float, s: float) -> float:
@@ -4140,12 +4290,12 @@ def calc_w_e_s_form_9(N: float, W: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(W*(s*(N*s)))
+    return float(W * (s * (N * s)))
 
 
 def expr_w_e_s_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_e_s_form_9`."""
-    return (pl.col("W")*(pl.col("s")*(pl.col("N")*pl.col("s"))))
+    return pl.col("W") * (pl.col("s") * (pl.col("N") * pl.col("s")))
 
 
 def calc_val_2607_29041_form_8(P: float) -> float:
@@ -4172,7 +4322,7 @@ def calc_val_2607_29041_form_8(P: float) -> float:
 
 def expr_val_2607_29041_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_8`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2607_29041_form_d(P: float) -> float:
@@ -4199,7 +4349,7 @@ def calc_val_2607_29041_form_d(P: float) -> float:
 
 def expr_val_2607_29041_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_d`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2607_29041_form_2(P: float) -> float:
@@ -4226,7 +4376,7 @@ def calc_val_2607_29041_form_2(P: float) -> float:
 
 def expr_val_2607_29041_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_2`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2607_29041_form_5(R: float) -> float:
@@ -4253,7 +4403,7 @@ def calc_val_2607_29041_form_5(R: float) -> float:
 
 def expr_val_2607_29041_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_5`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_val_2607_29041_form_f(f: float) -> float:
@@ -4280,7 +4430,7 @@ def calc_val_2607_29041_form_f(f: float) -> float:
 
 def expr_val_2607_29041_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_f`."""
-    return (pl.col("f"))
+    return pl.col("f")
 
 
 def calc_val_2607_29041_form_6(f: float) -> float:
@@ -4307,7 +4457,7 @@ def calc_val_2607_29041_form_6(f: float) -> float:
 
 def expr_val_2607_29041_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_6`."""
-    return (pl.col("f"))
+    return pl.col("f")
 
 
 def calc_val_2607_29041_form_c(s: float) -> float:
@@ -4334,7 +4484,7 @@ def calc_val_2607_29041_form_c(s: float) -> float:
 
 def expr_val_2607_29041_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_c`."""
-    return (pl.col("s"))
+    return pl.col("s")
 
 
 def calc_val_2607_29041_form_e(S: float, i: float) -> float:
@@ -4357,12 +4507,12 @@ def calc_val_2607_29041_form_e(S: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(S*i)
+    return float(S * i)
 
 
 def expr_val_2607_29041_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_e`."""
-    return (pl.col("S")*pl.col("i"))
+    return pl.col("S") * pl.col("i")
 
 
 def calc_val_2607_29041_form_b(P: float, x: float) -> float:
@@ -4385,12 +4535,12 @@ def calc_val_2607_29041_form_b(P: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*x)
+    return float(P * x)
 
 
 def expr_val_2607_29041_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_b`."""
-    return (pl.col("P")*pl.col("x"))
+    return pl.col("P") * pl.col("x")
 
 
 def calc_v_v_1_form_e(a: float, m: float, x: float) -> float:
@@ -4414,12 +4564,12 @@ def calc_v_v_1_form_e(a: float, m: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*m*x)
+    return float(a * m * x)
 
 
 def expr_v_v_1_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_v_v_1_form_e`."""
-    return (pl.col("a")*pl.col("m")*pl.col("x"))
+    return pl.col("a") * pl.col("m") * pl.col("x")
 
 
 def calc_val_2607_29041_form_9(M: float, c: float, s: float) -> float:
@@ -4443,12 +4593,12 @@ def calc_val_2607_29041_form_9(M: float, c: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(M*s - c)
+    return float(M * s - c)
 
 
 def expr_val_2607_29041_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_9`."""
-    return (pl.col("M")*pl.col("s") - pl.col("c"))
+    return pl.col("M") * pl.col("s") - pl.col("c")
 
 
 def calc_val_2607_29041_form_4(B: float, G: float) -> float:
@@ -4471,12 +4621,12 @@ def calc_val_2607_29041_form_4(B: float, G: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*G)
+    return float(B * G)
 
 
 def expr_val_2607_29041_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_4`."""
-    return (pl.col("B")*pl.col("G"))
+    return pl.col("B") * pl.col("G")
 
 
 def calc_eq_e_x_e_f_y_form_8(f: float) -> float:
@@ -4503,7 +4653,7 @@ def calc_eq_e_x_e_f_y_form_8(f: float) -> float:
 
 def expr_eq_e_x_e_f_y_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_eq_e_x_e_f_y_form_8`."""
-    return (pl.col("f"))
+    return pl.col("f")
 
 
 def calc_val_2607_29041_form_7(i: float, m: float, n: float, y: float) -> float:
@@ -4528,12 +4678,12 @@ def calc_val_2607_29041_form_7(i: float, m: float, n: float, y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*m*n*y)
+    return float(i * m * n * y)
 
 
 def expr_val_2607_29041_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_7`."""
-    return (pl.col("i")*pl.col("m")*pl.col("n")*pl.col("y"))
+    return pl.col("i") * pl.col("m") * pl.col("n") * pl.col("y")
 
 
 def calc_l_z_form_a(y: float, z: float) -> float:
@@ -4561,10 +4711,23 @@ def calc_l_z_form_a(y: float, z: float) -> float:
 
 def expr_l_z_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_z_form_a`."""
-    return (abs(pl.col("y") - pl.col("z")))
+    return abs(pl.col("y") - pl.col("z"))
 
 
-def calc_val_2606_26780_form_1(a: float, c: float, dt: float, e: float, g: float, i: float, k: float, label: float, n: float, phi_0: float, q: float, r: float) -> float:
+def calc_val_2606_26780_form_1(
+    a: float,
+    c: float,
+    dt: float,
+    e: float,
+    g: float,
+    i: float,
+    k: float,
+    label: float,
+    n: float,
+    phi_0: float,
+    q: float,
+    r: float,
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2606_26780.
 
     **Source**:
@@ -4594,12 +4757,33 @@ def calc_val_2606_26780_form_1(a: float, c: float, dt: float, e: float, g: float
     Returns:
         float: Calculated metric value.
     """
-    return float(label*(phi_0*((e*q)/((3*(dt*(r*(a*(c*(k*(i*(g*n))))))))))))
+    return float(label * (phi_0 * ((e * q) / (3 * (dt * (r * (a * (c * (k * (i * (g * n)))))))))))
 
 
 def expr_val_2606_26780_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2606_26780_form_1`."""
-    return (pl.col("label")*(pl.col("phi_0")*((pl.col("e")*pl.col("q"))/((3*(pl.col("dt")*(pl.col("r")*(pl.col("a")*(pl.col("c")*(pl.col("k")*(pl.col("i")*(pl.col("g")*pl.col("n")))))))))))))
+    return pl.col("label") * (
+        pl.col("phi_0")
+        * (
+            (pl.col("e") * pl.col("q"))
+            / (
+                3
+                * (
+                    pl.col("dt")
+                    * (
+                        pl.col("r")
+                        * (
+                            pl.col("a")
+                            * (
+                                pl.col("c")
+                                * (pl.col("k") * (pl.col("i") * (pl.col("g") * pl.col("n"))))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 
 
 def calc_begin_x_k_a_l_i_g_n_d_e_form_4(c_x: float, r: float, u_k: float) -> float:
@@ -4623,12 +4807,12 @@ def calc_begin_x_k_a_l_i_g_n_d_e_form_4(c_x: float, r: float, u_k: float) -> flo
     Returns:
         float: Calculated metric value.
     """
-    return float((-c_x + u_k)/r)
+    return float((-c_x + u_k) / r)
 
 
 def expr_begin_x_k_a_l_i_g_n_d_e_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_begin_x_k_a_l_i_g_n_d_e_form_4`."""
-    return ((-pl.col("c_x") + pl.col("u_k"))/pl.col("r"))
+    return (-pl.col("c_x") + pl.col("u_k")) / pl.col("r")
 
 
 def calc_p_i_j_form_6(P: float, r: float) -> float:
@@ -4651,12 +4835,12 @@ def calc_p_i_j_form_6(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_p_i_j_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_j_form_6`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2604_21851_form_8(P: float, f: float, o: float, r: float) -> float:
@@ -4681,15 +4865,17 @@ def calc_val_2604_21851_form_8(P: float, f: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*f*o**2*r)
+    return float(P * f * o**2 * r)
 
 
 def expr_val_2604_21851_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2604_21851_form_8`."""
-    return (pl.col("P")*pl.col("f")*pl.col("o")**2*pl.col("r"))
+    return pl.col("P") * pl.col("f") * pl.col("o") ** 2 * pl.col("r")
 
 
-def calc_w_a_p_form_9(W: float, a: float, b: float, e: float, f: float, o: float, r: float, t: float) -> float:
+def calc_w_a_p_form_9(
+    W: float, a: float, b: float, e: float, f: float, o: float, r: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2506_02351.
 
     **Source**:
@@ -4715,12 +4901,16 @@ def calc_w_a_p_form_9(W: float, a: float, b: float, e: float, f: float, o: float
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*W*a*e*f*r*t - math.e*W*b*e**2*f*o*r)
+    return float(math.e * W * a * e * f * r * t - math.e * W * b * e**2 * f * o * r)
 
 
 def expr_w_a_p_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_a_p_form_9`."""
-    return (math.e*pl.col("W")*pl.col("a")*pl.col("e")*pl.col("f")*pl.col("r")*pl.col("t") - math.e*pl.col("W")*pl.col("b")*pl.col("e")**2*pl.col("f")*pl.col("o")*pl.col("r"))
+    return math.e * pl.col("W") * pl.col("a") * pl.col("e") * pl.col("f") * pl.col("r") * pl.col(
+        "t"
+    ) - math.e * pl.col("W") * pl.col("b") * pl.col("e") ** 2 * pl.col("f") * pl.col("o") * pl.col(
+        "r"
+    )
 
 
 def calc_val_1704_00823_form_4(g: float, l: float, o: float) -> float:
@@ -4744,12 +4934,12 @@ def calc_val_1704_00823_form_4(g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*l*o)
+    return float(g * l * o)
 
 
 def expr_val_1704_00823_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1704_00823_form_4`."""
-    return (pl.col("g")*pl.col("l")*pl.col("o"))
+    return pl.col("g") * pl.col("l") * pl.col("o")
 
 
 def calc_val_1704_00823_form_3(g: float, l: float, o: float) -> float:
@@ -4773,12 +4963,12 @@ def calc_val_1704_00823_form_3(g: float, l: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*l*o)
+    return float(g * l * o)
 
 
 def expr_val_1704_00823_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1704_00823_form_3`."""
-    return (pl.col("g")*pl.col("l")*pl.col("o"))
+    return pl.col("g") * pl.col("l") * pl.col("o")
 
 
 def calc_val_0902_1360_form_e(p: float) -> float:
@@ -4805,7 +4995,7 @@ def calc_val_0902_1360_form_e(p: float) -> float:
 
 def expr_val_0902_1360_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_0902_1360_form_e`."""
-    return (pl.col("p"))
+    return pl.col("p")
 
 
 def calc_i_n_de_x_form_0(z: float) -> float:
@@ -4827,12 +5017,12 @@ def calc_i_n_de_x_form_0(z: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(20*z + 100)
+    return float(20 * z + 100)
 
 
 def expr_i_n_de_x_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_i_n_de_x_form_0`."""
-    return (20*pl.col("z") + 100)
+    return 20 * pl.col("z") + 100
 
 
 def calc_val_2005_07742_form_d(f: float, p: float, s: float) -> float:
@@ -4856,12 +5046,12 @@ def calc_val_2005_07742_form_d(f: float, p: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*p*s)
+    return float(f * p * s)
 
 
 def expr_val_2005_07742_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2005_07742_form_d`."""
-    return (pl.col("f")*pl.col("p")*pl.col("s"))
+    return pl.col("f") * pl.col("p") * pl.col("s")
 
 
 def calc_val_2005_07742_form_f(b: float, f: float, s: float) -> float:
@@ -4885,12 +5075,12 @@ def calc_val_2005_07742_form_f(b: float, f: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*f*s)
+    return float(b * f * s)
 
 
 def expr_val_2005_07742_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2005_07742_form_f`."""
-    return (pl.col("b")*pl.col("f")*pl.col("s"))
+    return pl.col("b") * pl.col("f") * pl.col("s")
 
 
 def calc_val_2005_07742_form_5(f: float, h: float) -> float:
@@ -4913,12 +5103,12 @@ def calc_val_2005_07742_form_5(f: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*h)
+    return float(f * h)
 
 
 def expr_val_2005_07742_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2005_07742_form_5`."""
-    return (pl.col("f")*pl.col("h"))
+    return pl.col("f") * pl.col("h")
 
 
 def calc_val_2610_29565_form_4(e: float, f: float, q: float, r: float) -> float:
@@ -4943,12 +5133,12 @@ def calc_val_2610_29565_form_4(e: float, f: float, q: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(e*f*q*r)
+    return float(e * f * q * r)
 
 
 def expr_val_2610_29565_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29565_form_4`."""
-    return (pl.col("e")*pl.col("f")*pl.col("q")*pl.col("r"))
+    return pl.col("e") * pl.col("f") * pl.col("q") * pl.col("r")
 
 
 def calc_val_2610_05080_form_4(c: float, r: float, s: float) -> float:
@@ -4972,12 +5162,12 @@ def calc_val_2610_05080_form_4(c: float, r: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*c*r*s**2)
+    return float(math.e * c * r * s**2)
 
 
 def expr_val_2610_05080_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_05080_form_4`."""
-    return (math.e*pl.col("c")*pl.col("r")*pl.col("s")**2)
+    return math.e * pl.col("c") * pl.col("r") * pl.col("s") ** 2
 
 
 def calc_val_2610_05080_form_9(A: float, i: float) -> float:
@@ -5000,12 +5190,12 @@ def calc_val_2610_05080_form_9(A: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*i)
+    return float(A * i)
 
 
 def expr_val_2610_05080_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_05080_form_9`."""
-    return (pl.col("A")*pl.col("i"))
+    return pl.col("A") * pl.col("i")
 
 
 def calc_val_2610_04813_form_c(P: float) -> float:
@@ -5032,7 +5222,7 @@ def calc_val_2610_04813_form_c(P: float) -> float:
 
 def expr_val_2610_04813_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_04813_form_c`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_s_form_e(F: float, G: float, T: float) -> float:
@@ -5056,12 +5246,12 @@ def calc_s_form_e(F: float, G: float, T: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(G*(F*T))
+    return float(G * (F * T))
 
 
 def expr_s_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_form_e`."""
-    return (pl.col("G")*(pl.col("F")*pl.col("T")))
+    return pl.col("G") * (pl.col("F") * pl.col("T"))
 
 
 def calc_val_2610_04813_form_b(P: float) -> float:
@@ -5088,7 +5278,7 @@ def calc_val_2610_04813_form_b(P: float) -> float:
 
 def expr_val_2610_04813_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_04813_form_b`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2610_04813_form_3(P: float) -> float:
@@ -5115,7 +5305,7 @@ def calc_val_2610_04813_form_3(P: float) -> float:
 
 def expr_val_2610_04813_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_04813_form_3`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2610_01307_form_3(H: float, i: float, m: float, n: float, z: float) -> float:
@@ -5141,12 +5331,12 @@ def calc_val_2610_01307_form_3(H: float, i: float, m: float, n: float, z: float)
     Returns:
         float: Calculated metric value.
     """
-    return float((n*z >= H*i*m*n))
+    return float((n * z >= H * i * m * n))
 
 
 def expr_val_2610_01307_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_3`."""
-    return ((pl.col("n")*pl.col("z") >= pl.col("H")*pl.col("i")*pl.col("m")*pl.col("n")))
+    return pl.col("n") * pl.col("z") >= pl.col("H") * pl.col("i") * pl.col("m") * pl.col("n")
 
 
 def calc_val_2610_01307_form_b(f: float) -> float:
@@ -5173,7 +5363,7 @@ def calc_val_2610_01307_form_b(f: float) -> float:
 
 def expr_val_2610_01307_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_b`."""
-    return (pl.col("f"))
+    return pl.col("f")
 
 
 def calc_val_2610_01307_form_7(P: float, a: float, m: float, x: float) -> float:
@@ -5198,12 +5388,12 @@ def calc_val_2610_01307_form_7(P: float, a: float, m: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P**2*a*m*x)
+    return float(P**2 * a * m * x)
 
 
 def expr_val_2610_01307_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_7`."""
-    return (pl.col("P")**2*pl.col("a")*pl.col("m")*pl.col("x"))
+    return pl.col("P") ** 2 * pl.col("a") * pl.col("m") * pl.col("x")
 
 
 def calc_val_2610_01307_form_8(s: float) -> float:
@@ -5230,7 +5420,7 @@ def calc_val_2610_01307_form_8(s: float) -> float:
 
 def expr_val_2610_01307_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_8`."""
-    return (pl.col("s"))
+    return pl.col("s")
 
 
 def calc_val_2610_01307_form_9(a: float, m: float, x: float) -> float:
@@ -5254,12 +5444,12 @@ def calc_val_2610_01307_form_9(a: float, m: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(1.1/(a*m*x))
+    return float(1.1 / (a * m * x))
 
 
 def expr_val_2610_01307_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_9`."""
-    return (1.1/(pl.col("a")*pl.col("m")*pl.col("x")))
+    return 1.1 / (pl.col("a") * pl.col("m") * pl.col("x"))
 
 
 def calc_val_2610_01307_form_e(a: float, m: float, x: float) -> float:
@@ -5283,12 +5473,12 @@ def calc_val_2610_01307_form_e(a: float, m: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2/(a*m*x))
+    return float(2 / (a * m * x))
 
 
 def expr_val_2610_01307_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_e`."""
-    return (2/(pl.col("a")*pl.col("m")*pl.col("x")))
+    return 2 / (pl.col("a") * pl.col("m") * pl.col("x"))
 
 
 def calc_l_a_a_i_form_6(C: float, E: float, L: float, M: float, P: float, S: float) -> float:
@@ -5315,12 +5505,14 @@ def calc_l_a_a_i_form_6(C: float, E: float, L: float, M: float, P: float, S: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(L*(P*(C*C)) + L*(M*(E*S)))
+    return float(L * (P * (C * C)) + L * (M * (E * S)))
 
 
 def expr_l_a_a_i_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_a_a_i_form_6`."""
-    return (pl.col("L")*(pl.col("P")*(pl.col("C")*pl.col("C"))) + pl.col("L")*(pl.col("M")*(pl.col("E")*pl.col("S"))))
+    return pl.col("L") * (pl.col("P") * (pl.col("C") * pl.col("C"))) + pl.col("L") * (
+        pl.col("M") * (pl.col("E") * pl.col("S"))
+    )
 
 
 def calc_val_2609_39852_form_9(m: float, r: float) -> float:
@@ -5343,12 +5535,12 @@ def calc_val_2609_39852_form_9(m: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(m*r)
+    return float(m * r)
 
 
 def expr_val_2609_39852_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_39852_form_9`."""
-    return (pl.col("m")*pl.col("r"))
+    return pl.col("m") * pl.col("r")
 
 
 def calc_val_2609_38730_form_b(X: float, e: float, i: float, n: float, v: float) -> float:
@@ -5374,12 +5566,12 @@ def calc_val_2609_38730_form_b(X: float, e: float, i: float, n: float, v: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(X*e*i*n*v)
+    return float(X * e * i * n * v)
 
 
 def expr_val_2609_38730_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_38730_form_b`."""
-    return (pl.col("X")*pl.col("e")*pl.col("i")*pl.col("n")*pl.col("v"))
+    return pl.col("X") * pl.col("e") * pl.col("i") * pl.col("n") * pl.col("v")
 
 
 def calc_val_2609_38730_form_5(X: float, de: float, f: float, w: float) -> float:
@@ -5404,12 +5596,12 @@ def calc_val_2609_38730_form_5(X: float, de: float, f: float, w: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(X*de*f*w)
+    return float(X * de * f * w)
 
 
 def expr_val_2609_38730_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_38730_form_5`."""
-    return (pl.col("X")*pl.col("de")*pl.col("f")*pl.col("w"))
+    return pl.col("X") * pl.col("de") * pl.col("f") * pl.col("w")
 
 
 def calc_val_2609_38730_form_c(h: float) -> float:
@@ -5436,7 +5628,7 @@ def calc_val_2609_38730_form_c(h: float) -> float:
 
 def expr_val_2609_38730_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_38730_form_c`."""
-    return (pl.col("h"))
+    return pl.col("h")
 
 
 def calc_z_form_4(c: float, e: float, v: float) -> float:
@@ -5460,12 +5652,12 @@ def calc_z_form_4(c: float, e: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(c*e*v)
+    return float(c * e * v)
 
 
 def expr_z_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_z_form_4`."""
-    return (pl.col("c")*pl.col("e")*pl.col("v"))
+    return pl.col("c") * pl.col("e") * pl.col("v")
 
 
 def calc_l_v_a_l_form_4(L: float, i: float, k: float, n: float) -> float:
@@ -5490,15 +5682,17 @@ def calc_l_v_a_l_form_4(L: float, i: float, k: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(L*i*k*n)
+    return float(L * i * k * n)
 
 
 def expr_l_v_a_l_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_v_a_l_form_4`."""
-    return (pl.col("L")*pl.col("i")*pl.col("k")*pl.col("n"))
+    return pl.col("L") * pl.col("i") * pl.col("k") * pl.col("n")
 
 
-def calc_val_2609_38730_form_9(R: float, b: float, de: float, ds: float, n: float, o: float, u: float) -> float:
+def calc_val_2609_38730_form_9(
+    R: float, b: float, de: float, ds: float, n: float, o: float, u: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_38730.
 
     **Source**:
@@ -5523,12 +5717,20 @@ def calc_val_2609_38730_form_9(R: float, b: float, de: float, ds: float, n: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(R*b*de*ds*n*o*u)
+    return float(R * b * de * ds * n * o * u)
 
 
 def expr_val_2609_38730_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_38730_form_9`."""
-    return (pl.col("R")*pl.col("b")*pl.col("de")*pl.col("ds")*pl.col("n")*pl.col("o")*pl.col("u"))
+    return (
+        pl.col("R")
+        * pl.col("b")
+        * pl.col("de")
+        * pl.col("ds")
+        * pl.col("n")
+        * pl.col("o")
+        * pl.col("u")
+    )
 
 
 def calc_e_r_e_c_n_o_form_c(a: float, m: float, s: float, x: float) -> float:
@@ -5553,12 +5755,12 @@ def calc_e_r_e_c_n_o_form_c(a: float, m: float, s: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*m*s*x)
+    return float(a * m * s * x)
 
 
 def expr_e_r_e_c_n_o_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_r_e_c_n_o_form_c`."""
-    return (pl.col("a")*pl.col("m")*pl.col("s")*pl.col("x"))
+    return pl.col("a") * pl.col("m") * pl.col("s") * pl.col("x")
 
 
 def calc_e_b_a_e_s_form_3(s: float) -> float:
@@ -5580,12 +5782,12 @@ def calc_e_b_a_e_s_form_3(s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*s)
+    return float(math.e * s)
 
 
 def expr_e_b_a_e_s_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_b_a_e_s_form_3`."""
-    return (math.e*pl.col("s"))
+    return math.e * pl.col("s")
 
 
 def calc_e_f_i_n_a_l_form_e(s: float) -> float:
@@ -5607,15 +5809,17 @@ def calc_e_f_i_n_a_l_form_e(s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*s)
+    return float(math.e * s)
 
 
 def expr_e_f_i_n_a_l_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_f_i_n_a_l_form_e`."""
-    return (math.e*pl.col("s"))
+    return math.e * pl.col("s")
 
 
-def calc_g_s_p_e_c_t_r_a_l_form_5(a: float, b: float, e: float, f: float, i: float, l: float, n: float, s: float) -> float:
+def calc_g_s_p_e_c_t_r_a_l_form_5(
+    a: float, b: float, e: float, f: float, i: float, l: float, n: float, s: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_38730.
 
     **Source**:
@@ -5641,12 +5845,16 @@ def calc_g_s_p_e_c_t_r_a_l_form_5(a: float, b: float, e: float, f: float, i: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(-a**2*b*e*f*i*l*n*s*math.exp(2) + 100*math.e*a*b*e*s)
+    return float(-(a**2) * b * e * f * i * l * n * s * math.exp(2) + 100 * math.e * a * b * e * s)
 
 
 def expr_g_s_p_e_c_t_r_a_l_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_g_s_p_e_c_t_r_a_l_form_5`."""
-    return (-pl.col("a")**2*pl.col("b")*pl.col("e")*pl.col("f")*pl.col("i")*pl.col("l")*pl.col("n")*pl.col("s")*math.exp(2) + 100*math.e*pl.col("a")*pl.col("b")*pl.col("e")*pl.col("s"))
+    return -(pl.col("a") ** 2) * pl.col("b") * pl.col("e") * pl.col("f") * pl.col("i") * pl.col(
+        "l"
+    ) * pl.col("n") * pl.col("s") * math.exp(2) + 100 * math.e * pl.col("a") * pl.col("b") * pl.col(
+        "e"
+    ) * pl.col("s")
 
 
 def calc_val_2609_38730_form_2(h: float, r: float) -> float:
@@ -5669,12 +5877,12 @@ def calc_val_2609_38730_form_2(h: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(h*r)
+    return float(h * r)
 
 
 def expr_val_2609_38730_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_38730_form_2`."""
-    return (pl.col("h")*pl.col("r"))
+    return pl.col("h") * pl.col("r")
 
 
 def calc_val_2609_38730_form_3(S: float, h: float) -> float:
@@ -5697,12 +5905,12 @@ def calc_val_2609_38730_form_3(S: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(S*h)
+    return float(S * h)
 
 
 def expr_val_2609_38730_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_38730_form_3`."""
-    return (pl.col("S")*pl.col("h"))
+    return pl.col("S") * pl.col("h")
 
 
 def calc_l_f_m_form_8(t: float) -> float:
@@ -5724,12 +5932,12 @@ def calc_l_f_m_form_8(t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*t)
+    return float(math.e * t)
 
 
 def expr_l_f_m_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_f_m_form_8`."""
-    return (math.e*pl.col("t"))
+    return math.e * pl.col("t")
 
 
 def calc_l_b_a_e_s_form_a(c: float) -> float:
@@ -5751,12 +5959,12 @@ def calc_l_b_a_e_s_form_a(c: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*c)
+    return float(math.e * c)
 
 
 def expr_l_b_a_e_s_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_b_a_e_s_form_a`."""
-    return (math.e*pl.col("c"))
+    return math.e * pl.col("c")
 
 
 def calc_val_2609_20558_form_f(L: float, e: float, t: float) -> float:
@@ -5780,12 +5988,12 @@ def calc_val_2609_20558_form_f(L: float, e: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(L*e*t)
+    return float(L * e * t)
 
 
 def expr_val_2609_20558_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_20558_form_f`."""
-    return (pl.col("L")*pl.col("e")*pl.col("t"))
+    return pl.col("L") * pl.col("e") * pl.col("t")
 
 
 def calc_p_u_form_5(a: float, h: float, y: float) -> float:
@@ -5809,12 +6017,12 @@ def calc_p_u_form_5(a: float, h: float, y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*y + h*y)
+    return float(a * y + h * y)
 
 
 def expr_p_u_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_u_form_5`."""
-    return (pl.col("a")*pl.col("y") + pl.col("h")*pl.col("y"))
+    return pl.col("a") * pl.col("y") + pl.col("h") * pl.col("y")
 
 
 def calc_y_r_s_h_s_y_p_s_form_1(T: float, k: float, p: float, s: float, z: float) -> float:
@@ -5840,12 +6048,16 @@ def calc_y_r_s_h_s_y_p_s_form_1(T: float, k: float, p: float, s: float, z: float
     Returns:
         float: Calculated metric value.
     """
-    return float(T*k*p**2*s + T*s*z + 1)
+    return float(T * k * p**2 * s + T * s * z + 1)
 
 
 def expr_y_r_s_h_s_y_p_s_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_y_r_s_h_s_y_p_s_form_1`."""
-    return (pl.col("T")*pl.col("k")*pl.col("p")**2*pl.col("s") + pl.col("T")*pl.col("s")*pl.col("z") + 1)
+    return (
+        pl.col("T") * pl.col("k") * pl.col("p") ** 2 * pl.col("s")
+        + pl.col("T") * pl.col("s") * pl.col("z")
+        + 1
+    )
 
 
 def calc_h_y_form_2(c: float, dh: float, h: float, p: float, r: float, x: float, y: float) -> float:
@@ -5873,12 +6085,14 @@ def calc_h_y_form_2(c: float, dh: float, h: float, p: float, r: float, x: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(c*h**2*x + dh*(-p*y + r))
+    return float(c * h**2 * x + dh * (-p * y + r))
 
 
 def expr_h_y_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_h_y_form_2`."""
-    return (pl.col("c")*pl.col("h")**2*pl.col("x") + pl.col("dh")*(-pl.col("p")*pl.col("y") + pl.col("r")))
+    return pl.col("c") * pl.col("h") ** 2 * pl.col("x") + pl.col("dh") * (
+        -pl.col("p") * pl.col("y") + pl.col("r")
+    )
 
 
 def calc_val_2609_17701_form_8(b: float) -> float:
@@ -5905,7 +6119,7 @@ def calc_val_2609_17701_form_8(b: float) -> float:
 
 def expr_val_2609_17701_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_17701_form_8`."""
-    return (pl.col("b"))
+    return pl.col("b")
 
 
 def calc_val_2609_17701_form_3(b: float) -> float:
@@ -5927,12 +6141,12 @@ def calc_val_2609_17701_form_3(b: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*b)
+    return float(2 * b)
 
 
 def expr_val_2609_17701_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_17701_form_3`."""
-    return (2*pl.col("b"))
+    return 2 * pl.col("b")
 
 
 def calc_l_0_p_w_form_0(y: float) -> float:
@@ -5954,12 +6168,12 @@ def calc_l_0_p_w_form_0(y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(4*y**2)
+    return float(4 * y**2)
 
 
 def expr_l_0_p_w_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_0_p_w_form_0`."""
-    return (4*pl.col("y")**2)
+    return 4 * pl.col("y") ** 2
 
 
 def calc_l_g_a_p_w_form_8(A: float, B: float, H: float, a: float, y: float) -> float:
@@ -5985,12 +6199,12 @@ def calc_l_g_a_p_w_form_8(A: float, B: float, H: float, a: float, y: float) -> f
     Returns:
         float: Calculated metric value.
     """
-    return float(2*A*B*H*a*y**2)
+    return float(2 * A * B * H * a * y**2)
 
 
 def expr_l_g_a_p_w_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_g_a_p_w_form_8`."""
-    return (2*pl.col("A")*pl.col("B")*pl.col("H")*pl.col("a")*pl.col("y")**2)
+    return 2 * pl.col("A") * pl.col("B") * pl.col("H") * pl.col("a") * pl.col("y") ** 2
 
 
 def calc_a_t_w_o_w_a_o_form_9(S: float, T: float) -> float:
@@ -6013,12 +6227,12 @@ def calc_a_t_w_o_w_a_o_form_9(S: float, T: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-S*S*T)
+    return float(-S * S * T)
 
 
 def expr_a_t_w_o_w_a_o_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_t_w_o_w_a_o_form_9`."""
-    return (-pl.col("S")*pl.col("S")*pl.col("T"))
+    return -pl.col("S") * pl.col("S") * pl.col("T")
 
 
 def calc_val_2609_17701_form_6(b: float) -> float:
@@ -6040,12 +6254,12 @@ def calc_val_2609_17701_form_6(b: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(3*b)
+    return float(3 * b)
 
 
 def expr_val_2609_17701_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_17701_form_6`."""
-    return (3*pl.col("b"))
+    return 3 * pl.col("b")
 
 
 def calc_u_l_s_o_form_4(a: float, p: float, s: float) -> float:
@@ -6069,12 +6283,12 @@ def calc_u_l_s_o_form_4(a: float, p: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-a*p + p*s)
+    return float(-a * p + p * s)
 
 
 def expr_u_l_s_o_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_l_s_o_form_4`."""
-    return (-pl.col("a")*pl.col("p") + pl.col("p")*pl.col("s"))
+    return -pl.col("a") * pl.col("p") + pl.col("p") * pl.col("s")
 
 
 def calc_val_2609_11476_form_8(P: float, f: float, o: float, r: float) -> float:
@@ -6099,12 +6313,12 @@ def calc_val_2609_11476_form_8(P: float, f: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*f*o**2*r)
+    return float(P * f * o**2 * r)
 
 
 def expr_val_2609_11476_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_11476_form_8`."""
-    return (pl.col("P")*pl.col("f")*pl.col("o")**2*pl.col("r"))
+    return pl.col("P") * pl.col("f") * pl.col("o") ** 2 * pl.col("r")
 
 
 def calc_val_2609_11476_form_4(N: float, r: float, s: float, u: float) -> float:
@@ -6129,12 +6343,12 @@ def calc_val_2609_11476_form_4(N: float, r: float, s: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(N*(r*u) - 1*s)
+    return float(N * (r * u) - 1 * s)
 
 
 def expr_val_2609_11476_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_11476_form_4`."""
-    return (pl.col("N")*(pl.col("r")*pl.col("u")) - 1*pl.col("s"))
+    return pl.col("N") * (pl.col("r") * pl.col("u")) - 1 * pl.col("s")
 
 
 def calc_val_2608_26548_form_b(h: float, i: float) -> float:
@@ -6157,12 +6371,12 @@ def calc_val_2608_26548_form_b(h: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(h*i)
+    return float(h * i)
 
 
 def expr_val_2608_26548_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_26548_form_b`."""
-    return (pl.col("h")*pl.col("i"))
+    return pl.col("h") * pl.col("i")
 
 
 def calc_val_2608_26548_form_8(j: float, v: float) -> float:
@@ -6185,12 +6399,12 @@ def calc_val_2608_26548_form_8(j: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(j*v)
+    return float(j * v)
 
 
 def expr_val_2608_26548_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_26548_form_8`."""
-    return (pl.col("j")*pl.col("v"))
+    return pl.col("j") * pl.col("v")
 
 
 def calc_val_1610_03464_form_e(a: float, b: float, l: float, v: float) -> float:
@@ -6215,12 +6429,12 @@ def calc_val_1610_03464_form_e(a: float, b: float, l: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*b*l**2*v)
+    return float(a * b * l**2 * v)
 
 
 def expr_val_1610_03464_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1610_03464_form_e`."""
-    return (pl.col("a")*pl.col("b")*pl.col("l")**2*pl.col("v"))
+    return pl.col("a") * pl.col("b") * pl.col("l") ** 2 * pl.col("v")
 
 
 def calc_val_1610_03464_form_b(a: float, b: float, l: float, v: float) -> float:
@@ -6245,15 +6459,17 @@ def calc_val_1610_03464_form_b(a: float, b: float, l: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*b*l**2*v)
+    return float(a * b * l**2 * v)
 
 
 def expr_val_1610_03464_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1610_03464_form_b`."""
-    return (pl.col("a")*pl.col("b")*pl.col("l")**2*pl.col("v"))
+    return pl.col("a") * pl.col("b") * pl.col("l") ** 2 * pl.col("v")
 
 
-def calc_r_s_form_6(N: float, a: float, c: float, e: float, l: float, s: float, u: float, v: float) -> float:
+def calc_r_s_form_6(
+    N: float, a: float, c: float, e: float, l: float, s: float, u: float, v: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29142.
 
     **Source**:
@@ -6279,12 +6495,24 @@ def calc_r_s_form_6(N: float, a: float, c: float, e: float, l: float, s: float, 
     Returns:
         float: Calculated metric value.
     """
-    return float(N*(s*(u*(c*(c*(N*(e*(v*(a*l)))))))))
+    return float(N * (s * (u * (c * (c * (N * (e * (v * (a * l)))))))))
 
 
 def expr_r_s_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_s_form_6`."""
-    return (pl.col("N")*(pl.col("s")*(pl.col("u")*(pl.col("c")*(pl.col("c")*(pl.col("N")*(pl.col("e")*(pl.col("v")*(pl.col("a")*pl.col("l"))))))))))
+    return pl.col("N") * (
+        pl.col("s")
+        * (
+            pl.col("u")
+            * (
+                pl.col("c")
+                * (
+                    pl.col("c")
+                    * (pl.col("N") * (pl.col("e") * (pl.col("v") * (pl.col("a") * pl.col("l")))))
+                )
+            )
+        )
+    )
 
 
 def calc_val_2610_18361_form_d(J: float, N: float) -> float:
@@ -6307,12 +6535,12 @@ def calc_val_2610_18361_form_d(J: float, N: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(J*N)
+    return float(J * N)
 
 
 def expr_val_2610_18361_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_18361_form_d`."""
-    return (pl.col("J")*pl.col("N"))
+    return pl.col("J") * pl.col("N")
 
 
 def calc_val_2609_24299_form_6(x: float) -> float:
@@ -6339,7 +6567,7 @@ def calc_val_2609_24299_form_6(x: float) -> float:
 
 def expr_val_2609_24299_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_24299_form_6`."""
-    return (pl.col("x"))
+    return pl.col("x")
 
 
 def calc_l_form_9(T: float, V: float, a: float, b: float, c: float, w: float) -> float:
@@ -6366,12 +6594,21 @@ def calc_l_form_9(T: float, V: float, a: float, b: float, c: float, w: float) ->
     Returns:
         float: Calculated metric value.
     """
-    return float(T*a + T*b + T*c + T*w - V*a - V*b - V*c - V*w)
+    return float(T * a + T * b + T * c + T * w - V * a - V * b - V * c - V * w)
 
 
 def expr_l_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_form_9`."""
-    return (pl.col("T")*pl.col("a") + pl.col("T")*pl.col("b") + pl.col("T")*pl.col("c") + pl.col("T")*pl.col("w") - pl.col("V")*pl.col("a") - pl.col("V")*pl.col("b") - pl.col("V")*pl.col("c") - pl.col("V")*pl.col("w"))
+    return (
+        pl.col("T") * pl.col("a")
+        + pl.col("T") * pl.col("b")
+        + pl.col("T") * pl.col("c")
+        + pl.col("T") * pl.col("w")
+        - pl.col("V") * pl.col("a")
+        - pl.col("V") * pl.col("b")
+        - pl.col("V") * pl.col("c")
+        - pl.col("V") * pl.col("w")
+    )
 
 
 def calc_val_2609_24299_form_c(i: float, m: float, n: float, u: float) -> float:
@@ -6396,15 +6633,17 @@ def calc_val_2609_24299_form_c(i: float, m: float, n: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*m*n*u)
+    return float(i * m * n * u)
 
 
 def expr_val_2609_24299_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_24299_form_c`."""
-    return (pl.col("i")*pl.col("m")*pl.col("n")*pl.col("u"))
+    return pl.col("i") * pl.col("m") * pl.col("n") * pl.col("u")
 
 
-def calc_m_q_q_form_5(M: float, N: float, T: float, c: float, m: float, u: float, v: float, w: float) -> float:
+def calc_m_q_q_form_5(
+    M: float, N: float, T: float, c: float, m: float, u: float, v: float, w: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_24299.
 
     **Source**:
@@ -6430,12 +6669,23 @@ def calc_m_q_q_form_5(M: float, N: float, T: float, c: float, m: float, u: float
     Returns:
         float: Calculated metric value.
     """
-    return float(m*(u*(N*(T*(w*(N*w))))) + (M*c + m*(u*(N*(T*(v*(N*v)))))))
+    return float(
+        m * (u * (N * (T * (w * (N * w))))) + (M * c + m * (u * (N * (T * (v * (N * v))))))
+    )
 
 
 def expr_m_q_q_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_q_q_form_5`."""
-    return (pl.col("m")*(pl.col("u")*(pl.col("N")*(pl.col("T")*(pl.col("w")*(pl.col("N")*pl.col("w")))))) + (pl.col("M")*pl.col("c") + pl.col("m")*(pl.col("u")*(pl.col("N")*(pl.col("T")*(pl.col("v")*(pl.col("N")*pl.col("v"))))))))
+    return pl.col("m") * (
+        pl.col("u") * (pl.col("N") * (pl.col("T") * (pl.col("w") * (pl.col("N") * pl.col("w")))))
+    ) + (
+        pl.col("M") * pl.col("c")
+        + pl.col("m")
+        * (
+            pl.col("u")
+            * (pl.col("N") * (pl.col("T") * (pl.col("v") * (pl.col("N") * pl.col("v")))))
+        )
+    )
 
 
 def calc_c_p_form_a(P: float, U: float, i: float, n: float) -> float:
@@ -6460,12 +6710,12 @@ def calc_c_p_form_a(P: float, U: float, i: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(360*P*U*i*n)
+    return float(360 * P * U * i * n)
 
 
 def expr_c_p_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_p_form_a`."""
-    return (360*pl.col("P")*pl.col("U")*pl.col("i")*pl.col("n"))
+    return 360 * pl.col("P") * pl.col("U") * pl.col("i") * pl.col("n")
 
 
 def calc_c_t_form_0(T: float, U: float) -> float:
@@ -6488,12 +6738,12 @@ def calc_c_t_form_0(T: float, U: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(240*T*U)
+    return float(240 * T * U)
 
 
 def expr_c_t_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_t_form_0`."""
-    return (240*pl.col("T")*pl.col("U"))
+    return 240 * pl.col("T") * pl.col("U")
 
 
 def calc_val_2609_05500_form_4(C: float, p: float) -> float:
@@ -6516,12 +6766,12 @@ def calc_val_2609_05500_form_4(C: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(C*p)
+    return float(C * p)
 
 
 def expr_val_2609_05500_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_05500_form_4`."""
-    return (pl.col("C")*pl.col("p"))
+    return pl.col("C") * pl.col("p")
 
 
 def calc_val_2608_27423_form_9(R: float) -> float:
@@ -6548,7 +6798,7 @@ def calc_val_2608_27423_form_9(R: float) -> float:
 
 def expr_val_2608_27423_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_27423_form_9`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_val_2608_27423_form_0(R: float) -> float:
@@ -6575,7 +6825,7 @@ def calc_val_2608_27423_form_0(R: float) -> float:
 
 def expr_val_2608_27423_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_27423_form_0`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_l_form_c(L: float, a: float, de: float, i: float, l: float, m: float, x: float) -> float:
@@ -6603,12 +6853,20 @@ def calc_l_form_c(L: float, a: float, de: float, i: float, l: float, m: float, x
     Returns:
         float: Calculated metric value.
     """
-    return float(L*a**2*de*i*l*m**2*x)
+    return float(L * a**2 * de * i * l * m**2 * x)
 
 
 def expr_l_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_form_c`."""
-    return (pl.col("L")*pl.col("a")**2*pl.col("de")*pl.col("i")*pl.col("l")*pl.col("m")**2*pl.col("x"))
+    return (
+        pl.col("L")
+        * pl.col("a") ** 2
+        * pl.col("de")
+        * pl.col("i")
+        * pl.col("l")
+        * pl.col("m") ** 2
+        * pl.col("x")
+    )
 
 
 def calc_val_2608_10387_form_d(dx: float) -> float:
@@ -6635,7 +6893,7 @@ def calc_val_2608_10387_form_d(dx: float) -> float:
 
 def expr_val_2608_10387_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_d`."""
-    return (pl.col("dx"))
+    return pl.col("dx")
 
 
 def calc_val_2608_10387_form_9(q: float, s: float) -> float:
@@ -6658,12 +6916,12 @@ def calc_val_2608_10387_form_9(q: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(q*s)
+    return float(q * s)
 
 
 def expr_val_2608_10387_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_9`."""
-    return (pl.col("q")*pl.col("s"))
+    return pl.col("q") * pl.col("s")
 
 
 def calc_val_2608_10387_form_2(a: float, q: float) -> float:
@@ -6686,12 +6944,12 @@ def calc_val_2608_10387_form_2(a: float, q: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*q)
+    return float(a * q)
 
 
 def expr_val_2608_10387_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_2`."""
-    return (pl.col("a")*pl.col("q"))
+    return pl.col("a") * pl.col("q")
 
 
 def calc_val_2608_10387_form_1(a: float, r: float) -> float:
@@ -6714,12 +6972,12 @@ def calc_val_2608_10387_form_1(a: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*r)
+    return float(a * r)
 
 
 def expr_val_2608_10387_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_1`."""
-    return (pl.col("a")*pl.col("r"))
+    return pl.col("a") * pl.col("r")
 
 
 def calc_val_2608_10387_form_4(x: float) -> float:
@@ -6746,7 +7004,7 @@ def calc_val_2608_10387_form_4(x: float) -> float:
 
 def expr_val_2608_10387_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_4`."""
-    return (pl.col("x"))
+    return pl.col("x")
 
 
 def calc_val_2608_10387_form_a(R: float) -> float:
@@ -6773,7 +7031,7 @@ def calc_val_2608_10387_form_a(R: float) -> float:
 
 def expr_val_2608_10387_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_a`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_val_2608_10387_form_3(A: float) -> float:
@@ -6800,7 +7058,7 @@ def calc_val_2608_10387_form_3(A: float) -> float:
 
 def expr_val_2608_10387_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_10387_form_3`."""
-    return (pl.col("A"))
+    return pl.col("A")
 
 
 def calc_ds_dw_form_d(D: float, L: float, i: float, k: float, w: float) -> float:
@@ -6826,12 +7084,12 @@ def calc_ds_dw_form_d(D: float, L: float, i: float, k: float, w: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(w*(-D*k + L*i*k))
+    return float(w * (-D * k + L * i * k))
 
 
 def expr_ds_dw_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_ds_dw_form_d`."""
-    return (pl.col("w")*(-pl.col("D")*pl.col("k") + pl.col("L")*pl.col("i")*pl.col("k")))
+    return pl.col("w") * (-pl.col("D") * pl.col("k") + pl.col("L") * pl.col("i") * pl.col("k"))
 
 
 def calc_w_form_a(i: float, v: float, x: float, y: float) -> float:
@@ -6856,12 +7114,12 @@ def calc_w_form_a(i: float, v: float, x: float, y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*v*y + v*x)
+    return float(i * v * y + v * x)
 
 
 def expr_w_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_form_a`."""
-    return (pl.col("i")*pl.col("v")*pl.col("y") + pl.col("v")*pl.col("x"))
+    return pl.col("i") * pl.col("v") * pl.col("y") + pl.col("v") * pl.col("x")
 
 
 def calc_dt_dw_form_f(D: float, L: float, i: float, k: float, v: float, w: float) -> float:
@@ -6888,12 +7146,16 @@ def calc_dt_dw_form_f(D: float, L: float, i: float, k: float, v: float, w: float
     Returns:
         float: Calculated metric value.
     """
-    return float(w*(-D*k + L*i*k)*abs(v))
+    return float(w * (-D * k + L * i * k) * abs(v))
 
 
 def expr_dt_dw_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_dt_dw_form_f`."""
-    return (pl.col("w")*(-pl.col("D")*pl.col("k") + pl.col("L")*pl.col("i")*pl.col("k"))*abs(pl.col("v")))
+    return (
+        pl.col("w")
+        * (-pl.col("D") * pl.col("k") + pl.col("L") * pl.col("i") * pl.col("k"))
+        * abs(pl.col("v"))
+    )
 
 
 def calc_j_form_5(C: float, d: float, l: float, p: float) -> float:
@@ -6918,12 +7180,16 @@ def calc_j_form_5(C: float, d: float, l: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(0.5*C**2*d*l + 0.3*C*l + 0.2*C*p)
+    return float(0.5 * C**2 * d * l + 0.3 * C * l + 0.2 * C * p)
 
 
 def expr_j_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_j_form_5`."""
-    return (0.5*pl.col("C")**2*pl.col("d")*pl.col("l") + 0.3*pl.col("C")*pl.col("l") + 0.2*pl.col("C")*pl.col("p"))
+    return (
+        0.5 * pl.col("C") ** 2 * pl.col("d") * pl.col("l")
+        + 0.3 * pl.col("C") * pl.col("l")
+        + 0.2 * pl.col("C") * pl.col("p")
+    )
 
 
 def calc_val_2608_23163_form_e(T: float, m: float, o: float, r: float, t: float) -> float:
@@ -6949,12 +7215,12 @@ def calc_val_2608_23163_form_e(T: float, m: float, o: float, r: float, t: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(T*m*o**2*r*t)
+    return float(T * m * o**2 * r * t)
 
 
 def expr_val_2608_23163_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_23163_form_e`."""
-    return (pl.col("T")*pl.col("m")*pl.col("o")**2*pl.col("r")*pl.col("t"))
+    return pl.col("T") * pl.col("m") * pl.col("o") ** 2 * pl.col("r") * pl.col("t")
 
 
 def calc_val_2608_23163_form_a(i: float, v: float) -> float:
@@ -6977,12 +7243,12 @@ def calc_val_2608_23163_form_a(i: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*v)
+    return float(i * v)
 
 
 def expr_val_2608_23163_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_23163_form_a`."""
-    return (pl.col("i")*pl.col("v"))
+    return pl.col("i") * pl.col("v")
 
 
 def calc_val_2608_23163_form_1(P: float, m: float, o: float, r: float, t: float) -> float:
@@ -7008,12 +7274,12 @@ def calc_val_2608_23163_form_1(P: float, m: float, o: float, r: float, t: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(P*m*o**2*r*t)
+    return float(P * m * o**2 * r * t)
 
 
 def expr_val_2608_23163_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_23163_form_1`."""
-    return (pl.col("P")*pl.col("m")*pl.col("o")**2*pl.col("r")*pl.col("t"))
+    return pl.col("P") * pl.col("m") * pl.col("o") ** 2 * pl.col("r") * pl.col("t")
 
 
 def calc_val_2608_23163_form_3(P: float, m: float, o: float, r: float, t: float) -> float:
@@ -7039,12 +7305,12 @@ def calc_val_2608_23163_form_3(P: float, m: float, o: float, r: float, t: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(P*m*o**2*r*t)
+    return float(P * m * o**2 * r * t)
 
 
 def expr_val_2608_23163_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_23163_form_3`."""
-    return (pl.col("P")*pl.col("m")*pl.col("o")**2*pl.col("r")*pl.col("t"))
+    return pl.col("P") * pl.col("m") * pl.col("o") ** 2 * pl.col("r") * pl.col("t")
 
 
 def calc_p_b_a_s_e_l_i_e_n_form_9(W: float, i: float, v: float) -> float:
@@ -7068,12 +7334,12 @@ def calc_p_b_a_s_e_l_i_e_n_form_9(W: float, i: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(W*i*v)
+    return float(W * i * v)
 
 
 def expr_p_b_a_s_e_l_i_e_n_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_b_a_s_e_l_i_e_n_form_9`."""
-    return (pl.col("W")*pl.col("i")*pl.col("v"))
+    return pl.col("W") * pl.col("i") * pl.col("v")
 
 
 def calc_val_2608_08157_form_8(s: float) -> float:
@@ -7100,7 +7366,7 @@ def calc_val_2608_08157_form_8(s: float) -> float:
 
 def expr_val_2608_08157_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_08157_form_8`."""
-    return (pl.col("s"))
+    return pl.col("s")
 
 
 def calc_val_2608_08157_form_a(T: float, n: float, r: float, v: float, w: float) -> float:
@@ -7126,15 +7392,17 @@ def calc_val_2608_08157_form_a(T: float, n: float, r: float, v: float, w: float)
     Returns:
         float: Calculated metric value.
     """
-    return float((T*n*r**2*v*w >= 0))
+    return float((T * n * r**2 * v * w >= 0))
 
 
 def expr_val_2608_08157_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_08157_form_a`."""
-    return ((pl.col("T")*pl.col("n")*pl.col("r")**2*pl.col("v")*pl.col("w") >= 0))
+    return pl.col("T") * pl.col("n") * pl.col("r") ** 2 * pl.col("v") * pl.col("w") >= 0
 
 
-def calc_val_2608_08157_form_d(b: float, c: float, e: float, i: float, m: float, n: float, o: float, t: float, u: float) -> float:
+def calc_val_2608_08157_form_d(
+    b: float, c: float, e: float, i: float, m: float, n: float, o: float, t: float, u: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_08157.
 
     **Source**:
@@ -7161,12 +7429,22 @@ def calc_val_2608_08157_form_d(b: float, c: float, e: float, i: float, m: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(b*c*e*i*m*n**2*o*t*u)
+    return float(b * c * e * i * m * n**2 * o * t * u)
 
 
 def expr_val_2608_08157_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_08157_form_d`."""
-    return (pl.col("b")*pl.col("c")*pl.col("e")*pl.col("i")*pl.col("m")*pl.col("n")**2*pl.col("o")*pl.col("t")*pl.col("u"))
+    return (
+        pl.col("b")
+        * pl.col("c")
+        * pl.col("e")
+        * pl.col("i")
+        * pl.col("m")
+        * pl.col("n") ** 2
+        * pl.col("o")
+        * pl.col("t")
+        * pl.col("u")
+    )
 
 
 def calc_val_2608_08157_form_6(s: float) -> float:
@@ -7193,7 +7471,7 @@ def calc_val_2608_08157_form_6(s: float) -> float:
 
 def expr_val_2608_08157_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_08157_form_6`."""
-    return (pl.col("s"))
+    return pl.col("s")
 
 
 def calc_val_2608_08157_form_1(s: float) -> float:
@@ -7220,7 +7498,7 @@ def calc_val_2608_08157_form_1(s: float) -> float:
 
 def expr_val_2608_08157_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_08157_form_1`."""
-    return (pl.col("s"))
+    return pl.col("s")
 
 
 def calc_a_l_r_form_a(L: float, R: float, a: float) -> float:
@@ -7244,12 +7522,12 @@ def calc_a_l_r_form_a(L: float, R: float, a: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(6*L**3*R**3*a**3)
+    return float(6 * L**3 * R**3 * a**3)
 
 
 def expr_a_l_r_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_l_r_form_a`."""
-    return (6*pl.col("L")**3*pl.col("R")**3*pl.col("a")**3)
+    return 6 * pl.col("L") ** 3 * pl.col("R") ** 3 * pl.col("a") ** 3
 
 
 def calc_val_2601_06439_form_9(W: float, e: float, h: float, n: float) -> float:
@@ -7274,12 +7552,12 @@ def calc_val_2601_06439_form_9(W: float, e: float, h: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(W*e*h*n)
+    return float(W * e * h * n)
 
 
 def expr_val_2601_06439_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_06439_form_9`."""
-    return (pl.col("W")*pl.col("e")*pl.col("h")*pl.col("n"))
+    return pl.col("W") * pl.col("e") * pl.col("h") * pl.col("n")
 
 
 def calc_val_2601_06439_form_f(W: float, e: float, h: float, n: float) -> float:
@@ -7304,12 +7582,12 @@ def calc_val_2601_06439_form_f(W: float, e: float, h: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(W*e*h*n)
+    return float(W * e * h * n)
 
 
 def expr_val_2601_06439_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_06439_form_f`."""
-    return (pl.col("W")*pl.col("e")*pl.col("h")*pl.col("n"))
+    return pl.col("W") * pl.col("e") * pl.col("h") * pl.col("n")
 
 
 def calc_c_2_s_r_z_form_9(c: float, s: float) -> float:
@@ -7332,12 +7610,12 @@ def calc_c_2_s_r_z_form_9(c: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*c*s)
+    return float(2 * c * s)
 
 
 def expr_c_2_s_r_z_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_2_s_r_z_form_9`."""
-    return (2*pl.col("c")*pl.col("s"))
+    return 2 * pl.col("c") * pl.col("s")
 
 
 def calc_a_form_2(c: float, m: float, r: float) -> float:
@@ -7361,12 +7639,12 @@ def calc_a_form_2(c: float, m: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(3*c*m*r**2)
+    return float(3 * c * m * r**2)
 
 
 def expr_a_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_form_2`."""
-    return (3*pl.col("c")*pl.col("m")*pl.col("r")**2)
+    return 3 * pl.col("c") * pl.col("m") * pl.col("r") ** 2
 
 
 def calc_val_2309_15318_form_3(t: float) -> float:
@@ -7393,7 +7671,7 @@ def calc_val_2309_15318_form_3(t: float) -> float:
 
 def expr_val_2309_15318_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2309_15318_form_3`."""
-    return (-pl.col("t"))
+    return -pl.col("t")
 
 
 def calc_val_2303_03898_form_4(b: float, i: float, m: float, n: float) -> float:
@@ -7418,12 +7696,12 @@ def calc_val_2303_03898_form_4(b: float, i: float, m: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*i*m*n)
+    return float(b * i * m * n)
 
 
 def expr_val_2303_03898_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2303_03898_form_4`."""
-    return (pl.col("b")*pl.col("i")*pl.col("m")*pl.col("n"))
+    return pl.col("b") * pl.col("i") * pl.col("m") * pl.col("n")
 
 
 def calc_p_m_form_9(V: float, i: float, m: float) -> float:
@@ -7447,12 +7725,12 @@ def calc_p_m_form_9(V: float, i: float, m: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(V*i*m)
+    return float(V * i * m)
 
 
 def expr_p_m_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_m_form_9`."""
-    return (pl.col("V")*pl.col("i")*pl.col("m"))
+    return pl.col("V") * pl.col("i") * pl.col("m")
 
 
 def calc_c_p_form_f(m: float) -> float:
@@ -7474,12 +7752,12 @@ def calc_c_p_form_f(m: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(0.03*m)
+    return float(0.03 * m)
 
 
 def expr_c_p_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_p_form_f`."""
-    return (0.03*pl.col("m"))
+    return 0.03 * pl.col("m")
 
 
 def calc_p_s_form_b(N: float, W: float) -> float:
@@ -7502,12 +7780,12 @@ def calc_p_s_form_b(N: float, W: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((1.3296*W)/N)
+    return float((1.3296 * W) / N)
 
 
 def expr_p_s_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_s_form_b`."""
-    return ((1.3296*pl.col("W"))/pl.col("N"))
+    return (1.3296 * pl.col("W")) / pl.col("N")
 
 
 def calc_p_s_form_5(N: float, W: float) -> float:
@@ -7530,12 +7808,12 @@ def calc_p_s_form_5(N: float, W: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((0.1325*W)/N)
+    return float((0.1325 * W) / N)
 
 
 def expr_p_s_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_s_form_5`."""
-    return ((0.1325*pl.col("W"))/pl.col("N"))
+    return (0.1325 * pl.col("W")) / pl.col("N")
 
 
 def calc_t_s_p_i_n_do_n_w_form_c(d: float, r: float) -> float:
@@ -7558,12 +7836,12 @@ def calc_t_s_p_i_n_do_n_w_form_c(d: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(618.0*d*r)
+    return float(618.0 * d * r)
 
 
 def expr_t_s_p_i_n_do_n_w_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_s_p_i_n_do_n_w_form_c`."""
-    return (618.0*pl.col("d")*pl.col("r"))
+    return 618.0 * pl.col("d") * pl.col("r")
 
 
 def calc_val_1408_4306_form_f(d: float, r: float) -> float:
@@ -7586,12 +7864,12 @@ def calc_val_1408_4306_form_f(d: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(d*r)
+    return float(d * r)
 
 
 def expr_val_1408_4306_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1408_4306_form_f`."""
-    return (pl.col("d")*pl.col("r"))
+    return pl.col("d") * pl.col("r")
 
 
 def calc_x_form_c(D: float, L: float, g: float) -> float:
@@ -7615,12 +7893,14 @@ def calc_x_form_c(D: float, L: float, g: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-4*D**2*g**2 + (L*g - 2)*(L*g - 1/2))
+    return float(-4 * D**2 * g**2 + (L * g - 2) * (L * g - 1 / 2))
 
 
 def expr_x_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_x_form_c`."""
-    return (-4*pl.col("D")**2*pl.col("g")**2 + (pl.col("L")*pl.col("g") - 2)*(pl.col("L")*pl.col("g") - 1/2))
+    return -4 * pl.col("D") ** 2 * pl.col("g") ** 2 + (pl.col("L") * pl.col("g") - 2) * (
+        pl.col("L") * pl.col("g") - 1 / 2
+    )
 
 
 def calc_y_form_f(D: float, L: float, g: float) -> float:
@@ -7644,12 +7924,16 @@ def calc_y_form_f(D: float, L: float, g: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-4*D*g*(L*g - 1/2) + (L*g - 2)*(L*g - 1/2) - 1)
+    return float(-4 * D * g * (L * g - 1 / 2) + (L * g - 2) * (L * g - 1 / 2) - 1)
 
 
 def expr_y_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_y_form_f`."""
-    return (-4*pl.col("D")*pl.col("g")*(pl.col("L")*pl.col("g") - 1/2) + (pl.col("L")*pl.col("g") - 2)*(pl.col("L")*pl.col("g") - 1/2) - 1)
+    return (
+        -4 * pl.col("D") * pl.col("g") * (pl.col("L") * pl.col("g") - 1 / 2)
+        + (pl.col("L") * pl.col("g") - 2) * (pl.col("L") * pl.col("g") - 1 / 2)
+        - 1
+    )
 
 
 def calc_l_form_6(b: float, d: float, dm: float, v: float) -> float:
@@ -7674,12 +7958,12 @@ def calc_l_form_6(b: float, d: float, dm: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*d*v - d*dm)
+    return float(b * d * v - d * dm)
 
 
 def expr_l_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_form_6`."""
-    return (pl.col("b")*pl.col("d")*pl.col("v") - pl.col("d")*pl.col("dm"))
+    return pl.col("b") * pl.col("d") * pl.col("v") - pl.col("d") * pl.col("dm")
 
 
 def calc_d_f_form_4(C: float, D: float, S: float, q: float) -> float:
@@ -7704,12 +7988,12 @@ def calc_d_f_form_4(C: float, D: float, S: float, q: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((C*D)*(S*q))
+    return float((C * D) * (S * q))
 
 
 def expr_d_f_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_d_f_form_4`."""
-    return ((pl.col("C")*pl.col("D"))*(pl.col("S")*pl.col("q")))
+    return (pl.col("C") * pl.col("D")) * (pl.col("S") * pl.col("q"))
 
 
 def calc_f_form_4(D: float, F: float, L: float) -> float:
@@ -7733,12 +8017,12 @@ def calc_f_form_4(D: float, F: float, L: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(D*F + F*L)
+    return float(D * F + F * L)
 
 
 def expr_f_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_form_4`."""
-    return (pl.col("D")*pl.col("F") + pl.col("F")*pl.col("L"))
+    return pl.col("D") * pl.col("F") + pl.col("F") * pl.col("L")
 
 
 def calc_f_r_form_4(R: float, k: float, r: float) -> float:
@@ -7762,12 +8046,12 @@ def calc_f_r_form_4(R: float, k: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-R*k*r)
+    return float(-R * k * r)
 
 
 def expr_f_r_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_r_form_4`."""
-    return (-pl.col("R")*pl.col("k")*pl.col("r"))
+    return -pl.col("R") * pl.col("k") * pl.col("r")
 
 
 def calc_d_form_6(A: float, C: float, G: float, R: float, e: float, p: float, x: float) -> float:
@@ -7795,12 +8079,14 @@ def calc_d_form_6(A: float, C: float, G: float, R: float, e: float, p: float, x:
     Returns:
         float: Calculated metric value.
     """
-    return float(-A*R*e*p*x + C*G*R)
+    return float(-A * R * e * p * x + C * G * R)
 
 
 def expr_d_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_d_form_6`."""
-    return (-pl.col("A")*pl.col("R")*pl.col("e")*pl.col("p")*pl.col("x") + pl.col("C")*pl.col("G")*pl.col("R"))
+    return -pl.col("A") * pl.col("R") * pl.col("e") * pl.col("p") * pl.col("x") + pl.col(
+        "C"
+    ) * pl.col("G") * pl.col("R")
 
 
 def calc_a_w_form_3(V: float, W: float) -> float:
@@ -7828,7 +8114,7 @@ def calc_a_w_form_3(V: float, W: float) -> float:
 
 def expr_a_w_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_w_form_3`."""
-    return (-pl.col("V") + pl.col("W"))
+    return -pl.col("V") + pl.col("W")
 
 
 def calc_dl_dt_form_3(M: float) -> float:
@@ -7855,10 +8141,12 @@ def calc_dl_dt_form_3(M: float) -> float:
 
 def expr_dl_dt_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_dl_dt_form_3`."""
-    return (pl.col("M"))
+    return pl.col("M")
 
 
-def calc_a_j_h_form_8(a: float, di: float, i: float, l: float, m: float, n: float, r: float, s: float) -> float:
+def calc_a_j_h_form_8(
+    a: float, di: float, i: float, l: float, m: float, n: float, r: float, s: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_1205_2071.
 
     **Source**:
@@ -7884,12 +8172,22 @@ def calc_a_j_h_form_8(a: float, di: float, i: float, l: float, m: float, n: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(0.1129*a**2*di*i**2*l**2*m*n*r*s)
+    return float(0.1129 * a**2 * di * i**2 * l**2 * m * n * r * s)
 
 
 def expr_a_j_h_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_j_h_form_8`."""
-    return (0.1129*pl.col("a")**2*pl.col("di")*pl.col("i")**2*pl.col("l")**2*pl.col("m")*pl.col("n")*pl.col("r")*pl.col("s"))
+    return (
+        0.1129
+        * pl.col("a") ** 2
+        * pl.col("di")
+        * pl.col("i") ** 2
+        * pl.col("l") ** 2
+        * pl.col("m")
+        * pl.col("n")
+        * pl.col("r")
+        * pl.col("s")
+    )
 
 
 def calc_e_v_form_3(m: float, v: float) -> float:
@@ -7912,15 +8210,26 @@ def calc_e_v_form_3(m: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((2*v)*(m/2))
+    return float((2 * v) * (m / 2))
 
 
 def expr_e_v_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_v_form_3`."""
-    return ((2*pl.col("v"))*(pl.col("m")/2))
+    return (2 * pl.col("v")) * (pl.col("m") / 2)
 
 
-def calc_f_m_a_x_form_9(F: float, G: float, H: float, K: float, M: float, R: float, S: float, a: float, m: float, x: float) -> float:
+def calc_f_m_a_x_form_9(
+    F: float,
+    G: float,
+    H: float,
+    K: float,
+    M: float,
+    R: float,
+    S: float,
+    a: float,
+    m: float,
+    x: float,
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_02991.
 
     **Source**:
@@ -7948,12 +8257,36 @@ def calc_f_m_a_x_form_9(F: float, G: float, H: float, K: float, M: float, R: flo
     Returns:
         float: Calculated metric value.
     """
-    return float((R*(M*(S*(K*(R*(G*(M*(K*S))))))))*(((M*(F*(G*(m*(a*x)))))/((H*(G*M))))/((G*H))))
+    return float(
+        (R * (M * (S * (K * (R * (G * (M * (K * S))))))))
+        * (((M * (F * (G * (m * (a * x))))) / (H * (G * M))) / (G * H))
+    )
 
 
 def expr_f_m_a_x_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_m_a_x_form_9`."""
-    return ((pl.col("R")*(pl.col("M")*(pl.col("S")*(pl.col("K")*(pl.col("R")*(pl.col("G")*(pl.col("M")*(pl.col("K")*pl.col("S")))))))))*(((pl.col("M")*(pl.col("F")*(pl.col("G")*(pl.col("m")*(pl.col("a")*pl.col("x"))))))/((pl.col("H")*(pl.col("G")*pl.col("M")))))/((pl.col("G")*pl.col("H")))))
+    return (
+        pl.col("R")
+        * (
+            pl.col("M")
+            * (
+                pl.col("S")
+                * (
+                    pl.col("K")
+                    * (pl.col("R") * (pl.col("G") * (pl.col("M") * (pl.col("K") * pl.col("S")))))
+                )
+            )
+        )
+    ) * (
+        (
+            (
+                pl.col("M")
+                * (pl.col("F") * (pl.col("G") * (pl.col("m") * (pl.col("a") * pl.col("x")))))
+            )
+            / (pl.col("H") * (pl.col("G") * pl.col("M")))
+        )
+        / (pl.col("G") * pl.col("H"))
+    )
 
 
 def calc_o_form_c(p: float, w: float) -> float:
@@ -7981,10 +8314,22 @@ def calc_o_form_c(p: float, w: float) -> float:
 
 def expr_o_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_o_form_c`."""
-    return (pl.col("p") + pl.col("w"))
+    return pl.col("p") + pl.col("w")
 
 
-def calc_val_2609_11733_form_3(a: float, c: float, e: float, l: float, m: float, n: float, o: float, r: float, s: float, t: float, u: float) -> float:
+def calc_val_2609_11733_form_3(
+    a: float,
+    c: float,
+    e: float,
+    l: float,
+    m: float,
+    n: float,
+    o: float,
+    r: float,
+    s: float,
+    t: float,
+    u: float,
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_11733.
 
     **Source**:
@@ -8013,12 +8358,24 @@ def calc_val_2609_11733_form_3(a: float, c: float, e: float, l: float, m: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(a*c*e**2*l*m**4*n*o*r*s**2*t*u)
+    return float(a * c * e**2 * l * m**4 * n * o * r * s**2 * t * u)
 
 
 def expr_val_2609_11733_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_11733_form_3`."""
-    return (pl.col("a")*pl.col("c")*pl.col("e")**2*pl.col("l")*pl.col("m")**4*pl.col("n")*pl.col("o")*pl.col("r")*pl.col("s")**2*pl.col("t")*pl.col("u"))
+    return (
+        pl.col("a")
+        * pl.col("c")
+        * pl.col("e") ** 2
+        * pl.col("l")
+        * pl.col("m") ** 4
+        * pl.col("n")
+        * pl.col("o")
+        * pl.col("r")
+        * pl.col("s") ** 2
+        * pl.col("t")
+        * pl.col("u")
+    )
 
 
 def calc_p_i_t_form_6(i: float, p: float) -> float:
@@ -8041,12 +8398,12 @@ def calc_p_i_t_form_6(i: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*p)
+    return float(i * p)
 
 
 def expr_p_i_t_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_t_form_6`."""
-    return (pl.col("i")*pl.col("p"))
+    return pl.col("i") * pl.col("p")
 
 
 def calc_c_g_f_r_form_c(L: float, c: float) -> float:
@@ -8069,12 +8426,12 @@ def calc_c_g_f_r_form_c(L: float, c: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(L*c - 1.2)
+    return float(L * c - 1.2)
 
 
 def expr_c_g_f_r_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_g_f_r_form_c`."""
-    return (pl.col("L")*pl.col("c") - 1.2)
+    return pl.col("L") * pl.col("c") - 1.2
 
 
 def calc_val_2609_10457_form_c(C: float, i: float) -> float:
@@ -8097,12 +8454,12 @@ def calc_val_2609_10457_form_c(C: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(C*i)
+    return float(C * i)
 
 
 def expr_val_2609_10457_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10457_form_c`."""
-    return (pl.col("C")*pl.col("i"))
+    return pl.col("C") * pl.col("i")
 
 
 def calc_l_r_o_l_l_j_o_i_n_form_9(R: float) -> float:
@@ -8124,12 +8481,12 @@ def calc_l_r_o_l_l_j_o_i_n_form_9(R: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(12*R)
+    return float(12 * R)
 
 
 def expr_l_r_o_l_l_j_o_i_n_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_r_o_l_l_j_o_i_n_form_9`."""
-    return (12*pl.col("R"))
+    return 12 * pl.col("R")
 
 
 def calc_l_r_o_l_l_e_x_c_e_s_s_form_c(R: float) -> float:
@@ -8156,7 +8513,7 @@ def calc_l_r_o_l_l_e_x_c_e_s_s_form_c(R: float) -> float:
 
 def expr_l_r_o_l_l_e_x_c_e_s_s_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_r_o_l_l_e_x_c_e_s_s_form_c`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_val_2609_10457_form_d(a: float, i: float) -> float:
@@ -8179,12 +8536,12 @@ def calc_val_2609_10457_form_d(a: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*i)
+    return float(a * i)
 
 
 def expr_val_2609_10457_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10457_form_d`."""
-    return (pl.col("a")*pl.col("i"))
+    return pl.col("a") * pl.col("i")
 
 
 def calc_val_2609_10457_form_8(b: float, i: float, p: float, s: float) -> float:
@@ -8209,12 +8566,12 @@ def calc_val_2609_10457_form_8(b: float, i: float, p: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*i*p*s)
+    return float(b * i * p * s)
 
 
 def expr_val_2609_10457_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10457_form_8`."""
-    return (pl.col("b")*pl.col("i")*pl.col("p")*pl.col("s"))
+    return pl.col("b") * pl.col("i") * pl.col("p") * pl.col("s")
 
 
 def calc_p_c_i_j_form_9(J: float, c: float, i: float, j: float, r: float) -> float:
@@ -8240,12 +8597,14 @@ def calc_p_c_i_j_form_9(J: float, c: float, i: float, j: float, r: float) -> flo
     Returns:
         float: Calculated metric value.
     """
-    return float(J*c*i*j - c*i*r)
+    return float(J * c * i * j - c * i * r)
 
 
 def expr_p_c_i_j_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_c_i_j_form_9`."""
-    return (pl.col("J")*pl.col("c")*pl.col("i")*pl.col("j") - pl.col("c")*pl.col("i")*pl.col("r"))
+    return pl.col("J") * pl.col("c") * pl.col("i") * pl.col("j") - pl.col("c") * pl.col(
+        "i"
+    ) * pl.col("r")
 
 
 def calc_val_2609_10457_form_0(J: float, i: float, t: float) -> float:
@@ -8269,12 +8628,12 @@ def calc_val_2609_10457_form_0(J: float, i: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(J*i*t)
+    return float(J * i * t)
 
 
 def expr_val_2609_10457_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10457_form_0`."""
-    return (pl.col("J")*pl.col("i")*pl.col("t"))
+    return pl.col("J") * pl.col("i") * pl.col("t")
 
 
 def calc_val_2609_10457_form_f(A: float, c: float, e: float, l: float) -> float:
@@ -8299,12 +8658,12 @@ def calc_val_2609_10457_form_f(A: float, c: float, e: float, l: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*c**2*e*l)
+    return float(A * c**2 * e * l)
 
 
 def expr_val_2609_10457_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10457_form_f`."""
-    return (pl.col("A")*pl.col("c")**2*pl.col("e")*pl.col("l"))
+    return pl.col("A") * pl.col("c") ** 2 * pl.col("e") * pl.col("l")
 
 
 def calc_val_2608_29935_form_7(L: float) -> float:
@@ -8331,7 +8690,7 @@ def calc_val_2608_29935_form_7(L: float) -> float:
 
 def expr_val_2608_29935_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_29935_form_7`."""
-    return (pl.col("L"))
+    return pl.col("L")
 
 
 def calc_k_1_form_3(L: float) -> float:
@@ -8353,12 +8712,12 @@ def calc_k_1_form_3(L: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(4*L**2)
+    return float(4 * L**2)
 
 
 def expr_k_1_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_k_1_form_3`."""
-    return (4*pl.col("L")**2)
+    return 4 * pl.col("L") ** 2
 
 
 def calc_val_2608_29935_form_e(B: float, C: float, w: float) -> float:
@@ -8382,12 +8741,12 @@ def calc_val_2608_29935_form_e(B: float, C: float, w: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*C*w)
+    return float(B * C * w)
 
 
 def expr_val_2608_29935_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_29935_form_e`."""
-    return (pl.col("B")*pl.col("C")*pl.col("w"))
+    return pl.col("B") * pl.col("C") * pl.col("w")
 
 
 def calc_s_w_form_8(l: float, w: float) -> float:
@@ -8410,12 +8769,12 @@ def calc_s_w_form_8(l: float, w: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-l*w + 1)
+    return float(-l * w + 1)
 
 
 def expr_s_w_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_w_form_8`."""
-    return (-pl.col("l")*pl.col("w") + 1)
+    return -pl.col("l") * pl.col("w") + 1
 
 
 def calc_w_b_x_form_1(B: float, W: float, y: float, z: float) -> float:
@@ -8440,12 +8799,12 @@ def calc_w_b_x_form_1(B: float, W: float, y: float, z: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B**2*W**2*y*z)
+    return float(B**2 * W**2 * y * z)
 
 
 def expr_w_b_x_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_b_x_form_1`."""
-    return (pl.col("B")**2*pl.col("W")**2*pl.col("y")*pl.col("z"))
+    return pl.col("B") ** 2 * pl.col("W") ** 2 * pl.col("y") * pl.col("z")
 
 
 def calc_w_b_r_form_3(B: float, W: float, x: float, y: float, z: float) -> float:
@@ -8471,12 +8830,12 @@ def calc_w_b_r_form_3(B: float, W: float, x: float, y: float, z: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(B**3*W**3*x*y*z)
+    return float(B**3 * W**3 * x * y * z)
 
 
 def expr_w_b_r_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_b_r_form_3`."""
-    return (pl.col("B")**3*pl.col("W")**3*pl.col("x")*pl.col("y")*pl.col("z"))
+    return pl.col("B") ** 3 * pl.col("W") ** 3 * pl.col("x") * pl.col("y") * pl.col("z")
 
 
 def calc_val_2608_29935_form_8(W: float, r: float) -> float:
@@ -8499,12 +8858,12 @@ def calc_val_2608_29935_form_8(W: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(W**2*r)
+    return float(W**2 * r)
 
 
 def expr_val_2608_29935_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_29935_form_8`."""
-    return (pl.col("W")**2*pl.col("r"))
+    return pl.col("W") ** 2 * pl.col("r")
 
 
 def calc_w_c_x_form_9(C: float, W: float, y: float, z: float) -> float:
@@ -8529,12 +8888,12 @@ def calc_w_c_x_form_9(C: float, W: float, y: float, z: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(C**2*W**2*y*z)
+    return float(C**2 * W**2 * y * z)
 
 
 def expr_w_c_x_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_c_x_form_9`."""
-    return (pl.col("C")**2*pl.col("W")**2*pl.col("y")*pl.col("z"))
+    return pl.col("C") ** 2 * pl.col("W") ** 2 * pl.col("y") * pl.col("z")
 
 
 def calc_w_c_r_form_1(C: float, W: float, x: float, y: float, z: float) -> float:
@@ -8560,15 +8919,17 @@ def calc_w_c_r_form_1(C: float, W: float, x: float, y: float, z: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(C**3*W**3*x*y*z)
+    return float(C**3 * W**3 * x * y * z)
 
 
 def expr_w_c_r_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_c_r_form_1`."""
-    return (pl.col("C")**3*pl.col("W")**3*pl.col("x")*pl.col("y")*pl.col("z"))
+    return pl.col("C") ** 3 * pl.col("W") ** 3 * pl.col("x") * pl.col("y") * pl.col("z")
 
 
-def calc_val_2608_29935_form_a(C: float, c: float, e: float, h: float, o: float, r: float, t: float, v: float) -> float:
+def calc_val_2608_29935_form_a(
+    C: float, c: float, e: float, h: float, o: float, r: float, t: float, v: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_29935.
 
     **Source**:
@@ -8594,12 +8955,21 @@ def calc_val_2608_29935_form_a(C: float, c: float, e: float, h: float, o: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(C**2*c*e**2*h*o*r**2*t**2*v)
+    return float(C**2 * c * e**2 * h * o * r**2 * t**2 * v)
 
 
 def expr_val_2608_29935_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_29935_form_a`."""
-    return (pl.col("C")**2*pl.col("c")*pl.col("e")**2*pl.col("h")*pl.col("o")*pl.col("r")**2*pl.col("t")**2*pl.col("v"))
+    return (
+        pl.col("C") ** 2
+        * pl.col("c")
+        * pl.col("e") ** 2
+        * pl.col("h")
+        * pl.col("o")
+        * pl.col("r") ** 2
+        * pl.col("t") ** 2
+        * pl.col("v")
+    )
 
 
 def calc_val_2608_29935_form_3(W: float, r: float) -> float:
@@ -8622,12 +8992,12 @@ def calc_val_2608_29935_form_3(W: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(W**2*r)
+    return float(W**2 * r)
 
 
 def expr_val_2608_29935_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_29935_form_3`."""
-    return (pl.col("W")**2*pl.col("r"))
+    return pl.col("W") ** 2 * pl.col("r")
 
 
 def calc_w_b_r_form_0(B: float, W: float, x: float, y: float, z: float) -> float:
@@ -8653,12 +9023,12 @@ def calc_w_b_r_form_0(B: float, W: float, x: float, y: float, z: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(B**3*W**3*x*y*z)
+    return float(B**3 * W**3 * x * y * z)
 
 
 def expr_w_b_r_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_b_r_form_0`."""
-    return (pl.col("B")**3*pl.col("W")**3*pl.col("x")*pl.col("y")*pl.col("z"))
+    return pl.col("B") ** 3 * pl.col("W") ** 3 * pl.col("x") * pl.col("y") * pl.col("z")
 
 
 def calc_q_dt_p_form_c(a: float, c: float, dt: float, m: float, q: float, t: float) -> float:
@@ -8685,12 +9055,12 @@ def calc_q_dt_p_form_c(a: float, c: float, dt: float, m: float, q: float, t: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(a*t + c*dt*m*q)
+    return float(a * t + c * dt * m * q)
 
 
 def expr_q_dt_p_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_q_dt_p_form_c`."""
-    return (pl.col("a")*pl.col("t") + pl.col("c")*pl.col("dt")*pl.col("m")*pl.col("q"))
+    return pl.col("a") * pl.col("t") + pl.col("c") * pl.col("dt") * pl.col("m") * pl.col("q")
 
 
 def calc_r_m_d_i_form_5(e: float, h: float, l: float, o: float, r: float, t: float) -> float:
@@ -8717,12 +9087,14 @@ def calc_r_m_d_i_form_5(e: float, h: float, l: float, o: float, r: float, t: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(12*e**2*h*l*r + 12*e*o*r*t)
+    return float(12 * e**2 * h * l * r + 12 * e * o * r * t)
 
 
 def expr_r_m_d_i_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_m_d_i_form_5`."""
-    return (12*pl.col("e")**2*pl.col("h")*pl.col("l")*pl.col("r") + 12*pl.col("e")*pl.col("o")*pl.col("r")*pl.col("t"))
+    return 12 * pl.col("e") ** 2 * pl.col("h") * pl.col("l") * pl.col("r") + 12 * pl.col(
+        "e"
+    ) * pl.col("o") * pl.col("r") * pl.col("t")
 
 
 def calc_val_2604_25278_form_2(e: float, n: float) -> float:
@@ -8745,12 +9117,12 @@ def calc_val_2604_25278_form_2(e: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(e*n)
+    return float(e * n)
 
 
 def expr_val_2604_25278_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2604_25278_form_2`."""
-    return (pl.col("e")*pl.col("n"))
+    return pl.col("e") * pl.col("n")
 
 
 def calc_val_2602_20850_form_b(D: float, o: float) -> float:
@@ -8773,12 +9145,12 @@ def calc_val_2602_20850_form_b(D: float, o: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(D*o)
+    return float(D * o)
 
 
 def expr_val_2602_20850_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_20850_form_b`."""
-    return (pl.col("D")*pl.col("o"))
+    return pl.col("D") * pl.col("o")
 
 
 def calc_val_2602_20850_form_5(D: float, f: float, i: float) -> float:
@@ -8802,12 +9174,12 @@ def calc_val_2602_20850_form_5(D: float, f: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(D*f*i)
+    return float(D * f * i)
 
 
 def expr_val_2602_20850_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_20850_form_5`."""
-    return (pl.col("D")*pl.col("f")*pl.col("i"))
+    return pl.col("D") * pl.col("f") * pl.col("i")
 
 
 def calc_e_p_form_3(e: float, f: float, r: float, x: float) -> float:
@@ -8832,15 +9204,17 @@ def calc_e_p_form_3(e: float, f: float, r: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(e*f*r*x - x)
+    return float(e * f * r * x - x)
 
 
 def expr_e_p_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_p_form_3`."""
-    return (pl.col("e")*pl.col("f")*pl.col("r")*pl.col("x") - pl.col("x"))
+    return pl.col("e") * pl.col("f") * pl.col("r") * pl.col("x") - pl.col("x")
 
 
-def calc_f_c_d_m_form_a(K: float, M: float, da: float, e: float, i: float, p: float, v: float, x: float, y: float) -> float:
+def calc_f_c_d_m_form_a(
+    K: float, M: float, da: float, e: float, i: float, p: float, v: float, x: float, y: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2602_05895.
 
     **Source**:
@@ -8867,12 +9241,17 @@ def calc_f_c_d_m_form_a(K: float, M: float, da: float, e: float, i: float, p: fl
     Returns:
         float: Calculated metric value.
     """
-    return float(K*e*i**2 + K*e*p**2 + K*e*v**2 + M*da*x*y)
+    return float(K * e * i**2 + K * e * p**2 + K * e * v**2 + M * da * x * y)
 
 
 def expr_f_c_d_m_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_c_d_m_form_a`."""
-    return (pl.col("K")*pl.col("e")*pl.col("i")**2 + pl.col("K")*pl.col("e")*pl.col("p")**2 + pl.col("K")*pl.col("e")*pl.col("v")**2 + pl.col("M")*pl.col("da")*pl.col("x")*pl.col("y"))
+    return (
+        pl.col("K") * pl.col("e") * pl.col("i") ** 2
+        + pl.col("K") * pl.col("e") * pl.col("p") ** 2
+        + pl.col("K") * pl.col("e") * pl.col("v") ** 2
+        + pl.col("M") * pl.col("da") * pl.col("x") * pl.col("y")
+    )
 
 
 def calc_val_2602_05895_form_e(dm: float) -> float:
@@ -8899,7 +9278,7 @@ def calc_val_2602_05895_form_e(dm: float) -> float:
 
 def expr_val_2602_05895_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_05895_form_e`."""
-    return (pl.col("dm"))
+    return pl.col("dm")
 
 
 def calc_e_form_1(e: float) -> float:
@@ -8921,12 +9300,12 @@ def calc_e_form_1(e: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(0.08*e**2)
+    return float(0.08 * e**2)
 
 
 def expr_e_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_form_1`."""
-    return (0.08*pl.col("e")**2)
+    return 0.08 * pl.col("e") ** 2
 
 
 def calc_val_2512_13304_form_5(n: float, p: float) -> float:
@@ -8949,12 +9328,12 @@ def calc_val_2512_13304_form_5(n: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(n*p)
+    return float(n * p)
 
 
 def expr_val_2512_13304_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_13304_form_5`."""
-    return (pl.col("n")*pl.col("p"))
+    return pl.col("n") * pl.col("p")
 
 
 def calc_val_2512_13304_form_1(d: float) -> float:
@@ -8981,7 +9360,7 @@ def calc_val_2512_13304_form_1(d: float) -> float:
 
 def expr_val_2512_13304_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_13304_form_1`."""
-    return (pl.col("d"))
+    return pl.col("d")
 
 
 def calc_val_2512_13304_form_a(f: float, n: float, p: float) -> float:
@@ -9005,12 +9384,12 @@ def calc_val_2512_13304_form_a(f: float, n: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-f + n*p)
+    return float(-f + n * p)
 
 
 def expr_val_2512_13304_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_13304_form_a`."""
-    return (-pl.col("f") + pl.col("n")*pl.col("p"))
+    return -pl.col("f") + pl.col("n") * pl.col("p")
 
 
 def calc_h_a_p_e_x_form_b(c: float, m: float, o: float, p: float) -> float:
@@ -9035,12 +9414,12 @@ def calc_h_a_p_e_x_form_b(c: float, m: float, o: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(c*m*o*p)
+    return float(c * m * o * p)
 
 
 def expr_h_a_p_e_x_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_h_a_p_e_x_form_b`."""
-    return (pl.col("c")*pl.col("m")*pl.col("o")*pl.col("p"))
+    return pl.col("c") * pl.col("m") * pl.col("o") * pl.col("p")
 
 
 def calc_val_2512_13304_form_d(h: float, l: float) -> float:
@@ -9063,12 +9442,12 @@ def calc_val_2512_13304_form_d(h: float, l: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(h*l)
+    return float(h * l)
 
 
 def expr_val_2512_13304_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_13304_form_d`."""
-    return (pl.col("h")*pl.col("l"))
+    return pl.col("h") * pl.col("l")
 
 
 def calc_e_p_form_1(a: float, b: float, c: float, p: float, x: float, y: float, z: float) -> float:
@@ -9096,12 +9475,18 @@ def calc_e_p_form_1(a: float, b: float, c: float, p: float, x: float, y: float, 
     Returns:
         float: Calculated metric value.
     """
-    return float((p*(z*(2*c)) + (p*(x*(2*a)) + p*(y*(2*b)))) - 1)
+    return float((p * (z * (2 * c)) + (p * (x * (2 * a)) + p * (y * (2 * b)))) - 1)
 
 
 def expr_e_p_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_p_form_1`."""
-    return ((pl.col("p")*(pl.col("z")*(2*pl.col("c"))) + (pl.col("p")*(pl.col("x")*(2*pl.col("a"))) + pl.col("p")*(pl.col("y")*(2*pl.col("b"))))) - 1)
+    return (
+        pl.col("p") * (pl.col("z") * (2 * pl.col("c")))
+        + (
+            pl.col("p") * (pl.col("x") * (2 * pl.col("a")))
+            + pl.col("p") * (pl.col("y") * (2 * pl.col("b")))
+        )
+    ) - 1
 
 
 def calc_t_p_x_p_y_p_z_1_form_5(C: float, T: float, u: float, v: float, w: float) -> float:
@@ -9127,12 +9512,12 @@ def calc_t_p_x_p_y_p_z_1_form_5(C: float, T: float, u: float, v: float, w: float
     Returns:
         float: Calculated metric value.
     """
-    return float(C*T**2*u*v*w)
+    return float(C * T**2 * u * v * w)
 
 
 def expr_t_p_x_p_y_p_z_1_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_p_x_p_y_p_z_1_form_5`."""
-    return (pl.col("C")*pl.col("T")**2*pl.col("u")*pl.col("v")*pl.col("w"))
+    return pl.col("C") * pl.col("T") ** 2 * pl.col("u") * pl.col("v") * pl.col("w")
 
 
 def calc_val_2507_16328_form_6(s: float) -> float:
@@ -9159,7 +9544,7 @@ def calc_val_2507_16328_form_6(s: float) -> float:
 
 def expr_val_2507_16328_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2507_16328_form_6`."""
-    return (pl.col("s"))
+    return pl.col("s")
 
 
 def calc_val_2507_11037_form_2(C: float, D: float, L: float) -> float:
@@ -9183,12 +9568,12 @@ def calc_val_2507_11037_form_2(C: float, D: float, L: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(C*D*L)
+    return float(C * D * L)
 
 
 def expr_val_2507_11037_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2507_11037_form_2`."""
-    return (pl.col("C")*pl.col("D")*pl.col("L"))
+    return pl.col("C") * pl.col("D") * pl.col("L")
 
 
 def calc_val_2610_31563_form_8(D: float, O: float, P: float, S: float, T: float) -> float:
@@ -9214,12 +9599,12 @@ def calc_val_2610_31563_form_8(D: float, O: float, P: float, S: float, T: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(T*(O*(P*(D*S))))
+    return float(T * (O * (P * (D * S))))
 
 
 def expr_val_2610_31563_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31563_form_8`."""
-    return (pl.col("T")*(pl.col("O")*(pl.col("P")*(pl.col("D")*pl.col("S")))))
+    return pl.col("T") * (pl.col("O") * (pl.col("P") * (pl.col("D") * pl.col("S"))))
 
 
 def calc_val_2610_31153_form_8(a: float, b: float, i: float, j: float) -> float:
@@ -9244,12 +9629,12 @@ def calc_val_2610_31153_form_8(a: float, b: float, i: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-a*i + b*j)
+    return float(-a * i + b * j)
 
 
 def expr_val_2610_31153_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_8`."""
-    return (-pl.col("a")*pl.col("i") + pl.col("b")*pl.col("j"))
+    return -pl.col("a") * pl.col("i") + pl.col("b") * pl.col("j")
 
 
 def calc_val_2610_31563_form_f(A: float, D: float, O: float, P: float, S: float) -> float:
@@ -9275,12 +9660,12 @@ def calc_val_2610_31563_form_f(A: float, D: float, O: float, P: float, S: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(A*(O*(D*P)) + S)
+    return float(A * (O * (D * P)) + S)
 
 
 def expr_val_2610_31563_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31563_form_f`."""
-    return (pl.col("A")*(pl.col("O")*(pl.col("D")*pl.col("P"))) + pl.col("S"))
+    return pl.col("A") * (pl.col("O") * (pl.col("D") * pl.col("P"))) + pl.col("S")
 
 
 def calc_val_2610_31563_form_a(S: float, c: float) -> float:
@@ -9308,7 +9693,7 @@ def calc_val_2610_31563_form_a(S: float, c: float) -> float:
 
 def expr_val_2610_31563_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31563_form_a`."""
-    return (pl.col("S") + pl.col("c"))
+    return pl.col("S") + pl.col("c")
 
 
 def calc_val_2610_31563_form_5(R: float) -> float:
@@ -9335,7 +9720,7 @@ def calc_val_2610_31563_form_5(R: float) -> float:
 
 def expr_val_2610_31563_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31563_form_5`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_val_2610_31563_form_b(v: float) -> float:
@@ -9362,7 +9747,7 @@ def calc_val_2610_31563_form_b(v: float) -> float:
 
 def expr_val_2610_31563_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31563_form_b`."""
-    return (pl.col("v"))
+    return pl.col("v")
 
 
 def calc_j_p_form_d(A: float, W: float, j: float, x: float) -> float:
@@ -9387,12 +9772,12 @@ def calc_j_p_form_d(A: float, W: float, j: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*A*j**2*x + W*j)
+    return float(2 * A * j**2 * x + W * j)
 
 
 def expr_j_p_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_j_p_form_d`."""
-    return (2*pl.col("A")*pl.col("j")**2*pl.col("x") + pl.col("W")*pl.col("j"))
+    return 2 * pl.col("A") * pl.col("j") ** 2 * pl.col("x") + pl.col("W") * pl.col("j")
 
 
 def calc_val_2610_31153_form_6(i: float, j: float, x: float) -> float:
@@ -9416,12 +9801,12 @@ def calc_val_2610_31153_form_6(i: float, j: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*j*x)
+    return float(i * j * x)
 
 
 def expr_val_2610_31153_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_6`."""
-    return (pl.col("i")*pl.col("j")*pl.col("x"))
+    return pl.col("i") * pl.col("j") * pl.col("x")
 
 
 def calc_val_2610_31153_form_d(B: float, j: float, q: float) -> float:
@@ -9445,12 +9830,12 @@ def calc_val_2610_31153_form_d(B: float, j: float, q: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(B*j*q)
+    return float(B * j * q)
 
 
 def expr_val_2610_31153_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_d`."""
-    return (pl.col("B")*pl.col("j")*pl.col("q"))
+    return pl.col("B") * pl.col("j") * pl.col("q")
 
 
 def calc_val_2610_31153_form_7(y: float) -> float:
@@ -9477,7 +9862,7 @@ def calc_val_2610_31153_form_7(y: float) -> float:
 
 def expr_val_2610_31153_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_7`."""
-    return (pl.col("y"))
+    return pl.col("y")
 
 
 def calc_val_2610_31153_form_e(A: float, T: float, k: float) -> float:
@@ -9501,12 +9886,12 @@ def calc_val_2610_31153_form_e(A: float, T: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*T*k)
+    return float(A * T * k)
 
 
 def expr_val_2610_31153_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_e`."""
-    return (pl.col("A")*pl.col("T")*pl.col("k"))
+    return pl.col("A") * pl.col("T") * pl.col("k")
 
 
 def calc_val_2610_31153_form_0(P: float, r: float) -> float:
@@ -9529,12 +9914,12 @@ def calc_val_2610_31153_form_0(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_val_2610_31153_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_0`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2610_31153_form_b(j: float, p: float) -> float:
@@ -9557,12 +9942,12 @@ def calc_val_2610_31153_form_b(j: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(j*p)
+    return float(j * p)
 
 
 def expr_val_2610_31153_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_b`."""
-    return (pl.col("j")*pl.col("p"))
+    return pl.col("j") * pl.col("p")
 
 
 def calc_val_2610_31153_form_2(S: float, T: float, k: float, y: float) -> float:
@@ -9587,12 +9972,12 @@ def calc_val_2610_31153_form_2(S: float, T: float, k: float, y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(y*(T*(S*k)))
+    return float(y * (T * (S * k)))
 
 
 def expr_val_2610_31153_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_2`."""
-    return (pl.col("y")*(pl.col("T")*(pl.col("S")*pl.col("k"))))
+    return pl.col("y") * (pl.col("T") * (pl.col("S") * pl.col("k")))
 
 
 def calc_val_2610_31153_form_f(a: float, j: float) -> float:
@@ -9615,15 +10000,17 @@ def calc_val_2610_31153_form_f(a: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*j)
+    return float(a * j)
 
 
 def expr_val_2610_31153_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_f`."""
-    return (pl.col("a")*pl.col("j"))
+    return pl.col("a") * pl.col("j")
 
 
-def calc_val_2610_30212_form_a(e: float, h: float, m: float, n: float, o: float, p: float, r: float, t: float) -> float:
+def calc_val_2610_30212_form_a(
+    e: float, h: float, m: float, n: float, o: float, p: float, r: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_30212.
 
     **Source**:
@@ -9649,15 +10036,26 @@ def calc_val_2610_30212_form_a(e: float, h: float, m: float, n: float, o: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(e*h*m*n*o*p*r*t)
+    return float(e * h * m * n * o * p * r * t)
 
 
 def expr_val_2610_30212_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_30212_form_a`."""
-    return (pl.col("e")*pl.col("h")*pl.col("m")*pl.col("n")*pl.col("o")*pl.col("p")*pl.col("r")*pl.col("t"))
+    return (
+        pl.col("e")
+        * pl.col("h")
+        * pl.col("m")
+        * pl.col("n")
+        * pl.col("o")
+        * pl.col("p")
+        * pl.col("r")
+        * pl.col("t")
+    )
 
 
-def calc_val_2610_30212_form_9(e: float, h: float, m: float, n: float, o: float, p: float, r: float, t: float) -> float:
+def calc_val_2610_30212_form_9(
+    e: float, h: float, m: float, n: float, o: float, p: float, r: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_30212.
 
     **Source**:
@@ -9683,15 +10081,26 @@ def calc_val_2610_30212_form_9(e: float, h: float, m: float, n: float, o: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(e*h*m*n*o*p*r*t)
+    return float(e * h * m * n * o * p * r * t)
 
 
 def expr_val_2610_30212_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_30212_form_9`."""
-    return (pl.col("e")*pl.col("h")*pl.col("m")*pl.col("n")*pl.col("o")*pl.col("p")*pl.col("r")*pl.col("t"))
+    return (
+        pl.col("e")
+        * pl.col("h")
+        * pl.col("m")
+        * pl.col("n")
+        * pl.col("o")
+        * pl.col("p")
+        * pl.col("r")
+        * pl.col("t")
+    )
 
 
-def calc_val_2610_30212_form_e(a: float, g: float, h: float, i: float, m: float, n: float, o: float, s: float, t: float) -> float:
+def calc_val_2610_30212_form_e(
+    a: float, g: float, h: float, i: float, m: float, n: float, o: float, s: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_30212.
 
     **Source**:
@@ -9718,12 +10127,23 @@ def calc_val_2610_30212_form_e(a: float, g: float, h: float, i: float, m: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(72.08*a**3*g*h*i*m*n**2*o*s*t**2)
+    return float(72.08 * a**3 * g * h * i * m * n**2 * o * s * t**2)
 
 
 def expr_val_2610_30212_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_30212_form_e`."""
-    return (72.08*pl.col("a")**3*pl.col("g")*pl.col("h")*pl.col("i")*pl.col("m")*pl.col("n")**2*pl.col("o")*pl.col("s")*pl.col("t")**2)
+    return (
+        72.08
+        * pl.col("a") ** 3
+        * pl.col("g")
+        * pl.col("h")
+        * pl.col("i")
+        * pl.col("m")
+        * pl.col("n") ** 2
+        * pl.col("o")
+        * pl.col("s")
+        * pl.col("t") ** 2
+    )
 
 
 def calc_val_2610_30212_form_f(a: float, g: float, i: float, n: float, s: float, t: float) -> float:
@@ -9750,12 +10170,20 @@ def calc_val_2610_30212_form_f(a: float, g: float, i: float, n: float, s: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(63.07*a**2*g*i*n*s*t)
+    return float(63.07 * a**2 * g * i * n * s * t)
 
 
 def expr_val_2610_30212_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_30212_form_f`."""
-    return (63.07*pl.col("a")**2*pl.col("g")*pl.col("i")*pl.col("n")*pl.col("s")*pl.col("t"))
+    return (
+        63.07
+        * pl.col("a") ** 2
+        * pl.col("g")
+        * pl.col("i")
+        * pl.col("n")
+        * pl.col("s")
+        * pl.col("t")
+    )
 
 
 def calc_val_2610_30212_form_0(a: float, g: float, i: float, n: float, s: float, t: float) -> float:
@@ -9782,12 +10210,20 @@ def calc_val_2610_30212_form_0(a: float, g: float, i: float, n: float, s: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(57.67*a**2*g*i*n*s*t)
+    return float(57.67 * a**2 * g * i * n * s * t)
 
 
 def expr_val_2610_30212_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_30212_form_0`."""
-    return (57.67*pl.col("a")**2*pl.col("g")*pl.col("i")*pl.col("n")*pl.col("s")*pl.col("t"))
+    return (
+        57.67
+        * pl.col("a") ** 2
+        * pl.col("g")
+        * pl.col("i")
+        * pl.col("n")
+        * pl.col("s")
+        * pl.col("t")
+    )
 
 
 def calc_val_2610_29685_form_6(T: float, a: float) -> float:
@@ -9810,12 +10246,12 @@ def calc_val_2610_29685_form_6(T: float, a: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*a)
+    return float(T * a)
 
 
 def expr_val_2610_29685_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29685_form_6`."""
-    return (pl.col("T")*pl.col("a"))
+    return pl.col("T") * pl.col("a")
 
 
 def calc_val_2610_29685_form_5(W: float) -> float:
@@ -9842,7 +10278,7 @@ def calc_val_2610_29685_form_5(W: float) -> float:
 
 def expr_val_2610_29685_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29685_form_5`."""
-    return (pl.col("W") - 1)
+    return pl.col("W") - 1
 
 
 def calc_val_2610_29685_form_1(W: float) -> float:
@@ -9869,10 +10305,12 @@ def calc_val_2610_29685_form_1(W: float) -> float:
 
 def expr_val_2610_29685_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29685_form_1`."""
-    return (pl.col("W") - 1)
+    return pl.col("W") - 1
 
 
-def calc_val_2610_29685_form_e(N: float, c: float, e: float, f: float, i: float, n: float, o: float, s: float, t: float) -> float:
+def calc_val_2610_29685_form_e(
+    N: float, c: float, e: float, f: float, i: float, n: float, o: float, s: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29685.
 
     **Source**:
@@ -9899,15 +10337,41 @@ def calc_val_2610_29685_form_e(N: float, c: float, e: float, f: float, i: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(N*(c*(o*(e*(f*(f*(i*(c*(i*(e*(n*(s*t))))))))))))
+    return float(N * (c * (o * (e * (f * (f * (i * (c * (i * (e * (n * (s * t))))))))))))
 
 
 def expr_val_2610_29685_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29685_form_e`."""
-    return (pl.col("N")*(pl.col("c")*(pl.col("o")*(pl.col("e")*(pl.col("f")*(pl.col("f")*(pl.col("i")*(pl.col("c")*(pl.col("i")*(pl.col("e")*(pl.col("n")*(pl.col("s")*pl.col("t")))))))))))))
+    return pl.col("N") * (
+        pl.col("c")
+        * (
+            pl.col("o")
+            * (
+                pl.col("e")
+                * (
+                    pl.col("f")
+                    * (
+                        pl.col("f")
+                        * (
+                            pl.col("i")
+                            * (
+                                pl.col("c")
+                                * (
+                                    pl.col("i")
+                                    * (pl.col("e") * (pl.col("n") * (pl.col("s") * pl.col("t"))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 
 
-def calc_val_2610_29685_form_c(N: float, c: float, e: float, f: float, i: float, n: float, o: float, s: float, t: float) -> float:
+def calc_val_2610_29685_form_c(
+    N: float, c: float, e: float, f: float, i: float, n: float, o: float, s: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29685.
 
     **Source**:
@@ -9934,12 +10398,36 @@ def calc_val_2610_29685_form_c(N: float, c: float, e: float, f: float, i: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(N*(c*(o*(e*(f*(f*(i*(c*(i*(e*(n*(s*t))))))))))))
+    return float(N * (c * (o * (e * (f * (f * (i * (c * (i * (e * (n * (s * t))))))))))))
 
 
 def expr_val_2610_29685_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29685_form_c`."""
-    return (pl.col("N")*(pl.col("c")*(pl.col("o")*(pl.col("e")*(pl.col("f")*(pl.col("f")*(pl.col("i")*(pl.col("c")*(pl.col("i")*(pl.col("e")*(pl.col("n")*(pl.col("s")*pl.col("t")))))))))))))
+    return pl.col("N") * (
+        pl.col("c")
+        * (
+            pl.col("o")
+            * (
+                pl.col("e")
+                * (
+                    pl.col("f")
+                    * (
+                        pl.col("f")
+                        * (
+                            pl.col("i")
+                            * (
+                                pl.col("c")
+                                * (
+                                    pl.col("i")
+                                    * (pl.col("e") * (pl.col("n") * (pl.col("s") * pl.col("t"))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 
 
 def calc_val_2610_29066_form_1(P: float, f: float, o: float, r: float) -> float:
@@ -9964,12 +10452,12 @@ def calc_val_2610_29066_form_1(P: float, f: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*f*o**2*r)
+    return float(P * f * o**2 * r)
 
 
 def expr_val_2610_29066_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_1`."""
-    return (pl.col("P")*pl.col("f")*pl.col("o")**2*pl.col("r"))
+    return pl.col("P") * pl.col("f") * pl.col("o") ** 2 * pl.col("r")
 
 
 def calc_val_2610_29066_form_5(c: float, i: float, t: float) -> float:
@@ -9993,12 +10481,12 @@ def calc_val_2610_29066_form_5(c: float, i: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(c*i*t)
+    return float(c * i * t)
 
 
 def expr_val_2610_29066_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_5`."""
-    return (pl.col("c")*pl.col("i")*pl.col("t"))
+    return pl.col("c") * pl.col("i") * pl.col("t")
 
 
 def calc_val_2610_29066_form_d(C: float) -> float:
@@ -10025,7 +10513,7 @@ def calc_val_2610_29066_form_d(C: float) -> float:
 
 def expr_val_2610_29066_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_d`."""
-    return (pl.col("C"))
+    return pl.col("C")
 
 
 def calc_val_2610_29066_form_b(K: float, L: float, c: float) -> float:
@@ -10049,12 +10537,15 @@ def calc_val_2610_29066_form_b(K: float, L: float, c: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((L**2*(12*c + 12 - (2/27)/(K*c)) < 2*L - 2*c + 1))
+    return float((L**2 * (12 * c + 12 - (2 / 27) / (K * c)) < 2 * L - 2 * c + 1))
 
 
 def expr_val_2610_29066_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_b`."""
-    return ((pl.col("L")**2*(12*pl.col("c") + 12 - (2/27)/(pl.col("K")*pl.col("c"))) < 2*pl.col("L") - 2*pl.col("c") + 1))
+    return (
+        pl.col("L") ** 2 * (12 * pl.col("c") + 12 - (2 / 27) / (pl.col("K") * pl.col("c")))
+        < 2 * pl.col("L") - 2 * pl.col("c") + 1
+    )
 
 
 def calc_val_2610_29066_form_4(P: float, f: float, o: float, r: float) -> float:
@@ -10079,12 +10570,12 @@ def calc_val_2610_29066_form_4(P: float, f: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*f*o**2*r)
+    return float(P * f * o**2 * r)
 
 
 def expr_val_2610_29066_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_4`."""
-    return (pl.col("P")*pl.col("f")*pl.col("o")**2*pl.col("r"))
+    return pl.col("P") * pl.col("f") * pl.col("o") ** 2 * pl.col("r")
 
 
 def calc_val_2610_29066_form_9(P: float, f: float, o: float, r: float) -> float:
@@ -10109,12 +10600,12 @@ def calc_val_2610_29066_form_9(P: float, f: float, o: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*f*o**2*r)
+    return float(P * f * o**2 * r)
 
 
 def expr_val_2610_29066_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_9`."""
-    return (pl.col("P")*pl.col("f")*pl.col("o")**2*pl.col("r"))
+    return pl.col("P") * pl.col("f") * pl.col("o") ** 2 * pl.col("r")
 
 
 def calc_c_e_x_a_c_t_form_f(C: float, L: float, a: float, g: float, l: float, o: float) -> float:
@@ -10141,12 +10632,23 @@ def calc_c_e_x_a_c_t_form_f(C: float, L: float, a: float, g: float, l: float, o:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*a*g*l*o + 280*g*l*o + (math.e*C + math.e*L)*(22660*g*l*o + 15) + 27)
+    return float(
+        2 * a * g * l * o
+        + 280 * g * l * o
+        + (math.e * C + math.e * L) * (22660 * g * l * o + 15)
+        + 27
+    )
 
 
 def expr_c_e_x_a_c_t_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_e_x_a_c_t_form_f`."""
-    return (2*pl.col("a")*pl.col("g")*pl.col("l")*pl.col("o") + 280*pl.col("g")*pl.col("l")*pl.col("o") + (math.e*pl.col("C") + math.e*pl.col("L"))*(22660*pl.col("g")*pl.col("l")*pl.col("o") + 15) + 27)
+    return (
+        2 * pl.col("a") * pl.col("g") * pl.col("l") * pl.col("o")
+        + 280 * pl.col("g") * pl.col("l") * pl.col("o")
+        + (math.e * pl.col("C") + math.e * pl.col("L"))
+        * (22660 * pl.col("g") * pl.col("l") * pl.col("o") + 15)
+        + 27
+    )
 
 
 def calc_val_2610_29066_form_6(L: float, R: float, c: float) -> float:
@@ -10170,12 +10672,12 @@ def calc_val_2610_29066_form_6(L: float, R: float, c: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((R*c < 308*L**2))
+    return float((R * c < 308 * L**2))
 
 
 def expr_val_2610_29066_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29066_form_6`."""
-    return ((pl.col("R")*pl.col("c") < 308*pl.col("L")**2))
+    return pl.col("R") * pl.col("c") < 308 * pl.col("L") ** 2
 
 
 def calc_val_2610_29049_form_a(P: float, r: float) -> float:
@@ -10198,12 +10700,12 @@ def calc_val_2610_29049_form_a(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_val_2610_29049_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29049_form_a`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_val_2610_28285_form_9(K: float, g: float) -> float:
@@ -10226,12 +10728,12 @@ def calc_val_2610_28285_form_9(K: float, g: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(K*g)
+    return float(K * g)
 
 
 def expr_val_2610_28285_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_28285_form_9`."""
-    return (pl.col("K")*pl.col("g"))
+    return pl.col("K") * pl.col("g")
 
 
 def calc_val_2610_28285_form_1(P: float, r: float) -> float:
@@ -10254,12 +10756,12 @@ def calc_val_2610_28285_form_1(P: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*r)
+    return float(P * r)
 
 
 def expr_val_2610_28285_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_28285_form_1`."""
-    return (pl.col("P")*pl.col("r"))
+    return pl.col("P") * pl.col("r")
 
 
 def calc_u_o_t_v_form_c(T: float, r: float) -> float:
@@ -10282,12 +10784,12 @@ def calc_u_o_t_v_form_c(T: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*T + r)
+    return float(2 * T + r)
 
 
 def expr_u_o_t_v_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_o_t_v_form_c`."""
-    return (2*pl.col("T") + pl.col("r"))
+    return 2 * pl.col("T") + pl.col("r")
 
 
 def calc_val_2610_27416_form_0(a: float, f: float) -> float:
@@ -10310,12 +10812,12 @@ def calc_val_2610_27416_form_0(a: float, f: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*f)
+    return float(a * f)
 
 
 def expr_val_2610_27416_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_0`."""
-    return (pl.col("a")*pl.col("f"))
+    return pl.col("a") * pl.col("f")
 
 
 def calc_val_2610_27416_form_a(A: float, j: float) -> float:
@@ -10338,12 +10840,12 @@ def calc_val_2610_27416_form_a(A: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*j)
+    return float(A * j)
 
 
 def expr_val_2610_27416_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_a`."""
-    return (pl.col("A")*pl.col("j"))
+    return pl.col("A") * pl.col("j")
 
 
 def calc_val_2610_27416_form_6(A: float, j: float) -> float:
@@ -10366,12 +10868,12 @@ def calc_val_2610_27416_form_6(A: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*j)
+    return float(A * j)
 
 
 def expr_val_2610_27416_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_6`."""
-    return (pl.col("A")*pl.col("j"))
+    return pl.col("A") * pl.col("j")
 
 
 def calc_val_2610_27416_form_2(A: float, j: float) -> float:
@@ -10394,12 +10896,12 @@ def calc_val_2610_27416_form_2(A: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(A*j)
+    return float(A * j)
 
 
 def expr_val_2610_27416_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_2`."""
-    return (pl.col("A")*pl.col("j"))
+    return pl.col("A") * pl.col("j")
 
 
 def calc_val_2610_27416_form_1(Y: float) -> float:
@@ -10426,7 +10928,7 @@ def calc_val_2610_27416_form_1(Y: float) -> float:
 
 def expr_val_2610_27416_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_1`."""
-    return (pl.col("Y"))
+    return pl.col("Y")
 
 
 def calc_val_2610_27416_form_f(U: float) -> float:
@@ -10453,10 +10955,12 @@ def calc_val_2610_27416_form_f(U: float) -> float:
 
 def expr_val_2610_27416_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_f`."""
-    return (pl.col("U"))
+    return pl.col("U")
 
 
-def calc_val_2610_27416_form_e(V: float, Y: float, h: float, i: float, m: float, s: float, t: float) -> float:
+def calc_val_2610_27416_form_e(
+    V: float, Y: float, h: float, i: float, m: float, s: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_27416.
 
     **Source**:
@@ -10481,12 +10985,20 @@ def calc_val_2610_27416_form_e(V: float, Y: float, h: float, i: float, m: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(V*Y*h*i*m*s*t)
+    return float(V * Y * h * i * m * s * t)
 
 
 def expr_val_2610_27416_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_e`."""
-    return (pl.col("V")*pl.col("Y")*pl.col("h")*pl.col("i")*pl.col("m")*pl.col("s")*pl.col("t"))
+    return (
+        pl.col("V")
+        * pl.col("Y")
+        * pl.col("h")
+        * pl.col("i")
+        * pl.col("m")
+        * pl.col("s")
+        * pl.col("t")
+    )
 
 
 def calc_val_2610_27416_form_8(M: float, Y: float) -> float:
@@ -10509,12 +11021,12 @@ def calc_val_2610_27416_form_8(M: float, Y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(M*Y)
+    return float(M * Y)
 
 
 def expr_val_2610_27416_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_8`."""
-    return (pl.col("M")*pl.col("Y"))
+    return pl.col("M") * pl.col("Y")
 
 
 def calc_val_2610_27416_form_3(f: float) -> float:
@@ -10541,7 +11053,7 @@ def calc_val_2610_27416_form_3(f: float) -> float:
 
 def expr_val_2610_27416_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_3`."""
-    return (pl.col("f"))
+    return pl.col("f")
 
 
 def calc_a_form_4(m: float, x: float, y: float) -> float:
@@ -10565,12 +11077,12 @@ def calc_a_form_4(m: float, x: float, y: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(16*m**4*x**3*y**3)
+    return float(16 * m**4 * x**3 * y**3)
 
 
 def expr_a_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_form_4`."""
-    return (16*pl.col("m")**4*pl.col("x")**3*pl.col("y")**3)
+    return 16 * pl.col("m") ** 4 * pl.col("x") ** 3 * pl.col("y") ** 3
 
 
 def calc_val_2610_27416_form_d(N: float, dS: float) -> float:
@@ -10593,12 +11105,12 @@ def calc_val_2610_27416_form_d(N: float, dS: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(N*dS - 1)
+    return float(N * dS - 1)
 
 
 def expr_val_2610_27416_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27416_form_d`."""
-    return (pl.col("N")*pl.col("dS") - 1)
+    return pl.col("N") * pl.col("dS") - 1
 
 
 def calc_val_2610_27057_form_8(B: float) -> float:
@@ -10620,12 +11132,12 @@ def calc_val_2610_27057_form_8(B: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(5*B)
+    return float(5 * B)
 
 
 def expr_val_2610_27057_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27057_form_8`."""
-    return (5*pl.col("B"))
+    return 5 * pl.col("B")
 
 
 def calc_val_2610_27057_form_5(C: float, e: float, i: float, j: float, k: float, l: float) -> float:
@@ -10652,15 +11164,19 @@ def calc_val_2610_27057_form_5(C: float, e: float, i: float, j: float, k: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(C*e**2*i*j*k**2 + C*e*i*j*k**2*l)
+    return float(C * e**2 * i * j * k**2 + C * e * i * j * k**2 * l)
 
 
 def expr_val_2610_27057_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27057_form_5`."""
-    return (pl.col("C")*pl.col("e")**2*pl.col("i")*pl.col("j")*pl.col("k")**2 + pl.col("C")*pl.col("e")*pl.col("i")*pl.col("j")*pl.col("k")**2*pl.col("l"))
+    return pl.col("C") * pl.col("e") ** 2 * pl.col("i") * pl.col("j") * pl.col("k") ** 2 + pl.col(
+        "C"
+    ) * pl.col("e") * pl.col("i") * pl.col("j") * pl.col("k") ** 2 * pl.col("l")
 
 
-def calc_l_v_r_r_e_e_2223_form_7(C: float, H: float, Z: float, e: float, g: float, m: float, v: float) -> float:
+def calc_l_v_r_r_e_e_2223_form_7(
+    C: float, H: float, Z: float, e: float, g: float, m: float, v: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_27057.
 
     **Source**:
@@ -10685,12 +11201,22 @@ def calc_l_v_r_r_e_e_2223_form_7(C: float, H: float, Z: float, e: float, g: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(21252*C*H*Z*e*g*m*v + 8*C*e**2)
+    return float(21252 * C * H * Z * e * g * m * v + 8 * C * e**2)
 
 
 def expr_l_v_r_r_e_e_2223_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_v_r_r_e_e_2223_form_7`."""
-    return (21252*pl.col("C")*pl.col("H")*pl.col("Z")*pl.col("e")*pl.col("g")*pl.col("m")*pl.col("v") + 8*pl.col("C")*pl.col("e")**2)
+    return (
+        21252
+        * pl.col("C")
+        * pl.col("H")
+        * pl.col("Z")
+        * pl.col("e")
+        * pl.col("g")
+        * pl.col("m")
+        * pl.col("v")
+        + 8 * pl.col("C") * pl.col("e") ** 2
+    )
 
 
 def calc_val_2610_26568_form_b(t: float, x: float) -> float:
@@ -10713,12 +11239,12 @@ def calc_val_2610_26568_form_b(t: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(t*x)
+    return float(t * x)
 
 
 def expr_val_2610_26568_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_26568_form_b`."""
-    return (pl.col("t")*pl.col("x"))
+    return pl.col("t") * pl.col("x")
 
 
 def calc_val_2610_26568_form_2(P: float) -> float:
@@ -10745,10 +11271,12 @@ def calc_val_2610_26568_form_2(P: float) -> float:
 
 def expr_val_2610_26568_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_26568_form_2`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
-def calc_l_i_m_i_n_f_n_b_n_form_0(A: float, f: float, i: float, k: float, l: float, m: float, n: float) -> float:
+def calc_l_i_m_i_n_f_n_b_n_form_0(
+    A: float, f: float, i: float, k: float, l: float, m: float, n: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_26568.
 
     **Source**:
@@ -10773,12 +11301,20 @@ def calc_l_i_m_i_n_f_n_b_n_form_0(A: float, f: float, i: float, k: float, l: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(A*f*i**2*k*l*m**3*n)
+    return float(A * f * i**2 * k * l * m**3 * n)
 
 
 def expr_l_i_m_i_n_f_n_b_n_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_i_m_i_n_f_n_b_n_form_0`."""
-    return (pl.col("A")*pl.col("f")*pl.col("i")**2*pl.col("k")*pl.col("l")*pl.col("m")**3*pl.col("n"))
+    return (
+        pl.col("A")
+        * pl.col("f")
+        * pl.col("i") ** 2
+        * pl.col("k")
+        * pl.col("l")
+        * pl.col("m") ** 3
+        * pl.col("n")
+    )
 
 
 def calc_val_2610_26568_form_a(X: float) -> float:
@@ -10805,7 +11341,7 @@ def calc_val_2610_26568_form_a(X: float) -> float:
 
 def expr_val_2610_26568_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_26568_form_a`."""
-    return (pl.col("X"))
+    return pl.col("X")
 
 
 def calc_val_2610_26568_form_7(f: float, x: float) -> float:
@@ -10828,12 +11364,12 @@ def calc_val_2610_26568_form_7(f: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*x)
+    return float(f * x)
 
 
 def expr_val_2610_26568_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_26568_form_7`."""
-    return (pl.col("f")*pl.col("x"))
+    return pl.col("f") * pl.col("x")
 
 
 def calc_val_2610_26568_form_d(P: float) -> float:
@@ -10860,7 +11396,7 @@ def calc_val_2610_26568_form_d(P: float) -> float:
 
 def expr_val_2610_26568_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_26568_form_d`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2610_25605_form_d(ds: float) -> float:
@@ -10887,7 +11423,7 @@ def calc_val_2610_25605_form_d(ds: float) -> float:
 
 def expr_val_2610_25605_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25605_form_d`."""
-    return (pl.col("ds"))
+    return pl.col("ds")
 
 
 def calc_val_2610_25605_form_5(ds: float) -> float:
@@ -10914,7 +11450,7 @@ def calc_val_2610_25605_form_5(ds: float) -> float:
 
 def expr_val_2610_25605_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25605_form_5`."""
-    return (pl.col("ds"))
+    return pl.col("ds")
 
 
 def calc_val_2610_25605_form_e(S: float, dT: float, dl: float, g: float, o: float) -> float:
@@ -10940,15 +11476,17 @@ def calc_val_2610_25605_form_e(S: float, dT: float, dl: float, g: float, o: floa
     Returns:
         float: Calculated metric value.
     """
-    return float(dl*(o*(g*(S*dT))))
+    return float(dl * (o * (g * (S * dT))))
 
 
 def expr_val_2610_25605_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25605_form_e`."""
-    return (pl.col("dl")*(pl.col("o")*(pl.col("g")*(pl.col("S")*pl.col("dT")))))
+    return pl.col("dl") * (pl.col("o") * (pl.col("g") * (pl.col("S") * pl.col("dT"))))
 
 
-def calc_z_m_i_x_form_7(a: float, de: float, i: float, l: float, n: float, o: float, z: float) -> float:
+def calc_z_m_i_x_form_7(
+    a: float, de: float, i: float, l: float, n: float, o: float, z: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_25605.
 
     **Source**:
@@ -10973,12 +11511,14 @@ def calc_z_m_i_x_form_7(a: float, de: float, i: float, l: float, n: float, o: fl
     Returns:
         float: Calculated metric value.
     """
-    return float(a*de*i*l*n**2*o*z + a*de*i*l*z)
+    return float(a * de * i * l * n**2 * o * z + a * de * i * l * z)
 
 
 def expr_z_m_i_x_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_z_m_i_x_form_7`."""
-    return (pl.col("a")*pl.col("de")*pl.col("i")*pl.col("l")*pl.col("n")**2*pl.col("o")*pl.col("z") + pl.col("a")*pl.col("de")*pl.col("i")*pl.col("l")*pl.col("z"))
+    return pl.col("a") * pl.col("de") * pl.col("i") * pl.col("l") * pl.col("n") ** 2 * pl.col(
+        "o"
+    ) * pl.col("z") + pl.col("a") * pl.col("de") * pl.col("i") * pl.col("l") * pl.col("z")
 
 
 def calc_e_j_form_6(R: float, T: float, e: float, j: float) -> float:
@@ -11003,12 +11543,12 @@ def calc_e_j_form_6(R: float, T: float, e: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*T*e**2*j**2)
+    return float(R * T * e**2 * j**2)
 
 
 def expr_e_j_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_j_form_6`."""
-    return (pl.col("R")*pl.col("T")*pl.col("e")**2*pl.col("j")**2)
+    return pl.col("R") * pl.col("T") * pl.col("e") ** 2 * pl.col("j") ** 2
 
 
 def calc_p_form_2(M: float, P: float, T: float) -> float:
@@ -11032,12 +11572,12 @@ def calc_p_form_2(M: float, P: float, T: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(3*M*P*T)
+    return float(3 * M * P * T)
 
 
 def expr_p_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_form_2`."""
-    return (3*pl.col("M")*pl.col("P")*pl.col("T"))
+    return 3 * pl.col("M") * pl.col("P") * pl.col("T")
 
 
 def calc_val_2610_25581_form_f(R: float, x: float) -> float:
@@ -11060,12 +11600,12 @@ def calc_val_2610_25581_form_f(R: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R**2*x)
+    return float(R**2 * x)
 
 
 def expr_val_2610_25581_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_f`."""
-    return (pl.col("R")**2*pl.col("x"))
+    return pl.col("R") ** 2 * pl.col("x")
 
 
 def calc_val_2610_25581_form_d(K: float, R: float, S: float, W: float) -> float:
@@ -11090,12 +11630,12 @@ def calc_val_2610_25581_form_d(K: float, R: float, S: float, W: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*(W*(K*S)))
+    return float(R * (W * (K * S)))
 
 
 def expr_val_2610_25581_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_d`."""
-    return (pl.col("R")*(pl.col("W")*(pl.col("K")*pl.col("S"))))
+    return pl.col("R") * (pl.col("W") * (pl.col("K") * pl.col("S")))
 
 
 def calc_val_2610_25581_form_3(K: float, R: float, S: float, W: float) -> float:
@@ -11120,12 +11660,12 @@ def calc_val_2610_25581_form_3(K: float, R: float, S: float, W: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*(W*(K*S)))
+    return float(R * (W * (K * S)))
 
 
 def expr_val_2610_25581_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_3`."""
-    return (pl.col("R")*(pl.col("W")*(pl.col("K")*pl.col("S"))))
+    return pl.col("R") * (pl.col("W") * (pl.col("K") * pl.col("S")))
 
 
 def calc_val_2610_25581_form_0(R: float, i: float) -> float:
@@ -11148,12 +11688,12 @@ def calc_val_2610_25581_form_0(R: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*i)
+    return float(R * i)
 
 
 def expr_val_2610_25581_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_0`."""
-    return (pl.col("R")*pl.col("i"))
+    return pl.col("R") * pl.col("i")
 
 
 def calc_val_2610_25581_form_c(G: float, P: float, S: float, u: float) -> float:
@@ -11178,12 +11718,12 @@ def calc_val_2610_25581_form_c(G: float, P: float, S: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(u*(G*(P*S)))
+    return float(u * (G * (P * S)))
 
 
 def expr_val_2610_25581_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_c`."""
-    return (pl.col("u")*(pl.col("G")*(pl.col("P")*pl.col("S"))))
+    return pl.col("u") * (pl.col("G") * (pl.col("P") * pl.col("S")))
 
 
 def calc_val_2610_25581_form_7(R: float, i: float) -> float:
@@ -11206,12 +11746,12 @@ def calc_val_2610_25581_form_7(R: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*i)
+    return float(R * i)
 
 
 def expr_val_2610_25581_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_7`."""
-    return (pl.col("R")*pl.col("i"))
+    return pl.col("R") * pl.col("i")
 
 
 def calc_r_p_o_s_form_9(R: float, c: float, o: float, p: float, s: float) -> float:
@@ -11237,12 +11777,12 @@ def calc_r_p_o_s_form_9(R: float, c: float, o: float, p: float, s: float) -> flo
     Returns:
         float: Calculated metric value.
     """
-    return float(R**2*c*o*p*s)
+    return float(R**2 * c * o * p * s)
 
 
 def expr_r_p_o_s_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_p_o_s_form_9`."""
-    return (pl.col("R")**2*pl.col("c")*pl.col("o")*pl.col("p")*pl.col("s"))
+    return pl.col("R") ** 2 * pl.col("c") * pl.col("o") * pl.col("p") * pl.col("s")
 
 
 def calc_val_2610_25581_form_e(G: float, P: float, S: float, u: float) -> float:
@@ -11267,12 +11807,12 @@ def calc_val_2610_25581_form_e(G: float, P: float, S: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(u*(G*(P*S)))
+    return float(u * (G * (P * S)))
 
 
 def expr_val_2610_25581_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_e`."""
-    return (pl.col("u")*(pl.col("G")*(pl.col("P")*pl.col("S"))))
+    return pl.col("u") * (pl.col("G") * (pl.col("P") * pl.col("S")))
 
 
 def calc_u_2_s_1_form_f(L: float, M: float, P: float, u: float) -> float:
@@ -11297,12 +11837,12 @@ def calc_u_2_s_1_form_f(L: float, M: float, P: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*L*M*P*u)
+    return float(2 * L * M * P * u)
 
 
 def expr_u_2_s_1_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_2_s_1_form_f`."""
-    return (2*pl.col("L")*pl.col("M")*pl.col("P")*pl.col("u"))
+    return 2 * pl.col("L") * pl.col("M") * pl.col("P") * pl.col("u")
 
 
 def calc_u_2_s_3_form_2(G: float, P: float, S: float, u: float) -> float:
@@ -11327,12 +11867,12 @@ def calc_u_2_s_3_form_2(G: float, P: float, S: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(u*(2*(G*(P*S))))
+    return float(u * (2 * (G * (P * S))))
 
 
 def expr_u_2_s_3_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_2_s_3_form_2`."""
-    return (pl.col("u")*(2*(pl.col("G")*(pl.col("P")*pl.col("S")))))
+    return pl.col("u") * (2 * (pl.col("G") * (pl.col("P") * pl.col("S"))))
 
 
 def calc_u_2_s_4_form_7(G: float, P: float, S: float, u: float) -> float:
@@ -11357,12 +11897,12 @@ def calc_u_2_s_4_form_7(G: float, P: float, S: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*(u*(2*(G*(P*S)))))
+    return float(2 * (u * (2 * (G * (P * S)))))
 
 
 def expr_u_2_s_4_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_2_s_4_form_7`."""
-    return (2*(pl.col("u")*(2*(pl.col("G")*(pl.col("P")*pl.col("S"))))))
+    return 2 * (pl.col("u") * (2 * (pl.col("G") * (pl.col("P") * pl.col("S")))))
 
 
 def calc_val_2610_25581_form_5(G: float, P: float, S: float, u: float) -> float:
@@ -11387,12 +11927,12 @@ def calc_val_2610_25581_form_5(G: float, P: float, S: float, u: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(u*(G*(P*S)))
+    return float(u * (G * (P * S)))
 
 
 def expr_val_2610_25581_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_25581_form_5`."""
-    return (pl.col("u")*(pl.col("G")*(pl.col("P")*pl.col("S"))))
+    return pl.col("u") * (pl.col("G") * (pl.col("P") * pl.col("S")))
 
 
 def calc_val_2609_07617_form_8(i: float, q: float) -> float:
@@ -11415,12 +11955,12 @@ def calc_val_2609_07617_form_8(i: float, q: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*q)
+    return float(i * q)
 
 
 def expr_val_2609_07617_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_07617_form_8`."""
-    return (pl.col("i")*pl.col("q"))
+    return pl.col("i") * pl.col("q")
 
 
 def calc_val_2609_07617_form_0(R: float, i: float) -> float:
@@ -11443,12 +11983,12 @@ def calc_val_2609_07617_form_0(R: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(R*i)
+    return float(R * i)
 
 
 def expr_val_2609_07617_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_07617_form_0`."""
-    return (pl.col("R")*pl.col("i"))
+    return pl.col("R") * pl.col("i")
 
 
 def calc_d_q_form_2(q: float) -> float:
@@ -11470,12 +12010,12 @@ def calc_d_q_form_2(q: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(4*q**2 - 2*q + 2)
+    return float(4 * q**2 - 2 * q + 2)
 
 
 def expr_d_q_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_d_q_form_2`."""
-    return (4*pl.col("q")**2 - 2*pl.col("q") + 2)
+    return 4 * pl.col("q") ** 2 - 2 * pl.col("q") + 2
 
 
 def calc_eq_a_p_b_p_form_e(p: float) -> float:
@@ -11502,7 +12042,7 @@ def calc_eq_a_p_b_p_form_e(p: float) -> float:
 
 def expr_eq_a_p_b_p_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_eq_a_p_b_p_form_e`."""
-    return (pl.col("p"))
+    return pl.col("p")
 
 
 def calc_val_2608_12291_form_f(T: float) -> float:
@@ -11529,7 +12069,7 @@ def calc_val_2608_12291_form_f(T: float) -> float:
 
 def expr_val_2608_12291_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_f`."""
-    return (pl.col("T"))
+    return pl.col("T")
 
 
 def calc_val_2608_12291_form_7(X: float, t: float) -> float:
@@ -11552,12 +12092,12 @@ def calc_val_2608_12291_form_7(X: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(X*t)
+    return float(X * t)
 
 
 def expr_val_2608_12291_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_7`."""
-    return (pl.col("X")*pl.col("t"))
+    return pl.col("X") * pl.col("t")
 
 
 def calc_val_2608_12291_form_1(T: float, X: float) -> float:
@@ -11580,12 +12120,12 @@ def calc_val_2608_12291_form_1(T: float, X: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*X)
+    return float(T * X)
 
 
 def expr_val_2608_12291_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_1`."""
-    return (pl.col("T")*pl.col("X"))
+    return pl.col("T") * pl.col("X")
 
 
 def calc_val_2608_12291_form_4(C: float) -> float:
@@ -11612,7 +12152,7 @@ def calc_val_2608_12291_form_4(C: float) -> float:
 
 def expr_val_2608_12291_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_4`."""
-    return (pl.col("C"))
+    return pl.col("C")
 
 
 def calc_s_form_c(R: float) -> float:
@@ -11639,7 +12179,7 @@ def calc_s_form_c(R: float) -> float:
 
 def expr_s_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_form_c`."""
-    return (pl.col("R"))
+    return pl.col("R")
 
 
 def calc_val_2608_12291_form_c(T: float, t: float) -> float:
@@ -11667,7 +12207,7 @@ def calc_val_2608_12291_form_c(T: float, t: float) -> float:
 
 def expr_val_2608_12291_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_c`."""
-    return (pl.col("T")**2 - pl.col("t"))
+    return pl.col("T") ** 2 - pl.col("t")
 
 
 def calc_val_2608_12291_form_8(S: float, T: float) -> float:
@@ -11690,12 +12230,12 @@ def calc_val_2608_12291_form_8(S: float, T: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(S*T)
+    return float(S * T)
 
 
 def expr_val_2608_12291_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_8`."""
-    return (pl.col("S")*pl.col("T"))
+    return pl.col("S") * pl.col("T")
 
 
 def calc_val_2608_12291_form_d(U: float) -> float:
@@ -11722,7 +12262,7 @@ def calc_val_2608_12291_form_d(U: float) -> float:
 
 def expr_val_2608_12291_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_d`."""
-    return (pl.col("U"))
+    return pl.col("U")
 
 
 def calc_val_2608_12291_form_0(K: float, r: float) -> float:
@@ -11745,12 +12285,12 @@ def calc_val_2608_12291_form_0(K: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(K*r)
+    return float(K * r)
 
 
 def expr_val_2608_12291_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_0`."""
-    return (pl.col("K")*pl.col("r"))
+    return pl.col("K") * pl.col("r")
 
 
 def calc_v_n_t_k_x_form_4(i: float, m: float, n: float) -> float:
@@ -11774,12 +12314,12 @@ def calc_v_n_t_k_x_form_4(i: float, m: float, n: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*m*n)
+    return float(i * m * n)
 
 
 def expr_v_n_t_k_x_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_v_n_t_k_x_form_4`."""
-    return (pl.col("i")*pl.col("m")*pl.col("n"))
+    return pl.col("i") * pl.col("m") * pl.col("n")
 
 
 def calc_val_2608_12291_form_e(D: float, t: float) -> float:
@@ -11802,12 +12342,12 @@ def calc_val_2608_12291_form_e(D: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(D*t)
+    return float(D * t)
 
 
 def expr_val_2608_12291_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_e`."""
-    return (pl.col("D")*pl.col("t"))
+    return pl.col("D") * pl.col("t")
 
 
 def calc_val_2608_12291_form_b(A: float) -> float:
@@ -11834,10 +12374,12 @@ def calc_val_2608_12291_form_b(A: float) -> float:
 
 def expr_val_2608_12291_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_b`."""
-    return (pl.col("A"))
+    return pl.col("A")
 
 
-def calc_val_2608_12291_form_9(P: float, i: float, n: float, o: float, p: float, r: float, s: float, t: float) -> float:
+def calc_val_2608_12291_form_9(
+    P: float, i: float, n: float, o: float, p: float, r: float, s: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
     **Source**:
@@ -11863,12 +12405,22 @@ def calc_val_2608_12291_form_9(P: float, i: float, n: float, o: float, p: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(6.2*P*i**2*n*o**3*p*r*s*t)
+    return float(6.2 * P * i**2 * n * o**3 * p * r * s * t)
 
 
 def expr_val_2608_12291_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_9`."""
-    return (6.2*pl.col("P")*pl.col("i")**2*pl.col("n")*pl.col("o")**3*pl.col("p")*pl.col("r")*pl.col("s")*pl.col("t"))
+    return (
+        6.2
+        * pl.col("P")
+        * pl.col("i") ** 2
+        * pl.col("n")
+        * pl.col("o") ** 3
+        * pl.col("p")
+        * pl.col("r")
+        * pl.col("s")
+        * pl.col("t")
+    )
 
 
 def calc_f_s_form_5(S: float, c: float, s: float) -> float:
@@ -11892,12 +12444,12 @@ def calc_f_s_form_5(S: float, c: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float((0*S)*c - s)
+    return float((0 * S) * c - s)
 
 
 def expr_f_s_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_s_form_5`."""
-    return ((0*pl.col("S"))*pl.col("c") - pl.col("s"))
+    return (0 * pl.col("S")) * pl.col("c") - pl.col("s")
 
 
 def calc_f_s_form_8(k: float) -> float:
@@ -11924,7 +12476,7 @@ def calc_f_s_form_8(k: float) -> float:
 
 def expr_f_s_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_s_form_8`."""
-    return (pl.col("k"))
+    return pl.col("k")
 
 
 def calc_t_x_x_form_2(c: float) -> float:
@@ -11951,7 +12503,7 @@ def calc_t_x_x_form_2(c: float) -> float:
 
 def expr_t_x_x_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_x_x_form_2`."""
-    return (pl.col("c"))
+    return pl.col("c")
 
 
 def calc_t_a_b_form_d(a: float, b: float) -> float:
@@ -11979,7 +12531,7 @@ def calc_t_a_b_form_d(a: float, b: float) -> float:
 
 def expr_t_a_b_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_a_b_form_d`."""
-    return (pl.col("a") - pl.col("b"))
+    return pl.col("a") - pl.col("b")
 
 
 def calc_t_a_b_form_6(a: float, b: float) -> float:
@@ -12002,12 +12554,12 @@ def calc_t_a_b_form_6(a: float, b: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*b)
+    return float(a * b)
 
 
 def expr_t_a_b_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_a_b_form_6`."""
-    return (pl.col("a")*pl.col("b"))
+    return pl.col("a") * pl.col("b")
 
 
 def calc_t_a_b_form_b(a: float, b: float) -> float:
@@ -12030,12 +12582,12 @@ def calc_t_a_b_form_b(a: float, b: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-a*b + 2)
+    return float(-a * b + 2)
 
 
 def expr_t_a_b_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_a_b_form_b`."""
-    return (-pl.col("a")*pl.col("b") + 2)
+    return -pl.col("a") * pl.col("b") + 2
 
 
 def calc_val_2602_19513_form_5(S: float, k: float) -> float:
@@ -12058,12 +12610,12 @@ def calc_val_2602_19513_form_5(S: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(S*k)
+    return float(S * k)
 
 
 def expr_val_2602_19513_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_5`."""
-    return (pl.col("S")*pl.col("k"))
+    return pl.col("S") * pl.col("k")
 
 
 def calc_val_2602_19513_form_2(F: float, S: float, T: float) -> float:
@@ -12087,12 +12639,12 @@ def calc_val_2602_19513_form_2(F: float, S: float, T: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*(F*S))
+    return float(T * (F * S))
 
 
 def expr_val_2602_19513_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_2`."""
-    return (pl.col("T")*(pl.col("F")*pl.col("S")))
+    return pl.col("T") * (pl.col("F") * pl.col("S"))
 
 
 def calc_val_2602_19513_form_6(S: float, T: float, k: float) -> float:
@@ -12116,12 +12668,12 @@ def calc_val_2602_19513_form_6(S: float, T: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*(S*(S*k)))
+    return float(T * (S * (S * k)))
 
 
 def expr_val_2602_19513_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_6`."""
-    return (pl.col("T")*(pl.col("S")*(pl.col("S")*pl.col("k"))))
+    return pl.col("T") * (pl.col("S") * (pl.col("S") * pl.col("k")))
 
 
 def calc_val_2602_19513_form_e(P: float, S: float, k: float) -> float:
@@ -12145,12 +12697,12 @@ def calc_val_2602_19513_form_e(P: float, S: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*(S*(S*k)))
+    return float(P * (S * (S * k)))
 
 
 def expr_val_2602_19513_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_e`."""
-    return (pl.col("P")*(pl.col("S")*(pl.col("S")*pl.col("k"))))
+    return pl.col("P") * (pl.col("S") * (pl.col("S") * pl.col("k")))
 
 
 def calc_val_2602_19513_form_3(C: float, P: float, S: float, k: float) -> float:
@@ -12175,12 +12727,12 @@ def calc_val_2602_19513_form_3(C: float, P: float, S: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*(C*(S*k)))
+    return float(P * (C * (S * k)))
 
 
 def expr_val_2602_19513_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_3`."""
-    return (pl.col("P")*(pl.col("C")*(pl.col("S")*pl.col("k"))))
+    return pl.col("P") * (pl.col("C") * (pl.col("S") * pl.col("k")))
 
 
 def calc_val_2602_19513_form_c(i: float, m: float) -> float:
@@ -12203,12 +12755,12 @@ def calc_val_2602_19513_form_c(i: float, m: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*m)
+    return float(i * m)
 
 
 def expr_val_2602_19513_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_c`."""
-    return (pl.col("i")*pl.col("m"))
+    return pl.col("i") * pl.col("m")
 
 
 def calc_val_2602_19513_form_d(F: float, t: float) -> float:
@@ -12231,12 +12783,12 @@ def calc_val_2602_19513_form_d(F: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(F*t)
+    return float(F * t)
 
 
 def expr_val_2602_19513_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_d`."""
-    return (pl.col("F")*pl.col("t"))
+    return pl.col("F") * pl.col("t")
 
 
 def calc_val_2602_19513_form_7(T: float, p: float) -> float:
@@ -12259,12 +12811,12 @@ def calc_val_2602_19513_form_7(T: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*p)
+    return float(T * p)
 
 
 def expr_val_2602_19513_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_7`."""
-    return (pl.col("T")*pl.col("p"))
+    return pl.col("T") * pl.col("p")
 
 
 def calc_val_2602_19513_form_0(T: float, p: float) -> float:
@@ -12287,12 +12839,12 @@ def calc_val_2602_19513_form_0(T: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(T*p)
+    return float(T * p)
 
 
 def expr_val_2602_19513_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_0`."""
-    return (pl.col("T")*pl.col("p"))
+    return pl.col("T") * pl.col("p")
 
 
 def calc_p_w_t_form_9(P: float) -> float:
@@ -12319,7 +12871,7 @@ def calc_p_w_t_form_9(P: float) -> float:
 
 def expr_p_w_t_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_w_t_form_9`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2602_19513_form_8(P: float, S: float, T: float, j: float) -> float:
@@ -12344,12 +12896,12 @@ def calc_val_2602_19513_form_8(P: float, S: float, T: float, j: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(P*(T*(S*j)))
+    return float(P * (T * (S * j)))
 
 
 def expr_val_2602_19513_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_8`."""
-    return (pl.col("P")*(pl.col("T")*(pl.col("S")*pl.col("j"))))
+    return pl.col("P") * (pl.col("T") * (pl.col("S") * pl.col("j")))
 
 
 def calc_t_a_b_form_0(a: float, b: float) -> float:
@@ -12372,12 +12924,12 @@ def calc_t_a_b_form_0(a: float, b: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-a*b + 2)
+    return float(-a * b + 2)
 
 
 def expr_t_a_b_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_a_b_form_0`."""
-    return (-pl.col("a")*pl.col("b") + 2)
+    return -pl.col("a") * pl.col("b") + 2
 
 
 def calc_val_2602_15673_form_3(G: float, a: float, e: float, m: float, t: float, x: float) -> float:
@@ -12404,12 +12956,12 @@ def calc_val_2602_15673_form_3(G: float, a: float, e: float, m: float, t: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(G*a*e*m*t*x)
+    return float(G * a * e * m * t * x)
 
 
 def expr_val_2602_15673_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_15673_form_3`."""
-    return (pl.col("G")*pl.col("a")*pl.col("e")*pl.col("m")*pl.col("t")*pl.col("x"))
+    return pl.col("G") * pl.col("a") * pl.col("e") * pl.col("m") * pl.col("t") * pl.col("x")
 
 
 def calc_k_p_form_c(P: float) -> float:
@@ -12436,7 +12988,7 @@ def calc_k_p_form_c(P: float) -> float:
 
 def expr_k_p_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_k_p_form_c`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_a(M: float, N: float) -> float:
@@ -12459,12 +13011,12 @@ def calc_val_2601_18774_form_a(M: float, N: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(M*N)
+    return float(M * N)
 
 
 def expr_val_2601_18774_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_a`."""
-    return (pl.col("M")*pl.col("N"))
+    return pl.col("M") * pl.col("N")
 
 
 def calc_val_2601_18774_form_c(F: float, M: float) -> float:
@@ -12487,12 +13039,12 @@ def calc_val_2601_18774_form_c(F: float, M: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(F*M)
+    return float(F * M)
 
 
 def expr_val_2601_18774_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_c`."""
-    return (pl.col("F")*pl.col("M"))
+    return pl.col("F") * pl.col("M")
 
 
 def calc_val_2601_18774_form_5(P: float) -> float:
@@ -12519,7 +13071,7 @@ def calc_val_2601_18774_form_5(P: float) -> float:
 
 def expr_val_2601_18774_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_5`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_7(C: float, x: float) -> float:
@@ -12542,12 +13094,12 @@ def calc_val_2601_18774_form_7(C: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(C*x)
+    return float(C * x)
 
 
 def expr_val_2601_18774_form_7() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_7`."""
-    return (pl.col("C")*pl.col("x"))
+    return pl.col("C") * pl.col("x")
 
 
 def calc_p_t_form_4(P: float) -> float:
@@ -12574,7 +13126,7 @@ def calc_p_t_form_4(P: float) -> float:
 
 def expr_p_t_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_t_form_4`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_9(U: float, i: float) -> float:
@@ -12597,12 +13149,12 @@ def calc_val_2601_18774_form_9(U: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(U*i)
+    return float(U * i)
 
 
 def expr_val_2601_18774_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_9`."""
-    return (pl.col("U")*pl.col("i"))
+    return pl.col("U") * pl.col("i")
 
 
 def calc_val_2601_18774_form_f(P: float) -> float:
@@ -12629,7 +13181,7 @@ def calc_val_2601_18774_form_f(P: float) -> float:
 
 def expr_val_2601_18774_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_f`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_1(D: float, e: float, n: float, p: float, r: float, u: float) -> float:
@@ -12656,12 +13208,12 @@ def calc_val_2601_18774_form_1(D: float, e: float, n: float, p: float, r: float,
     Returns:
         float: Calculated metric value.
     """
-    return float(D*e*n*p**2*r*u)
+    return float(D * e * n * p**2 * r * u)
 
 
 def expr_val_2601_18774_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_1`."""
-    return (pl.col("D")*pl.col("e")*pl.col("n")*pl.col("p")**2*pl.col("r")*pl.col("u"))
+    return pl.col("D") * pl.col("e") * pl.col("n") * pl.col("p") ** 2 * pl.col("r") * pl.col("u")
 
 
 def calc_val_2601_18774_form_0(P: float) -> float:
@@ -12688,7 +13240,7 @@ def calc_val_2601_18774_form_0(P: float) -> float:
 
 def expr_val_2601_18774_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_0`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_b(P: float) -> float:
@@ -12715,7 +13267,7 @@ def calc_val_2601_18774_form_b(P: float) -> float:
 
 def expr_val_2601_18774_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_b`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_8(P: float) -> float:
@@ -12742,7 +13294,7 @@ def calc_val_2601_18774_form_8(P: float) -> float:
 
 def expr_val_2601_18774_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_8`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_f_m_x_form_1(P: float) -> float:
@@ -12769,7 +13321,7 @@ def calc_f_m_x_form_1(P: float) -> float:
 
 def expr_f_m_x_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_m_x_form_1`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2601_18774_form_d(F: float, M: float) -> float:
@@ -12792,12 +13344,12 @@ def calc_val_2601_18774_form_d(F: float, M: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(F*M)
+    return float(F * M)
 
 
 def expr_val_2601_18774_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_d`."""
-    return (pl.col("F")*pl.col("M"))
+    return pl.col("F") * pl.col("M")
 
 
 def calc_val_2601_18774_form_e(P: float) -> float:
@@ -12824,7 +13376,7 @@ def calc_val_2601_18774_form_e(P: float) -> float:
 
 def expr_val_2601_18774_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_18774_form_e`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_p_0_x_form_5(P: float) -> float:
@@ -12851,7 +13403,7 @@ def calc_p_0_x_form_5(P: float) -> float:
 
 def expr_p_0_x_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_0_x_form_5`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_f_form_e(f: float, t: float) -> float:
@@ -12874,12 +13426,12 @@ def calc_f_form_e(f: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*t)
+    return float(f * t)
 
 
 def expr_f_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_form_e`."""
-    return (pl.col("f")*pl.col("t"))
+    return pl.col("f") * pl.col("t")
 
 
 def calc_val_2601_11492_form_8(p: float, t: float) -> float:
@@ -12902,12 +13454,12 @@ def calc_val_2601_11492_form_8(p: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(p*t)
+    return float(p * t)
 
 
 def expr_val_2601_11492_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_11492_form_8`."""
-    return (pl.col("p")*pl.col("t"))
+    return pl.col("p") * pl.col("t")
 
 
 def calc_f_s_form_0(f: float, s: float) -> float:
@@ -12930,12 +13482,12 @@ def calc_f_s_form_0(f: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*s)
+    return float(f * s)
 
 
 def expr_f_s_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_s_form_0`."""
-    return (pl.col("f")*pl.col("s"))
+    return pl.col("f") * pl.col("s")
 
 
 def calc_b_p_k_form_0(a: float, m: float, x: float) -> float:
@@ -12959,12 +13511,12 @@ def calc_b_p_k_form_0(a: float, m: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*m*x)
+    return float(a * m * x)
 
 
 def expr_b_p_k_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_b_p_k_form_0`."""
-    return (pl.col("a")*pl.col("m")*pl.col("x"))
+    return pl.col("a") * pl.col("m") * pl.col("x")
 
 
 def calc_val_2512_18467_form_0(S: float, i: float) -> float:
@@ -12987,15 +13539,28 @@ def calc_val_2512_18467_form_0(S: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(S*(i*i))
+    return float(S * (i * i))
 
 
 def expr_val_2512_18467_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_18467_form_0`."""
-    return (pl.col("S")*(pl.col("i")*pl.col("i")))
+    return pl.col("S") * (pl.col("i") * pl.col("i"))
 
 
-def calc_o_n_e_t_h_i_r_df_o_m_r_form_1(C: float, F: float, P: float, a: float, e: float, i: float, m: float, n: float, o: float, r: float, s: float, t: float) -> float:
+def calc_o_n_e_t_h_i_r_df_o_m_r_form_1(
+    C: float,
+    F: float,
+    P: float,
+    a: float,
+    e: float,
+    i: float,
+    m: float,
+    n: float,
+    o: float,
+    r: float,
+    s: float,
+    t: float,
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_18467.
 
     **Source**:
@@ -13025,15 +13590,55 @@ def calc_o_n_e_t_h_i_r_df_o_m_r_form_1(C: float, F: float, P: float, a: float, e
     Returns:
         float: Calculated metric value.
     """
-    return float(23*(C*(a*(r*(e*(e*(r*(P*(o*(i*(n*(s*t))))))))))) + 13*(F*(o*(m*r))))
+    return float(
+        23 * (C * (a * (r * (e * (e * (r * (P * (o * (i * (n * (s * t)))))))))))
+        + 13 * (F * (o * (m * r)))
+    )
 
 
 def expr_o_n_e_t_h_i_r_df_o_m_r_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_o_n_e_t_h_i_r_df_o_m_r_form_1`."""
-    return (23*(pl.col("C")*(pl.col("a")*(pl.col("r")*(pl.col("e")*(pl.col("e")*(pl.col("r")*(pl.col("P")*(pl.col("o")*(pl.col("i")*(pl.col("n")*(pl.col("s")*pl.col("t")))))))))))) + 13*(pl.col("F")*(pl.col("o")*(pl.col("m")*pl.col("r")))))
+    return 23 * (
+        pl.col("C")
+        * (
+            pl.col("a")
+            * (
+                pl.col("r")
+                * (
+                    pl.col("e")
+                    * (
+                        pl.col("e")
+                        * (
+                            pl.col("r")
+                            * (
+                                pl.col("P")
+                                * (
+                                    pl.col("o")
+                                    * (pl.col("i") * (pl.col("n") * (pl.col("s") * pl.col("t"))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    ) + 13 * (pl.col("F") * (pl.col("o") * (pl.col("m") * pl.col("r"))))
 
 
-def calc_t_w_o_t_h_i_r_df_o_m_r_form_e(C: float, F: float, P: float, a: float, e: float, i: float, m: float, n: float, o: float, r: float, s: float, t: float) -> float:
+def calc_t_w_o_t_h_i_r_df_o_m_r_form_e(
+    C: float,
+    F: float,
+    P: float,
+    a: float,
+    e: float,
+    i: float,
+    m: float,
+    n: float,
+    o: float,
+    r: float,
+    s: float,
+    t: float,
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_18467.
 
     **Source**:
@@ -13063,12 +13668,16 @@ def calc_t_w_o_t_h_i_r_df_o_m_r_form_e(C: float, F: float, P: float, a: float, e
     Returns:
         float: Calculated metric value.
     """
-    return float(13*C*P*a*e**2*i*n*o*r**2*s*t + 23*F*m*o*r)
+    return float(13 * C * P * a * e**2 * i * n * o * r**2 * s * t + 23 * F * m * o * r)
 
 
 def expr_t_w_o_t_h_i_r_df_o_m_r_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_t_w_o_t_h_i_r_df_o_m_r_form_e`."""
-    return (13*pl.col("C")*pl.col("P")*pl.col("a")*pl.col("e")**2*pl.col("i")*pl.col("n")*pl.col("o")*pl.col("r")**2*pl.col("s")*pl.col("t") + 23*pl.col("F")*pl.col("m")*pl.col("o")*pl.col("r"))
+    return 13 * pl.col("C") * pl.col("P") * pl.col("a") * pl.col("e") ** 2 * pl.col("i") * pl.col(
+        "n"
+    ) * pl.col("o") * pl.col("r") ** 2 * pl.col("s") * pl.col("t") + 23 * pl.col("F") * pl.col(
+        "m"
+    ) * pl.col("o") * pl.col("r")
 
 
 def calc_val_2512_18467_form_2(P: float) -> float:
@@ -13095,7 +13704,7 @@ def calc_val_2512_18467_form_2(P: float) -> float:
 
 def expr_val_2512_18467_form_2() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_18467_form_2`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_val_2512_00312_form_3(P: float) -> float:
@@ -13122,7 +13731,7 @@ def calc_val_2512_00312_form_3(P: float) -> float:
 
 def expr_val_2512_00312_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_00312_form_3`."""
-    return (pl.col("P"))
+    return pl.col("P")
 
 
 def calc_x_l_o_form_d(a: float, m: float, x: float) -> float:
@@ -13146,15 +13755,26 @@ def calc_x_l_o_form_d(a: float, m: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(m*(a*x))
+    return float(m * (a * x))
 
 
 def expr_x_l_o_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_x_l_o_form_d`."""
-    return (pl.col("m")*(pl.col("a")*pl.col("x")))
+    return pl.col("m") * (pl.col("a") * pl.col("x"))
 
 
-def calc_r_form_5(P: float, a: float, c: float, i: float, l: float, m: float, o: float, p: float, t: float, u: float) -> float:
+def calc_r_form_5(
+    P: float,
+    a: float,
+    c: float,
+    i: float,
+    l: float,
+    m: float,
+    o: float,
+    p: float,
+    t: float,
+    u: float,
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_00312.
 
     **Source**:
@@ -13182,12 +13802,16 @@ def calc_r_form_5(P: float, a: float, c: float, i: float, l: float, m: float, o:
     Returns:
         float: Calculated metric value.
     """
-    return float(-math.e*P*a**2*c*l*t*u + math.e*P*a*i*l*m*o*p*t)
+    return float(-math.e * P * a**2 * c * l * t * u + math.e * P * a * i * l * m * o * p * t)
 
 
 def expr_r_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_form_5`."""
-    return (-math.e*pl.col("P")*pl.col("a")**2*pl.col("c")*pl.col("l")*pl.col("t")*pl.col("u") + math.e*pl.col("P")*pl.col("a")*pl.col("i")*pl.col("l")*pl.col("m")*pl.col("o")*pl.col("p")*pl.col("t"))
+    return -math.e * pl.col("P") * pl.col("a") ** 2 * pl.col("c") * pl.col("l") * pl.col(
+        "t"
+    ) * pl.col("u") + math.e * pl.col("P") * pl.col("a") * pl.col("i") * pl.col("l") * pl.col(
+        "m"
+    ) * pl.col("o") * pl.col("p") * pl.col("t")
 
 
 def calc_p_r_i_w_i_n_s_o_v_e_j_r_form_f(i: float, j: float, s: float) -> float:
@@ -13211,12 +13835,12 @@ def calc_p_r_i_w_i_n_s_o_v_e_j_r_form_f(i: float, j: float, s: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-1/40*i*s + (1/40)*j*s + 11)
+    return float(-1 / 40 * i * s + (1 / 40) * j * s + 11)
 
 
 def expr_p_r_i_w_i_n_s_o_v_e_j_r_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_r_i_w_i_n_s_o_v_e_j_r_form_f`."""
-    return (-1/40*pl.col("i")*pl.col("s") + (1/40)*pl.col("j")*pl.col("s") + 11)
+    return -1 / 40 * pl.col("i") * pl.col("s") + (1 / 40) * pl.col("j") * pl.col("s") + 11
 
 
 def calc_r_w_c_i_form_4(a: float, i: float, p: float, s: float, t: float) -> float:
@@ -13242,12 +13866,12 @@ def calc_r_w_c_i_form_4(a: float, i: float, p: float, s: float, t: float) -> flo
     Returns:
         float: Calculated metric value.
     """
-    return float(a*i*p*s*t**2)
+    return float(a * i * p * s * t**2)
 
 
 def expr_r_w_c_i_form_4() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_w_c_i_form_4`."""
-    return (pl.col("a")*pl.col("i")*pl.col("p")*pl.col("s")*pl.col("t")**2)
+    return pl.col("a") * pl.col("i") * pl.col("p") * pl.col("s") * pl.col("t") ** 2
 
 
 def calc_g_x_form_9(e: float, t: float, w: float, x: float) -> float:
@@ -13272,12 +13896,12 @@ def calc_g_x_form_9(e: float, t: float, w: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(e - t*w*x + 11)
+    return float(e - t * w * x + 11)
 
 
 def expr_g_x_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_g_x_form_9`."""
-    return (pl.col("e") - pl.col("t")*pl.col("w")*pl.col("x") + 11)
+    return pl.col("e") - pl.col("t") * pl.col("w") * pl.col("x") + 11
 
 
 def calc_val_2506_05866_form_5(j: float, w: float) -> float:
@@ -13300,12 +13924,12 @@ def calc_val_2506_05866_form_5(j: float, w: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(j*w)
+    return float(j * w)
 
 
 def expr_val_2506_05866_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2506_05866_form_5`."""
-    return (pl.col("j")*pl.col("w"))
+    return pl.col("j") * pl.col("w")
 
 
 def calc_val_2503_11669_form_5(m: float, p: float) -> float:
@@ -13328,12 +13952,12 @@ def calc_val_2503_11669_form_5(m: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(m*p)
+    return float(m * p)
 
 
 def expr_val_2503_11669_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_5`."""
-    return (pl.col("m")*pl.col("p"))
+    return pl.col("m") * pl.col("p")
 
 
 def calc_val_2503_11669_form_3(i: float, q: float) -> float:
@@ -13356,12 +13980,12 @@ def calc_val_2503_11669_form_3(i: float, q: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(-i*q + 1)
+    return float(-i * q + 1)
 
 
 def expr_val_2503_11669_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_3`."""
-    return (-pl.col("i")*pl.col("q") + 1)
+    return -pl.col("i") * pl.col("q") + 1
 
 
 def calc_val_2503_11669_form_9(m: float, p: float) -> float:
@@ -13384,12 +14008,12 @@ def calc_val_2503_11669_form_9(m: float, p: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(m*p + 1)
+    return float(m * p + 1)
 
 
 def expr_val_2503_11669_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_9`."""
-    return (pl.col("m")*pl.col("p") + 1)
+    return pl.col("m") * pl.col("p") + 1
 
 
 def calc_val_2503_11669_form_c(g: float, k: float) -> float:
@@ -13412,12 +14036,12 @@ def calc_val_2503_11669_form_c(g: float, k: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*k + 1)
+    return float(g * k + 1)
 
 
 def expr_val_2503_11669_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_c`."""
-    return (pl.col("g")*pl.col("k") + 1)
+    return pl.col("g") * pl.col("k") + 1
 
 
 def calc_val_2503_11669_form_8(g: float, k: float, m: float) -> float:
@@ -13441,12 +14065,12 @@ def calc_val_2503_11669_form_8(g: float, k: float, m: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(g*m - k - 1)
+    return float(g * m - k - 1)
 
 
 def expr_val_2503_11669_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_8`."""
-    return (pl.col("g")*pl.col("m") - pl.col("k") - 1)
+    return pl.col("g") * pl.col("m") - pl.col("k") - 1
 
 
 def calc_val_2503_11669_form_b(a: float, h: float) -> float:
@@ -13469,12 +14093,12 @@ def calc_val_2503_11669_form_b(a: float, h: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*h)
+    return float(a * h)
 
 
 def expr_val_2503_11669_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_b`."""
-    return (pl.col("a")*pl.col("h"))
+    return pl.col("a") * pl.col("h")
 
 
 def calc_val_2610_18417_form_a(r: float, v: float) -> float:
@@ -13497,12 +14121,12 @@ def calc_val_2610_18417_form_a(r: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(r*v)
+    return float(r * v)
 
 
 def expr_val_2610_18417_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_18417_form_a`."""
-    return (pl.col("r")*pl.col("v"))
+    return pl.col("r") * pl.col("v")
 
 
 def calc_val_2610_18417_form_6(X: float, g: float) -> float:
@@ -13525,12 +14149,12 @@ def calc_val_2610_18417_form_6(X: float, g: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(X*g)
+    return float(X * g)
 
 
 def expr_val_2610_18417_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_18417_form_6`."""
-    return (pl.col("X")*pl.col("g"))
+    return pl.col("X") * pl.col("g")
 
 
 def calc_val_2610_18417_form_5(b: float, c: float, i: float, w: float) -> float:
@@ -13555,12 +14179,12 @@ def calc_val_2610_18417_form_5(b: float, c: float, i: float, w: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(b*c*i*w)
+    return float(b * c * i * w)
 
 
 def expr_val_2610_18417_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_18417_form_5`."""
-    return (pl.col("b")*pl.col("c")*pl.col("i")*pl.col("w"))
+    return pl.col("b") * pl.col("c") * pl.col("i") * pl.col("w")
 
 
 def calc_val_2609_10498_form_d(c: float, i: float, x: float) -> float:
@@ -13584,12 +14208,12 @@ def calc_val_2609_10498_form_d(c: float, i: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(c*i*x)
+    return float(c * i * x)
 
 
 def expr_val_2609_10498_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_d`."""
-    return (pl.col("c")*pl.col("i")*pl.col("x"))
+    return pl.col("c") * pl.col("i") * pl.col("x")
 
 
 def calc_val_2609_10498_form_e(i: float, w: float, x: float) -> float:
@@ -13613,12 +14237,12 @@ def calc_val_2609_10498_form_e(i: float, w: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*w*x)
+    return float(i * w * x)
 
 
 def expr_val_2609_10498_form_e() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_e`."""
-    return (pl.col("i")*pl.col("w")*pl.col("x"))
+    return pl.col("i") * pl.col("w") * pl.col("x")
 
 
 def calc_val_2609_10498_form_1(c: float, r: float) -> float:
@@ -13641,12 +14265,12 @@ def calc_val_2609_10498_form_1(c: float, r: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(c*r)
+    return float(c * r)
 
 
 def expr_val_2609_10498_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_1`."""
-    return (pl.col("c")*pl.col("r"))
+    return pl.col("c") * pl.col("r")
 
 
 def calc_val_2609_10498_form_b(e: float, l: float, r: float, x: float) -> float:
@@ -13671,12 +14295,12 @@ def calc_val_2609_10498_form_b(e: float, l: float, r: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(e*l*r*x)
+    return float(e * l * r * x)
 
 
 def expr_val_2609_10498_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_b`."""
-    return (pl.col("e")*pl.col("l")*pl.col("r")*pl.col("x"))
+    return pl.col("e") * pl.col("l") * pl.col("r") * pl.col("x")
 
 
 def calc_val_2609_10498_form_c(dw: float, i: float) -> float:
@@ -13699,12 +14323,12 @@ def calc_val_2609_10498_form_c(dw: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(dw*i)
+    return float(dw * i)
 
 
 def expr_val_2609_10498_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_c`."""
-    return (pl.col("dw")*pl.col("i"))
+    return pl.col("dw") * pl.col("i")
 
 
 def calc_val_2609_10498_form_8(i: float, q: float, w: float) -> float:
@@ -13728,12 +14352,12 @@ def calc_val_2609_10498_form_8(i: float, q: float, w: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(i*q*w)
+    return float(i * q * w)
 
 
 def expr_val_2609_10498_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_8`."""
-    return (pl.col("i")*pl.col("q")*pl.col("w"))
+    return pl.col("i") * pl.col("q") * pl.col("w")
 
 
 def calc_val_2609_10498_form_5(f: float, i: float) -> float:
@@ -13756,12 +14380,12 @@ def calc_val_2609_10498_form_5(f: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(f*i)
+    return float(f * i)
 
 
 def expr_val_2609_10498_form_5() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_5`."""
-    return (pl.col("f")*pl.col("i"))
+    return pl.col("f") * pl.col("i")
 
 
 def calc_val_2609_10498_form_a(b: float, i: float, o: float, p: float, x: float) -> float:
@@ -13787,12 +14411,12 @@ def calc_val_2609_10498_form_a(b: float, i: float, o: float, p: float, x: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(b*i*o*p*x)
+    return float(b * i * o * p * x)
 
 
 def expr_val_2609_10498_form_a() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_a`."""
-    return (pl.col("b")*pl.col("i")*pl.col("o")*pl.col("p")*pl.col("x"))
+    return pl.col("b") * pl.col("i") * pl.col("o") * pl.col("p") * pl.col("x")
 
 
 def calc_val_2609_10498_form_f(D: float, f: float, i: float) -> float:
@@ -13816,12 +14440,12 @@ def calc_val_2609_10498_form_f(D: float, f: float, i: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(2*D*f*i)
+    return float(2 * D * f * i)
 
 
 def expr_val_2609_10498_form_f() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_f`."""
-    return (2*pl.col("D")*pl.col("f")*pl.col("i"))
+    return 2 * pl.col("D") * pl.col("f") * pl.col("i")
 
 
 def calc_val_2609_10498_form_0(b: float, f: float, i: float, o: float, x: float) -> float:
@@ -13847,12 +14471,12 @@ def calc_val_2609_10498_form_0(b: float, f: float, i: float, o: float, x: float)
     Returns:
         float: Calculated metric value.
     """
-    return float(b*f*i*o*x)
+    return float(b * f * i * o * x)
 
 
 def expr_val_2609_10498_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_10498_form_0`."""
-    return (pl.col("b")*pl.col("f")*pl.col("i")*pl.col("o")*pl.col("x"))
+    return pl.col("b") * pl.col("f") * pl.col("i") * pl.col("o") * pl.col("x")
 
 
 def calc_c_p_q_form_c(g: float, l: float, o: float, p: float, q: float) -> float:
@@ -13878,12 +14502,12 @@ def calc_c_p_q_form_c(g: float, l: float, o: float, p: float, q: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(2*g*l*o*p*q)
+    return float(2 * g * l * o * p * q)
 
 
 def expr_c_p_q_form_c() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_p_q_form_c`."""
-    return (2*pl.col("g")*pl.col("l")*pl.col("o")*pl.col("p")*pl.col("q"))
+    return 2 * pl.col("g") * pl.col("l") * pl.col("o") * pl.col("p") * pl.col("q")
 
 
 def calc_f_r_e_q_p_i_t_c_h_form_1(c: float, h: float, i: float, p: float, t: float) -> float:
@@ -13909,12 +14533,12 @@ def calc_f_r_e_q_p_i_t_c_h_form_1(c: float, h: float, i: float, p: float, t: flo
     Returns:
         float: Calculated metric value.
     """
-    return float(880*c*h*i*p*t - 6912)
+    return float(880 * c * h * i * p * t - 6912)
 
 
 def expr_f_r_e_q_p_i_t_c_h_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_r_e_q_p_i_t_c_h_form_1`."""
-    return (880*pl.col("c")*pl.col("h")*pl.col("i")*pl.col("p")*pl.col("t") - 6912)
+    return 880 * pl.col("c") * pl.col("h") * pl.col("i") * pl.col("p") * pl.col("t") - 6912
 
 
 def calc_val_2608_25621_form_6(D: float, i: float, n: float, t: float) -> float:
@@ -13939,12 +14563,12 @@ def calc_val_2608_25621_form_6(D: float, i: float, n: float, t: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(D*i*n*t)
+    return float(D * i * n * t)
 
 
 def expr_val_2608_25621_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_25621_form_6`."""
-    return (pl.col("D")*pl.col("i")*pl.col("n")*pl.col("t"))
+    return pl.col("D") * pl.col("i") * pl.col("n") * pl.col("t")
 
 
 def calc_m_t_form_d(a: float, k: float, m: float, t: float, x: float) -> float:
@@ -13970,15 +14594,17 @@ def calc_m_t_form_d(a: float, k: float, m: float, t: float, x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(a*k**2*m*t*x**2)
+    return float(a * k**2 * m * t * x**2)
 
 
 def expr_m_t_form_d() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_t_form_d`."""
-    return (pl.col("a")*pl.col("k")**2*pl.col("m")*pl.col("t")*pl.col("x")**2)
+    return pl.col("a") * pl.col("k") ** 2 * pl.col("m") * pl.col("t") * pl.col("x") ** 2
 
 
-def calc_k_p_form_8(B: float, c: float, h: float, i: float, k: float, m: float, n: float, p: float, t: float) -> float:
+def calc_k_p_form_8(
+    B: float, c: float, h: float, i: float, k: float, m: float, n: float, p: float, t: float
+) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_25621.
 
     **Source**:
@@ -14005,12 +14631,14 @@ def calc_k_p_form_8(B: float, c: float, h: float, i: float, k: float, m: float, 
     Returns:
         float: Calculated metric value.
     """
-    return float(12*B*k + c*h*i**2*m*n*p*t)
+    return float(12 * B * k + c * h * i**2 * m * n * p * t)
 
 
 def expr_k_p_form_8() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_k_p_form_8`."""
-    return (12*pl.col("B")*pl.col("k") + pl.col("c")*pl.col("h")*pl.col("i")**2*pl.col("m")*pl.col("n")*pl.col("p")*pl.col("t"))
+    return 12 * pl.col("B") * pl.col("k") + pl.col("c") * pl.col("h") * pl.col("i") ** 2 * pl.col(
+        "m"
+    ) * pl.col("n") * pl.col("p") * pl.col("t")
 
 
 def calc_c_l_form_b(x: float) -> float:
@@ -14032,12 +14660,12 @@ def calc_c_l_form_b(x: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(math.e*x)
+    return float(math.e * x)
 
 
 def expr_c_l_form_b() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_l_form_b`."""
-    return (math.e*pl.col("x"))
+    return math.e * pl.col("x")
 
 
 def calc_c_a_b_form_0(C: float, a: float, n: float, o: float, s: float, t: float) -> float:
@@ -14064,12 +14692,14 @@ def calc_c_a_b_form_0(C: float, a: float, n: float, o: float, s: float, t: float
     Returns:
         float: Calculated metric value.
     """
-    return float(C*a*n**2*o*s*t**2)
+    return float(C * a * n**2 * o * s * t**2)
 
 
 def expr_c_a_b_form_0() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_a_b_form_0`."""
-    return (pl.col("C")*pl.col("a")*pl.col("n")**2*pl.col("o")*pl.col("s")*pl.col("t")**2)
+    return (
+        pl.col("C") * pl.col("a") * pl.col("n") ** 2 * pl.col("o") * pl.col("s") * pl.col("t") ** 2
+    )
 
 
 def calc_s_form_1(b: float, omega: float, r: float, v: float) -> float:
@@ -14094,12 +14724,12 @@ def calc_s_form_1(b: float, omega: float, r: float, v: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(r*(omega*(b*v)))
+    return float(r * (omega * (b * v)))
 
 
 def expr_s_form_1() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_form_1`."""
-    return (pl.col("r")*(pl.col("omega")*(pl.col("b")*pl.col("v"))))
+    return pl.col("r") * (pl.col("omega") * (pl.col("b") * pl.col("v")))
 
 
 def calc_c_l_form_3(S: float) -> float:
@@ -14121,12 +14751,12 @@ def calc_c_l_form_3(S: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(1.5*S)
+    return float(1.5 * S)
 
 
 def expr_c_l_form_3() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_l_form_3`."""
-    return (1.5*pl.col("S"))
+    return 1.5 * pl.col("S")
 
 
 def calc_openalex_saavedra2009_w2041165548_form_6(C: float) -> float:
@@ -14148,12 +14778,12 @@ def calc_openalex_saavedra2009_w2041165548_form_6(C: float) -> float:
     Returns:
         float: Calculated metric value.
     """
-    return float(4*C)
+    return float(4 * C)
 
 
 def expr_openalex_saavedra2009_w2041165548_form_6() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_openalex_saavedra2009_w2041165548_form_6`."""
-    return (4*pl.col("C"))
+    return 4 * pl.col("C")
 
 
 def calc_q_i_j_form_9(B: float, P: float, i: float, j: float, k: float) -> float:
@@ -14179,10 +14809,9 @@ def calc_q_i_j_form_9(B: float, P: float, i: float, j: float, k: float) -> float
     Returns:
         float: Calculated metric value.
     """
-    return float(2*B*i*k + 2*P*j*k)
+    return float(2 * B * i * k + 2 * P * j * k)
 
 
 def expr_q_i_j_form_9() -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_q_i_j_form_9`."""
-    return (2*pl.col("B")*pl.col("i")*pl.col("k") + 2*pl.col("P")*pl.col("j")*pl.col("k"))
-
+    return 2 * pl.col("B") * pl.col("i") * pl.col("k") + 2 * pl.col("P") * pl.col("j") * pl.col("k")

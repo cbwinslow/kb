@@ -63,12 +63,14 @@ def reciprocal_rank_fusion(
 
     results: list[tuple[str, float, int | None, int | None]] = []
     for entity_id, score in sorted_entities:
-        results.append((
-            entity_id,
-            score,
-            dense_rank_map.get(entity_id),
-            sparse_rank_map.get(entity_id),
-        ))
+        results.append(
+            (
+                entity_id,
+                score,
+                dense_rank_map.get(entity_id),
+                sparse_rank_map.get(entity_id),
+            )
+        )
 
     return results
 
@@ -164,9 +166,7 @@ class HybridSearchEngine:
         if dialect_name == "postgresql":
             # PostgreSQL native tsvector ranking
             tsquery = func.websearch_to_tsquery("english", query_text)
-            rank_expr = func.ts_rank_cd(
-                func.to_tsvector("english", Chunk.enriched_text), tsquery
-            )
+            rank_expr = func.ts_rank_cd(func.to_tsvector("english", Chunk.enriched_text), tsquery)
             stmt = (
                 select(Chunk, rank_expr.label("rank"))
                 .where(func.to_tsvector("english", Chunk.enriched_text).op("@@")(tsquery))

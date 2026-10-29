@@ -122,13 +122,15 @@ async def test_watcher_process_item_and_run_once(
         authors: list[str] | None = None,
         year: int | None = None,
     ) -> int:
-        ingested_calls.append({
-            "pdf_path": pdf_path,
-            "citekey": citekey,
-            "title": title,
-            "authors": authors,
-            "year": year,
-        })
+        ingested_calls.append(
+            {
+                "pdf_path": pdf_path,
+                "citekey": citekey,
+                "title": title,
+                "authors": authors,
+                "year": year,
+            }
+        )
         return 0
 
     count = await watcher.run_once(ingest_fn=mock_ingest)
@@ -163,9 +165,7 @@ async def test_watcher_watch_loop_with_stop_event(
         stop_event.set()
         return 0
 
-    watch_task = asyncio.create_task(
-        watcher.watch(stop_event=stop_event, ingest_fn=mock_ingest)
-    )
+    watch_task = asyncio.create_task(watcher.watch(stop_event=stop_event, ingest_fn=mock_ingest))
     await asyncio.wait_for(watch_task, timeout=2.0)
     assert stop_event.is_set()
     assert "ITEMKEY1" in watcher.state["processed_item_keys"]

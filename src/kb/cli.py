@@ -516,9 +516,7 @@ async def async_search(
             f"(RRF: {hit.rrf_score:.4f}, Dense: #{hit.dense_rank}, Sparse: #{hit.sparse_rank}) ---"
         )
         section = (
-            " > ".join(hit.section_path)
-            if hit.section_path
-            else (hit.parent_section or "Main")
+            " > ".join(hit.section_path) if hit.section_path else (hit.parent_section or "Main")
         )
         print(f"Section: {section}")
         preview = hit.text.replace("\n", " ")[:200]
@@ -687,6 +685,59 @@ async def async_code_export(
         return 1
 
 
+def command_code_ontology(
+    symbol: str | None = None,
+    columns: list[str] | None = None,
+) -> int:
+    """Inspect semantic symbol ontology or resolve empirical column mappings.
+
+    Args:
+        symbol: Optional specific symbol to inspect.
+        columns: Optional list of DataFrame column names to resolve.
+
+    Returns:
+        Process exit code (0 for success).
+    """
+    from kb.math.ontology import get_symbol_ontology
+
+    ont = get_symbol_ontology()
+
+    if symbol:
+        canon = ont.resolve_canonical(symbol)
+        if canon:
+            defn = ont.concepts.get(canon)
+            print(f"Symbol:      {symbol}")
+            print(f"Canonical:   {canon.value}")
+            if defn:
+                print(f"LaTeX Repr:  ${defn.latex_repr}$")
+                print(f"Description: {defn.description}")
+                print(f"Aliases:     {', '.join(defn.aliases)}")
+            return 0
+        else:
+            print(
+                f"[WARN] Symbol '{symbol}' could not be resolved to a canonical concept.",
+                file=sys.stderr,
+            )
+            return 1
+
+    if columns:
+        print(f"Resolving {len(columns)} columns against canonical ontology:")
+        print("-" * 60)
+        for col in columns:
+            canon = ont.resolve_canonical(col)
+            canon_str = canon.value if canon else "UNKNOWN (unmapped)"
+            print(f"  {col:<25} -> {canon_str}")
+        print("-" * 60)
+        return 0
+
+    print("Canonical Sabermetric Symbol Ontology:")
+    print("=" * 70)
+    for c_name, defn in sorted(ont.concepts.items(), key=lambda x: x[0].value):
+        print(f"• {c_name.value:<20} | ${defn.latex_repr:<10}$ | {defn.description}")
+    print("=" * 70)
+    return 0
+
+
 async def async_sync_ssh_check() -> int:
     """Check connectivity to remote homelab server via SSH/SFTP."""
     from kb.sync.ssh import SSHSyncManager
@@ -715,14 +766,18 @@ async def async_sync_ssh_push(fixtures: bool = True, pdfs: bool = True) -> int:
     print(f"[*] Archiving assets to remote homelab server ({sync_mgr.host})...")
     total_uploaded = 0
     if fixtures:
-        print(f"[*] Syncing fixtures from {settings.fixtures_dir} -> {sync_mgr.remote_fixtures_dir}...")
+        print(
+            f"[*] Syncing fixtures from {settings.fixtures_dir} -> {sync_mgr.remote_fixtures_dir}..."
+        )
         count = sync_mgr.upload_fixture_tree(settings.fixtures_dir)
         print(f"[SUCCESS] Uploaded {count} fixture files.")
         total_uploaded += count
 
     if pdfs and settings.pdf_download_dir.exists():
         pdf_files = list(settings.pdf_download_dir.glob("*.pdf"))
-        print(f"[*] Syncing {len(pdf_files)} PDFs from {settings.pdf_download_dir} -> {sync_mgr.remote_pdf_dir}...")
+        print(
+            f"[*] Syncing {len(pdf_files)} PDFs from {settings.pdf_download_dir} -> {sync_mgr.remote_pdf_dir}..."
+        )
         pdf_count = 0
         for pdf_file in pdf_files:
             if sync_mgr.upload_pdf(pdf_file):
@@ -767,7 +822,9 @@ async def async_sync_harvest(
     else:
         print(f"[*] Running one-shot preprint harvest for '{query}' (limit={limit})...")
         res = await harvester.harvest(query=query, categories=categories, limit=limit)
-        print(f"[SUMMARY] Scanned: {res.scanned}, New: {res.new_found}, Ingested: {res.ingested}, Skipped: {res.skipped}")
+        print(
+            f"[SUMMARY] Scanned: {res.scanned}, New: {res.new_found}, Ingested: {res.ingested}, Skipped: {res.skipped}"
+        )
         for detail in res.details:
             print(f"  {detail}")
     return 0
@@ -832,25 +889,15 @@ async def async_benchmark(
         run_all = True
 
     formula_res = (
-        benchmarker.benchmark_formula_execution(n_rows=n_rows)
-        if (run_all or formulas)
-        else []
+        benchmarker.benchmark_formula_execution(n_rows=n_rows) if (run_all or formulas) else []
     )
     embedding_res = (
         benchmarker.benchmark_embedding_throughput(n_chunks=n_chunks)
         if (run_all or embeddings)
         else None
     )
-    search_res = (
-        await benchmarker.benchmark_search_latency()
-        if (run_all or search)
-        else None
-    )
-    quality_res = (
-        await benchmarker.benchmark_corpus_quality()
-        if (run_all or quality)
-        else None
-    )
+    search_res = await benchmarker.benchmark_search_latency() if (run_all or search) else None
+    quality_res = await benchmarker.benchmark_corpus_quality() if (run_all or quality) else None
 
     result = BenchmarkSuiteResult(
         timestamp=now_str,
@@ -878,8 +925,12 @@ def build_parser() -> argparse.ArgumentParser:
         description="Scientific Knowledge Base CLI & Research Engine",
     )
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose debug logging")
-    parser.add_argument("-q", "--quiet", action="store_true", help="Suppress output below error level")
-    parser.add_argument("--log-file", type=Path, default=None, help="Optional rotating log file destination")
+    parser.add_argument(
+        "-q", "--quiet", action="store_true", help="Suppress output below error level"
+    )
+    parser.add_argument(
+        "--log-file", type=Path, default=None, help="Optional rotating log file destination"
+    )
 
     subparsers = parser.add_subparsers(dest="subcommand", help="Available subcommands")
 
@@ -891,7 +942,9 @@ def build_parser() -> argparse.ArgumentParser:
     # db commands
     db_parser = subparsers.add_parser("db", help="Database management commands")
     db_sub = db_parser.add_subparsers(dest="db_subcommand")
-    db_sub.add_parser("check", help="Test connectivity to configured database (PostgreSQL or SQLite)")
+    db_sub.add_parser(
+        "check", help="Test connectivity to configured database (PostgreSQL or SQLite)"
+    )
     db_sub.add_parser("init", help="Create database tables and vector extensions")
 
     # ingest command
@@ -1040,14 +1093,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     code_sub = code_parser.add_subparsers(dest="code_subcommand")
     code_compile_p = code_sub.add_parser("compile", help="Compile formula to Python & Polars code")
-    code_compile_p.add_argument("--formula-id", type=str, default=None, help="Formula ID to compile")
+    code_compile_p.add_argument(
+        "--formula-id", type=str, default=None, help="Formula ID to compile"
+    )
     code_compile_p.add_argument("--citekey", type=str, default=None, help="Document citekey")
     code_compile_p.add_argument("--name", type=str, default=None, help="Generated function name")
 
     code_verify_p = code_sub.add_parser("verify", help="Verify formula against benchmark tables")
     code_verify_p.add_argument("--citekey", type=str, default=None, help="Document citekey")
     code_verify_p.add_argument("--formula-id", type=str, default=None, help="Formula ID")
-    code_verify_p.add_argument("--limit", type=int, default=20, help="Maximum formulas to verify (default: 20)")
+    code_verify_p.add_argument(
+        "--limit", type=int, default=20, help="Maximum formulas to verify (default: 20)"
+    )
 
     code_export_p = code_sub.add_parser(
         "export", help="Export verified formulas into standalone typed Python/Polars library"
@@ -1060,14 +1117,28 @@ def build_parser() -> argparse.ArgumentParser:
     )
     code_export_p.add_argument("--limit", type=int, default=None, help="Maximum formulas to export")
     code_export_p.add_argument(
-        "--only-equalities", action="store_true", help="Only export formulas with explicit equality (LHS = RHS)"
+        "--only-equalities",
+        action="store_true",
+        help="Only export formulas with explicit equality (LHS = RHS)",
+    )
+
+    code_ontology_p = code_sub.add_parser(
+        "ontology", help="Inspect semantic symbol ontology or resolve empirical column mappings"
+    )
+    code_ontology_p.add_argument(
+        "--symbol", type=str, default=None, help="Inspect a specific symbol"
+    )
+    code_ontology_p.add_argument(
+        "--columns", nargs="*", default=None, help="Column headers to resolve against ontology"
     )
 
     # ui command
     ui_parser = subparsers.add_parser("ui", help="Launch interactive web visual dashboard")
     ui_sub = ui_parser.add_subparsers(dest="ui_subcommand")
     ui_serve_p = ui_sub.add_parser("serve", help="Start web dashboard server")
-    ui_serve_p.add_argument("--host", type=str, default="127.0.0.1", help="Host interface (default: 127.0.0.1)")
+    ui_serve_p.add_argument(
+        "--host", type=str, default="127.0.0.1", help="Host interface (default: 127.0.0.1)"
+    )
     ui_serve_p.add_argument("--port", type=int, default=8080, help="Port (default: 8080)")
 
     # sync command
@@ -1075,44 +1146,102 @@ def build_parser() -> argparse.ArgumentParser:
     sync_sub = sync_parser.add_subparsers(dest="sync_subcommand")
     sync_harvest_p = sync_sub.add_parser("harvest", help="Harvest fresh preprints from arXiv")
     sync_harvest_p.add_argument(
-        "--query", type=str, default="baseball OR sabermetrics OR statcast", help="Search query string"
+        "--query",
+        type=str,
+        default="baseball OR sabermetrics OR statcast",
+        help="Search query string",
     )
-    sync_harvest_p.add_argument("--limit", type=int, default=5, help="Maximum preprints to ingest (default: 5)")
-    sync_harvest_p.add_argument("--categories", nargs="+", default=None, help="arXiv category filters")
-    sync_harvest_p.add_argument("--daemon", action="store_true", help="Run as periodic background daemon")
-    sync_harvest_p.add_argument("--interval", type=float, default=3600.0, help="Daemon polling interval in seconds")
+    sync_harvest_p.add_argument(
+        "--limit", type=int, default=5, help="Maximum preprints to ingest (default: 5)"
+    )
+    sync_harvest_p.add_argument(
+        "--categories", nargs="+", default=None, help="arXiv category filters"
+    )
+    sync_harvest_p.add_argument(
+        "--daemon", action="store_true", help="Run as periodic background daemon"
+    )
+    sync_harvest_p.add_argument(
+        "--interval", type=float, default=3600.0, help="Daemon polling interval in seconds"
+    )
 
     sync_sub.add_parser("ssh-check", help="Test connectivity to remote homelab server via SSH/SFTP")
     sync_push_p = sync_sub.add_parser(
         "ssh-push", help="Upload local fixtures and cached PDFs to homelab storage vault"
     )
-    sync_push_p.add_argument("--no-fixtures", action="store_true", help="Skip syncing parquet fixtures")
-    sync_push_p.add_argument("--no-pdfs", action="store_true", help="Skip syncing raw preprint PDFs")
+    sync_push_p.add_argument(
+        "--no-fixtures", action="store_true", help="Skip syncing parquet fixtures"
+    )
+    sync_push_p.add_argument(
+        "--no-pdfs", action="store_true", help="Skip syncing raw preprint PDFs"
+    )
 
-    sync_daemon_p = sync_sub.add_parser("daemon", help="Run continuous multi-source harvester daemon (OpenAlex + arXiv)")
-    sync_daemon_p.add_argument("--interval", type=float, default=3600.0, help="Daemon cycle interval in seconds (default: 3600)")
-    sync_daemon_p.add_argument("--queries", nargs="+", default=None, help="Custom query list to cycle through")
-    sync_daemon_p.add_argument("--limit-per-query", type=int, default=5, help="Limit papers per query (default: 5)")
-    sync_daemon_p.add_argument("--max-cycles", type=int, default=None, help="Maximum daemon cycles to run before exiting")
-    sync_daemon_p.add_argument("--no-ssh", action="store_true", help="Disable uploading PDFs to homelab storage")
+    sync_daemon_p = sync_sub.add_parser(
+        "daemon", help="Run continuous multi-source harvester daemon (OpenAlex + arXiv)"
+    )
+    sync_daemon_p.add_argument(
+        "--interval",
+        type=float,
+        default=3600.0,
+        help="Daemon cycle interval in seconds (default: 3600)",
+    )
+    sync_daemon_p.add_argument(
+        "--queries", nargs="+", default=None, help="Custom query list to cycle through"
+    )
+    sync_daemon_p.add_argument(
+        "--limit-per-query", type=int, default=5, help="Limit papers per query (default: 5)"
+    )
+    sync_daemon_p.add_argument(
+        "--max-cycles", type=int, default=None, help="Maximum daemon cycles to run before exiting"
+    )
+    sync_daemon_p.add_argument(
+        "--no-ssh", action="store_true", help="Disable uploading PDFs to homelab storage"
+    )
 
     # ask command
-    ask_parser = subparsers.add_parser("ask", help="Evidence-grounded question answering over corpus")
+    ask_parser = subparsers.add_parser(
+        "ask", help="Evidence-grounded question answering over corpus"
+    )
     ask_parser.add_argument("question", type=str, help="Research question to answer")
-    ask_parser.add_argument("--top-k", type=int, default=5, help="Top retrieved chunks (default: 5)")
+    ask_parser.add_argument(
+        "--top-k", type=int, default=5, help="Top retrieved chunks (default: 5)"
+    )
     ask_parser.add_argument("--json", action="store_true", help="Output raw JSON response")
 
     # benchmark command
-    bench_parser = subparsers.add_parser("benchmark", help="Run speed, latency, and quality benchmarks")
+    bench_parser = subparsers.add_parser(
+        "benchmark", help="Run speed, latency, and quality benchmarks"
+    )
     bench_parser.add_argument("--all", action="store_true", help="Run all benchmarks (default)")
-    bench_parser.add_argument("--formulas", action="store_true", help="Benchmark formula execution speed (Scalar vs Polars)")
-    bench_parser.add_argument("--embeddings", action="store_true", help="Benchmark embedding generation throughput")
-    bench_parser.add_argument("--search", action="store_true", help="Benchmark hybrid search query latency")
-    bench_parser.add_argument("--quality", action="store_true", help="Audit corpus formula mathematical quality and yield")
-    bench_parser.add_argument("--rows", type=int, default=100_000, help="Row count for formula benchmarking (default: 100,000)")
-    bench_parser.add_argument("--chunks", type=int, default=20, help="Chunk count for embedding benchmarking (default: 20)")
+    bench_parser.add_argument(
+        "--formulas",
+        action="store_true",
+        help="Benchmark formula execution speed (Scalar vs Polars)",
+    )
+    bench_parser.add_argument(
+        "--embeddings", action="store_true", help="Benchmark embedding generation throughput"
+    )
+    bench_parser.add_argument(
+        "--search", action="store_true", help="Benchmark hybrid search query latency"
+    )
+    bench_parser.add_argument(
+        "--quality", action="store_true", help="Audit corpus formula mathematical quality and yield"
+    )
+    bench_parser.add_argument(
+        "--rows",
+        type=int,
+        default=100_000,
+        help="Row count for formula benchmarking (default: 100,000)",
+    )
+    bench_parser.add_argument(
+        "--chunks",
+        type=int,
+        default=20,
+        help="Chunk count for embedding benchmarking (default: 20)",
+    )
     bench_parser.add_argument("--json", action="store_true", help="Output raw JSON results")
-    bench_parser.add_argument("--output", type=Path, default=None, help="Save report to specified file (.md or .json)")
+    bench_parser.add_argument(
+        "--output", type=Path, default=None, help="Save report to specified file (.md or .json)"
+    )
 
     return parser
 
@@ -1273,6 +1402,12 @@ def main(argv: Sequence[str] | None = None) -> None:
                     limit=args.limit,
                     only_equalities=args.only_equalities,
                 )
+            )
+            sys.exit(code)
+        elif args.code_subcommand == "ontology":
+            code = command_code_ontology(
+                symbol=args.symbol,
+                columns=args.columns,
             )
             sys.exit(code)
         else:

@@ -27,9 +27,8 @@ async def build_and_query_graph(
     print(f"[*] Loading extracted formulas and documents from {db.url.split('@')[-1]}...")
     async with db.get_session() as session:
         # Fetch all formulas and their parent document metadata
-        stmt = (
-            select(Formula, Document.year, Document.title)
-            .join(Document, Formula.document_id == Document.id, isouter=True)
+        stmt = select(Formula, Document.year, Document.title).join(
+            Document, Formula.document_id == Document.id, isouter=True
         )
         if citekey:
             stmt = stmt.where(Formula.citekey == citekey)

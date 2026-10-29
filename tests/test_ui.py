@@ -65,3 +65,54 @@ def test_ui_eval_endpoint_not_found(test_client: TestClient) -> None:
     response = test_client.get("/api/eval?formula_id=999999999")
     assert response.status_code == 404
     assert "not found" in response.json()["error"]
+
+
+def test_ui_playground_route(test_client: TestClient) -> None:
+    """Verify /playground route serves interactive HTML dashboard."""
+    response = test_client.get("/playground")
+    assert response.status_code == 200
+    assert "Interactive Formula Playground" in response.text
+    assert "pg-curve-svg" in response.text
+
+
+def test_ui_presets_endpoint(test_client: TestClient) -> None:
+    """Verify /api/presets returns canonical sabermetric presets."""
+    response = test_client.get("/api/presets")
+    assert response.status_code == 200
+    presets = response.json()
+    assert isinstance(presets, list)
+    assert len(presets) >= 3
+    preset_ids = [p["id"] for p in presets]
+    assert "pythagorean" in preset_ids
+    assert "fip" in preset_ids
+    assert "woba" in preset_ids
+
+
+def test_ui_eval_custom_latex(test_client: TestClient) -> None:
+    """Verify dynamic evaluation of custom formula with direct parameters."""
+    payload = {
+        "formula_id": "custom",
+        "latex": r"W = \frac{R_S^{2}}{R_S^{2} + R_A^{2}}",
+        "inputs": {"R_S": 800, "R_A": 650},
+    }
+    response = test_client.post("/api/eval", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "result" in data
+    # 800^2 / (800^2 + 650^2) = 640000 / (640000 + 422500) = 0.60235
+    assert pytest.approx(float(data["result"]), rel=1e-3) == 0.60235
+
+
+def test_ui_eval_custom_latex_with_ontology_aliases(test_client: TestClient) -> None:
+    """Verify dynamic evaluation maps canonical alias inputs (runs_scored, runs_allowed)."""
+    payload = {
+        "formula_id": "custom",
+        "latex": r"W = \frac{R_S^{1.83}}{R_S^{1.83} + R_A^{1.83}}",
+        "inputs": {"runs_scored": 750, "runs_allowed": 650},
+    }
+    response = test_client.post("/api/eval", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "result" in data
+    # Expected Pythagorean value for 750/650 with gamma 1.83 is ~0.5651
+    assert pytest.approx(float(data["result"]), rel=1e-3) == 0.5651

@@ -32,15 +32,17 @@ war = calc_w_a_r_q_1312_7(A=1.0, R=10.0, e=0.5, l=1.0, p=0.8, q=2.0, r=1.5)
 print("Calculated metric:", war)
 
 # 2. High-speed Polars Vectorized DataFrame Processing
-df = pl.DataFrame({
-    "A": [1.0, 1.2],
-    "R": [10.0, 12.0],
-    "e": [0.5, 0.4],
-    "l": [1.0, 1.0],
-    "p": [0.8, 0.9],
-    "q": [2.0, 2.5],
-    "r": [1.5, 1.2],
-})
+df = pl.DataFrame(
+    {
+        "A": [1.0, 1.2],
+        "R": [10.0, 12.0],
+        "e": [0.5, 0.4],
+        "l": [1.0, 1.0],
+        "p": [0.8, 0.9],
+        "q": [2.0, 2.5],
+        "r": [1.5, 1.2],
+    }
+)
 
 df_out = df.with_columns(WAR=expr_w_a_r_q_1312_7())
 print(df_out)

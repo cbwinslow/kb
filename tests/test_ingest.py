@@ -264,4 +264,3 @@ async def test_derivation_symbol_search_retrieval() -> None:
     assert "Symbols:" in hits[0].text
 
     await db.close()
-

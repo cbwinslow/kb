@@ -97,9 +97,7 @@ class FormulaCompiler:
             # Replace variable names in python expression
             for original_sym, clean_sym in param_map.items():
                 if original_sym != clean_sym:
-                    raw_py_expr = re.sub(
-                        rf"\b{re.escape(original_sym)}\b", clean_sym, raw_py_expr
-                    )
+                    raw_py_expr = re.sub(rf"\b{re.escape(original_sym)}\b", clean_sym, raw_py_expr)
 
             docstring = f"Calculates metric from {citekey}.\n    Equation: {raw_latex.strip()}"
             sig_params = ", ".join(f"{p}: float" for p in param_list)
@@ -146,7 +144,9 @@ class FormulaCompiler:
 
         # Replace parameters first with pl.col("...") (avoiding math. constants like math.e, math.pi)
         for param in sorted(parameters, key=len, reverse=True):
-            polars_expr = re.sub(rf"(?<!math\.)\b{re.escape(param)}\b", f'pl.col("{param}")', polars_expr)
+            polars_expr = re.sub(
+                rf"(?<!math\.)\b{re.escape(param)}\b", f'pl.col("{param}")', polars_expr
+            )
 
         # Replace math functions with polars column/expression functions
         # If the argument contains pl.col, convert to method call; otherwise leave as math.<fn>
@@ -156,8 +156,14 @@ class FormulaCompiler:
                 return f"({inner}).{method}()"
             return f"math.{method}({inner})"
 
-        polars_expr = re.sub(r"\bmath\.sqrt\((.*?)\)", lambda m: _replace_math(m, "sqrt"), polars_expr)
-        polars_expr = re.sub(r"\bmath\.exp\((.*?)\)", lambda m: _replace_math(m, "exp"), polars_expr)
-        polars_expr = re.sub(r"\bmath\.log\((.*?)\)", lambda m: _replace_math(m, "log"), polars_expr)
+        polars_expr = re.sub(
+            r"\bmath\.sqrt\((.*?)\)", lambda m: _replace_math(m, "sqrt"), polars_expr
+        )
+        polars_expr = re.sub(
+            r"\bmath\.exp\((.*?)\)", lambda m: _replace_math(m, "exp"), polars_expr
+        )
+        polars_expr = re.sub(
+            r"\bmath\.log\((.*?)\)", lambda m: _replace_math(m, "log"), polars_expr
+        )
 
         return polars_expr

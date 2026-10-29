@@ -73,10 +73,14 @@ async def test_filter_existing() -> None:
 
 @pytest.mark.asyncio
 async def test_harvest_cycle_no_new(tmp_path: Path) -> None:
-    harvester = PreprintHarvester(download_dir=tmp_path / "papers", fixtures_dir=tmp_path / "fixtures")
+    harvester = PreprintHarvester(
+        download_dir=tmp_path / "papers", fixtures_dir=tmp_path / "fixtures"
+    )
     # Mock query_arxiv to return 1 paper and filter_existing to return 0
     with (
-        patch.object(harvester, "query_arxiv", new=AsyncMock(return_value=[{"arxiv_id": "1234.5678"}])),
+        patch.object(
+            harvester, "query_arxiv", new=AsyncMock(return_value=[{"arxiv_id": "1234.5678"}])
+        ),
         patch.object(harvester, "filter_existing", new=AsyncMock(return_value=[])),
     ):
         result = await harvester.harvest(query="test", limit=5)

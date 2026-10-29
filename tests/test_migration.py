@@ -97,7 +97,8 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
 
     # Create mock legacy tables in SQLite
     async with mock_db.get_session() as session:
-        await session.execute(text("""
+        await session.execute(
+            text("""
             CREATE TABLE legacy_docs (
                 doc_id TEXT PRIMARY KEY,
                 title TEXT,
@@ -108,8 +109,10 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 topics TEXT,
                 summary TEXT
             );
-        """))
-        await session.execute(text("""
+        """)
+        )
+        await session.execute(
+            text("""
             CREATE TABLE legacy_chunks (
                 chunk_id INTEGER PRIMARY KEY,
                 position INTEGER,
@@ -118,8 +121,10 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 emb_bgem3 TEXT,
                 context TEXT
             );
-        """))
-        await session.execute(text("""
+        """)
+        )
+        await session.execute(
+            text("""
             CREATE TABLE legacy_formulas (
                 formula_id TEXT PRIMARY KEY,
                 doc_id TEXT,
@@ -127,10 +132,12 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 label TEXT,
                 latex TEXT
             );
-        """))
+        """)
+        )
 
         # Seed mock candidate 1 (High quality, valid source)
-        await session.execute(text("""
+        await session.execute(
+            text("""
             INSERT INTO legacy_docs VALUES (
                 'doc_good',
                 'Win Expectancy Analysis',
@@ -141,9 +148,11 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 '["baseball", "statistics"]',
                 'Analysis of win expectancy in baseball.'
             );
-        """))
+        """)
+        )
         # Seed mock candidate 2 (Low quality, should be filtered out)
-        await session.execute(text("""
+        await session.execute(
+            text("""
             INSERT INTO legacy_docs VALUES (
                 'doc_low_quality',
                 'Low Quality Scrape',
@@ -154,9 +163,11 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 '[]',
                 'Snippet summary.'
             );
-        """))
+        """)
+        )
         # Seed mock candidate 3 (Unverified source, should be filtered out)
-        await session.execute(text("""
+        await session.execute(
+            text("""
             INSERT INTO legacy_docs VALUES (
                 'doc_bad_source',
                 'Abstract Snippet',
@@ -167,10 +178,12 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 '[]',
                 'Abstract snippet.'
             );
-        """))
+        """)
+        )
 
         # Seed chunks for doc_good
-        await session.execute(text("""
+        await session.execute(
+            text("""
             INSERT INTO legacy_chunks VALUES (
                 101,
                 0,
@@ -179,8 +192,10 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 '[-0.01, 0.05, 0.12]',
                 'Introductory context'
             );
-        """))
-        await session.execute(text("""
+        """)
+        )
+        await session.execute(
+            text("""
             INSERT INTO legacy_chunks VALUES (
                 102,
                 1,
@@ -189,10 +204,12 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 '[0.04, -0.02, 0.08]',
                 'Formula derivation'
             );
-        """))
+        """)
+        )
 
         # Seed formula for doc_good
-        await session.execute(text("""
+        await session.execute(
+            text("""
             INSERT INTO legacy_formulas VALUES (
                 'form_1',
                 'doc_good',
@@ -200,7 +217,8 @@ async def test_legacy_migration_pipeline(mock_db: DatabaseManager) -> None:
                 'we_eq',
                 'WE = \\frac{RS^2}{RS^2 + RA^2}'
             );
-        """))
+        """)
+        )
 
     adapter = LegacyMigrationAdapter(
         db_manager=mock_db,
@@ -310,7 +328,8 @@ async def test_cli_migrate_legacy_dry_run(
 
     # Create empty public tables in mock_db
     async with mock_db.get_session() as session:
-        await session.execute(text("""
+        await session.execute(
+            text("""
             CREATE TABLE IF NOT EXISTS documents (
                 doc_id TEXT PRIMARY KEY,
                 title TEXT,
@@ -321,7 +340,8 @@ async def test_cli_migrate_legacy_dry_run(
                 topics TEXT,
                 summary TEXT
             );
-        """))
+        """)
+        )
 
     exit_code = await async_migrate_legacy(
         dry_run=True,
@@ -336,4 +356,3 @@ async def test_cli_migrate_legacy_dry_run(
     assert "Migration Summary:" in captured.out
 
     await mock_db.close()
-

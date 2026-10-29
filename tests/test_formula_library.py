@@ -98,6 +98,7 @@ def test_generate_module_source(sample_formula: Formula, sample_document: Docume
 
 def test_scalar_and_polars_execution():
     """Verify numerical execution parity between scalar and Polars expressions."""
+
     # Define a sample compiled function pair manually to test runtime parity
     def calc_test_ops(OBP: float, SLG: float) -> float:
         return float(OBP + SLG)
@@ -110,10 +111,12 @@ def test_scalar_and_polars_execution():
     assert pytest.approx(scalar_val, rel=1e-4) == 0.800
 
     # Polars vectorized check
-    df = pl.DataFrame({
-        "OBP": [0.300, 0.350, 0.400],
-        "SLG": [0.400, 0.450, 0.500],
-    })
+    df = pl.DataFrame(
+        {
+            "OBP": [0.300, 0.350, 0.400],
+            "SLG": [0.400, 0.450, 0.500],
+        }
+    )
     df_out = df.with_columns(OPS=expr_test_ops())
     results = df_out["OPS"].to_list()
     assert pytest.approx(results[0], rel=1e-4) == 0.700

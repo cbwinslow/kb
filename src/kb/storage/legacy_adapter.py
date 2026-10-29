@@ -274,9 +274,7 @@ class LegacyMigrationAdapter:
         existing_citekeys.add(candidate_key)
         return candidate_key
 
-    async def fetch_legacy_chunks(
-        self, session: AsyncSession, doc_id: str
-    ) -> list[dict[str, Any]]:
+    async def fetch_legacy_chunks(self, session: AsyncSession, doc_id: str) -> list[dict[str, Any]]:
         """Fetch all chunks belonging to a legacy document in position order."""
         stmt = text(f"""
             SELECT chunk_id, position, text, emb_bgem3, context

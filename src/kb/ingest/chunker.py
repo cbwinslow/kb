@@ -52,9 +52,7 @@ class EnrichedChunk(BaseModel):
         default_factory=list, description="Ordered ancestry of section headings"
     )
     parent_section: str = Field(default="", description="Immediate parent heading name")
-    previous_chunk_id: str | None = Field(
-        default=None, description="Pointer to preceding chunk ID"
-    )
+    previous_chunk_id: str | None = Field(default=None, description="Pointer to preceding chunk ID")
     next_chunk_id: str | None = Field(default=None, description="Pointer to subsequent chunk ID")
     has_math: bool = Field(
         default=False, description="Whether this chunk contains LaTeX mathematical expressions"

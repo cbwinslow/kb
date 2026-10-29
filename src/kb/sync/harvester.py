@@ -111,7 +111,11 @@ class PreprintHarvester:
                     resp = await client.get(ARXIV_API_URL, params=params)
                     if resp.status_code == 429:
                         wait_sec = 4.0 * (attempt + 1)
-                        logger.warning("arXiv rate-limit 429 received, sleeping %.1fs (attempt %d/4)...", wait_sec, attempt + 1)
+                        logger.warning(
+                            "arXiv rate-limit 429 received, sleeping %.1fs (attempt %d/4)...",
+                            wait_sec,
+                            attempt + 1,
+                        )
                         await asyncio.sleep(wait_sec)
                         continue
                     resp.raise_for_status()
@@ -173,14 +177,16 @@ class PreprintHarvester:
                     pdf_url = link.get("href", pdf_url)
                     break
 
-            entries.append({
-                "arxiv_id": arxiv_id,
-                "title": title,
-                "summary": summary,
-                "year": year,
-                "authors": authors,
-                "pdf_url": pdf_url,
-            })
+            entries.append(
+                {
+                    "arxiv_id": arxiv_id,
+                    "title": title,
+                    "summary": summary,
+                    "year": year,
+                    "authors": authors,
+                    "pdf_url": pdf_url,
+                }
+            )
 
         return entries
 
@@ -324,9 +330,7 @@ class PreprintHarvester:
             cycle += 1
             logger.info("Harvester daemon cycle #%d running...", cycle)
             try:
-                res = await self.harvest(
-                    query=query, categories=categories, limit=limit_per_cycle
-                )
+                res = await self.harvest(query=query, categories=categories, limit=limit_per_cycle)
                 logger.info(
                     "Harvester cycle #%d finished: %d scanned, %d new, %d ingested.",
                     cycle,

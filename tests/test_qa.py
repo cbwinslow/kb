@@ -14,23 +14,29 @@ def test_research_answer_formatting() -> None:
     ans = ResearchAnswer(
         question="How does park factor affect linear weights?",
         synthesis="Park factors adjust baseline runs scored in offensive metrics.",
-        cited_sources=[{
-            "citekey": "fast2011",
-            "title": "Park Factors in Sabermetrics",
-            "authors": ["Mike Fast"],
-            "year": 2011,
-        }],
-        relevant_formulas=[{
-            "citekey": "fast2011",
-            "latex": "PF = \\frac{RS_{home}}{RS_{away}}",
-            "python_code": "def calc_pf(RS_home: float, RS_away: float) -> float:\n    return RS_home / RS_away",
-        }],
-        relevant_tables=[{
-            "citekey": "fast2011",
-            "caption": "Multi-year park factors",
-            "columns": ["Team", "PF_3yr"],
-            "num_rows": 30,
-        }],
+        cited_sources=[
+            {
+                "citekey": "fast2011",
+                "title": "Park Factors in Sabermetrics",
+                "authors": ["Mike Fast"],
+                "year": 2011,
+            }
+        ],
+        relevant_formulas=[
+            {
+                "citekey": "fast2011",
+                "latex": "PF = \\frac{RS_{home}}{RS_{away}}",
+                "python_code": "def calc_pf(RS_home: float, RS_away: float) -> float:\n    return RS_home / RS_away",
+            }
+        ],
+        relevant_tables=[
+            {
+                "citekey": "fast2011",
+                "caption": "Multi-year park factors",
+                "columns": ["Team", "PF_3yr"],
+                "num_rows": 30,
+            }
+        ],
     )
 
     text = ans.format_terminal()

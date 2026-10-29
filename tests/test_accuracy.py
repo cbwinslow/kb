@@ -66,16 +66,17 @@ def test_fip_accuracy() -> None:
 def test_polars_vectorized_numerical_parity() -> None:
     """Verifies that vectorised Polars expressions produce identical numerical results to scalar functions."""
     # Create sample DataFrame
-    df = pl.DataFrame({
-        "R": [700.0, 750.0, 800.0, 650.0],
-        "RA": [650.0, 650.0, 700.0, 750.0],
-        "gamma": [1.83, 1.83, 2.0, 1.83],
-    })
+    df = pl.DataFrame(
+        {
+            "R": [700.0, 750.0, 800.0, 650.0],
+            "RA": [650.0, 650.0, 700.0, 750.0],
+            "gamma": [1.83, 1.83, 2.0, 1.83],
+        }
+    )
 
     # Scalar computation
     scalar_results = [
-        (r**g) / (r**g + ra**g)
-        for r, ra, g in zip(df["R"], df["RA"], df["gamma"], strict=True)
+        (r**g) / (r**g + ra**g) for r, ra, g in zip(df["R"], df["RA"], df["gamma"], strict=True)
     ]
 
     # Polars expression computation

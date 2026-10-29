@@ -58,11 +58,17 @@ def test_formula_verifier_against_parquet(tmp_path: Path) -> None:
     verifier = FormulaVerifier(compiler=compiler)
 
     # Create dummy parquet fixture
-    df = pl.DataFrame({
-        "RS": [700.0, 800.0, 900.0],
-        "RA": [700.0, 600.0, 500.0],
-        "ActualWP": [0.5, 64.0 / 100.0, 81.0 / 106.0],  # 800^2 / (800^2+600^2) = 6400/(6400+3600) = 0.64
-    })
+    df = pl.DataFrame(
+        {
+            "RS": [700.0, 800.0, 900.0],
+            "RA": [700.0, 600.0, 500.0],
+            "ActualWP": [
+                0.5,
+                64.0 / 100.0,
+                81.0 / 106.0,
+            ],  # 800^2 / (800^2+600^2) = 6400/(6400+3600) = 0.64
+        }
+    )
     parquet_file = tmp_path / "benchmark_pythag.parquet"
     df.write_parquet(parquet_file)
 

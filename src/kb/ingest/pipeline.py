@@ -534,15 +534,9 @@ class IngestionPipeline:
 
             # Store Tables
             for idx, t in enumerate(tables):
-                pq_path = (
-                    str(fixture_files[idx][0].resolve())
-                    if idx < len(fixture_files)
-                    else None
-                )
+                pq_path = str(fixture_files[idx][0].resolve()) if idx < len(fixture_files) else None
                 csv_path = (
-                    str(fixture_files[idx][1].resolve())
-                    if idx < len(fixture_files)
-                    else None
+                    str(fixture_files[idx][1].resolve()) if idx < len(fixture_files) else None
                 )
                 tbl_record = BenchmarkTable(
                     id=t.table_id,
