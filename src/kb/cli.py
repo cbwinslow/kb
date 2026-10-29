@@ -918,6 +918,148 @@ async def async_benchmark(
     return 0
 
 
+async def async_ingest_web(
+    url: str,
+    citekey: str | None = None,
+    title: str | None = None,
+    force: bool = False,
+) -> int:
+    """Ingests a remote web article or glossary page into KB."""
+    from kb.ingest.pipeline import IngestionPipeline
+    from kb.sync.web import WebGlossaryHarvester
+
+    manager = DatabaseManager()
+    await manager.init_db()
+    pipeline = IngestionPipeline(db_manager=manager)
+    harvester = WebGlossaryHarvester()
+
+    print(f"[*] Fetching and ingesting web source: {url}")
+    result = await harvester.ingest_url(
+        url=url,
+        pipeline=pipeline,
+        citekey=citekey,
+        title=title,
+        force=force,
+    )
+    await manager.close()
+
+    if result.status == "success":
+        print(
+            f"[OK] Ingested '{result.citekey}' ({result.chunk_count} chunks, {result.formula_count} formulas)."
+        )
+        return 0
+    elif result.status == "skipped":
+        print(f"[SKIP] {result.reason}")
+        return 0
+    else:
+        print(f"[ERROR] Ingestion failed: {result.error}", file=sys.stderr)
+        return 1
+
+
+async def async_ingest_glossary(
+    preset: str | None = None,
+    all_presets: bool = False,
+    force: bool = False,
+) -> int:
+    """Ingests pre-bundled canonical sabermetric presets (wOBA, FIP, WAR, etc.)."""
+    from kb.ingest.pipeline import IngestionPipeline
+    from kb.sync.web import SABERMETRIC_GLOSSARY_PRESETS, WebGlossaryHarvester
+
+    manager = DatabaseManager()
+    await manager.init_db()
+    pipeline = IngestionPipeline(db_manager=manager)
+    harvester = WebGlossaryHarvester()
+
+    if all_presets or not preset:
+        print(
+            f"[*] Ingesting all {len(SABERMETRIC_GLOSSARY_PRESETS)} canonical sabermetric glossary presets..."
+        )
+        results = await harvester.ingest_all_presets(pipeline=pipeline, force=force)
+        for r in results:
+            print(
+                f"  - [{r.status.upper()}] {r.citekey}: {r.formula_count} formulas, {r.chunk_count} chunks"
+            )
+        await manager.close()
+        return 0
+
+    print(f"[*] Ingesting preset: '{preset}'")
+    try:
+        res = await harvester.ingest_preset(preset_key=preset, pipeline=pipeline, force=force)
+        print(
+            f"[{res.status.upper()}] {res.citekey} ({res.formula_count} formulas, {res.chunk_count} chunks)."
+        )
+        await manager.close()
+        return 0 if res.status in ("success", "skipped") else 1
+    except Exception as e:
+        print(f"[ERROR] {e}", file=sys.stderr)
+        await manager.close()
+        return 1
+
+
+async def async_formulas_chain(
+    formula_id: str,
+    max_depth: int = 5,
+) -> int:
+    """Recursively chains component formulas into unified closed-form expression."""
+    from kb.math.chaining import FormulaChainingEngine
+
+    manager = DatabaseManager()
+    await manager.init_db()
+    engine = FormulaChainingEngine(db_manager=manager)
+
+    print(f"[*] Chaining formula '{formula_id}' (max depth = {max_depth})...")
+    try:
+        res = await engine.chain_formula(formula_id=formula_id, max_depth=max_depth)
+        print(f"\n[OK] Chaining Successful for {res.target_citekey} ({res.target_formula_id})")
+        print("=" * 60)
+        print(f"Original LaTeX : {res.target_latex}")
+        print(f"Closed-form    : {res.closed_form_latex}")
+        print(f"Substitutions  : {len(res.trace_steps)} steps")
+        for idx, step in enumerate(res.trace_steps, 1):
+            print(
+                f"  Step {idx}: Substituted '{step.target_variable}' via {step.source_citekey} ({step.source_formula_id[:12]})"
+            )
+        print(
+            f"Primitive Vars : {', '.join(res.primitive_symbols) if res.primitive_symbols else 'None'}"
+        )
+        if res.polars_code:
+            print(f"\nCompiled Polars Expression:\n{res.polars_code}")
+        await manager.close()
+        return 0
+    except Exception as exc:
+        print(f"[ERROR] Chaining failed: {exc}", file=sys.stderr)
+        await manager.close()
+        return 1
+
+
+async def async_formulas_solve(
+    formula_ids: list[str],
+    target_symbols: list[str],
+) -> int:
+    """Solves simultaneous system of equations for target unknown parameters."""
+    from kb.math.chaining import FormulaChainingEngine
+
+    manager = DatabaseManager()
+    await manager.init_db()
+    engine = FormulaChainingEngine(db_manager=manager)
+
+    print(f"[*] Solving system of {len(formula_ids)} equations for: {', '.join(target_symbols)}...")
+    try:
+        solutions = await engine.solve_system(
+            formula_ids=formula_ids, target_symbols=target_symbols
+        )
+        print("\n[OK] System Solution:")
+        print("=" * 60)
+        for sym, sol in solutions.items():
+            print(f"  {sym} = {sol}")
+        await manager.close()
+        return 0
+    except Exception as exc:
+        print(f"[ERROR] Solving system failed: {exc}", file=sys.stderr)
+        await manager.close()
+        return 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -994,6 +1136,23 @@ def build_parser() -> argparse.ArgumentParser:
     )
     ingest_parser.add_argument(
         "--force", action="store_true", help="Overwrite existing documents in database"
+    )
+    ingest_parser.add_argument(
+        "--url",
+        type=str,
+        default=None,
+        help="Web URL to ingest (for sabermetric blog/glossary articles)",
+    )
+    ingest_parser.add_argument(
+        "--preset",
+        type=str,
+        default=None,
+        help="Canonical sabermetric preset to ingest (wOBA, FIP, wRAA, wRC, Base_Runs, WAR_position, WAR_pitcher, Pythagenpat)",
+    )
+    ingest_parser.add_argument(
+        "--all-presets",
+        action="store_true",
+        help="Ingest all canonical sabermetric glossary presets",
     )
 
     # embed command
@@ -1130,6 +1289,36 @@ def build_parser() -> argparse.ArgumentParser:
     )
     code_ontology_p.add_argument(
         "--columns", nargs="*", default=None, help="Column headers to resolve against ontology"
+    )
+
+    # formulas command
+    formulas_parser = subparsers.add_parser(
+        "formulas", help="Formula chaining, system solving, and symbolic AST analysis"
+    )
+    formulas_sub = formulas_parser.add_subparsers(dest="formulas_subcommand")
+    chain_p = formulas_sub.add_parser(
+        "chain", help="Recursively chain component formulas into closed form"
+    )
+    chain_p.add_argument(
+        "--id",
+        "--formula-id",
+        dest="formula_id",
+        type=str,
+        required=True,
+        help="Target formula ID to chain",
+    )
+    chain_p.add_argument(
+        "--max-depth", type=int, default=5, help="Maximum substitution depth (default: 5)"
+    )
+
+    solve_p = formulas_sub.add_parser(
+        "solve", help="Solve simultaneous system of equations for target symbols"
+    )
+    solve_p.add_argument(
+        "--ids", nargs="+", required=True, help="Formula IDs comprising the system"
+    )
+    solve_p.add_argument(
+        "--symbols", nargs="+", required=True, help="Target variable symbols to solve for"
     )
 
     # ui command
@@ -1280,7 +1469,30 @@ def main(argv: Sequence[str] | None = None) -> None:
             parser.parse_args(["db", "--help"])
     elif args.subcommand == "ingest":
         cmd_str = str(args.pdf_path or "")
-        if cmd_str == "batch" or args.dir is not None:
+        if cmd_str == "web" or args.url is not None:
+            url = args.url or (args.citekey if args.citekey and "http" in args.citekey else None)
+            if not url:
+                print("[ERROR] --url <url> is required for web ingestion.", file=sys.stderr)
+                sys.exit(1)
+            code = asyncio.run(
+                async_ingest_web(
+                    url=url,
+                    citekey=args.citekey,
+                    title=args.title,
+                    force=args.force,
+                )
+            )
+            sys.exit(code)
+        elif cmd_str == "glossary" or args.preset is not None or args.all_presets:
+            code = asyncio.run(
+                async_ingest_glossary(
+                    preset=args.preset,
+                    all_presets=args.all_presets,
+                    force=args.force,
+                )
+            )
+            sys.exit(code)
+        elif cmd_str == "batch" or args.dir is not None:
             batch_dir = args.dir or Path(".")
             code = asyncio.run(
                 async_ingest_batch(
@@ -1412,6 +1624,25 @@ def main(argv: Sequence[str] | None = None) -> None:
             sys.exit(code)
         else:
             parser.parse_args(["code", "--help"])
+    elif args.subcommand == "formulas":
+        if args.formulas_subcommand == "chain":
+            code = asyncio.run(
+                async_formulas_chain(
+                    formula_id=args.formula_id,
+                    max_depth=args.max_depth,
+                )
+            )
+            sys.exit(code)
+        elif args.formulas_subcommand == "solve":
+            code = asyncio.run(
+                async_formulas_solve(
+                    formula_ids=args.ids,
+                    target_symbols=args.symbols,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["formulas", "--help"])
     elif args.subcommand == "ui":
         if args.ui_subcommand == "serve":
             code = asyncio.run(async_ui_serve(host=args.host, port=args.port))

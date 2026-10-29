@@ -116,3 +116,21 @@ def test_ui_eval_custom_latex_with_ontology_aliases(test_client: TestClient) -> 
     assert "result" in data
     # Expected Pythagorean value for 750/650 with gamma 1.83 is ~0.5651
     assert pytest.approx(float(data["result"]), rel=1e-3) == 0.5651
+
+
+def test_ui_chain_endpoint_missing_id(test_client: TestClient) -> None:
+    """Verify /api/chain requires formula_id parameter."""
+    response = test_client.get("/api/chain")
+    assert response.status_code == 400
+    assert "formula_id parameter is required" in response.json()["error"]
+
+
+def test_ui_graphql_endpoint(test_client: TestClient) -> None:
+    """Verify GraphQL endpoint responds to queries."""
+    query = "{ concepts { name } }"
+    response = test_client.post("/graphql", json={"query": query})
+    assert response.status_code == 200
+    data = response.json()
+    assert "data" in data
+    assert "concepts" in data["data"]
+    assert len(data["data"]["concepts"]) > 0

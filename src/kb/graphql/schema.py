@@ -1,0 +1,426 @@
+"""Multi-layer mathematical knowledge graph and GraphQL API schema."""
+
+from __future__ import annotations
+
+import logging
+
+import strawberry
+from sqlalchemy import func, select
+
+from kb.codegen.compiler import FormulaCompiler
+from kb.math.chaining import FormulaChainingEngine
+from kb.math.ontology import get_symbol_ontology
+from kb.storage.database import DatabaseManager
+from kb.storage.models import BenchmarkTable, Document, Formula
+
+logger = logging.getLogger(__name__)
+
+
+@strawberry.type
+class FormulaType:
+    id: str
+    citekey: str
+    latex: str
+    lhs: str | None
+    rhs: str | None
+    symbols: list[str]
+    is_valid: bool
+    is_equality: bool
+    python_code: str | None = None
+    polars_code: str | None = None
+    document_title: str | None = None
+
+
+@strawberry.type
+class VariableType:
+    name: str
+    canonical_concept: str | None
+    defining_formula_ids: list[str]
+    using_formula_ids: list[str]
+
+
+@strawberry.type
+class ConceptType:
+    name: str
+    latex_repr: str
+    description: str
+    aliases: list[str]
+    formula_count: int
+
+
+@strawberry.type
+class DocumentType:
+    id: str
+    citekey: str
+    title: str
+    year: int | None
+    doi: str | None
+    authors: list[str]
+    formula_count: int
+    table_count: int
+
+
+@strawberry.type
+class BenchmarkTableType:
+    id: str
+    citekey: str
+    caption: str | None
+    num_rows: int
+    num_cols: int
+    columns: list[str]
+    parquet_path: str | None
+
+
+@strawberry.type
+class SubstitutionStepType:
+    target_variable: str
+    source_formula_id: str
+    source_citekey: str
+    original_expr: str
+    substituted_expr: str
+
+
+@strawberry.type
+class DerivationChainType:
+    target_id: str
+    target_citekey: str
+    closed_form_latex: str
+    primitive_symbols: list[str]
+    steps: list[SubstitutionStepType]
+    python_code: str | None
+    polars_code: str | None
+
+
+@strawberry.type
+class GraphNodeType:
+    id: str
+    label: str
+    layer: str  # document, formula, variable, concept, table
+    metadata: str
+
+
+@strawberry.type
+class GraphEdgeType:
+    source: str
+    target: str
+    relation: str
+
+
+@strawberry.type
+class KnowledgeGraphType:
+    nodes: list[GraphNodeType]
+    edges: list[GraphEdgeType]
+
+
+@strawberry.type
+class Query:
+    @strawberry.field
+    async def formulas(
+        self,
+        citekey: str | None = None,
+        is_valid: bool | None = None,
+        limit: int = 50,
+    ) -> list[FormulaType]:
+        """Query mathematical formulas with optional filters."""
+        db = DatabaseManager()
+        compiler = FormulaCompiler()
+        async with db.get_session() as session:
+            stmt = select(Formula, Document.title).outerjoin(
+                Document, Formula.document_id == Document.id
+            )
+            if citekey:
+                stmt = stmt.where(Formula.citekey == citekey)
+            if is_valid is not None:
+                stmt = stmt.where(Formula.is_valid.is_(is_valid))
+            stmt = stmt.limit(limit)
+
+            rows = (await session.execute(stmt)).all()
+            results: list[FormulaType] = []
+            for f, doc_title in rows:
+                py_code = None
+                pl_code = None
+                if f.is_valid and f.is_equality and f.lhs and f.rhs:
+                    comp = compiler.compile(
+                        formula_id=f.id,
+                        citekey=f.citekey,
+                        raw_latex=f.sanitized_latex or f.raw_latex,
+                        sympy_repr=f.sympy_repr,
+                    )
+                    py_code = comp.python_source
+                    pl_code = comp.polars_expression
+
+                results.append(
+                    FormulaType(
+                        id=f.id,
+                        citekey=f.citekey,
+                        latex=f.raw_latex,
+                        lhs=f.lhs,
+                        rhs=f.rhs,
+                        symbols=f.symbols or [],
+                        is_valid=f.is_valid,
+                        is_equality=f.is_equality,
+                        python_code=py_code,
+                        polars_code=pl_code,
+                        document_title=doc_title,
+                    )
+                )
+            return results
+
+    @strawberry.field
+    async def formula(self, id: str) -> FormulaType | None:
+        """Retrieve an individual formula by its unique ID."""
+        db = DatabaseManager()
+        compiler = FormulaCompiler()
+        async with db.get_session() as session:
+            stmt = (
+                select(Formula, Document.title)
+                .outerjoin(Document, Formula.document_id == Document.id)
+                .where(Formula.id == id)
+            )
+            row = (await session.execute(stmt)).first()
+            if not row:
+                return None
+            f, doc_title = row
+            py_code = None
+            pl_code = None
+            if f.is_valid and f.is_equality and f.lhs and f.rhs:
+                comp = compiler.compile(
+                    formula_id=f.id,
+                    citekey=f.citekey,
+                    raw_latex=f.sanitized_latex or f.raw_latex,
+                    sympy_repr=f.sympy_repr,
+                )
+                py_code = comp.python_source
+                pl_code = comp.polars_expression
+
+            return FormulaType(
+                id=f.id,
+                citekey=f.citekey,
+                latex=f.raw_latex,
+                lhs=f.lhs,
+                rhs=f.rhs,
+                symbols=f.symbols or [],
+                is_valid=f.is_valid,
+                is_equality=f.is_equality,
+                python_code=py_code,
+                polars_code=pl_code,
+                document_title=doc_title,
+            )
+
+    @strawberry.field
+    async def concepts(self) -> list[ConceptType]:
+        """Query canonical concepts from the symbol ontology."""
+        ontology = get_symbol_ontology()
+        db = DatabaseManager()
+        results: list[ConceptType] = []
+
+        async with db.get_session() as session:
+            for c_id, c_def in ontology.concepts.items():
+                concept_name = c_id.value if hasattr(c_id, "value") else str(c_id)
+                # Count formulas mentioning this concept's symbols/aliases
+                aliases = [concept_name] + c_def.aliases
+                count_stmt = (
+                    select(func.count(Formula.id))
+                    .where(Formula.is_valid.is_(True))
+                    .where(Formula.lhs.in_(aliases))
+                )
+                cnt = (await session.execute(count_stmt)).scalar_one()
+
+                results.append(
+                    ConceptType(
+                        name=concept_name,
+                        latex_repr=c_def.latex_repr,
+                        description=c_def.description,
+                        aliases=c_def.aliases,
+                        formula_count=cnt,
+                    )
+                )
+        return results
+
+    @strawberry.field
+    async def documents(self, limit: int = 50) -> list[DocumentType]:
+        """Query documents with counts of associated formulas and benchmark tables."""
+        db = DatabaseManager()
+        async with db.get_session() as session:
+            stmt = select(Document).limit(limit)
+            docs = (await session.execute(stmt)).scalars().all()
+
+            results: list[DocumentType] = []
+            for d in docs:
+                f_cnt = (
+                    await session.execute(
+                        select(func.count(Formula.id)).where(Formula.document_id == d.id)
+                    )
+                ).scalar_one()
+                t_cnt = (
+                    await session.execute(
+                        select(func.count(BenchmarkTable.id)).where(
+                            BenchmarkTable.document_id == d.id
+                        )
+                    )
+                ).scalar_one()
+
+                results.append(
+                    DocumentType(
+                        id=d.id,
+                        citekey=d.citekey,
+                        title=d.title,
+                        year=d.year,
+                        doi=d.doi,
+                        authors=d.authors or [],
+                        formula_count=f_cnt,
+                        table_count=t_cnt,
+                    )
+                )
+            return results
+
+    @strawberry.field
+    async def chain_formula(
+        self,
+        target_id: str,
+        max_depth: int = 5,
+    ) -> DerivationChainType | None:
+        """Recursively chain and substitute component equations into target formula."""
+        engine = FormulaChainingEngine()
+        try:
+            res = await engine.chain_formula(formula_id=target_id, max_depth=max_depth)
+            steps = [
+                SubstitutionStepType(
+                    target_variable=s.target_variable,
+                    source_formula_id=s.source_formula_id,
+                    source_citekey=s.source_citekey,
+                    original_expr=s.original_expr_str,
+                    substituted_expr=s.substituted_expr_str,
+                )
+                for s in res.trace_steps
+            ]
+            return DerivationChainType(
+                target_id=res.target_formula_id,
+                target_citekey=res.target_citekey,
+                closed_form_latex=res.closed_form_latex,
+                primitive_symbols=res.primitive_symbols,
+                steps=steps,
+                python_code=res.python_code,
+                polars_code=res.polars_code,
+            )
+        except Exception as e:
+            logger.error("Failed to chain formula %s: %s", target_id, e)
+            return None
+
+    @strawberry.field
+    async def knowledge_graph(self, limit: int = 100) -> KnowledgeGraphType:
+        """Returns multi-layer nodes and edges connecting Documents, Formulas, Variables, Concepts, and Tables."""
+        db = DatabaseManager()
+        ontology = get_symbol_ontology()
+
+        nodes_dict: dict[str, GraphNodeType] = {}
+        edges: list[GraphEdgeType] = []
+
+        async with db.get_session() as session:
+            # 1. Fetch valid formulas
+            stmt = (
+                select(Formula, Document.title)
+                .outerjoin(Document, Formula.document_id == Document.id)
+                .where(Formula.is_valid.is_(True))
+                .order_by(Formula.id.asc())
+                .limit(limit)
+            )
+            rows = (await session.execute(stmt)).all()
+
+            for f, doc_title in rows:
+                # Document Node
+                doc_node_id = f"doc_{f.citekey}"
+                if doc_node_id not in nodes_dict:
+                    nodes_dict[doc_node_id] = GraphNodeType(
+                        id=doc_node_id,
+                        label=f.citekey,
+                        layer="document",
+                        metadata=doc_title or f.citekey,
+                    )
+
+                # Formula Node
+                form_node_id = f"form_{f.id}"
+                nodes_dict[form_node_id] = GraphNodeType(
+                    id=form_node_id,
+                    label=f.lhs or f.id[:10],
+                    layer="formula",
+                    metadata=f.raw_latex,
+                )
+
+                # Edge: Document -> Formula
+                edges.append(
+                    GraphEdgeType(
+                        source=doc_node_id,
+                        target=form_node_id,
+                        relation="contains_formula",
+                    )
+                )
+
+                # Variable Nodes from LHS
+                if f.lhs:
+                    var_node_id = f"var_{f.lhs}"
+                    if var_node_id not in nodes_dict:
+                        nodes_dict[var_node_id] = GraphNodeType(
+                            id=var_node_id,
+                            label=f.lhs,
+                            layer="variable",
+                            metadata=f"Defined variable {f.lhs}",
+                        )
+                    edges.append(
+                        GraphEdgeType(
+                            source=form_node_id,
+                            target=var_node_id,
+                            relation="defines_variable",
+                        )
+                    )
+
+                    # Concept Node connection
+                    canonical = ontology.resolve_canonical(f.lhs)
+                    if canonical:
+                        canon_str = (
+                            canonical.value if hasattr(canonical, "value") else str(canonical)
+                        )
+                        concept_node_id = f"concept_{canon_str}"
+                        if concept_node_id not in nodes_dict:
+                            c_def = ontology.get_concept(canonical)
+                            desc = c_def.description if c_def else canon_str
+                            nodes_dict[concept_node_id] = GraphNodeType(
+                                id=concept_node_id,
+                                label=canon_str,
+                                layer="concept",
+                                metadata=desc,
+                            )
+                        edges.append(
+                            GraphEdgeType(
+                                source=var_node_id,
+                                target=concept_node_id,
+                                relation="maps_to_concept",
+                            )
+                        )
+
+                # Symbols in RHS
+                for sym in (f.symbols or [])[:5]:
+                    if sym != f.lhs:
+                        sym_var_id = f"var_{sym}"
+                        if sym_var_id not in nodes_dict:
+                            nodes_dict[sym_var_id] = GraphNodeType(
+                                id=sym_var_id,
+                                label=sym,
+                                layer="variable",
+                                metadata=f"Input parameter {sym}",
+                            )
+                        edges.append(
+                            GraphEdgeType(
+                                source=form_node_id,
+                                target=sym_var_id,
+                                relation="uses_parameter",
+                            )
+                        )
+
+        return KnowledgeGraphType(
+            nodes=list(nodes_dict.values()),
+            edges=edges,
+        )
+
+
+schema = strawberry.Schema(query=Query)

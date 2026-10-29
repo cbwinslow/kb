@@ -17,7 +17,14 @@ from sqlalchemy import select
 
 from kb.config import settings
 from kb.enrich.openalex import OpenAlexClient
-from kb.ingest.chunker import DocumentChunker
+from kb.ingest.chunker import (
+    MATH_DISPLAY_RE,
+    MATH_ENV_RE,
+    MATH_INLINE_RE,
+    TABLE_LINE_RE,
+    DocumentChunker,
+    EnrichedChunk,
+)
 from kb.ingest.parser import DoclingParser
 from kb.ingest.tables import TableExtractor
 from kb.math.extractor import ExtractedFormula, FormulaExtractor
@@ -562,6 +569,173 @@ class IngestionPipeline:
             chunk_count=len(enriched_chunks),
             formula_count=len(extracted_formulas),
             table_count=len(tables),
+            duration_seconds=round(time.monotonic() - start_time, 2),
+        )
+
+    async def ingest_markdown_source(
+        self,
+        citekey: str,
+        title: str,
+        markdown_text: str,
+        url: str | None = None,
+        authors: list[str] | None = None,
+        year: int | None = None,
+        force: bool = False,
+    ) -> IngestionResult:
+        """Ingests a markdown source directly (e.g. from web scrapers or glossaries)."""
+        start_time = time.monotonic()
+
+        # 0. Deduplication check
+        async with self.db.get_session() as session:
+            stmt = select(Document).where(Document.citekey == citekey)
+            existing = (await session.execute(stmt)).scalar_one_or_none()
+            if existing and not force:
+                return IngestionResult(
+                    citekey=citekey,
+                    status="skipped",
+                    title=existing.title,
+                    reason=f"Document '{citekey}' already exists in database.",
+                    duration_seconds=round(time.monotonic() - start_time, 2),
+                )
+
+        # 1. Structural markdown chunking
+        sections = re.split(r"\n(?=#{1,4}\s+)", markdown_text)
+        enriched_chunks: list[EnrichedChunk] = []
+        current_path: list[str] = [title]
+
+        for s_idx, sec in enumerate(sections):
+            sec_clean = sec.strip()
+            if not sec_clean:
+                continue
+
+            # Check header
+            header_match = re.match(r"^(#{1,4})\s+(.+)$", sec_clean, re.MULTILINE)
+            if header_match:
+                level = len(header_match.group(1))
+                h_title = header_match.group(2).strip()
+                if level == 1:
+                    current_path = [title, h_title]
+                elif level == 2:
+                    current_path = (
+                        [title] + (current_path[1:2] if len(current_path) > 1 else []) + [h_title]
+                    )
+                else:
+                    current_path = current_path[:2] + [h_title]
+
+            parent_sec = current_path[-1] if current_path else title
+            enriched_text = f"Document: {title} > {' > '.join(current_path)}\n\n{sec_clean}"
+            has_math = bool(
+                MATH_DISPLAY_RE.search(sec_clean)
+                or MATH_INLINE_RE.search(sec_clean)
+                or MATH_ENV_RE.search(sec_clean)
+            )
+            has_table = bool(TABLE_LINE_RE.search(sec_clean))
+            chunk_hash = hashlib.sha256(f"{citekey}_{s_idx}_{sec_clean[:64]}".encode()).hexdigest()[
+                :16
+            ]
+
+            enriched_chunks.append(
+                EnrichedChunk(
+                    chunk_id=f"chk_{chunk_hash}",
+                    document_id=citekey,
+                    citekey=citekey,
+                    chunk_index=s_idx,
+                    raw_text=sec_clean,
+                    enriched_text=enriched_text,
+                    section_path=list(current_path),
+                    parent_section=parent_sec,
+                    has_math=has_math,
+                    has_table=has_table,
+                )
+            )
+
+        if not enriched_chunks:
+            return IngestionResult(
+                citekey=citekey,
+                status="error",
+                error="Markdown content yielded 0 chunks.",
+                duration_seconds=round(time.monotonic() - start_time, 2),
+            )
+
+        # 2. Extract mathematical formulas from chunks
+        extracted_formulas: list[ExtractedFormula] = []
+        for c in enriched_chunks:
+            extracted_formulas.extend(
+                self.formula_extractor.extract_from_text(c.raw_text, chunk_id=c.chunk_id)
+            )
+
+        # 3. Embed chunks
+        chunk_texts = [c.enriched_text for c in enriched_chunks]
+        embeddings = self.embedder.embed_texts(chunk_texts)
+
+        # 4. Persist to database
+        async with self.db.get_session() as session:
+            existing_doc = (
+                await session.execute(select(Document).where(Document.citekey == citekey))
+            ).scalar_one_or_none()
+
+            if existing_doc:
+                await session.delete(existing_doc)
+                await session.flush()
+
+            doc_record = Document(
+                id=citekey,
+                citekey=citekey,
+                title=title,
+                year=year or 2026,
+                authors=authors or ["FanGraphs / Tango"],
+                file_path=url or f"web://{citekey}",
+            )
+            session.add(doc_record)
+            await session.flush()
+
+            for idx, c in enumerate(enriched_chunks):
+                chunk_record = Chunk(
+                    id=c.chunk_id,
+                    document_id=doc_record.id,
+                    chunk_index=idx,
+                    citekey=citekey,
+                    raw_text=c.raw_text,
+                    enriched_text=c.enriched_text,
+                    section_path=c.section_path,
+                    parent_section=c.parent_section,
+                    has_math=c.has_math,
+                    has_table=c.has_table,
+                    embedding=embeddings[idx] if idx < len(embeddings) else None,
+                )
+                session.add(chunk_record)
+
+            chunk_id_set = {c.chunk_id for c in enriched_chunks}
+            for f_idx, f in enumerate(extracted_formulas):
+                form_hash = hashlib.sha256(f"{citekey}_{f_idx}_{f.raw_latex}".encode()).hexdigest()[
+                    :24
+                ]
+                unique_formula_id = f"form_{form_hash}"
+                form_record = Formula(
+                    id=unique_formula_id,
+                    document_id=doc_record.id,
+                    chunk_id=f.chunk_id if f.chunk_id in chunk_id_set else None,
+                    citekey=citekey,
+                    raw_latex=f.raw_latex,
+                    sanitized_latex=f.sanitized_latex,
+                    sympy_repr=str(f.sympy_expr) if f.sympy_expr is not None else None,
+                    symbols=f.symbols,
+                    is_valid=f.is_valid,
+                    is_equality=f.is_equality,
+                    lhs=f.lhs,
+                    rhs=f.rhs,
+                )
+                session.add(form_record)
+
+            await session.commit()
+
+        return IngestionResult(
+            citekey=citekey,
+            status="success",
+            title=title,
+            chunk_count=len(enriched_chunks),
+            formula_count=len(extracted_formulas),
+            table_count=0,
             duration_seconds=round(time.monotonic() - start_time, 2),
         )
 

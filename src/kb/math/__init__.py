@@ -1,6 +1,11 @@
 """Mathematical formula extraction, sanitization, and symbolic AST generation."""
 
 from kb.math.ast_gen import FormulaCodeGenerator
+from kb.math.chaining import (
+    ChainedFormulaResult,
+    FormulaChainingEngine,
+    SubstitutionStep,
+)
 from kb.math.extractor import (
     ExtractedFormula,
     FormulaExtractor,
@@ -26,15 +31,18 @@ from kb.math.sanitizer import EquationSanitizer
 
 __all__ = [
     "CanonicalConcept",
+    "ChainedFormulaResult",
     "ConceptDefinition",
     "DerivationEdge",
     "DerivationNode",
     "DerivationRelation",
     "EquationSanitizer",
     "ExtractedFormula",
+    "FormulaChainingEngine",
     "FormulaCodeGenerator",
     "FormulaExtractor",
     "FormulaLineageGraph",
+    "SubstitutionStep",
     "SymbolOntology",
     "extract_equation_references",
     "extract_math_symbols",

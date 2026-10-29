@@ -11,9 +11,12 @@ from sqlalchemy import func, select
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, JSONResponse
-from starlette.routing import Route
+from starlette.routing import Mount, Route
+from strawberry.asgi import GraphQL
 
 from kb.codegen.compiler import FormulaCompiler
+from kb.graphql.schema import schema
+from kb.math.chaining import FormulaChainingEngine
 from kb.math.lineage import DerivationNode, FormulaLineageGraph
 from kb.math.ontology import get_symbol_ontology
 from kb.storage.database import DatabaseManager
@@ -511,6 +514,39 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             ]
         )
 
+    async def chain_endpoint(request: Request) -> JSONResponse:
+        """Chain component equations into unified closed-form formula."""
+        formula_id = request.query_params.get("formula_id")
+        if not formula_id:
+            return JSONResponse({"error": "formula_id parameter is required"}, status_code=400)
+        max_depth = int(request.query_params.get("max_depth", 5))
+        engine = FormulaChainingEngine(db_manager=manager, ontology=ontology, compiler=compiler)
+        try:
+            res = await engine.chain_formula(formula_id, max_depth=max_depth)
+            return JSONResponse(
+                {
+                    "target_formula_id": res.target_formula_id,
+                    "target_citekey": res.target_citekey,
+                    "target_latex": res.target_latex,
+                    "closed_form_latex": res.closed_form_latex,
+                    "primitive_symbols": res.primitive_symbols,
+                    "steps": [
+                        {
+                            "target_variable": s.target_variable,
+                            "source_formula_id": s.source_formula_id,
+                            "source_citekey": s.source_citekey,
+                            "original_expr": s.original_expr_str,
+                            "substituted_expr": s.substituted_expr_str,
+                        }
+                        for s in res.trace_steps
+                    ],
+                    "python_code": res.python_code,
+                    "polars_code": res.polars_code,
+                }
+            )
+        except Exception as exc:
+            return JSONResponse({"error": str(exc)}, status_code=400)
+
     async def index_view(_request: Request) -> HTMLResponse:
         """Serve the interactive single-page dashboard."""
         html_content = """<!DOCTYPE html>
@@ -550,18 +586,20 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       </div>
     </div>
     <!-- Aggregate Stats Badges -->
-    <div id="stats-container" class="flex items-center space-x-4 text-xs">
+    <div id="stats-container" class="flex items-center space-x-3 text-xs">
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-docs" class="font-semibold text-sky-400">...</span> docs</div>
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-chunks" class="font-semibold text-emerald-400">...</span> chunks</div>
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-formulas" class="font-semibold text-indigo-400">...</span> formulas</div>
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-tables" class="font-semibold text-amber-400">...</span> tables</div>
+      <a href="/graphql" target="_blank" class="px-3 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700 text-indigo-300 font-mono text-xs hover:bg-indigo-900 transition">GraphQL IDE ↗</a>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
-  <div class="bg-slate-900 border-b border-slate-800 px-6 py-2 flex space-x-4">
+  <div class="bg-slate-900 border-b border-slate-800 px-6 py-2 flex space-x-3 overflow-x-auto">
     <button onclick="switchTab('lineage')" id="tab-btn-lineage" class="px-4 py-1.5 text-sm font-medium rounded-lg bg-sky-500 text-white">Lineage Graph (DAG)</button>
     <button onclick="switchTab('formulas')" id="tab-btn-formulas" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Knowledge-to-Code</button>
+    <button onclick="switchTab('chaining')" id="tab-btn-chaining" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Equation Chaining</button>
     <button onclick="switchTab('playground')" id="tab-btn-playground" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Formula Playground</button>
     <button onclick="switchTab('tables')" id="tab-btn-tables" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Benchmark Tables</button>
     <button onclick="switchTab('search')" id="tab-btn-search" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Hybrid Retrieval</button>
@@ -608,6 +646,65 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       </div>
       <div id="formulas-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="text-sm text-slate-400">Loading formulas...</div>
+      </div>
+    </section>
+
+    <!-- View 2.5: Symbolic Equation Chaining & Derivation Tree -->
+    <section id="view-chaining" class="flex-1 hidden flex flex-col space-y-4 overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-semibold text-slate-200">Symbolic Equation Chaining & System Solver</h2>
+          <p class="text-xs text-slate-400">Recursively substitutes sub-equations across papers and glossaries to construct unified closed-form systems.</p>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="text-slate-400">Sabermetric Presets:</span>
+          <button onclick="chainPreset('WAR')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700">WAR (Position)</button>
+          <button onclick="chainPreset('wRC')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700">wRC</button>
+          <button onclick="chainPreset('Base_Runs')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700">Base Runs</button>
+          <button onclick="chainPreset('Pythagenpat')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-indigo-400 border border-slate-700">Pythagenpat</button>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-xl p-4 flex items-center space-x-3">
+        <input id="chain-formula-id" type="text" placeholder="Formula ID or keyword (e.g. 'WAR' or 'wRC')..." class="flex-1 px-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 text-xs font-mono outline-none focus:ring-1 focus:ring-sky-500">
+        <div class="flex items-center space-x-1 text-xs text-slate-400">
+          <span>Max Depth:</span>
+          <input id="chain-max-depth" type="number" value="5" min="1" max="10" class="w-14 px-2 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 text-xs text-center">
+        </div>
+        <button onclick="executeChaining()" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-medium transition">Chain & Substitute</button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-[460px]">
+        <!-- Left: Derivation Tree Steps -->
+        <div class="lg:col-span-5 glass-card rounded-xl p-4 flex flex-col space-y-3">
+          <h3 class="text-sm font-semibold text-slate-200 border-b border-slate-700 pb-2 flex items-center justify-between">
+            <span>Recursive Derivation Trace</span>
+            <span id="chain-step-badge" class="text-[11px] px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">0 steps</span>
+          </h3>
+          <div id="chain-steps-container" class="space-y-2 overflow-y-auto custom-scroll flex-1 text-xs text-slate-400">
+            <p>Click a preset button above or enter a formula ID to trigger symbolic multi-tier substitution.</p>
+          </div>
+        </div>
+
+        <!-- Right: Closed-Form Equation & Code -->
+        <div class="lg:col-span-7 glass-card rounded-xl p-5 flex flex-col space-y-4">
+          <div>
+            <span class="text-xs font-semibold text-sky-400 uppercase tracking-wide">Unified Closed-Form Equation</span>
+            <div id="chain-latex-display" class="mt-2 p-4 bg-slate-900 rounded-xl border border-slate-800 text-slate-100 flex items-center justify-center min-h-[70px] text-base overflow-x-auto">
+              <span class="text-xs text-slate-500">Awaiting formula selection...</span>
+            </div>
+          </div>
+          <div>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Primitive Box-Score Variables</span>
+            <div id="chain-primitive-symbols" class="mt-2 flex flex-wrap gap-1.5 min-h-[30px]">
+              <span class="text-xs text-slate-500 font-mono">None</span>
+            </div>
+          </div>
+          <div class="flex-1 flex flex-col space-y-2">
+            <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wide">Compiled Polars Expression</span>
+            <pre id="chain-polars-code" class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-emerald-400 font-mono text-xs overflow-x-auto flex-1 max-h-[160px]"># Polars expression will be compiled here</pre>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -720,7 +817,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     let playgroundInputs = {};
 
     function switchTab(tabId) {
-      ['lineage', 'formulas', 'playground', 'tables', 'search'].forEach(t => {
+      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search'].forEach(t => {
         const viewEl = document.getElementById(`view-${t}`);
         const btnEl = document.getElementById(`tab-btn-${t}`);
         if (viewEl) viewEl.classList.add('hidden');
@@ -733,8 +830,99 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       currentTab = tabId;
 
       if (tabId === 'formulas') loadFormulas();
+      if (tabId === 'chaining') initChaining();
       if (tabId === 'playground') initPlayground();
       if (tabId === 'tables') loadTables();
+    }
+
+    async function initChaining() {
+      const inputEl = document.getElementById('chain-formula-id');
+      if (!inputEl.value) {
+        chainPreset('WAR');
+      }
+    }
+
+    async function chainPreset(keyword) {
+      const inputEl = document.getElementById('chain-formula-id');
+      try {
+        const res = await fetch('/api/formulas?limit=60');
+        const formulas = await res.json();
+        let match = formulas.find(f => f.lhs && f.lhs.toLowerCase().includes(keyword.toLowerCase()));
+        if (!match) {
+          match = formulas.find(f => f.citekey && f.citekey.toLowerCase().includes(keyword.toLowerCase()));
+        }
+        if (match) {
+          inputEl.value = match.id;
+        } else {
+          inputEl.value = keyword;
+        }
+        executeChaining();
+      } catch (_) {
+        inputEl.value = keyword;
+        executeChaining();
+      }
+    }
+
+    async function executeChaining() {
+      const fid = document.getElementById('chain-formula-id').value.trim();
+      if (!fid) return;
+      const depth = document.getElementById('chain-max-depth').value || 5;
+      const container = document.getElementById('chain-steps-container');
+      const latexEl = document.getElementById('chain-latex-display');
+      const badgeEl = document.getElementById('chain-step-badge');
+      const symbolsEl = document.getElementById('chain-primitive-symbols');
+      const polarsEl = document.getElementById('chain-polars-code');
+
+      container.innerHTML = '<div class="text-xs text-slate-400">Executing recursive symbolic substitution...</div>';
+      latexEl.innerHTML = '<span class="text-xs text-slate-500">Computing...</span>';
+
+      try {
+        const res = await fetch(`/api/chain?formula_id=${encodeURIComponent(fid)}&max_depth=${depth}`);
+        const data = await res.json();
+        if (data.error) {
+          container.innerHTML = `<div class="p-3 bg-rose-950/40 border border-rose-800 rounded text-rose-300 text-xs">${escapeHtml(data.error)}</div>`;
+          latexEl.innerHTML = '<span class="text-xs text-rose-400">Failed to resolve formula</span>';
+          return;
+        }
+
+        badgeEl.innerText = `${data.steps.length} substitutions`;
+
+        // Render steps
+        if (data.steps.length === 0) {
+          container.innerHTML = '<div class="p-3 bg-slate-800/60 rounded text-xs text-slate-300">Target formula has no constituent equations or is already in primitive form.</div>';
+        } else {
+          container.innerHTML = data.steps.map((s, idx) => `
+            <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-sky-400 font-mono">Step ${idx + 1}: Substituted '${s.target_variable}'</span>
+                <span class="text-[10px] text-slate-500 font-mono">${s.source_citekey}</span>
+              </div>
+              <div class="text-[11px] text-slate-300 font-mono break-all">${escapeHtml(s.substituted_expr)}</div>
+            </div>
+          `).join('');
+        }
+
+        // Render closed-form LaTeX via KaTeX
+        try {
+          katex.render(data.closed_form_latex || '', latexEl, { displayMode: true, throwOnError: false });
+        } catch (_) {
+          latexEl.innerText = data.closed_form_latex;
+        }
+
+        // Render primitive symbols
+        if (data.primitive_symbols && data.primitive_symbols.length) {
+          symbolsEl.innerHTML = data.primitive_symbols.map(sym => `
+            <span class="px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800 font-mono text-[11px]">${sym}</span>
+          `).join('');
+        } else {
+          symbolsEl.innerHTML = '<span class="text-xs text-slate-500 font-mono">None</span>';
+        }
+
+        // Render polars code
+        polarsEl.innerText = data.polars_code || '# No vectorized Polars expression generated';
+      } catch (err) {
+        container.innerHTML = `<div class="p-3 bg-rose-950/40 border border-rose-800 rounded text-rose-300 text-xs">Error: ${err.message}</div>`;
+      }
     }
 
     async function loadStats() {
@@ -1184,6 +1372,8 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
 """
         return HTMLResponse(html_content)
 
+    graphql_app = GraphQL(schema)
+
     routes = [
         Route("/", endpoint=index_view, methods=["GET"]),
         Route("/playground", endpoint=index_view, methods=["GET"]),
@@ -1195,6 +1385,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/search", endpoint=search_endpoint, methods=["GET"]),
         Route("/api/eval", endpoint=eval_endpoint, methods=["GET", "POST"]),
         Route("/api/presets", endpoint=get_presets, methods=["GET"]),
+        Route("/api/chain", endpoint=chain_endpoint, methods=["GET"]),
+        Route("/graphql", endpoint=graphql_app, methods=["GET", "POST"]),
+        Mount("/graphql", app=graphql_app),
     ]
 
     return Starlette(routes=routes)

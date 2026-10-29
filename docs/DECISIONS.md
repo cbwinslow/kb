@@ -229,3 +229,43 @@ This document records the architectural, technical, and mathematical decisions m
     - Live SVG sensitivity response curve charting parameter sweeps with highlighted live operating points.
     - Strict compartmentalization preserving all existing UI tabs (`lineage`, `formulas`, `tables`, `search`) and API behaviors.
 - **Consequences**: Ensures cross-platform build stability, automated PyPI release readiness, and provides users with an intuitive real-time simulation workbench.
+
+---
+
+## ADR-021: Web Glossary & Canonical Sabermetric Presets Ingestion
+- **Status**: Accepted
+- **Context**: Foundational sabermetric definitions (wOBA, FIP, wRAA, wRC, Base Runs, WAR for position players and pitchers, Pythagenpat) are primarily documented across seminal online references (FanGraphs Sabermetric Library, Tom Tango's blog archive) rather than academic PDF preprints. The corpus lacked web harvesting capabilities and direct markdown source ingestion.
+- **Decision**:
+  - Implement `WebGlossaryHarvester` in `src/kb/sync/web.py` using `httpx` for asynchronous HTTP retrieval, `BeautifulSoup` for main article content isolation, and `markdownify` for structured markdown generation with math preservation.
+  - Implement `IngestionPipeline.ingest_markdown_source` in `src/kb/ingest/pipeline.py` enabling direct ingestion of markdown documents, extracting mathematical formulas, computing BGE-M3 embeddings, and persisting into PostgreSQL.
+  - Pre-bundle canonical sabermetric glossary presets (`wOBA`, `FIP`, `wRAA`, `wRC`, `Base_Runs`, `WAR_position`, `WAR_pitcher`, `Pythagenpat`) with validated LaTeX formulas for hermetic testing and instant offline seeding.
+  - Expose CLI commands `kb ingest --url <url>` and `kb ingest --all-presets` / `--preset <name>`.
+- **Consequences**: Expands KB beyond static PDFs, providing immediate access to foundational sabermetric metrics needed for cross-formula derivations.
+
+---
+
+## ADR-022: Multi-Paper Symbolic Equation Chaining & System Solver
+- **Status**: Accepted
+- **Context**: Sabermetric models form hierarchical derivation networks: composite formulas like Wins Above Replacement ($WAR$) depend on intermediate metrics ($BattingRuns, ReplacementRuns, RPW$), which in turn depend on $wRAA$, $wOBA$, and fundamental box-score statistics ($1B, 2B, 3B, HR, BB, HBP, PA$). Researchers needed the ability to recursively chain and substitute formulas across papers to construct closed-form equations and solve simultaneous systems of equations.
+- **Decision**:
+  - Implement `FormulaChainingEngine` in `src/kb/math/chaining.py` powered by SymPy:
+    - Recursive symbol substitution (`sympy.subs`) traversing database equality formulas ($LHS = RHS$) matching free RHS variables against candidate definitions.
+    - Cycle prevention and max depth capping (default 5) to guarantee termination.
+    - Analytical closed-form equation generation simplified with `sympy.simplify` and rendered in KaTeX LaTeX.
+    - Automatic compilation of unified closed-form expressions to vectorized Polars column expressions and Python callables via `FormulaCompiler`.
+    - Simultaneous equation system solving (`solve_system`) utilizing `sympy.solve` with fuzzy symbol matching.
+  - Expose CLI commands `kb formulas chain --id <id>` and `kb formulas solve --ids <ids> --symbols <syms>`.
+  - Add interactive "Equation Chaining" tab to `src/kb/ui/app.py` displaying live step-by-step substitution trees.
+- **Consequences**: Enables decomposing complex multi-stage sabermetric metrics down to fundamental counting statistics in a single closed-form vectorized operation.
+
+---
+
+## ADR-023: Multi-Layer Mathematical Knowledge Graph & GraphQL API
+- **Status**: Accepted
+- **Context**: The existing lineage graph was limited to pairwise Jaccard symbol overlap with hard truncation at 150 nodes. Users required rich relational traversal connecting all scientific entities: Documents $\leftrightarrow$ Formulas $\leftrightarrow$ Variables $\leftrightarrow$ Canonical Concepts $\leftrightarrow$ Benchmark Tables $\leftrightarrow$ Derivation Chains.
+- **Decision**:
+  - Implement typed GraphQL API in `src/kb/graphql/schema.py` using `strawberry-graphql`.
+  - Define schema types: `FormulaType`, `VariableType`, `ConceptType`, `DocumentType`, `BenchmarkTableType`, `DerivationChainType`, `KnowledgeGraphType`.
+  - Provide queries: `formulas`, `formula`, `concepts`, `documents`, `chainFormula`, `knowledgeGraph`.
+  - Mount `/graphql` endpoint onto the Starlette web application with interactive GraphiQL IDE enabled.
+- **Consequences**: Provides external agents and frontends with high-performance, strongly-typed relational graph querying across all scientific corpus layers.

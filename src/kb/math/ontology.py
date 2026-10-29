@@ -70,6 +70,15 @@ class SymbolOntology:
         """Return the mapping of registered canonical concepts."""
         return self._concepts
 
+    def get_concept(self, canonical: CanonicalConcept) -> ConceptDefinition | None:
+        """Retrieve concept definition by CanonicalConcept enum."""
+        return self._concepts.get(canonical)
+
+    def get_concept_aliases(self, canonical: CanonicalConcept) -> list[str]:
+        """Return all declared aliases for a canonical concept."""
+        concept = self._concepts.get(canonical)
+        return list(concept.aliases) if concept else []
+
     def register(self, definition: ConceptDefinition) -> None:
         """Register a new concept definition into the ontology.
 
