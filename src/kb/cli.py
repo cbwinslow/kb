@@ -528,6 +528,57 @@ async def async_search(
     return 0
 
 
+async def async_search_web(
+    query: str,
+    source: str = "all",
+    limit: int = 10,
+    json_output: bool = False,
+) -> int:
+    """Executes live web and scholarly literature search across arXiv, OpenAlex, and web resources."""
+    import json
+
+    from kb.enrich.web_search import ScholarlyWebSearcher
+
+    searcher = ScholarlyWebSearcher()
+    valid_source = source if source in ("all", "arxiv", "openalex", "web") else "all"
+    if not json_output:
+        print(f"[*] Searching external scholarly literature ({valid_source}) for: '{query}'...")
+    results = await searcher.search(query=query, source=valid_source, limit=limit)  # type: ignore[arg-type]
+
+    if json_output:
+        print(json.dumps([r.model_dump() for r in results], indent=2))
+        return 0
+
+    if not results:
+        print("[*] No external scholarly literature found.")
+        return 0
+
+    print(f"\n[SUCCESS] Found {len(results)} external results:\n")
+    for i, r in enumerate(results, 1):
+        author_str = ", ".join(r.authors[:3]) + (" et al." if len(r.authors) > 3 else "")
+        meta = []
+        if r.year:
+            meta.append(str(r.year))
+        if r.source:
+            meta.append(r.source.upper())
+        if r.citation_count is not None:
+            meta.append(f"{r.citation_count} citations")
+        meta_str = f" ({', '.join(meta)})" if meta else ""
+        print(f"{i}. {r.title}{meta_str}")
+        if author_str:
+            print(f"   Authors: {author_str}")
+        if r.url:
+            print(f"   URL: {r.url}")
+        if r.pdf_url:
+            print(f"   PDF: {r.pdf_url}")
+        if r.abstract:
+            snippet = r.abstract[:200] + "..." if len(r.abstract) > 200 else r.abstract
+            print(f"   Snippet: {snippet}")
+        print()
+    return 0
+
+
+
 async def async_code_compile(
     formula_id: str | None = None,
     citekey: str | None = None,
@@ -1862,7 +1913,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     # search command
     search_parser = subparsers.add_parser(
-        "search", help="Execute hybrid dense + sparse retrieval across chunks"
+        "search", help="Execute hybrid local retrieval or live scholarly web search"
     )
     search_parser.add_argument("query", type=str, help="Search query string")
     search_parser.add_argument(
@@ -1870,6 +1921,23 @@ def build_parser() -> argparse.ArgumentParser:
     )
     search_parser.add_argument(
         "--citekey", type=str, default=None, help="Filter search hits by citekey"
+    )
+    search_parser.add_argument(
+        "--source",
+        type=str,
+        default="local",
+        choices=["local", "arxiv", "openalex", "web", "all"],
+        help="Search source: local (database), arxiv, openalex, web, or all (default: local)",
+    )
+    search_parser.add_argument(
+        "--web",
+        action="store_true",
+        help="Shorthand for --source all (searches external scholarly literature)",
+    )
+    search_parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Output search results in JSON format",
     )
 
     # code command
@@ -2448,13 +2516,24 @@ def main(argv: Sequence[str] | None = None) -> None:
         else:
             parser.parse_args(["migrate", "--help"])
     elif args.subcommand == "search":
-        code = asyncio.run(
-            async_search(
-                query=args.query,
-                limit=args.limit,
-                citekey=args.citekey,
+        search_src = "all" if getattr(args, "web", False) else getattr(args, "source", "local")
+        if search_src != "local":
+            code = asyncio.run(
+                async_search_web(
+                    query=args.query,
+                    source=search_src,
+                    limit=args.limit,
+                    json_output=getattr(args, "json", False),
+                )
             )
-        )
+        else:
+            code = asyncio.run(
+                async_search(
+                    query=args.query,
+                    limit=args.limit,
+                    citekey=args.citekey,
+                )
+            )
         sys.exit(code)
     elif args.subcommand == "code":
         if args.code_subcommand == "compile":

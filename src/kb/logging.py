@@ -19,12 +19,18 @@ SIMPLE_LOG_FORMAT = "[%(levelname)s] %(message)s"
 DEFAULT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
+def get_logger(name: str | None = None) -> logging.Logger:
+    """Returns a logger instance for the given module or name."""
+    return logging.getLogger(name)
+
+
 def setup_logging(
     level: str = "INFO",
     log_file: Path | str | None = None,
     verbose: bool = False,
     quiet: bool = False,
 ) -> logging.Logger:
+
     """Configures root logging with console and optional rotating file handlers.
 
     Args:

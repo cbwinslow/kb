@@ -111,6 +111,7 @@ class DoclingParser:
     def _build_converter(self) -> DocumentConverter:
         """Construct the underlying Docling DocumentConverter."""
         pipeline_options = PdfPipelineOptions()
+        pipeline_options.generate_page_images = True
         pipeline_options.do_table_structure = self.do_table_structure
         pipeline_options.do_ocr = self.do_ocr
         pipeline_options.do_formula_enrichment = self.do_formula_enrichment

@@ -24,6 +24,7 @@ PostgreSQL 16 + pgvector + tsvector
   ▼ [MCP & CLI Interfaces]
 FastMCP Server (LAN / ZeroTier)
   ├── kb_search_literature
+  ├── kb_web_search_papers (arXiv, OpenAlex, live web discovery)
   ├── kb_get_formula (LaTeX + Python AST)
   ├── kb_get_benchmark_table
   └── kb_get_bibtex
@@ -58,6 +59,7 @@ FastMCP Server (LAN / ZeroTier)
 * **Embeddings & Search**: `BAAI/bge-m3` (dense vectors + sparse lexical weights) with Reciprocal Rank Fusion (RRF) in PostgreSQL.
 * **Relational & Vector Store**: PostgreSQL 16 + `pgvector` via `SQLAlchemy 2.0` (async) and `asyncpg`.
 * **Agent Integration**: `FastMCP` (Model Context Protocol) with dynamic AST compilation and live calculation execution.
+* **Scholarly Web Search**: `ScholarlyWebSearcher` with multi-source async query coordination across arXiv Atom API, OpenAlex REST API with cursor pagination, and web discovery.
 * **Bibliographic Truth**: Zotero local SQLite / Web API integration with Better BibTeX citation keys.
 * **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and Polars expressions.
 * **Storage Protocol**: Direct encrypted SSH/SFTP synchronization to homelab vault with automatic workstation disk space protection.

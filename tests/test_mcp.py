@@ -44,6 +44,7 @@ async def test_mcp_tools_registration(test_db_manager: DatabaseManager) -> None:
     assert "kb_get_bibtex" in tool_names
     assert "kb_get_citations" in tool_names
     assert "kb_get_related_papers" in tool_names
+    assert "kb_web_search_papers" in tool_names
     await test_db_manager.close()
 
 

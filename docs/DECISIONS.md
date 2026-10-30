@@ -25,6 +25,8 @@ This document records the architectural, technical, and mathematical decisions m
 - [ADR-017: Mandatory OpenSpec Discipline and Documentation Integrity](#adr-017-mandatory-openspec-discipline-and-documentation-integrity)
 - [ADR-018: Performance & Quality Benchmarking Suite](#adr-018-performance--quality-benchmarking-suite)
 - [ADR-033: Multi-Attribute Literature Deduplication and High-Yield Cursor-Based Harvester](#adr-033-multi-attribute-literature-deduplication-and-high-yield-cursor-based-harvester)
+- [ADR-034: Corpus Relational Invariant Auditing, In-Place Quality Score Elevation, and Scaled Multi-Domain Preset Harvesting](#adr-034-corpus-relational-invariant-auditing-in-place-quality-score-elevation-and-scaled-multi-domain-preset-harvesting)
+- [ADR-035: Scholarly Web Search Engine & MCP Live Literature Discovery Integration](#adr-035-scholarly-web-search-engine--mcp-live-literature-discovery-integration)
 
 ---
 
@@ -521,6 +523,25 @@ This document records the architectural, technical, and mathematical decisions m
      - Recompiled standalone library to 978 Grade A equations with typed scalar signatures, KaTeX docstrings, and Polars expressions.
 - **Consequences**:
   - Elevates corpus formula quality to 100% graded status (0 unvalidated formulas), prevents database encoding exceptions during PDF extraction, and maintains strict relational integrity across workstation and homelab storage.
+
+---
+
+## ADR-035: Scholarly Web Search Engine & MCP Live Literature Discovery Integration
+- **Status**: Accepted
+- **Context**:
+  - Previously, `kb` agents and users could only retrieve literature already ingested into PostgreSQL via `kb_search_literature`.
+  - When researching emerging topics or unharvested preprints, autonomous agents had no direct tool to query external scholarly repositories (arXiv, OpenAlex) or quantitative web resources in real time.
+- **Decision**:
+  1. **Unified Search Engine (`src/kb/enrich/web_search.py`)**:
+     - Built `ScholarlyWebSearcher` using async `httpx` and XML/JSON parsers to search the arXiv API (Atom feed) and OpenAlex REST API with standardized `SearchResult` Pydantic models.
+     - Added lightweight web fallback for finding web-based quantitative posts and articles.
+  2. **FastMCP Integration (`src/kb/mcp/server.py`)**:
+     - Exposed `kb_web_search_papers` in the FastMCP server, allowing AI agents to query live external literature seamlessly alongside internal vector retrieval.
+  3. **CLI Integration (`src/kb/cli.py`)**:
+     - Implemented `kb search web "<query>"` with `--source`, `--limit`, and `--json` support.
+- **Consequences**:
+  - Empowers agents with real-time academic discovery capabilities while keeping the dependency footprint lightweight without heavyweight external search SDKs.
+
 
 
 

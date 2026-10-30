@@ -131,8 +131,15 @@ uv run kb code export --output src/kb/library/generated.py
 
 ### Search & Question Answering
 ```bash
-# Hybrid vector (dense BGE-M3) + BM25 keyword search
+# Hybrid vector (dense BGE-M3) + BM25 keyword search over local corpus
 uv run kb search "Pythagorean expectation formula" --limit 5
+
+# Live multi-source scholarly web search (arXiv + OpenAlex)
+uv run kb search "neural trajectory tracking" --web --limit 5
+
+# Target specific external literature endpoints
+uv run kb search "linear weights wOBA" --source arxiv --json
+uv run kb search "seam shifted wake" --source openalex --limit 3
 
 # Evidence-grounded QA answering over corpus
 uv run kb ask "How is park-adjusted win probability calculated?"

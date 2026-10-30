@@ -23,6 +23,7 @@ dependencies = [
     "paramiko>=5.1.0",
     "strawberry-graphql>=0.339.0",
     "markdownify>=1.2.3",
+    "beautifulsoup4>=4.12.0",
 ]
 
 [dependency-groups]
@@ -86,6 +87,12 @@ reportUntypedFunctionDecorator = false
 asyncio_mode = "auto"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+filterwarnings = [
+    "ignore:.*force_full_page_ocr.*:DeprecationWarning",
+    "ignore:.*generate_page_images=True.*:DeprecationWarning",
+    "ignore:.*generate_table_images.*:DeprecationWarning",
+    "ignore:.*Setting an item of incompatible dtype.*",
 ]
 
 [tool.uv.sources]

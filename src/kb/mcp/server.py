@@ -11,6 +11,7 @@ from sqlalchemy import select
 from kb.codegen.compiler import FormulaCompiler
 from kb.codegen.verifier import FormulaVerifier
 from kb.enrich.openalex import OpenAlexClient
+from kb.enrich.web_search import ScholarlyWebSearcher
 from kb.storage.database import DatabaseManager
 from kb.storage.embeddings import EmbeddingProtocol, LocalEmbeddingGenerator
 from kb.storage.models import BenchmarkTable, Document, Formula
@@ -23,6 +24,7 @@ def create_mcp_server(
     db_manager: DatabaseManager | None = None,
     embedder: EmbeddingProtocol | None = None,
     openalex_client: OpenAlexClient | None = None,
+    web_searcher: ScholarlyWebSearcher | None = None,
 ) -> FastMCP:
     """Creates and configures the FastMCP server with all KB query tools."""
     server = FastMCP(
@@ -35,6 +37,7 @@ def create_mcp_server(
     db = db_manager or DatabaseManager()
     active_embedder = embedder or LocalEmbeddingGenerator()
     active_openalex = openalex_client or OpenAlexClient()
+    active_web_searcher = web_searcher or ScholarlyWebSearcher()
     search_engine = HybridSearchEngine(db)
 
     @server.tool(
@@ -353,6 +356,27 @@ def create_mcp_server(
             }
             for w in related_works
         ]
+
+    @server.tool(
+        name="kb_web_search_papers",
+        description=(
+            "Performs live web and scholarly literature searches across arXiv and OpenAlex repositories. "
+            "Returns titles, authors, years, publication venues, abstracts, DOIs, and direct PDF URLs."
+        ),
+    )
+    async def kb_web_search_papers(
+        query: str,
+        source: str = "all",
+        limit: int = 10,
+    ) -> list[dict[str, Any]]:
+        """Searches live external scholarly literature (arXiv, OpenAlex, or web fallback)."""
+        valid_source = source if source in ("all", "arxiv", "openalex", "web") else "all"
+        results = await active_web_searcher.search(
+            query=query,
+            source=valid_source,  # type: ignore[arg-type]
+            limit=limit,
+        )
+        return [r.model_dump() for r in results]
 
     return server
 
