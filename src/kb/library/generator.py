@@ -201,6 +201,7 @@ class FormulaLibraryGenerator:
 
         header = (
             "# ruff: noqa\n"
+            "# pyright: off\n"
             '"""Auto-generated standalone scientific formula library.\n\n'
             "Compiled directly from peer-reviewed research preprints in the Knowledge Base.\n"
             "Each formula provides typed Python scalar execution and vectorized Polars expressions.\n"

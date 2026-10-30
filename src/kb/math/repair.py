@@ -16,6 +16,8 @@ from kb.math.sanitizer import EquationSanitizer
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
+    from kb.math.validation import FormulaQualityGate
+
 logger = logging.getLogger(__name__)
 
 
@@ -33,6 +35,26 @@ class RepairResult(BaseModel):
     dry_run: bool = Field(default=False, description="Whether execution was a dry run")
 
 
+class CorpusRepairGradeResult(BaseModel):
+    """Execution summary of batch formula repair and quality gate evaluation."""
+
+    total_scanned: int = Field(default=0, description="Total formulas examined")
+    previously_valid: int = Field(default=0, description="Formulas valid before repair")
+    newly_recovered: int = Field(
+        default=0, description="Formulas successfully recovered to valid ASTs"
+    )
+    still_invalid: int = Field(default=0, description="Formulas remaining unparsed")
+    evaluated_grades: dict[str, int] = Field(
+        default_factory=dict, description="Count per letter grade (A-F)"
+    )
+    evaluated_statuses: dict[str, int] = Field(
+        default_factory=dict, description="Count per status (verified, provisional, etc.)"
+    )
+    updated_records: int = Field(default=0, description="Database records updated")
+    duration_seconds: float = Field(default=0.0, description="Total execution time in seconds")
+    dry_run: bool = Field(default=False, description="Whether execution was a dry run")
+
+
 class CorpusFormulaRepairer:
     """Repairs and re-parses stored database formulas in-place using upgraded sanitizers."""
 
@@ -40,15 +62,22 @@ class CorpusFormulaRepairer:
         self,
         sanitizer: EquationSanitizer | None = None,
         extractor: FormulaExtractor | None = None,
+        quality_gate: FormulaQualityGate | None = None,
     ) -> None:
-        """Initialize repairer with equation sanitizer and symbolic extractor.
+        """Initialize repairer with equation sanitizer, extractor, and quality gate.
 
         Args:
             sanitizer: Optional custom EquationSanitizer.
             extractor: Optional custom FormulaExtractor.
+            quality_gate: Optional custom FormulaQualityGate.
         """
         self.sanitizer = sanitizer or EquationSanitizer()
         self.extractor = extractor or FormulaExtractor(sanitizer=self.sanitizer)
+        from kb.math.validation import FormulaQualityGate
+
+        self.quality_gate = quality_gate or FormulaQualityGate(
+            sanitizer=self.sanitizer, extractor=self.extractor
+        )
 
     def repair_single(
         self,
@@ -212,6 +241,184 @@ class CorpusFormulaRepairer:
             previously_valid=prev_valid,
             newly_recovered=newly_recovered,
             still_invalid=still_invalid,
+            updated_records=updated_records if not dry_run else 0,
+            duration_seconds=round(duration, 2),
+            dry_run=dry_run,
+        )
+
+    async def repair_and_grade_corpus(
+        self,
+        batch_size: int = 100,
+        dry_run: bool = False,
+        only_unvalidated: bool = False,
+        only_invalid: bool = False,
+        limit: int | None = None,
+        session: AsyncSession | None = None,
+        progress_callback: Callable[[int, int, int], None] | None = None,
+    ) -> CorpusRepairGradeResult:
+        """Scan stored formulas, repair, evaluate quality scores & grades, and persist updates.
+
+        Args:
+            batch_size: Number of records to commit per database transaction batch.
+            dry_run: If True, computes recovery statistics without persisting updates.
+            only_unvalidated: If True, only targets formulas where validation_status IS NULL.
+            only_invalid: If True, only targets formulas where is_valid = False.
+            limit: Optional maximum number of formulas to process.
+            session: Optional AsyncSession. If omitted, uses DatabaseManager.
+            progress_callback: Optional callback invoked with (processed, recovered, total).
+
+        Returns:
+            CorpusRepairGradeResult summarizing recovery yield and grade distributions.
+        """
+        from kb.storage.database import DatabaseManager
+
+        start_time = time.perf_counter()
+
+        if session is not None:
+            return await self._execute_repair_and_grade(
+                session=session,
+                batch_size=batch_size,
+                dry_run=dry_run,
+                only_unvalidated=only_unvalidated,
+                only_invalid=only_invalid,
+                limit=limit,
+                start_time=start_time,
+                progress_callback=progress_callback,
+            )
+
+        db = DatabaseManager()
+        async with db.get_session() as sess:
+            return await self._execute_repair_and_grade(
+                session=sess,
+                batch_size=batch_size,
+                dry_run=dry_run,
+                only_unvalidated=only_unvalidated,
+                only_invalid=only_invalid,
+                limit=limit,
+                start_time=start_time,
+                progress_callback=progress_callback,
+            )
+
+    async def _execute_repair_and_grade(
+        self,
+        session: AsyncSession,
+        batch_size: int,
+        dry_run: bool,
+        only_unvalidated: bool,
+        only_invalid: bool,
+        limit: int | None,
+        start_time: float,
+        progress_callback: Callable[[int, int, int], None] | None,
+    ) -> CorpusRepairGradeResult:
+        """Internal execution loop for repair and quality scoring."""
+        from collections import defaultdict
+
+        from kb.storage.models import Formula
+
+        stmt = select(Formula)
+        if only_unvalidated:
+            stmt = stmt.where(Formula.validation_status.is_(None))
+        elif only_invalid:
+            stmt = stmt.where(Formula.is_valid.is_(False))
+        else:
+            stmt = stmt.where((Formula.validation_status.is_(None)) | (Formula.is_valid.is_(False)))
+
+        if limit:
+            stmt = stmt.limit(limit)
+
+        records = (await session.execute(stmt)).scalars().all()
+        total = len(records)
+
+        prev_valid = 0
+        newly_recovered = 0
+        still_invalid = 0
+        updated_records = 0
+        grade_counts: dict[str, int] = defaultdict(int)
+        status_counts: dict[str, int] = defaultdict(int)
+
+        batch_updates: list[dict[str, Any]] = []
+
+        for idx, formula in enumerate(records, start=1):
+            if formula.is_valid:
+                prev_valid += 1
+
+            # 1. Parse/repair with extractor & sanitizer
+            parsed = self.extractor.parse_latex_string(
+                formula.raw_latex,
+                formula_id=formula.id,
+                chunk_id=formula.chunk_id,
+            )
+
+            # 2. Evaluate with QualityGate
+            if parsed.is_valid:
+                if not formula.is_valid:
+                    newly_recovered += 1
+                scorecard = self.quality_gate.validate_formula(parsed)
+                sympy_repr_str = str(parsed.sympy_expr) if parsed.sympy_expr is not None else None
+                update_data: dict[str, Any] = {
+                    "id": formula.id,
+                    "sanitized_latex": parsed.sanitized_latex,
+                    "sympy_repr": sympy_repr_str,
+                    "symbols": parsed.symbols,
+                    "is_valid": True,
+                    "is_equality": parsed.is_equality,
+                    "lhs": parsed.lhs,
+                    "rhs": parsed.rhs,
+                    "validation_score": scorecard.total_score,
+                    "validation_status": scorecard.status,
+                    "validation_details": scorecard.to_dict(),
+                }
+            else:
+                still_invalid += 1
+                scorecard = self.quality_gate.validate_formula(formula.raw_latex)
+                update_data = {
+                    "id": formula.id,
+                    "sanitized_latex": parsed.sanitized_latex,
+                    "is_valid": False,
+                    "validation_score": scorecard.total_score,
+                    "validation_status": scorecard.status,
+                    "validation_details": scorecard.to_dict(),
+                }
+
+            grade_counts[scorecard.letter_grade] += 1
+            status_counts[scorecard.status] += 1
+            batch_updates.append(update_data)
+
+            # Flush batch
+            if len(batch_updates) >= batch_size:
+                if not dry_run:
+                    for item in batch_updates:
+                        fid = item.pop("id")
+                        await session.execute(
+                            update(Formula).where(Formula.id == fid).values(**item)
+                        )
+                    await session.commit()
+                updated_records += len(batch_updates)
+                batch_updates.clear()
+
+            if progress_callback and (idx % 50 == 0 or idx == total):
+                progress_callback(idx, newly_recovered, total)
+
+        # Flush any remaining updates
+        if batch_updates:
+            if not dry_run:
+                for item in batch_updates:
+                    fid = item.pop("id")
+                    await session.execute(
+                        update(Formula).where(Formula.id == fid).values(**item)
+                    )
+                await session.commit()
+            updated_records += len(batch_updates)
+            batch_updates.clear()
+
+        duration = time.perf_counter() - start_time
+        return CorpusRepairGradeResult(
+            total_scanned=total,
+            previously_valid=prev_valid,
+            newly_recovered=newly_recovered,
+            still_invalid=still_invalid,
+            evaluated_grades=dict(grade_counts),
+            evaluated_statuses=dict(status_counts),
             updated_records=updated_records if not dry_run else 0,
             duration_seconds=round(duration, 2),
             dry_run=dry_run,

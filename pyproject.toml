@@ -71,6 +71,7 @@ include = ["src", "tests"]
 exclude = [
     "**/__pycache__",
     ".venv",
+    "packages/kb_formulas/src/kb_formulas/generated.py",
 ]
 reportMissingTypeStubs = false
 reportUnknownMemberType = false

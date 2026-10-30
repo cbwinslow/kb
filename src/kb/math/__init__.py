@@ -33,6 +33,7 @@ from kb.math.ontology import (
 )
 from kb.math.repair import (
     CorpusFormulaRepairer,
+    CorpusRepairGradeResult,
     RepairResult,
 )
 from kb.math.sanitizer import EquationSanitizer
@@ -48,6 +49,7 @@ __all__ = [
     "ChainedFormulaResult",
     "ConceptDefinition",
     "CorpusFormulaRepairer",
+    "CorpusRepairGradeResult",
     "DerivationEdge",
     "DerivationNode",
     "DerivationRelation",

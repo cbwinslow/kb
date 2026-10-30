@@ -497,6 +497,32 @@ This document records the architectural, technical, and mathematical decisions m
 - **Consequences**:
   - Eliminates redundant downloads, saves network bandwidth, protects workstation disk thresholds ($\ge 1.5$ GB), and guarantees high-yield capture of foundational sabermetric and modeling literature.
 
+---
+
+## ADR-034: Corpus Relational Invariant Auditing, In-Place Quality Score Elevation, and Scaled Multi-Domain Preset Harvesting
+- **Status**: Accepted
+- **Context**:
+  - Over 1,600 previously ingested formulas in `kb_formulas` lacked Tier 1–4 quality scorecards and letter grades (`validation_status IS NULL`), preventing accurate filtering in downstream code generation and empirical benchmarking.
+  - Expanding the literature corpus across diverse sports analytics disciplines required automated health checks to verify relational integrity between documents, chunks, formulas, and remote vault storage.
+  - Real-world PDF layout parsing occasionally yielded embedded NUL bytes (`0x00`) in extracted text, triggering PostgreSQL `CharacterNotInRepertoireError` exceptions during chunk ingestion.
+- **Decision**:
+  1. **Corpus Relational & Health Auditor (`src/kb/qa/corpus_auditor.py`)**:
+     - Implemented `CorpusAuditor` and `CorpusAuditReport` to compute corpus-wide health metrics, verify zero orphaned chunks or formulas via SQL subqueries, track formula quality distributions (Verified, Provisional, Degraded, Failed, Unvalidated), and report violation diagnostics.
+     - Added `kb corpus audit [--json]` to `src/kb/cli.py`.
+  2. **In-Place Batch Formula Repair & Quality Grading (`src/kb/math/repair.py`)**:
+     - Extended `CorpusFormulaRepairer` with `repair_and_grade_corpus()`, integrating `FormulaQualityGate` to re-sanitize LaTeX strings, construct SymPy ASTs, evaluate Tier 1–4 scorecards, and commit updated scores and letter grades in bounded transaction batches.
+     - Added `kb corpus repair-all` command with `--batch-size`, `--limit`, `--only-unvalidated`, and `--dry-run` options.
+  3. **NUL Byte Character Sanitization (`src/kb/ingest/chunker.py`, `src/kb/ingest/pipeline.py`)**:
+     - Stripped embedded `\x00` characters from raw texts, enriched texts, and section headings prior to chunk creation and database insertion.
+  4. **Multi-Domain Preset Harvesting & Remote Vaulting**:
+     - Scaled harvesting across curated presets (`popular`, `statcast`, `retrosheet`, `baseball-python`, `mlb-modeling`) with pre-download deduplication, expanding the corpus to 311 documents, 37,006 chunks, 6,199 formulas, 490 figures, and 1,395 benchmark tables.
+     - Vaulted all newly extracted Parquet/CSV benchmark fixtures and PDFs to homelab storage on `cbwdellr720` via direct SFTP (`kb sync ssh-push`), preserving workstation disk thresholds ($\ge 1.5$ GB free).
+  5. **Vectorized Distribution Update (`packages/kb_formulas`)**:
+     - Recompiled standalone library to 978 Grade A equations with typed scalar signatures, KaTeX docstrings, and Polars expressions.
+- **Consequences**:
+  - Elevates corpus formula quality to 100% graded status (0 unvalidated formulas), prevents database encoding exceptions during PDF extraction, and maintains strict relational integrity across workstation and homelab storage.
+
+
 
 
 

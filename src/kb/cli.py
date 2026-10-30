@@ -1566,6 +1566,126 @@ async def async_formulas_validate(
     return 0
 
 
+async def async_corpus_audit(
+    as_json: bool = False,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Audit corpus relational integrity, orphans, and vault paths."""
+    from kb.qa.corpus_auditor import CorpusAuditor
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    auditor = CorpusAuditor(db_manager)
+    report = await auditor.run_audit()
+
+    if as_json:
+        import json
+
+        print(json.dumps(report.to_dict(), indent=2))
+    else:
+        print("\n" + "=" * 65)
+        print("          LITERATURE CORPUS HEALTH & INTEGRITY AUDIT")
+        print("=" * 65)
+        print(
+            f"  Health Status           : {'[PASS] HEALTHY' if report.is_healthy else '[FAIL] VIOLATIONS DETECTED'}"
+        )
+        print(f"  Total Documents         : {report.total_documents:,}")
+        print(f"  Total Chunks            : {report.total_chunks:,}")
+        print(f"  Total Formulas          : {report.total_formulas:,}")
+        print(f"  Total Figures           : {report.total_figures:,}")
+        print(f"  Total Benchmark Tables  : {report.total_benchmark_tables:,}")
+        print("-" * 65)
+        print(f"  Orphaned Chunks         : {report.orphaned_chunks}")
+        print(f"  Orphaned Formulas       : {report.orphaned_formulas}")
+        print("-" * 65)
+        print("  Formula Quality Status Breakdown:")
+        print(f"    - Verified (A/B)      : {report.verified_formulas:,}")
+        print(f"    - Provisional (C)     : {report.provisional_formulas:,}")
+        print(f"    - Degraded (D)        : {report.degraded_formulas:,}")
+        print(f"    - Failed (F)          : {report.failed_formulas:,}")
+        print(f"    - Unvalidated         : {report.unvalidated_formulas:,}")
+        print("-" * 65)
+        if report.violations:
+            print("  Identified Violations:")
+            for v in report.violations:
+                print(f"    ! {v}")
+        else:
+            print("  No integrity violations detected.")
+        print("=" * 65 + "\n")
+
+    if manager is None:
+        await db_manager.close()
+
+    return 0 if report.is_healthy else 1
+
+
+async def async_corpus_repair_all(
+    batch_size: int = 100,
+    limit: int | None = None,
+    only_unvalidated: bool = False,
+    dry_run: bool = False,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Batch repair formulas and elevate quality gate scorecards across the corpus."""
+    from kb.math.repair import CorpusFormulaRepairer
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    repairer = CorpusFormulaRepairer()
+    mode_str = "DRY RUN (simulation only)" if dry_run else "LIVE MIGRATION (persisting to DB)"
+    target_str = (
+        "ONLY unvalidated formulas" if only_unvalidated else "unvalidated and invalid formulas"
+    )
+    print(f"[*] Starting corpus-wide formula repair and quality grading: {mode_str}")
+    print(f"    Target: {target_str} (batch_size={batch_size}, limit={limit or 'unlimited'})")
+
+    def progress_cb(processed: int, recovered: int, total: int) -> None:
+        pct = (processed / total * 100.0) if total > 0 else 0.0
+        print(
+            f"    Progress: {processed}/{total} ({pct:.1f}%) | Newly Recovered: {recovered}",
+            end="\r",
+            flush=True,
+        )
+
+    async with db_manager.get_session() as session:
+        res = await repairer.repair_and_grade_corpus(
+            batch_size=batch_size,
+            dry_run=dry_run,
+            only_unvalidated=only_unvalidated,
+            limit=limit,
+            session=session,
+            progress_callback=progress_cb,
+        )
+
+    print()
+    print("\n[OK] Corpus Formula Repair & Quality Grading Summary:")
+    print("=" * 65)
+    print(f"  Mode                : {'DRY RUN' if res.dry_run else 'PERSISTED'}")
+    print(f"  Total Scanned       : {res.total_scanned:,}")
+    print(f"  Previously Valid    : {res.previously_valid:,}")
+    print(f"  Newly Recovered     : {res.newly_recovered:,}")
+    print(f"  Still Invalid       : {res.still_invalid:,}")
+    print(f"  Updated Records     : {res.updated_records:,}")
+    print(f"  Elapsed Time        : {res.duration_seconds:.2f}s")
+    print("-" * 65)
+    print("  Evaluated Letter Grades:")
+    for grade in ["A", "B", "C", "D", "F"]:
+        count = res.evaluated_grades.get(grade, 0)
+        print(f"    Grade {grade}: {count:,}")
+    print("-" * 65)
+    print("  Evaluated Statuses:")
+    for status, count in res.evaluated_statuses.items():
+        print(f"    {status}: {count:,}")
+    print("=" * 65 + "\n")
+
+    if manager is None:
+        await db_manager.close()
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -2152,6 +2272,34 @@ def build_parser() -> argparse.ArgumentParser:
         "--limit", type=int, default=50, help="Maximum number of formulas to evaluate"
     )
 
+    corpus_parser = subparsers.add_parser(
+        "corpus", help="Literature corpus auditing, invariant verification, and repair"
+    )
+    corpus_sub = corpus_parser.add_subparsers(dest="corpus_subcommand")
+
+    corpus_audit_p = corpus_sub.add_parser(
+        "audit", help="Audit corpus relational integrity, orphans, and vault paths"
+    )
+    corpus_audit_p.add_argument(
+        "--json", action="store_true", help="Output audit results as JSON"
+    )
+
+    corpus_repair_p = corpus_sub.add_parser(
+        "repair-all", help="Batch repair formulas and elevate quality scorecards"
+    )
+    corpus_repair_p.add_argument(
+        "--batch-size", type=int, default=100, help="Batch size per transaction"
+    )
+    corpus_repair_p.add_argument(
+        "--limit", type=int, default=None, help="Maximum formulas to process"
+    )
+    corpus_repair_p.add_argument(
+        "--only-unvalidated", action="store_true", help="Only process unvalidated formulas"
+    )
+    corpus_repair_p.add_argument(
+        "--dry-run", action="store_true", help="Simulate repair without persisting"
+    )
+
     return parser
 
 
@@ -2488,6 +2636,22 @@ def main(argv: Sequence[str] | None = None) -> None:
                 )
             )
         sys.exit(code)
+    elif args.subcommand == "corpus":
+        if args.corpus_subcommand == "audit":
+            code = asyncio.run(async_corpus_audit(as_json=args.json))
+            sys.exit(code)
+        elif args.corpus_subcommand == "repair-all":
+            code = asyncio.run(
+                async_corpus_repair_all(
+                    batch_size=args.batch_size,
+                    limit=args.limit,
+                    only_unvalidated=args.only_unvalidated,
+                    dry_run=args.dry_run,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["corpus", "--help"])
     else:
         parser.print_help()
 

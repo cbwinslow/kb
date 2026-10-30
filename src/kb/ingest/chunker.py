@@ -252,9 +252,9 @@ class DocumentChunker:
         total_chunks = len(raw_chunks)
         for idx, base_chunk in enumerate(raw_chunks):
             chunk_id = f"{document_id}_chunk_{idx:04d}"
-            raw_text = base_chunk.text.strip()
+            raw_text = base_chunk.text.replace("\x00", "").strip()
 
-            headings = self._extract_headings(base_chunk)
+            headings = [h.replace("\x00", "") for h in self._extract_headings(base_chunk)]
             parent_section = headings[-1] if headings else ""
 
             # Detect math expressions from AST items and text patterns
