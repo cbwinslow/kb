@@ -663,6 +663,8 @@ async def async_code_export(
     output_path: Path,
     limit: int | None = None,
     only_equalities: bool = False,
+    min_grade: str | None = None,
+    min_score: float | None = None,
 ) -> int:
     """Auto-generate standalone Python & Polars formula library from verified equations."""
     from kb.library.generator import FormulaLibraryGenerator
@@ -673,6 +675,8 @@ async def async_code_export(
         output_path=output_path,
         limit=limit,
         require_equality=only_equalities,
+        min_grade=min_grade,
+        min_score=min_score,
     )
     if count > 0:
         print(
@@ -850,17 +854,27 @@ async def async_sync_daemon(
     return 0
 
 
-async def async_sync_citations() -> int:
+async def async_sync_citations(years: str | None = None) -> int:
     """Build or refresh paper-to-paper citation network in PostgreSQL."""
     from kb.sync.citations import CitationGraphBuilder
 
     manager = DatabaseManager()
     await manager.init_db()
 
+    year_filter: tuple[int, int] | None = None
+    if years:
+        parts = years.split("-")
+        if len(parts) == 2:
+            try:
+                year_filter = (int(parts[0].strip()), int(parts[1].strip()))
+                print(f"[*] Applying publication year filter: {year_filter[0]}-{year_filter[1]}")
+            except ValueError:
+                pass
+
     print("[*] Resolving and populating paper-to-paper citation graph...")
     builder = CitationGraphBuilder(db_manager=manager)
     async with manager.session_factory() as session:
-        res = await builder.build_citation_graph(session=session)
+        res = await builder.build_citation_graph(session=session, year_filter=year_filter)
 
     print("\n[OK] Citation Graph Construction Complete:")
     print("=" * 60)
@@ -943,6 +957,55 @@ async def async_benchmark(
     return 0
 
 
+async def async_benchmark_accuracy(
+    grade: str = "A",
+    min_score: float = 88.0,
+    dataset: Path | None = None,
+    target_column: str | None = None,
+    limit: int = 50,
+    as_json: bool = False,
+) -> int:
+    """Run empirical accuracy benchmarks against tabular datasets or benchmark tables."""
+    from kb.qa.accuracy import EmpiricalAccuracyRunner
+
+    runner = EmpiricalAccuracyRunner()
+    results = await runner.benchmark_corpus(
+        min_grade=grade,
+        min_score=min_score,
+        dataset_path=dataset,
+        target_column=target_column,
+        limit=limit,
+    )
+    if as_json:
+        import json
+
+        print(json.dumps(results, indent=2))
+        return 0
+
+    print(f"\n{'='*85}")
+    print(f"Empirical Accuracy Benchmark Suite (Grade {grade.upper()})")
+    print(f"{'='*85}")
+    if not results:
+        print("[!] No formulas could be evaluated against available benchmark tables or dataset.")
+        print(f"{'='*85}\n")
+        return 0
+
+    header = (
+        f"{'Formula ID':<22} | {'Citekey':<16} | {'MAE':<8} | {'RMSE':<8} | {'R^2':<8} | {'Rows/sec':<10}"
+    )
+    print(header)
+    print("-" * 85)
+    for r in results:
+        m = r["metrics"]
+        fid = str(r["formula_id"])[:20]
+        ck = str(r["citekey"])[:14]
+        print(
+            f"{fid:<22} | {ck:<16} | {m['mae']:<8.4f} | {m['rmse']:<8.4f} | {m['r_squared']:<8.4f} | {m['throughput_rows_per_sec']:<10.1f}"
+        )
+    print(f"{'='*85}\n")
+    return 0
+
+
 async def async_ingest_web(
     url: str,
     citekey: str | None = None,
@@ -1022,33 +1085,134 @@ async def async_ingest_glossary(
 
 
 async def async_formulas_chain(
-    formula_id: str,
+    formula_id: str | None = None,
+    from_concept: str | None = None,
+    to_concept: str | None = None,
     max_depth: int = 5,
+    output_json: bool = False,
 ) -> int:
     """Recursively chains component formulas into unified closed-form expression."""
+    import json
+
     from kb.math.chaining import FormulaChainingEngine
 
     manager = DatabaseManager()
     await manager.init_db()
     engine = FormulaChainingEngine(db_manager=manager)
 
-    print(f"[*] Chaining formula '{formula_id}' (max depth = {max_depth})...")
     try:
-        res = await engine.chain_formula(formula_id=formula_id, max_depth=max_depth)
-        print(f"\n[OK] Chaining Successful for {res.target_citekey} ({res.target_formula_id})")
-        print("=" * 60)
-        print(f"Original LaTeX : {res.target_latex}")
-        print(f"Closed-form    : {res.closed_form_latex}")
-        print(f"Substitutions  : {len(res.trace_steps)} steps")
-        for idx, step in enumerate(res.trace_steps, 1):
+        if from_concept and to_concept:
             print(
-                f"  Step {idx}: Substituted '{step.target_variable}' via {step.source_citekey} ({step.source_formula_id[:12]})"
+                f"[*] Chaining from '{from_concept}' to '{to_concept}' (max depth = {max_depth})..."
             )
-        print(
-            f"Primitive Vars : {', '.join(res.primitive_symbols) if res.primitive_symbols else 'None'}"
-        )
-        if res.polars_code:
-            print(f"\nCompiled Polars Expression:\n{res.polars_code}")
+            multi_res = await engine.chain_between(
+                from_concept=from_concept,
+                to_concept=to_concept,
+                max_depth=max_depth,
+            )
+            if output_json:
+                data = {
+                    "from_concept": multi_res.from_concept,
+                    "to_concept": multi_res.to_concept,
+                    "target_formula_id": multi_res.target_formula_id,
+                    "target_citekey": multi_res.target_citekey,
+                    "formula_path": multi_res.formula_path,
+                    "citekey_path": multi_res.citekey_path,
+                    "closed_form_latex": multi_res.closed_form_latex,
+                    "primitive_symbols": multi_res.primitive_symbols,
+                    "is_dimensionally_valid": multi_res.is_dimensionally_valid,
+                    "steps": [
+                        {
+                            "target_variable": s.target_variable,
+                            "source_formula_id": s.source_formula_id,
+                            "source_citekey": s.source_citekey,
+                            "dimensional_valid": s.dimensional_valid,
+                            "dimensional_note": s.dimensional_note,
+                        }
+                        for s in multi_res.trace_steps
+                    ],
+                }
+                print(json.dumps(data, indent=2))
+            else:
+                print(
+                    f"\n[OK] Multi-Hop Chaining Successful: {multi_res.from_concept} -> {multi_res.to_concept}"
+                )
+                print("=" * 60)
+                print(f"Formula Path   : {' -> '.join(multi_res.citekey_path)}")
+                print(f"Closed-form    : {multi_res.closed_form_latex}")
+                print(f"Substitutions  : {len(multi_res.trace_steps)} steps")
+                print(
+                    f"Dimensionally  : {'VALID' if multi_res.is_dimensionally_valid else 'MISMATCH'}"
+                )
+                for idx, step in enumerate(multi_res.trace_steps, 1):
+                    dim_str = (
+                        " [DIM OK]"
+                        if step.dimensional_valid
+                        else f" [DIM MISMATCH: {step.dimensional_note}]"
+                    )
+                    print(
+                        f"  Step {idx}: Substituted '{step.target_variable}' via {step.source_citekey} ({step.source_formula_id[:12]}){dim_str}"
+                    )
+                print(
+                    f"Primitive Vars : {', '.join(multi_res.primitive_symbols) if multi_res.primitive_symbols else 'None'}"
+                )
+                if multi_res.polars_code:
+                    print(f"\nCompiled Polars Expression:\n{multi_res.polars_code}")
+            await manager.close()
+            return 0
+
+        target_fid = formula_id or to_concept
+        if not target_fid:
+            print(
+                "[ERROR] Must provide either --id <formula_id> or --from <concept> and --to <concept>",
+                file=sys.stderr,
+            )
+            await manager.close()
+            return 1
+
+        print(f"[*] Chaining formula '{target_fid}' (max depth = {max_depth})...")
+        res = await engine.chain_formula(formula_id=target_fid, max_depth=max_depth)
+        if output_json:
+            data = {
+                "target_formula_id": res.target_formula_id,
+                "target_citekey": res.target_citekey,
+                "target_latex": res.target_latex,
+                "closed_form_latex": res.closed_form_latex,
+                "primitive_symbols": res.primitive_symbols,
+                "is_dimensionally_valid": res.is_dimensionally_valid,
+                "steps": [
+                    {
+                        "target_variable": s.target_variable,
+                        "source_formula_id": s.source_formula_id,
+                        "source_citekey": s.source_citekey,
+                        "dimensional_valid": s.dimensional_valid,
+                        "dimensional_note": s.dimensional_note,
+                    }
+                    for s in res.trace_steps
+                ],
+            }
+            print(json.dumps(data, indent=2))
+        else:
+            print(f"\n[OK] Chaining Successful for {res.target_citekey} ({res.target_formula_id})")
+            print("=" * 60)
+            print(f"Original LaTeX : {res.target_latex}")
+            print(f"Closed-form    : {res.closed_form_latex}")
+            print(f"Substitutions  : {len(res.trace_steps)} steps")
+            print(f"Dimensionally  : {'VALID' if res.is_dimensionally_valid else 'MISMATCH'}")
+            for idx, step in enumerate(res.trace_steps, 1):
+                dim_str = (
+                    " [DIM OK]"
+                    if step.dimensional_valid
+                    else f" [DIM MISMATCH: {step.dimensional_note}]"
+                )
+                print(
+                    f"  Step {idx}: Substituted '{step.target_variable}' via {step.source_citekey} ({step.source_formula_id[:12]}){dim_str}"
+                )
+            print(
+                f"Primitive Vars : {', '.join(res.primitive_symbols) if res.primitive_symbols else 'None'}"
+            )
+            if res.polars_code:
+                print(f"\nCompiled Polars Expression:\n{res.polars_code}")
         await manager.close()
         return 0
     except Exception as exc:
@@ -1531,6 +1695,18 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Only export formulas with explicit equality (LHS = RHS)",
     )
+    code_export_p.add_argument(
+        "--grade",
+        type=str,
+        default=None,
+        help="Filter formulas to minimum grade (e.g. 'A')",
+    )
+    code_export_p.add_argument(
+        "--min-score",
+        type=float,
+        default=None,
+        help="Minimum validation score threshold",
+    )
 
     code_ontology_p = code_sub.add_parser(
         "ontology", help="Inspect semantic symbol ontology or resolve empirical column mappings"
@@ -1555,12 +1731,62 @@ def build_parser() -> argparse.ArgumentParser:
         "--formula-id",
         dest="formula_id",
         type=str,
-        required=True,
+        default=None,
         help="Target formula ID to chain",
+    )
+    chain_p.add_argument(
+        "--from",
+        dest="from_concept",
+        type=str,
+        default=None,
+        help="Source concept or variable to chain from",
+    )
+    chain_p.add_argument(
+        "--to",
+        dest="to_concept",
+        type=str,
+        default=None,
+        help="Target concept or variable to chain to",
     )
     chain_p.add_argument(
         "--max-depth", type=int, default=5, help="Maximum substitution depth (default: 5)"
     )
+    chain_p.add_argument("--json", action="store_true", help="Output derivation chain as JSON")
+
+    # equations alias command
+    eq_parser = subparsers.add_parser(
+        "equations", help="Equation derivation chains, multi-hop search, and solving"
+    )
+    eq_sub = eq_parser.add_subparsers(dest="equations_subcommand")
+    eq_chain_p = eq_sub.add_parser(
+        "chain", help="Construct multi-hop derivation chain connecting concepts or formulas"
+    )
+    eq_chain_p.add_argument(
+        "--from",
+        dest="from_concept",
+        type=str,
+        default=None,
+        help="Source concept to chain from (e.g. BAT_SPEED)",
+    )
+    eq_chain_p.add_argument(
+        "--to",
+        dest="to_concept",
+        type=str,
+        default=None,
+        help="Target concept to chain to (e.g. WAR)",
+    )
+    eq_chain_p.add_argument(
+        "--id",
+        "--formula-id",
+        dest="formula_id",
+        type=str,
+        default=None,
+        help="Target formula ID to chain",
+    )
+    eq_chain_p.add_argument(
+        "--max-depth", type=int, default=5, help="Maximum substitution depth (default: 5)"
+    )
+    eq_chain_p.add_argument("--json", action="store_true", help="Output derivation chain as JSON")
 
     solve_p = formulas_sub.add_parser(
         "solve", help="Solve simultaneous system of equations for target symbols"
@@ -1714,8 +1940,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-ssh", action="store_true", help="Disable uploading PDFs to homelab storage"
     )
 
-    sync_sub.add_parser(
+    citations_p = sync_sub.add_parser(
         "citations", help="Build or refresh paper-to-paper citation network in PostgreSQL"
+    )
+    citations_p.add_argument(
+        "--years",
+        type=str,
+        default=None,
+        help="Filter documents by publication year range (e.g. 2024-2026)",
     )
 
     # ask command
@@ -1762,6 +1994,42 @@ def build_parser() -> argparse.ArgumentParser:
     bench_parser.add_argument("--json", action="store_true", help="Output raw JSON results")
     bench_parser.add_argument(
         "--output", type=Path, default=None, help="Save report to specified file (.md or .json)"
+    )
+    bench_parser.add_argument(
+        "bench_type",
+        nargs="?",
+        default=None,
+        choices=["accuracy", None],
+        help="Optional benchmark type: 'accuracy'",
+    )
+    bench_parser.add_argument(
+        "--accuracy",
+        action="store_true",
+        help="Run empirical accuracy benchmarks against tabular datasets",
+    )
+    bench_parser.add_argument(
+        "--grade", type=str, default="A", help="Filter formulas by grade (default: A)"
+    )
+    bench_parser.add_argument(
+        "--min-score",
+        type=float,
+        default=88.0,
+        help="Minimum validation score threshold (default: 88.0)",
+    )
+    bench_parser.add_argument(
+        "--dataset",
+        type=Path,
+        default=None,
+        help="Path to Parquet dataset for empirical accuracy evaluation",
+    )
+    bench_parser.add_argument(
+        "--target-column",
+        type=str,
+        default=None,
+        help="Target ground truth column in dataset",
+    )
+    bench_parser.add_argument(
+        "--limit", type=int, default=50, help="Maximum number of formulas to evaluate"
     )
 
     return parser
@@ -1945,6 +2213,8 @@ def main(argv: Sequence[str] | None = None) -> None:
                     output_path=args.output,
                     limit=args.limit,
                     only_equalities=args.only_equalities,
+                    min_grade=getattr(args, "grade", None),
+                    min_score=getattr(args, "min_score", None),
                 )
             )
             sys.exit(code)
@@ -1956,16 +2226,22 @@ def main(argv: Sequence[str] | None = None) -> None:
             sys.exit(code)
         else:
             parser.parse_args(["code", "--help"])
-    elif args.subcommand == "formulas":
-        if args.formulas_subcommand == "chain":
+    elif args.subcommand in ("formulas", "equations"):
+        subcmd = getattr(args, "formulas_subcommand", None) or getattr(
+            args, "equations_subcommand", None
+        )
+        if subcmd == "chain":
             code = asyncio.run(
                 async_formulas_chain(
                     formula_id=args.formula_id,
+                    from_concept=getattr(args, "from_concept", None),
+                    to_concept=getattr(args, "to_concept", None),
                     max_depth=args.max_depth,
+                    output_json=getattr(args, "json", False),
                 )
             )
             sys.exit(code)
-        elif args.formulas_subcommand == "solve":
+        elif subcmd == "solve":
             code = asyncio.run(
                 async_formulas_solve(
                     formula_ids=args.ids,
@@ -2047,7 +2323,7 @@ def main(argv: Sequence[str] | None = None) -> None:
             )
             sys.exit(code)
         elif args.sync_subcommand == "citations":
-            code = asyncio.run(async_sync_citations())
+            code = asyncio.run(async_sync_citations(years=getattr(args, "years", None)))
             sys.exit(code)
         else:
             parser.parse_args(["sync", "--help"])
@@ -2061,19 +2337,31 @@ def main(argv: Sequence[str] | None = None) -> None:
         )
         sys.exit(code)
     elif args.subcommand == "benchmark":
-        code = asyncio.run(
-            async_benchmark(
-                run_all=args.all,
-                formulas=args.formulas,
-                embeddings=args.embeddings,
-                search=args.search,
-                quality=args.quality,
-                n_rows=args.rows,
-                n_chunks=args.chunks,
-                as_json=args.json,
-                output_path=args.output,
+        if getattr(args, "bench_type", None) == "accuracy" or getattr(args, "accuracy", False):
+            code = asyncio.run(
+                async_benchmark_accuracy(
+                    grade=args.grade,
+                    min_score=args.min_score,
+                    dataset=args.dataset,
+                    target_column=args.target_column,
+                    limit=args.limit,
+                    as_json=args.json,
+                )
             )
-        )
+        else:
+            code = asyncio.run(
+                async_benchmark(
+                    run_all=args.all,
+                    formulas=args.formulas,
+                    embeddings=args.embeddings,
+                    search=args.search,
+                    quality=args.quality,
+                    n_rows=args.rows,
+                    n_chunks=args.chunks,
+                    as_json=args.json,
+                    output_path=args.output,
+                )
+            )
         sys.exit(code)
     else:
         parser.print_help()

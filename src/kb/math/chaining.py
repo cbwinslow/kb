@@ -14,6 +14,7 @@ from sympy.parsing.latex import parse_latex
 from kb.codegen.compiler import FormulaCompiler
 from kb.math.ontology import SymbolOntology, get_symbol_ontology
 from kb.math.sanitizer import EquationSanitizer
+from kb.math.units import DimensionalValidator
 from kb.storage.database import DatabaseManager
 from kb.storage.models import Formula
 
@@ -29,6 +30,8 @@ class SubstitutionStep:
     source_citekey: str
     original_expr_str: str
     substituted_expr_str: str
+    dimensional_valid: bool = True
+    dimensional_note: str = ""
 
 
 @dataclass
@@ -44,6 +47,26 @@ class ChainedFormulaResult:
     primitive_symbols: list[str] = field(default_factory=list)
     python_code: str = ""
     polars_code: str = ""
+    is_dimensionally_valid: bool = True
+
+
+@dataclass
+class MultiHopChainResult:
+    """Outcome of multi-hop cross-paper derivation chaining between two concepts."""
+
+    from_concept: str
+    to_concept: str
+    target_formula_id: str
+    target_citekey: str
+    formula_path: list[str] = field(default_factory=list)
+    citekey_path: list[str] = field(default_factory=list)
+    closed_form_expr: Any = None
+    closed_form_latex: str = ""
+    trace_steps: list[SubstitutionStep] = field(default_factory=list)
+    primitive_symbols: list[str] = field(default_factory=list)
+    is_dimensionally_valid: bool = True
+    python_code: str = ""
+    polars_code: str = ""
 
 
 class FormulaChainingEngine:
@@ -55,11 +78,13 @@ class FormulaChainingEngine:
         ontology: SymbolOntology | None = None,
         compiler: FormulaCompiler | None = None,
         sanitizer: EquationSanitizer | None = None,
+        validator: DimensionalValidator | None = None,
     ) -> None:
         self.db = db_manager or DatabaseManager()
         self.ontology = ontology or get_symbol_ontology()
         self.compiler = compiler or FormulaCompiler()
         self.sanitizer = sanitizer or EquationSanitizer()
+        self.validator = validator or DimensionalValidator(self.ontology)
 
     def _parse_to_sympy(self, formula: Formula) -> tuple[Any, str | None, Any]:
         """Parses a stored Formula model into (lhs_expr, lhs_str, rhs_expr)."""
@@ -199,6 +224,7 @@ class FormulaChainingEngine:
                 orig_str = str(current_expr)
                 new_expr = current_expr.subs(sym, c_rhs)
                 if new_expr != current_expr:
+                    dim_valid, dim_msg = self.validator.validate_substitution(sym_name, cand.lhs)
                     trace_steps.append(
                         SubstitutionStep(
                             target_variable=sym_name,
@@ -206,6 +232,8 @@ class FormulaChainingEngine:
                             source_citekey=cand.citekey,
                             original_expr_str=orig_str,
                             substituted_expr_str=str(new_expr),
+                            dimensional_valid=dim_valid,
+                            dimensional_note=dim_msg,
                         )
                     )
                     current_expr = new_expr
@@ -240,6 +268,8 @@ class FormulaChainingEngine:
             function_name=f"calc_chained_{target.citekey}_{target.id[:8]}",
         )
 
+        is_dim_valid = all(s.dimensional_valid for s in trace_steps) if trace_steps else True
+
         return ChainedFormulaResult(
             target_formula_id=target.id,
             target_citekey=target.citekey,
@@ -250,6 +280,73 @@ class FormulaChainingEngine:
             primitive_symbols=primitive_symbols,
             python_code=comp_res.python_source or "",
             polars_code=comp_res.polars_expression or "",
+            is_dimensionally_valid=is_dim_valid,
+        )
+
+    async def chain_between(
+        self,
+        from_concept: str,
+        to_concept: str,
+        max_depth: int = 5,
+    ) -> MultiHopChainResult:
+        """Discovers and constructs a multi-hop derivation chain from a source concept to a target concept.
+
+        Args:
+            from_concept: Source observable or primitive concept (e.g. 'BAT_SPEED', 'v_{bat}').
+            to_concept: Target macroscopic metric or formula (e.g. 'WAR', 'RE').
+            max_depth: Maximum derivation search depth.
+
+        Returns:
+            MultiHopChainResult containing formula path, unified closed form, and step diagnostics.
+        """
+        async with self.db.get_session() as session:
+            # Check if to_concept is an exact formula ID
+            target = (
+                await session.execute(select(Formula).where(Formula.id == to_concept))
+            ).scalar_one_or_none()
+
+            if not target:
+                candidates = await self.find_defining_formulas(
+                    to_concept, exclude_formula_ids=set()
+                )
+                if not candidates:
+                    c_enum = self.ontology.resolve_canonical(to_concept)
+                    if c_enum:
+                        aliases = self.ontology.get_concept_aliases(c_enum)
+                        for alias in aliases:
+                            candidates = await self.find_defining_formulas(
+                                alias, exclude_formula_ids=set()
+                            )
+                            if candidates:
+                                break
+
+                if not candidates:
+                    raise ValueError(
+                        f"No defining formula found for target concept '{to_concept}'."
+                    )
+                target = candidates[0]
+
+        chained_res = await self.chain_formula(formula_id=target.id, max_depth=max_depth)
+
+        formula_path = [target.id] + [s.source_formula_id for s in chained_res.trace_steps]
+        citekey_path = list(
+            dict.fromkeys([target.citekey] + [s.source_citekey for s in chained_res.trace_steps])
+        )
+
+        return MultiHopChainResult(
+            from_concept=from_concept,
+            to_concept=to_concept,
+            target_formula_id=target.id,
+            target_citekey=target.citekey,
+            formula_path=formula_path,
+            citekey_path=citekey_path,
+            closed_form_expr=chained_res.closed_form_expr,
+            closed_form_latex=chained_res.closed_form_latex,
+            trace_steps=chained_res.trace_steps,
+            primitive_symbols=chained_res.primitive_symbols,
+            is_dimensionally_valid=chained_res.is_dimensionally_valid,
+            python_code=chained_res.python_code,
+            polars_code=chained_res.polars_code,
         )
 
     async def solve_system(

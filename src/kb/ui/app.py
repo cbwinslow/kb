@@ -140,26 +140,34 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             )
 
     async def get_formulas(request: Request) -> JSONResponse:
-        """Return verified formulas with compiled code snippets."""
+        """Return formulas with compiled code snippets and quality scorecards with optional grade/status filtering."""
         limit = int(request.query_params.get("limit", 20))
         citekey = request.query_params.get("citekey")
+        grade_filter = request.query_params.get("grade")
+        status_filter = request.query_params.get("status") or request.query_params.get("validation_status")
+        valid_filter = request.query_params.get("is_valid")
+
+        requested_grades = [g.strip().upper() for g in grade_filter.split(",")] if grade_filter else []
 
         async with manager.session_factory() as session:
-            stmt = select(Formula).where(Formula.is_valid == True)  # noqa: E712
+            stmt = select(Formula)
+            if valid_filter is not None:
+                is_val = valid_filter.lower() in ("true", "1")
+                stmt = stmt.where(Formula.is_valid == is_val)
+            elif not grade_filter:
+                stmt = stmt.where(Formula.is_valid == True)  # noqa: E712
+
             if citekey:
                 stmt = stmt.where(Formula.citekey == citekey)
-            stmt = stmt.limit(limit)
+            if status_filter:
+                stmt = stmt.where(Formula.validation_status == status_filter)
+
+            stmt = stmt.limit(limit * 2 if requested_grades else limit)
             formulas = list((await session.execute(stmt)).scalars().all())
 
             results: list[dict[str, Any]] = []
             for f in formulas:
                 try:
-                    codegen = compiler.compile(
-                        formula_id=f.id,
-                        citekey=f.citekey,
-                        raw_latex=f.raw_latex,
-                        sympy_repr=f.sympy_repr,
-                    )
                     grade = None
                     if f.validation_score is not None:
                         if f.validation_score >= 88.0:
@@ -173,11 +181,22 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                         else:
                             grade = "F"
 
+                    if requested_grades and grade not in requested_grades:
+                        continue
+
+                    codegen = compiler.compile(
+                        formula_id=f.id,
+                        citekey=f.citekey,
+                        raw_latex=f.raw_latex,
+                        sympy_repr=f.sympy_repr,
+                    )
+
                     results.append(
                         {
                             "formula_id": f.id,
                             "citekey": f.citekey,
                             "latex": f.raw_latex,
+                            "sanitized_latex": f.sanitized_latex,
                             "symbols": f.symbols,
                             "parameters": codegen.parameters,
                             "python_code": codegen.python_source,
@@ -185,11 +204,63 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                             "validation_score": f.validation_score,
                             "validation_status": f.validation_status,
                             "letter_grade": grade,
+                            "scorecard": f.validation_details,
                         }
                     )
+                    if len(results) >= limit:
+                        break
                 except Exception:
                     continue
             return JSONResponse(results)
+
+    async def repair_formula_endpoint(request: Request) -> JSONResponse:
+        """Trigger in-place repair and quality gate re-evaluation for a single formula."""
+        formula_id = request.path_params.get("id")
+        from kb.math.repair import CorpusFormulaRepairer
+        from kb.math.validation import FormulaQualityGate
+
+        repairer = CorpusFormulaRepairer()
+        gate = FormulaQualityGate(ontology=ontology)
+
+        async with manager.session_factory() as session:
+            f = (
+                await session.execute(select(Formula).where(Formula.id == formula_id))
+            ).scalar_one_or_none()
+            if not f:
+                return JSONResponse({"error": f"Formula '{formula_id}' not found"}, status_code=404)
+
+            parsed = repairer.repair_single(f.raw_latex, formula_id=f.id)
+            if parsed.is_valid:
+                f.sanitized_latex = parsed.sanitized_latex
+                f.sympy_repr = str(parsed.sympy_expr) if parsed.sympy_expr is not None else None
+                f.symbols = parsed.symbols
+                f.is_valid = True
+                f.is_equality = parsed.is_equality
+                f.lhs = parsed.lhs
+                f.rhs = parsed.rhs
+
+            scorecard = gate.validate_formula(f)
+
+            f.validation_score = scorecard.total_score
+            f.validation_status = scorecard.status
+            f.validation_details = scorecard.to_dict()
+            await session.commit()
+
+            return JSONResponse(
+                {
+                    "formula_id": f.id,
+                    "citekey": f.citekey,
+                    "raw_latex": f.raw_latex,
+                    "sanitized_latex": f.sanitized_latex,
+                    "sympy_repr": f.sympy_repr,
+                    "is_valid": f.is_valid,
+                    "is_equality": f.is_equality,
+                    "validation_score": f.validation_score,
+                    "validation_status": f.validation_status,
+                    "letter_grade": scorecard.letter_grade,
+                    "scorecard": scorecard.to_dict(),
+                }
+            )
 
     async def get_tables(request: Request) -> JSONResponse:
         """Return benchmark tables with preview data."""
@@ -225,6 +296,33 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                     }
                 )
             return JSONResponse(results)
+
+    async def get_document_figures(request: Request) -> JSONResponse:
+        """Return all figures associated with a specific document ID or citekey."""
+        doc_id = request.path_params.get("id", "")
+        from kb.storage.models import Figure
+
+        async with manager.session_factory() as session:
+            stmt = (
+                select(Figure)
+                .where((Figure.document_id == doc_id) | (Figure.citekey == doc_id))
+                .order_by(Figure.figure_index.asc())
+            )
+            figs = list((await session.execute(stmt)).scalars().all())
+            return JSONResponse(
+                [
+                    {
+                        "id": f.id,
+                        "document_id": f.document_id,
+                        "citekey": f.citekey,
+                        "caption": f.caption,
+                        "figure_index": f.figure_index,
+                        "image_path": f.image_path,
+                        "structure_metadata": f.structure_metadata,
+                    }
+                    for f in figs
+                ]
+            )
 
     async def search_endpoint(request: Request) -> JSONResponse:
         """Execute hybrid search across the corpus."""
@@ -673,6 +771,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     <button onclick="switchTab('tables')" id="tab-btn-tables" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Benchmark Tables</button>
     <button onclick="switchTab('search')" id="tab-btn-search" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Hybrid Retrieval</button>
     <button onclick="switchTab('coverage')" id="tab-btn-coverage" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Coverage & Yield</button>
+    <button onclick="switchTab('quality')" id="tab-btn-quality" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Quality Gate & Repair</button>
   </div>
 
   <!-- Main Viewports -->
@@ -926,6 +1025,31 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         </div>
       </div>
     </section>
+
+    <!-- View 7: Quality Gate & Automated Repair Scorecard -->
+    <section id="view-quality" class="flex-1 hidden flex flex-col space-y-4 overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-semibold text-slate-200">Formula Quality Gate & Automated Repair</h2>
+          <p class="text-xs text-slate-400">Multi-tier validation scorecards (Syntax, Dimensions, Sanity, Lineage) with one-click automated repair.</p>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="text-slate-400">Filter Grade:</span>
+          <button onclick="filterQualityGrade('')" class="quality-grade-btn px-2.5 py-1 rounded bg-sky-600 text-white font-medium">All</button>
+          <button onclick="filterQualityGrade('A')" class="quality-grade-btn px-2.5 py-1 rounded bg-slate-800 text-emerald-400 hover:bg-slate-700 border border-slate-700">Grade A</button>
+          <button onclick="filterQualityGrade('B')" class="quality-grade-btn px-2.5 py-1 rounded bg-slate-800 text-sky-400 hover:bg-slate-700 border border-slate-700">Grade B</button>
+          <button onclick="filterQualityGrade('C')" class="quality-grade-btn px-2.5 py-1 rounded bg-slate-800 text-amber-400 hover:bg-slate-700 border border-slate-700">Grade C</button>
+          <button onclick="filterQualityGrade('D')" class="quality-grade-btn px-2.5 py-1 rounded bg-slate-800 text-orange-400 hover:bg-slate-700 border border-slate-700">Grade D</button>
+          <button onclick="filterQualityGrade('F')" class="quality-grade-btn px-2.5 py-1 rounded bg-slate-800 text-rose-400 hover:bg-slate-700 border border-slate-700">Grade F</button>
+          <button onclick="loadQualityFormulas()" class="ml-2 px-3 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-slate-200">Refresh</button>
+        </div>
+      </div>
+
+      <!-- Scorecard Cards -->
+      <div id="quality-cards" class="space-y-3">
+        <div class="text-sm text-slate-400">Loading formulas quality scorecards...</div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -937,7 +1061,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     let playgroundInputs = {};
 
     function switchTab(tabId) {
-      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage'].forEach(t => {
+      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage', 'quality'].forEach(t => {
         const viewEl = document.getElementById(`view-${t}`);
         const btnEl = document.getElementById(`tab-btn-${t}`);
         if (viewEl) viewEl.classList.add('hidden');
@@ -954,6 +1078,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       if (tabId === 'playground') initPlayground();
       if (tabId === 'tables') loadTables();
       if (tabId === 'coverage') loadCoverage();
+      if (tabId === 'quality') loadQualityFormulas();
     }
 
     async function loadCoverage() {
@@ -1533,6 +1658,170 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       `).join('');
     }
 
+    let currentQualityGrade = '';
+
+    function filterQualityGrade(grade) {
+      currentQualityGrade = grade;
+      document.querySelectorAll('.quality-grade-btn').forEach(b => {
+        b.className = 'quality-grade-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700';
+      });
+      if (window.event && window.event.target) {
+        window.event.target.className = 'quality-grade-btn px-2.5 py-1 rounded bg-sky-600 text-white font-medium';
+      }
+      loadQualityFormulas();
+    }
+
+    async function loadQualityFormulas() {
+      const container = document.getElementById('quality-cards');
+      if (!container) return;
+      container.innerHTML = '<div class="text-sm text-slate-400">Loading quality scorecards...</div>';
+      const gradeQuery = currentQualityGrade ? `grade=${encodeURIComponent(currentQualityGrade)}&` : '';
+      try {
+        const res = await fetch(`/api/formulas?${gradeQuery}limit=50`);
+        const items = await res.json();
+        if (!items.length) {
+          container.innerHTML = `<div class="text-sm text-slate-400">No formulas found matching grade '${currentQualityGrade || 'All'}'.</div>`;
+          return;
+        }
+        container.innerHTML = items.map(f => {
+          const grade = f.letter_grade || 'F';
+          const score = f.validation_score != null ? f.validation_score.toFixed(1) : '0.0';
+          const badgeColor = grade === 'A' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
+                             grade === 'B' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' :
+                             grade === 'C' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                             grade === 'D' ? 'bg-orange-500/20 text-orange-300 border-orange-500/30' :
+                             'bg-rose-500/20 text-rose-300 border-rose-500/30';
+          const scorecard = f.scorecard || {};
+          const tierScores = scorecard.tier_scores || {};
+          const checks = scorecard.checks || [];
+
+          return `
+          <div id="formula-card-${f.formula_id}" class="glass-card rounded-xl p-4 flex flex-col space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <span class="text-xs font-mono font-bold text-sky-400">${f.citekey}</span>
+                <span class="text-[11px] font-mono text-slate-500">ID: ${(f.formula_id || '').slice(0, 8)}</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span id="grade-badge-${f.formula_id}" class="text-xs px-2.5 py-0.5 rounded font-mono font-bold ${badgeColor} border">Grade ${grade} (${score})</span>
+                <button onclick="toggleDiagnosticDrawer('${f.formula_id}')" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">Diagnostics</button>
+                <button onclick="repairFormula('${f.formula_id}')" id="repair-btn-${f.formula_id}" class="px-3 py-1 text-xs rounded bg-sky-600 hover:bg-sky-500 text-white font-medium flex items-center space-x-1">
+                  <span>Repair Formula</span>
+                </button>
+              </div>
+            </div>
+            <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 font-mono text-xs text-indigo-300 overflow-x-auto">
+              <span id="latex-display-${f.formula_id}">${escapeHtml(f.sanitized_latex || f.latex)}</span>
+            </div>
+            <!-- Diagnostic Drawer -->
+            <div id="drawer-${f.formula_id}" class="hidden border-t border-slate-800 pt-3 mt-2 grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+              <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Tier 1: AST Roundtrip</div>
+                <div id="t1-${f.formula_id}" class="text-sm font-bold text-sky-400 mt-1">${(tierScores.ast_roundtrip ?? tierScores.tier1_syntax_ast) != null ? (tierScores.ast_roundtrip ?? tierScores.tier1_syntax_ast).toFixed(1) + '/25' : 'N/A'}</div>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Tier 2: Symbol Encoding</div>
+                <div id="t2-${f.formula_id}" class="text-sm font-bold text-emerald-400 mt-1">${(tierScores.symbol_encoding ?? tierScores.tier2_dimensional) != null ? (tierScores.symbol_encoding ?? tierScores.tier2_dimensional).toFixed(1) + '/25' : 'N/A'}</div>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Tier 3: Boundary Invariants</div>
+                <div id="t3-${f.formula_id}" class="text-sm font-bold text-amber-400 mt-1">${(tierScores.boundary_invariants ?? tierScores.tier3_numerical_sanity) != null ? (tierScores.boundary_invariants ?? tierScores.tier3_numerical_sanity).toFixed(1) + '/25' : 'N/A'}</div>
+              </div>
+              <div class="bg-slate-900/80 p-2.5 rounded border border-slate-800">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Tier 4: Empirical Benchmark</div>
+                <div id="t4-${f.formula_id}" class="text-sm font-bold text-indigo-400 mt-1">${(tierScores.empirical_benchmark ?? tierScores.tier4_lineage_graph) != null ? (tierScores.empirical_benchmark ?? tierScores.tier4_lineage_graph).toFixed(1) + '/25' : 'N/A'}</div>
+              </div>
+              <div class="md:col-span-4 mt-2">
+                <div class="text-[11px] font-semibold text-slate-400 mb-1">Check Breakdown:</div>
+                <div id="checks-${f.formula_id}" class="space-y-1">
+                  ${checks.map(c => `
+                    <div class="flex items-center justify-between text-[11px] px-2 py-1 rounded bg-slate-900/40 border border-slate-800/60">
+                      <span class="${c.passed ? 'text-slate-300' : 'text-rose-400'}">${c.check_name}: ${escapeHtml(c.message)}</span>
+                      <span class="font-mono ${c.passed ? 'text-emerald-400' : 'text-rose-400'}">${c.score}/${c.max_score}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `<div class="text-sm text-rose-400">Failed to load formulas: ${escapeHtml(String(err))}</div>`;
+      }
+    }
+
+    function toggleDiagnosticDrawer(id) {
+      const drawer = document.getElementById(`drawer-${id}`);
+      if (drawer) drawer.classList.toggle('hidden');
+    }
+
+    async function repairFormula(id) {
+      const btn = document.getElementById(`repair-btn-${id}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Repairing...</span>';
+      }
+      try {
+        const res = await fetch(`/api/formulas/${id}/repair`, { method: 'POST' });
+        const data = await res.json();
+        if (data.error) {
+          alert('Repair failed: ' + data.error);
+          return;
+        }
+        const grade = data.letter_grade || 'A';
+        const score = data.validation_score != null ? data.validation_score.toFixed(1) : '90+';
+        const badge = document.getElementById(`grade-badge-${id}`);
+        if (badge) {
+          const badgeColor = grade === 'A' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' :
+                             grade === 'B' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' :
+                             grade === 'C' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' :
+                             grade === 'D' ? 'bg-orange-500/20 text-orange-300 border-orange-500/30' :
+                             'bg-rose-500/20 text-rose-300 border-rose-500/30';
+          badge.className = `text-xs px-2.5 py-0.5 rounded font-mono font-bold ${badgeColor} border`;
+          badge.innerText = `Grade ${grade} (${score})`;
+        }
+        const latexEl = document.getElementById(`latex-display-${id}`);
+        if (latexEl && data.sanitized_latex) {
+          latexEl.innerText = data.sanitized_latex;
+        }
+        const sc = data.scorecard || {};
+        const ts = sc.tier_scores || {};
+        const t1Score = ts.ast_roundtrip ?? ts.tier1_syntax_ast;
+        const t2Score = ts.symbol_encoding ?? ts.tier2_dimensional;
+        const t3Score = ts.boundary_invariants ?? ts.tier3_numerical_sanity;
+        const t4Score = ts.empirical_benchmark ?? ts.tier4_lineage_graph;
+        if (document.getElementById(`t1-${id}`) && t1Score != null) {
+          document.getElementById(`t1-${id}`).innerText = `${t1Score.toFixed(1)}/25`;
+        }
+        if (document.getElementById(`t2-${id}`) && t2Score != null) {
+          document.getElementById(`t2-${id}`).innerText = `${t2Score.toFixed(1)}/25`;
+        }
+        if (document.getElementById(`t3-${id}`) && t3Score != null) {
+          document.getElementById(`t3-${id}`).innerText = `${t3Score.toFixed(1)}/25`;
+        }
+        if (document.getElementById(`t4-${id}`) && t4Score != null) {
+          document.getElementById(`t4-${id}`).innerText = `${t4Score.toFixed(1)}/25`;
+        }
+        if (document.getElementById(`checks-${id}`) && sc.checks) {
+          document.getElementById(`checks-${id}`).innerHTML = sc.checks.map(c => `
+            <div class="flex items-center justify-between text-[11px] px-2 py-1 rounded bg-slate-900/40 border border-slate-800/60">
+              <span class="${c.passed ? 'text-slate-300' : 'text-rose-400'}">${c.check_name}: ${escapeHtml(c.message)}</span>
+              <span class="font-mono ${c.passed ? 'text-emerald-400' : 'text-rose-400'}">${c.score}/${c.max_score}</span>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        alert('Error repairing formula: ' + err);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Repaired ✓</span>';
+          setTimeout(() => { if (btn) btn.innerHTML = '<span>Repair Formula</span>'; }, 3000);
+        }
+      }
+    }
+
     function escapeHtml(str) {
       if (!str) return '';
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1554,8 +1843,10 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/playground", endpoint=index_view, methods=["GET"]),
         Route("/api/stats", endpoint=get_stats, methods=["GET"]),
         Route("/api/documents", endpoint=get_documents, methods=["GET"]),
+        Route("/api/documents/{id}/figures", endpoint=get_document_figures, methods=["GET"]),
         Route("/api/lineage", endpoint=get_lineage, methods=["GET"]),
         Route("/api/formulas", endpoint=get_formulas, methods=["GET"]),
+        Route("/api/formulas/{id}/repair", endpoint=repair_formula_endpoint, methods=["POST"]),
         Route("/api/tables", endpoint=get_tables, methods=["GET"]),
         Route("/api/search", endpoint=search_endpoint, methods=["GET"]),
         Route("/api/eval", endpoint=eval_endpoint, methods=["GET", "POST"]),

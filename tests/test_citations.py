@@ -50,3 +50,28 @@ async def test_build_citation_graph(builder: CitationGraphBuilder) -> None:
     assert result.internal_edges == 2  # doc1->doc2 and doc2->doc1
     assert result.external_edges == 1  # doc1->W999
     assert session.commit.called
+
+
+@pytest.mark.asyncio
+async def test_link_single_document(builder: CitationGraphBuilder) -> None:
+    session = AsyncMock()
+    session.add = MagicMock()
+
+    doc = MagicMock()
+    doc.id = "doc-1"
+    doc.referenced_works = ["https://openalex.org/W222", "https://openalex.org/W333"]
+
+    doc_result = MagicMock()
+    doc_result.scalar_one_or_none.return_value = doc
+
+    all_docs_result = MagicMock()
+    all_docs_result.all.return_value = [("doc-2", "https://openalex.org/W222")]
+
+    existing_result = MagicMock()
+    existing_result.scalars.return_value.all.return_value = []
+
+    session.execute.side_effect = [doc_result, all_docs_result, existing_result]
+
+    edges_added = await builder.link_document("doc-1", session=session)
+    assert edges_added == 2
+    assert session.commit.called

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Any
 from pydantic import BaseModel, Field
 from sqlalchemy import select, update
 
-from kb.math.extractor import FormulaExtractor
+from kb.math.extractor import ExtractedFormula, FormulaExtractor
 from kb.math.sanitizer import EquationSanitizer
 
 if TYPE_CHECKING:
@@ -49,6 +49,19 @@ class CorpusFormulaRepairer:
         """
         self.sanitizer = sanitizer or EquationSanitizer()
         self.extractor = extractor or FormulaExtractor(sanitizer=self.sanitizer)
+
+    def repair_single(
+        self,
+        raw_latex: str,
+        formula_id: str | None = None,
+        chunk_id: str | None = None,
+    ) -> ExtractedFormula:
+        """Repair and re-parse a single LaTeX formula string using current sanitizer and extractor."""
+        return self.extractor.parse_latex_string(
+            raw_latex,
+            formula_id=formula_id or "",
+            chunk_id=chunk_id,
+        )
 
     async def repair_corpus(
         self,

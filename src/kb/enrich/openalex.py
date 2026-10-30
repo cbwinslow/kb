@@ -5,7 +5,9 @@ from __future__ import annotations
 import logging
 import os
 import re
+import shutil
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -282,3 +284,101 @@ class OpenAlexClient:
                         return [self._parse_work_json(r) for r in results if r.get("id") != work.id]
 
         return []
+
+    async def search_targeted_corpus(
+        self,
+        keywords: list[str] | None = None,
+        year_range: tuple[int, int] = (2024, 2026),
+        limit: int = 25,
+    ) -> list[OpenAlexWork]:
+        """Harvests recent 2024-2026 academic literature covering bat tracking, aerodynamics, and biomechanics.
+
+        Args:
+            keywords: List of domain keyword phrases.
+            year_range: Tuple of (start_year, end_year).
+            limit: Maximum works to return.
+
+        Returns:
+            List of OpenAlexWork objects matching the query criteria.
+        """
+        search_terms = keywords or [
+            "baseball bat tracking",
+            "seam shifted wake",
+            "baseball aerodynamics",
+            "baseball biomechanics",
+            "bat ball collision mechanics",
+        ]
+        query_str = " OR ".join(f'"{kw}"' for kw in search_terms)
+        start_year, end_year = year_range
+
+        async with httpx.AsyncClient(
+            transport=self.transport, timeout=self.timeout, headers=self._headers()
+        ) as client:
+            params = {
+                "filter": f"publication_year:{start_year}-{end_year},is_oa:true",
+                "search": query_str,
+                "sort": "publication_date:desc",
+                "per-page": limit,
+            }
+            resp = await client.get(f"{self.base_url}/works", params=params)
+            if resp.status_code == 200:
+                results = resp.json().get("results", [])
+                return [self._parse_work_json(r) for r in results]
+            logger.warning("Targeted OpenAlex harvest returned %d: %s", resp.status_code, resp.text)
+            return []
+
+    async def download_work_pdf(
+        self,
+        work: OpenAlexWork,
+        target_dir: Path | str,
+        min_free_disk_gb: float = 1.5,
+    ) -> Path | None:
+        """Download open access PDF for an OpenAlexWork with local disk space threshold protection.
+
+        Args:
+            work: OpenAlexWork instance with pdf_url.
+            target_dir: Local destination directory.
+            min_free_disk_gb: Minimum free disk space in GB required (default 1.5 GB).
+
+        Returns:
+            Path to downloaded PDF or None if download failed or disk space threshold reached.
+        """
+        if not work.pdf_url:
+            logger.debug("Work %s has no direct open access PDF URL", work.short_id)
+            return None
+
+        dest_dir = Path(target_dir)
+        dest_dir.mkdir(parents=True, exist_ok=True)
+
+        _total, _used, free = shutil.disk_usage(dest_dir)
+        free_gb = free / (1024**3)
+        if free_gb < min_free_disk_gb:
+            logger.error(
+                "Disk space safeguard triggered: %.2f GB free < %.2f GB threshold. Aborting download.",
+                free_gb,
+                min_free_disk_gb,
+            )
+            return None
+
+        out_path = dest_dir / f"{work.short_id}.pdf"
+        try:
+            async with httpx.AsyncClient(
+                transport=self.transport,
+                timeout=30.0,
+                headers={"User-Agent": f"ScientificKB/1.0 (mailto:{self.email})"},
+                follow_redirects=True,
+            ) as client:
+                resp = await client.get(work.pdf_url)
+                if resp.status_code == 200 and resp.content.startswith(b"%PDF"):
+                    out_path.write_bytes(resp.content)
+                    return out_path
+                logger.warning(
+                    "Failed downloading PDF for %s (status=%d, size=%d)",
+                    work.short_id,
+                    resp.status_code,
+                    len(resp.content),
+                )
+                return None
+        except Exception as exc:
+            logger.error("Download exception for %s: %s", work.short_id, exc)
+            return None

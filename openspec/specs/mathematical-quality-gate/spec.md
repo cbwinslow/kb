@@ -63,3 +63,10 @@ The system SHALL synthesize results across all tiers into a standardized quality
 #### Scenario: Generating quality scorecard via CLI
 - **WHEN** `kb formulas validate --id <formula_id>` is executed
 - **THEN** the system outputs a detailed multi-tier scorecard breakdown, composite score, letter grade, and diagnostic recommendations
+
+### Requirement: Interactive On-Demand Formula Re-Validation
+The system SHALL support on-demand single-formula re-validation and scorecard refreshing triggered via REST endpoints.
+
+#### Scenario: On-demand re-validation upon formula repair
+- **WHEN** a repair request is received via `/api/formulas/{id}/repair`
+- **THEN** system executes AST repair, invokes the multi-tier quality gate, updates `kb_formulas` with the new validation score and status, and returns the updated scorecard payload

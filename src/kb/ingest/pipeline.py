@@ -30,7 +30,7 @@ from kb.ingest.tables import TableExtractor
 from kb.math.extractor import ExtractedFormula, FormulaExtractor
 from kb.storage.database import DatabaseManager
 from kb.storage.embeddings import EmbeddingProtocol, LocalEmbeddingGenerator
-from kb.storage.models import BenchmarkTable, Chunk, Document, Formula
+from kb.storage.models import BenchmarkTable, Chunk, Document, Figure, Formula
 
 logger = logging.getLogger(__name__)
 
@@ -560,7 +560,31 @@ class IngestionPipeline:
                 )
                 session.add(tbl_record)
 
+            # 6. Save extracted figures
+            for fig in getattr(parsed_doc, "figures", []):
+                fig_record = Figure(
+                    document_id=doc_record.id,
+                    citekey=source.citekey,
+                    caption=fig.caption,
+                    figure_index=fig.figure_index,
+                    image_path=f"/storage/figures/{source.citekey}_fig_{fig.figure_index}.png",
+                    structure_metadata={
+                        "bbox": fig.bounding_box,
+                        "page_no": fig.page_no,
+                    },
+                )
+                session.add(fig_record)
+
             await session.commit()
+
+        # 7. Automatically build citation links for newly inserted document
+        try:
+            from kb.sync.citations import CitationGraphBuilder
+
+            cb = CitationGraphBuilder(db_manager=self.db)
+            await cb.link_document(doc_record.id)
+        except Exception as exc:
+            logger.debug("Citation backfill note for %s: %s", source.citekey, exc)
 
         return IngestionResult(
             citekey=source.citekey,

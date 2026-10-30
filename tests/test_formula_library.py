@@ -75,8 +75,8 @@ def test_compile_formula(sample_formula: Formula, sample_document: Document):
 
     # Verify Polars expression syntax
     ast.parse(res.polars_code)
-    assert 'pl.col("AB")' in res.polars_code
-    assert 'pl.col("BB")' in res.polars_code
+    assert 'pl.col("AB")' in res.polars_code or 'pl.col(AB)' in res.polars_code
+    assert 'pl.col("BB")' in res.polars_code or 'pl.col(BB)' in res.polars_code
 
 
 def test_generate_module_source(sample_formula: Formula, sample_document: Document):

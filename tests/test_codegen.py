@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import polars as pl
+import pytest
 
 from kb.codegen.compiler import FormulaCompiler
 from kb.codegen.verifier import FormulaVerifier
@@ -90,3 +91,95 @@ def test_formula_verifier_against_parquet(tmp_path: Path) -> None:
     assert res.num_samples == 3
     assert res.mean_absolute_error is not None
     assert res.mean_absolute_error < 1e-4
+
+
+def test_formula_library_generator_polars_expr() -> None:
+    """Verify FormulaLibraryGenerator generates parameterized Polars expression signatures."""
+    from kb.library.generator import FormulaLibraryGenerator
+    from kb.storage.models import Document, Formula
+
+    gen = FormulaLibraryGenerator()
+    formula = Formula(
+        id="f_test_polars",
+        document_id="doc_test",
+        citekey="james1982",
+        raw_latex=r"W = \frac{R_S^2}{R_S^2 + R_A^2}",
+        sanitized_latex=r"W = \frac{R_S^2}{R_S^2 + R_A^2}",
+        sympy_repr="Eq(W, R_S**2/(R_A**2 + R_S**2))",
+        symbols=["R_S", "R_A", "W"],
+        is_valid=True,
+        is_equality=True,
+        lhs="W",
+        rhs=r"\frac{R_S^2}{R_S^2 + R_A^2}",
+    )
+    doc = Document(id="doc_test", citekey="james1982", title="Bill James Abstract", year=1982)
+
+    compiled = gen.compile_formula(formula, doc=doc)
+    assert compiled is not None
+    assert "def expr_" in compiled.polars_code
+    assert '-> pl.Expr:' in compiled.polars_code
+    assert 'pl.col(' in compiled.polars_code
+
+
+@pytest.mark.asyncio
+async def test_formula_library_generator_grade_a_export(tmp_path: Path) -> None:
+    """Verify export_to_file respects min_grade='A' filter."""
+    import uuid
+
+    from kb.library.generator import FormulaLibraryGenerator
+    from kb.storage.database import DatabaseManager
+    from kb.storage.models import Document, Formula
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_codegen_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    async with db.session_factory() as session:
+        doc = Document(id=f"doc_{db_id}", citekey="james1982", title="Doc", year=1982)
+        session.add(doc)
+
+        # Grade A formula (score 92.0)
+        f_a = Formula(
+            id=f"fa_{db_id}",
+            document_id=doc.id,
+            citekey="james1982",
+            raw_latex=r"W = \frac{R_S^2}{R_S^2 + R_A^2}",
+            sanitized_latex=r"W = \frac{R_S^2}{R_S^2 + R_A^2}",
+            sympy_repr="Eq(W, R_S**2/(R_A**2 + R_S**2))",
+            symbols=["R_S", "R_A", "W"],
+            is_valid=True,
+            is_equality=True,
+            validation_score=92.0,
+            validation_status="verified",
+            lhs="W",
+        )
+        # Grade F formula (score 20.0)
+        f_f = Formula(
+            id=f"ff_{db_id}",
+            document_id=doc.id,
+            citekey="james1982",
+            raw_latex=r"X = Y + Z",
+            sanitized_latex=r"X = Y + Z",
+            sympy_repr="Eq(X, Y + Z)",
+            symbols=["X", "Y", "Z"],
+            is_valid=True,
+            is_equality=True,
+            validation_score=20.0,
+            validation_status="failed",
+            lhs="X",
+        )
+        session.add(f_a)
+        session.add(f_f)
+        await session.commit()
+
+    gen = FormulaLibraryGenerator(db_manager=db)
+    out_file = tmp_path / "grade_a_formulas.py"
+    count = await gen.export_to_file(out_file, min_grade="A")
+
+    assert count == 1
+    content = out_file.read_text(encoding="utf-8")
+    assert f"calc_w_{f_a.id.replace('-', '')[:6]}" in content
+    assert f"calc_x_{f_f.id.replace('-', '')[:6]}" not in content
+
+    await db.close()

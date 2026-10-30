@@ -86,7 +86,7 @@ class FormulaLibraryGenerator:
         doc_title = doc.title if doc else "Corpus Document"
         year_str = f" ({doc.year})" if doc and doc.year else ""
         authors_str = ", ".join(doc.authors[:3]) if doc and doc.authors else "Scientific Literature"
-        if doc and len(doc.authors) > 3:
+        if doc and doc.authors and len(doc.authors) > 3:
             authors_str += " et al."
 
         param_lines = "\n".join(f"        {p} (float): Input parameter `{p}`." for p in parameters)
@@ -167,10 +167,14 @@ class FormulaLibraryGenerator:
 
         # Build Polars expression function
         polars_expr = comp_res.polars_expression or core_expr
+        col_expr = polars_expr
+        for p in comp_res.parameters:
+            col_expr = re.sub(rf'pl\.col\("{re.escape(p)}"\)', f"pl.col({p})", col_expr)
+        col_params = ", ".join(f'{p}: str = "{p}"' for p in comp_res.parameters)
         polars_func = (
-            f"def {expr_name}() -> pl.Expr:\n"
+            f"def {expr_name}({col_params}) -> pl.Expr:\n"
             f'    r"""Return vectorized Polars expression for `{scalar_name}`."""\n'
-            f"    return ({polars_expr})\n"
+            f"    return ({col_expr})\n"
         )
 
         return GeneratedFormulaFunction(
@@ -185,7 +189,7 @@ class FormulaLibraryGenerator:
             katex_docstring=docstring,
             paper_title=doc.title if doc else None,
             paper_year=doc.year if doc else None,
-            paper_authors=doc.authors if doc else [],
+            paper_authors=(doc.authors or []) if doc else [],
         )
 
     def generate_module_source(self, functions: list[GeneratedFormulaFunction]) -> str:
@@ -219,6 +223,8 @@ class FormulaLibraryGenerator:
         output_path: Path | str,
         limit: int | None = None,
         require_equality: bool = False,
+        min_grade: str | None = None,
+        min_score: float | None = None,
     ) -> int:
         """Read formulas from the database, compile them, and write module to disk."""
         target = Path(output_path)
@@ -230,6 +236,13 @@ class FormulaLibraryGenerator:
             stmt = select(Formula).where(Formula.is_valid.is_(True))
             if require_equality:
                 stmt = stmt.where(Formula.is_equality.is_(True))
+            if min_grade:
+                grade_upper = min_grade.strip().upper()
+                threshold = min_score if min_score is not None else (88.0 if grade_upper == "A" else 75.0)
+                stmt = stmt.where(Formula.validation_score >= threshold)
+            elif min_score is not None:
+                stmt = stmt.where(Formula.validation_score >= min_score)
+
             if limit:
                 stmt = stmt.limit(limit * 2)  # Allow buffer for compile filtering
 

@@ -18,3 +18,10 @@ The system SHALL export verified numerical tables to standard Parquet and CSV fo
 #### Scenario: Export benchmark dataset for test fixtures
 - **WHEN** an extracted table is tagged as a benchmark fixture
 - **THEN** system persists the table as a versioned Parquet file in the fixture vault and associates it with the source paper citation
+
+### Requirement: Automated Formula-to-Table Column Binding
+The system SHALL bind symbolic formula parameters to column names in extracted benchmark tables using the semantic symbol ontology.
+
+#### Scenario: Mapping formula parameters to table headers via ontology
+- **WHEN** an empirical table is linked to a formula for benchmark evaluation
+- **THEN** system maps table header aliases to canonical concepts and constructs the evaluation column mapping without manual schema definition

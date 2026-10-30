@@ -28,6 +28,16 @@ from pydantic import BaseModel, ConfigDict, Field
 logger = logging.getLogger(__name__)
 
 
+class ExtractedFigure(BaseModel):
+    """Container for an extracted figure, plot, or diagram."""
+
+    figure_index: int
+    caption: str | None = None
+    bounding_box: list[float] | None = None
+    page_no: int | None = None
+    image_bytes: bytes | None = None
+
+
 class ParsedDocument(BaseModel):
     """Container for parsed scientific document outputs."""
 
@@ -38,6 +48,9 @@ class ParsedDocument(BaseModel):
     document: DoclingDocument = Field(description="Underlying structured Docling Document Model")
     device_used: str = Field(description="Hardware device used for parsing ('cuda' or 'cpu')")
     num_pages: int = Field(default=0, description="Total number of pages in the document")
+    figures: list[ExtractedFigure] = Field(
+        default_factory=list, description="Extracted figures and visualizations"
+    )
     metadata: dict[str, Any] = Field(
         default_factory=dict, description="Extracted document metadata"
     )
@@ -157,12 +170,40 @@ class DoclingParser:
 
         num_pages = len(docling_doc.pages) if hasattr(docling_doc, "pages") else 0
 
+        figures: list[ExtractedFigure] = []
+        if hasattr(docling_doc, "pictures"):
+            for idx, pic in enumerate(docling_doc.pictures):
+                caption = pic.caption_text(docling_doc) if hasattr(pic, "caption_text") else None
+                bbox: list[float] | None = None
+                page_no: int | None = None
+                if hasattr(pic, "prov") and pic.prov:
+                    prov = pic.prov[0]
+                    page_no = getattr(prov, "page_no", None)
+                    if hasattr(prov, "bbox"):
+                        b = prov.bbox
+                        bbox = [
+                            getattr(b, "l", 0.0),
+                            getattr(b, "t", 0.0),
+                            getattr(b, "r", 0.0),
+                            getattr(b, "b", 0.0),
+                        ]
+
+                figures.append(
+                    ExtractedFigure(
+                        figure_index=idx,
+                        caption=caption,
+                        bounding_box=bbox,
+                        page_no=page_no,
+                    )
+                )
+
         return ParsedDocument(
             file_path=str(path),
             markdown=markdown_text,
             document=docling_doc,
             device_used=self.device_used,
             num_pages=num_pages,
+            figures=figures,
             metadata={
                 "name": docling_doc.name,
                 "origin": str(docling_doc.origin) if hasattr(docling_doc, "origin") else None,

@@ -109,3 +109,22 @@ async def test_graphql_query_formula_coverage() -> None:
     assert "validFormulas" in cov
     assert "parseYieldPct" in cov
     assert "uniqueSymbolsCount" in cov
+
+
+@pytest.mark.asyncio
+async def test_graphql_query_equation_chain() -> None:
+    """Verifies querying equationChain resolver in GraphQL schema."""
+    query = """
+    query {
+        equationChain(fromConcept: "BAT_SPEED", toConcept: "NON_EXISTENT_XYZ", maxDepth: 3) {
+            fromConcept
+            toConcept
+            targetId
+        }
+    }
+    """
+    result = await schema.execute(query)
+    # Non-existent concept should return None gracefully without fatal GraphQL exception
+    assert result.errors is None
+    assert result.data is not None
+    assert result.data["equationChain"] is None

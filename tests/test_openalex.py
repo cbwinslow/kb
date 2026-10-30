@@ -106,6 +106,28 @@ class MockOpenAlexTransport(httpx.AsyncBaseTransport):
             }
             return httpx.Response(200, json=payload, request=request)
 
+        # 4b. Targeted 2024-2026 search
+        if "2024-2026" in url_str:
+            payload = {
+                "results": [
+                    {
+                        "id": "https://openalex.org/W9999999999",
+                        "title": "Biomechanics of Bat Tracking and Seam-Shifted Wake in Modern Baseball",
+                        "publication_year": 2024,
+                        "cited_by_count": 12,
+                        "topics": [],
+                        "referenced_works": [],
+                        "related_works": [],
+                        "authorships": [{"author": {"display_name": "Alan M. Nathan"}}],
+                        "best_oa_location": {
+                            "landing_page_url": "https://arxiv.org/abs/2401.99999",
+                            "pdf_url": "https://arxiv.org/pdf/2401.99999.pdf",
+                        },
+                    }
+                ]
+            }
+            return httpx.Response(200, json=payload, request=request)
+
         # 5. Missing work (404)
         if "not_found" in url_str:
             return httpx.Response(404, json={"error": "Not found"}, request=request)
@@ -202,3 +224,20 @@ async def test_async_enrich_openalex() -> None:
         assert updated_doc.citation_count == 50
 
     await manager.close()
+
+
+@pytest.mark.asyncio
+async def test_search_targeted_corpus_2024_2026() -> None:
+    """Verifies targeted harvesting of 2024-2026 literature."""
+    client = OpenAlexClient(transport=MockOpenAlexTransport())
+    works = await client.search_targeted_corpus(
+        keywords=["baseball bat tracking", "seam shifted wake"],
+        year_range=(2024, 2026),
+        limit=5,
+    )
+
+    assert len(works) >= 1
+    work = works[0]
+    assert work.publication_year == 2024
+    assert "Biomechanics" in work.title
+    assert work.pdf_url is not None

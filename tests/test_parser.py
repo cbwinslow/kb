@@ -57,3 +57,18 @@ def test_parse_sample_pdf_miller2008() -> None:
         item for item, _ in result.document.iterate_items() if isinstance(item, FormulaItem)
     ]
     assert len(formula_items) > 0
+
+
+def test_extracted_figure_container() -> None:
+    from kb.ingest.parser import ExtractedFigure
+
+    fig = ExtractedFigure(
+        figure_index=0,
+        caption="Fig 1: Bat velocity vs exit velocity",
+        bounding_box=[10.0, 20.0, 100.0, 150.0],
+        page_no=1,
+    )
+    assert fig.figure_index == 0
+    assert fig.caption == "Fig 1: Bat velocity vs exit velocity"
+    assert fig.bounding_box == [10.0, 20.0, 100.0, 150.0]
+    assert fig.page_no == 1

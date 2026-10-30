@@ -160,3 +160,78 @@ def test_ui_validate_endpoint(test_client: TestClient) -> None:
     assert "checks" in data
     assert data["total_score"] >= 88.0
     assert data["letter_grade"] == "A"
+
+
+def test_ui_formulas_endpoint_grade_filter(test_client: TestClient) -> None:
+    """Verify /api/formulas supports grade filtering."""
+    response_grade = test_client.get("/api/formulas?grade=A&limit=5")
+    assert response_grade.status_code == 200
+    assert isinstance(response_grade.json(), list)
+
+
+def test_ui_formulas_endpoint_status_filter(test_client: TestClient) -> None:
+    """Verify /api/formulas supports status filtering."""
+    response_status = test_client.get("/api/formulas?status=passed&limit=5")
+    assert response_status.status_code == 200
+    assert isinstance(response_status.json(), list)
+
+
+def test_ui_repair_endpoint_not_found(test_client: TestClient) -> None:
+    """Verify /api/formulas/{id}/repair returns 404 for nonexistent formula."""
+    response = test_client.post("/api/formulas/nonexistent-id-99999/repair")
+    assert response.status_code == 404
+    assert "not found" in response.json()["error"]
+
+
+@pytest.mark.asyncio
+async def test_ui_repair_endpoint_success() -> None:
+    """Verify /api/formulas/{id}/repair repairs latex in-place and returns scorecard."""
+    import uuid
+
+    from kb.storage.database import DatabaseManager
+    from kb.storage.models import Document, Formula
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_ui_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    async with db.session_factory() as session:
+        doc = Document(
+            id=f"doc_{db_id}",
+            citekey="test_citekey",
+            title="Test Doc",
+            file_path="/tmp/test.pdf",
+            year=2024,
+        )
+        session.add(doc)
+        formula = Formula(
+            id=f"form_{db_id}",
+            document_id=doc.id,
+            citekey="test_citekey",
+            raw_latex=r"W = \frac{R_S^2}{R_S^2 + R_A^2}",
+            sanitized_latex=r"W = \frac{R_S^2}{R_S^2 + R_A^2}",
+            sympy_repr=None,
+            symbols=[],
+            is_valid=False,
+            is_equality=False,
+        )
+        session.add(formula)
+        await session.commit()
+
+    app = create_app(db_manager=db)
+    client = TestClient(app)
+
+    res = client.post(f"/api/formulas/form_{db_id}/repair")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["formula_id"] == f"form_{db_id}"
+    assert data["is_valid"] is True
+    assert data["is_equality"] is True
+    assert data["validation_score"] >= 88.0
+    assert data["letter_grade"] == "A"
+    assert "scorecard" in data
+    assert "tier_scores" in data["scorecard"]
+    assert data["scorecard"]["tier_scores"]["ast_roundtrip"] > 0
+
+    await db.close()

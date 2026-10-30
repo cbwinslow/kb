@@ -188,3 +188,95 @@ async def test_solve_system_of_equations() -> None:
     assert "W" in solutions["RA"]
 
     await db.close()
+
+
+@pytest.mark.asyncio
+async def test_dimensional_validator_and_incompatible_substitution() -> None:
+    """Verifies that DimensionalValidator detects physical unit equivalence and mismatches."""
+    from kb.math.ontology import CanonicalConcept
+    from kb.math.units import DimensionalValidator
+
+    validator = DimensionalValidator()
+
+    # Velocity vs Velocity should match
+    compat, msg = validator.validate_substitution(
+        CanonicalConcept.BAT_SPEED, CanonicalConcept.EXIT_VELOCITY
+    )
+    assert compat is True
+    assert "match" in msg.lower()
+
+    # Velocity vs Energy should fail
+    compat, msg = validator.validate_substitution(
+        CanonicalConcept.BAT_SPEED, CanonicalConcept.ENERGY
+    )
+    assert compat is False
+    assert "mismatch" in msg.lower()
+
+
+@pytest.mark.asyncio
+async def test_multi_hop_chain_concepts_bat_speed_to_war() -> None:
+    """Verifies cross-paper multi-hop chaining from bat speed to WAR."""
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_multihop_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    extractor = FormulaExtractor()
+
+    # Cross-paper chain:
+    # Paper 1 (Statcast Mechanics): v_{exit} = 0.2 * v_{pitch} + 1.2 * v_{bat}
+    # Paper 2 (Linear Weights): R_{E} = 0.5 * v_{exit} + 2
+    # Paper 3 (Macroscopic): W = R_{E} / 10
+    raw_formulas = [
+        ("f_war", "paper3_tango", r"W = \frac{R_{E}}{10}", "W"),
+        ("f_re", "paper2_albert", r"R_{E} = 0.5 \cdot v_{exit} + 2", "R_{E}"),
+        (
+            "f_ev",
+            "paper1_nathan",
+            r"v_{exit} = 0.2 \cdot v_{pitch} + 1.2 \cdot v_{bat}",
+            "v_{exit}",
+        ),
+    ]
+
+    async with db.get_session() as session:
+        for fid, citekey, latex, lhs in raw_formulas:
+            doc = Document(id=citekey, citekey=citekey, title=f"Title {citekey}")
+            session.add(doc)
+            await session.flush()
+
+            ext = extractor.parse_latex_string(latex, formula_id=fid)
+            f_record = Formula(
+                id=fid,
+                document_id=doc.id,
+                citekey=citekey,
+                raw_latex=ext.raw_latex,
+                sanitized_latex=ext.sanitized_latex,
+                sympy_repr=str(ext.sympy_expr) if ext.sympy_expr is not None else None,
+                symbols=ext.symbols,
+                is_valid=ext.is_valid,
+                is_equality=ext.is_equality,
+                lhs=ext.lhs or lhs,
+                rhs=ext.rhs,
+            )
+            session.add(f_record)
+        await session.commit()
+
+    engine = FormulaChainingEngine(db_manager=db)
+    result = await engine.chain_between(
+        from_concept="BAT_SPEED",
+        to_concept="f_war",
+        max_depth=5,
+    )
+
+    assert result.to_concept == "f_war"
+    assert result.target_formula_id == "f_war"
+    assert len(result.trace_steps) >= 2
+    assert "paper1_nathan" in result.citekey_path
+    assert "paper2_albert" in result.citekey_path
+    assert "paper3_tango" in result.citekey_path
+
+    # The primitive symbols should contain v_bat and v_pitch
+    assert any("v_{b" in s or "bat" in s for s in result.primitive_symbols)
+    assert result.polars_code != ""
+
+    await db.close()

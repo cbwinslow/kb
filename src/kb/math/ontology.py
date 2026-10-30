@@ -81,6 +81,7 @@ class ConceptDefinition:
     aliases: list[str] = field(default_factory=list)
     description: str = ""
     domain: str = "baseball"
+    dimension: str = "dimensionless"
 
 
 class SymbolOntology:
@@ -575,12 +576,14 @@ class SymbolOntology:
                 latex_repr="v_{bat}",
                 aliases=["v_{bat}", "v_bat", "bat_speed", "BatSpeed", "batspeed", "vbat"],
                 description="Statcast bat tracking swing speed at point of contact (mph).",
+                dimension="velocity",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.SWING_LENGTH,
                 latex_repr="l_{swing}",
                 aliases=["l_{swing}", "l_swing", "swing_length", "SwingLength", "swinglength"],
                 description="Distance traveled by the sweet spot of the bat from start of swing to contact (ft).",
+                dimension="length",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.ATTACK_ANGLE,
@@ -593,6 +596,7 @@ class SymbolOntology:
                     "launch_angle_bat",
                 ],
                 description="Vertical angle of bat's path at point of contact (degrees).",
+                dimension="angle",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.FAST_SWING_RATE,
@@ -624,6 +628,7 @@ class SymbolOntology:
                     "ExitVelocity",
                 ],
                 description="Speed of the baseball off the bat upon batted ball event (mph).",
+                dimension="velocity",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.LEVERAGE_INDEX,
@@ -667,6 +672,7 @@ class SymbolOntology:
                 ],
                 description="Linear velocity or speed vector component (m/s or mph).",
                 domain="physics",
+                dimension="velocity",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.ACCELERATION,
@@ -686,6 +692,7 @@ class SymbolOntology:
                 ],
                 description="Linear acceleration vector component (m/s^2).",
                 domain="physics",
+                dimension="acceleration",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.TIME,
@@ -705,6 +712,7 @@ class SymbolOntology:
                 ],
                 description="Time interval or epoch timestamp (s).",
                 domain="physics",
+                dimension="time",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.MASS,
@@ -712,6 +720,7 @@ class SymbolOntology:
                 aliases=["m", "M", "m_{ball}", "m_{bat}", "m_b", "mass", "weight"],
                 description="Mass of projectile, implement, or body (kg or oz).",
                 domain="physics",
+                dimension="mass",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.FORCE,
@@ -730,6 +739,7 @@ class SymbolOntology:
                 ],
                 description="Vector force acting on projectile or body (N or lbf).",
                 domain="physics",
+                dimension="force",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.GRAVITY,
@@ -737,6 +747,7 @@ class SymbolOntology:
                 aliases=["g", "G", "g_0", "gravity"],
                 description="Standard gravitational acceleration (9.81 m/s^2 or 32.2 ft/s^2).",
                 domain="physics",
+                dimension="acceleration",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.AIR_DENSITY,
@@ -744,6 +755,7 @@ class SymbolOntology:
                 aliases=["\\rho", "rho", "\\rho_{air}", "rho_air", "air_density"],
                 description="Atmospheric air density (kg/m^3).",
                 domain="aerodynamics",
+                dimension="density",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.DRAG_COEFFICIENT,
@@ -760,6 +772,7 @@ class SymbolOntology:
                 ],
                 description="Dimensionless aerodynamic drag coefficient.",
                 domain="aerodynamics",
+                dimension="dimensionless",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.LIFT_COEFFICIENT,
@@ -776,6 +789,7 @@ class SymbolOntology:
                 ],
                 description="Dimensionless aerodynamic lift / Magnus coefficient.",
                 domain="aerodynamics",
+                dimension="dimensionless",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.ANGULAR_VELOCITY,
@@ -793,6 +807,7 @@ class SymbolOntology:
                 ],
                 description="Rotational velocity or spin rate (rad/s or rpm).",
                 domain="aerodynamics",
+                dimension="frequency",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.RADIUS_DISTANCE,
@@ -815,6 +830,7 @@ class SymbolOntology:
                 ],
                 description="Spatial coordinate, radius, or distance displacement (m or ft).",
                 domain="geometry",
+                dimension="length",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.PROBABILITY,
@@ -875,6 +891,7 @@ class SymbolOntology:
                 aliases=["E", "KE", "PE", "energy", "kinetic_energy"],
                 description="Mechanical kinetic or potential energy (J or ft-lbf).",
                 domain="physics",
+                dimension="energy",
             ),
             ConceptDefinition(
                 canonical_name=CanonicalConcept.MOMENTUM,
@@ -882,6 +899,7 @@ class SymbolOntology:
                 aliases=["p_{mom}", "momentum", "angular_momentum", "L_{ang}"],
                 description="Linear or angular momentum.",
                 domain="physics",
+                dimension="momentum",
             ),
         ]
 

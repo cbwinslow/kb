@@ -11,7 +11,7 @@ from kb.codegen.compiler import FormulaCompiler
 from kb.math.chaining import FormulaChainingEngine
 from kb.math.ontology import get_symbol_ontology
 from kb.storage.database import DatabaseManager
-from kb.storage.models import BenchmarkTable, Document, Formula
+from kb.storage.models import BenchmarkTable, Document, Figure, Formula
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +75,16 @@ class ConceptType:
 
 
 @strawberry.type
+class FigureType:
+    id: str
+    document_id: str
+    citekey: str
+    caption: str | None
+    figure_index: int
+    image_path: str | None
+
+
+@strawberry.type
 class DocumentType:
     id: str
     citekey: str
@@ -87,6 +97,7 @@ class DocumentType:
     citation_count: int = 0
     incoming_citation_count: int = 0
     outgoing_citation_count: int = 0
+    figures: list[FigureType] = strawberry.field(default_factory=list)
 
 
 @strawberry.type
@@ -107,6 +118,8 @@ class SubstitutionStepType:
     source_citekey: str
     original_expr: str
     substituted_expr: str
+    dimensional_valid: bool = True
+    dimensional_note: str = ""
 
 
 @strawberry.type
@@ -115,6 +128,23 @@ class DerivationChainType:
     target_citekey: str
     closed_form_latex: str
     primitive_symbols: list[str]
+    steps: list[SubstitutionStepType]
+    python_code: str | None
+    polars_code: str | None
+    is_dimensionally_valid: bool = True
+
+
+@strawberry.type
+class MultiHopChainType:
+    from_concept: str
+    to_concept: str
+    target_id: str
+    target_citekey: str
+    formula_path: list[str]
+    citekey_path: list[str]
+    closed_form_latex: str
+    primitive_symbols: list[str]
+    is_dimensionally_valid: bool
     steps: list[SubstitutionStepType]
     python_code: str | None
     polars_code: str | None
@@ -360,6 +390,24 @@ class Query:
                     )
                 ).scalar_one()
 
+                fig_stmt = (
+                    select(Figure)
+                    .where(Figure.document_id == d.id)
+                    .order_by(Figure.figure_index.asc())
+                )
+                fig_rows = (await session.execute(fig_stmt)).scalars().all()
+                doc_figs = [
+                    FigureType(
+                        id=f.id,
+                        document_id=f.document_id,
+                        citekey=f.citekey,
+                        caption=f.caption,
+                        figure_index=f.figure_index,
+                        image_path=f.image_path,
+                    )
+                    for f in fig_rows
+                ]
+
                 results.append(
                     DocumentType(
                         id=d.id,
@@ -377,6 +425,7 @@ class Query:
                         outgoing_citation_count=len(d.outgoing_citations)
                         if hasattr(d, "outgoing_citations")
                         else 0,
+                        figures=doc_figs,
                     )
                 )
             return results
@@ -398,6 +447,8 @@ class Query:
                     source_citekey=s.source_citekey,
                     original_expr=s.original_expr_str,
                     substituted_expr=s.substituted_expr_str,
+                    dimensional_valid=s.dimensional_valid,
+                    dimensional_note=s.dimensional_note,
                 )
                 for s in res.trace_steps
             ]
@@ -409,9 +460,55 @@ class Query:
                 steps=steps,
                 python_code=res.python_code,
                 polars_code=res.polars_code,
+                is_dimensionally_valid=res.is_dimensionally_valid,
             )
         except Exception as e:
             logger.error("Failed to chain formula %s: %s", target_id, e)
+            return None
+
+    @strawberry.field
+    async def equation_chain(
+        self,
+        from_concept: str,
+        to_concept: str,
+        max_depth: int = 5,
+    ) -> MultiHopChainType | None:
+        """Query multi-hop derivation chain connecting a source concept to a target concept."""
+        engine = FormulaChainingEngine()
+        try:
+            res = await engine.chain_between(
+                from_concept=from_concept,
+                to_concept=to_concept,
+                max_depth=max_depth,
+            )
+            steps = [
+                SubstitutionStepType(
+                    target_variable=s.target_variable,
+                    source_formula_id=s.source_formula_id,
+                    source_citekey=s.source_citekey,
+                    original_expr=s.original_expr_str,
+                    substituted_expr=s.substituted_expr_str,
+                    dimensional_valid=s.dimensional_valid,
+                    dimensional_note=s.dimensional_note,
+                )
+                for s in res.trace_steps
+            ]
+            return MultiHopChainType(
+                from_concept=res.from_concept,
+                to_concept=res.to_concept,
+                target_id=res.target_formula_id,
+                target_citekey=res.target_citekey,
+                formula_path=res.formula_path,
+                citekey_path=res.citekey_path,
+                closed_form_latex=res.closed_form_latex,
+                primitive_symbols=res.primitive_symbols,
+                is_dimensionally_valid=res.is_dimensionally_valid,
+                steps=steps,
+                python_code=res.python_code,
+                polars_code=res.polars_code,
+            )
+        except Exception as e:
+            logger.error("Failed to chain concepts %s -> %s: %s", from_concept, to_concept, e)
             return None
 
     @strawberry.field

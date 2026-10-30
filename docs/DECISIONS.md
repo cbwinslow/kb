@@ -393,6 +393,92 @@ This document records the architectural, technical, and mathematical decisions m
   - Eliminates false circular definition penalties and symbol recognition gaps across physics, mechanics, and aerodynamic papers.
   - Accelerates parameter space evaluation to $\approx 0.12$s per formula while guaranteeing finite domain robustness.
 
+---
+
+## ADR-029: Cross-Paper Multi-Hop Derivation Chaining & SymPy Dimensional Validation
+- **Status**: Accepted
+- **Context**:
+  - Formulas in quantitative literature often span distinct documents: micro-physical collision models (Nathan 2008) define exit velocity $v_{exit} = f(v_{pitch}, v_{bat})$, flight trajectory models derive batted-ball distance, linear weight models (Albert / Tango) derive run expectancy $\Delta RE$, and macroscopic valuation equations derive $WAR$.
+  - Without cross-paper derivation chaining, quantitative researchers cannot trace how low-level bat/pitch observables propagate into macroscopic value metrics or detect dimensional incompatibilities when substituting intermediate variables.
+- **Decision**:
+  1. **Dimensional Validation Engine (`src/kb/math/units.py`)**:
+     - Built `DimensionalValidator` leveraging `sympy.physics.units` and SI dimension systems (`SI.get_dimension_system()`).
+     - Annotated `ConceptDefinition` in `SymbolOntology` with physical dimensions (`velocity`, `acceleration`, `time`, `mass`, `force`, `energy`, `momentum`, `length`, `density`, `frequency`, `dimensionless`).
+     - Detects and flags physical unit mismatches during equation substitutions.
+  2. **Multi-Hop Chaining Pathfinder (`src/kb/math/chaining.py`)**:
+     - Implemented `chain_between(from_concept, to_concept, max_depth)` resolving cross-paper derivation paths via canonical concept mappings.
+     - Performs recursive AST composition with cycle detection, compiles unified closed-form expressions to vectorized Polars column expressions and Python callables, and formats step-by-step LaTeX derivation traces.
+  3. **CLI & GraphQL Query Endpoints**:
+     - Introduced `kb equations chain --from <concept> --to <concept>` (and `kb formulas chain`) supporting `--json`.
+     - Exposed `equationChain(fromConcept, toConcept)` resolver in GraphQL schema (`src/kb/graphql/schema.py`).
+- **Consequences**:
+  - Bridges equations across papers into unified closed-form derivation DAGs.
+  - Automatically verifies physical dimensional consistency during variable substitution.
+
+---
+
+## ADR-030: 2024–2026 Literature Harvester, Figure Entity Model, and SFTP Vault Archival
+- **Status**: Accepted
+- **Context**:
+  - The corpus lacked recent 2024–2026 preprints and papers on Hawk-Eye bat tracking, seam-shifted wake aerodynamics, and modern impact mechanics.
+  - Previous ingestion skipped figures and diagrams, losing visual charts and graphs directly referenced in scientific formulas.
+- **Decision**:
+  1. **Targeted 2024–2026 Academic Harvester (`src/kb/enrich/openalex.py`)**:
+     - Added `search_targeted_corpus` with OpenAlex 2024–2026 filters for bat tracking, seam-shifted wake, and biomechanics.
+     - Implemented `download_work_pdf` guarded by a 1.5 GB workstation disk space threshold check (`shutil.disk_usage`).
+  2. **Docling Figure Extraction & SFTP Remote Archival (`src/kb/ingest/parser.py`, `src/kb/sync/ssh.py`)**:
+     - Extracted `PictureItem` elements with captions, bounding boxes, and page numbers into `ExtractedFigure`.
+     - Saved image assets to homelab vault via `SSHStorageSync` (`/storage/figures/`) and recorded metadata in `kb_figures`.
+  3. **Autonomous Ingestion Citation Linking (`src/kb/ingest/pipeline.py`, `src/kb/sync/citations.py`)**:
+     - Hooked `CitationGraphBuilder.link_document(doc_id)` directly into `DoclingIngestionPipeline.ingest_pdf`, ensuring newly added papers immediately form edges in `kb_citations`.
+     - Extended `kb sync citations` with `--years` filter.
+  4. **REST & GraphQL Access**:
+     - Added `/api/documents/{id}/figures` endpoint in `src/kb/ui/app.py`.
+     - Added `figures` resolver to `DocumentType` in GraphQL schema (`src/kb/graphql/schema.py`).
+- **Consequences**:
+  - Expands the knowledge base into contemporary 2024–2026 literature.
+  - Figures and plots are preserved as first-class queryable entities.
+
+## ADR-031: Interactive Formula Quality Dashboard and One-Click Automated Repair UI
+- **Status**: Accepted
+- **Context**:
+  - Formulas extracted from complex LaTeX papers may contain malformed syntax, split multi-letter acronyms, or lack quality scores.
+  - Users and developers needed an interactive interface to view Tier 1–4 quality gate scorecards, filter formulas by letter grade (A–F), and repair formulas in-place with instant DOM feedback.
+- **Decision**:
+  1. **REST Endpoint for In-Place Repair (`POST /api/formulas/{id}/repair`)**:
+     - Connected endpoint to `CorpusFormulaRepairer.repair_single()` and `FormulaQualityGate.validate_formula()`.
+     - Automatically updates sanitized LaTeX, AST representations, symbols, validity, quality score, letter grade, and diagnostic scorecard in the database.
+  2. **Grade & Status Query Filtering (`GET /api/formulas`)**:
+     - Added `grade` and `status` query parameter filtering to `GET /api/formulas` in `src/kb/ui/app.py`.
+  3. **Interactive UI View (`#view-quality`)**:
+     - Added "Quality Gate & Repair" tab, grade filter buttons (All, A, B, C, D, F), and collapsible Tier 1–4 diagnostic drawer.
+     - Implemented 1-click asynchronous formula repair with dynamic DOM updates for grades, latex display, and scorecards.
+- **Consequences**:
+  - Provides a streamlined developer and user experience for diagnosing formula validity and repairing broken mathematical expressions without manual database edits.
+
+## ADR-032: Vectorized Code Generation and Empirical Benchmark Runner
+- **Status**: Accepted
+- **Context**:
+  - Formulas extracted from the corpus needed to be compiled into high-performance vectorized Polars expressions (`pl.Expr`) to enable high-throughput analytics across millions of tracking and event records.
+  - While scalar unit tests verified individual parameter combinations, evaluating mathematical accuracy at scale required empirical benchmarking against Parquet tables with automated parameter-to-column schema binding.
+- **Decision**:
+  1. **Parameterized Vectorized AST Compilation (`src/kb/library/generator.py`)**:
+     - Extended `FormulaLibraryGenerator.compile_formula()` to generate typed `pl.Expr` functions with parameter-aware column arguments (e.g. `def expr_...(col: str = "col") -> pl.Expr:`).
+     - Added `--grade` and `--min-score` filtering to `export_to_file()` to restrict standalone distribution `packages/kb_formulas` to verified Grade A equations.
+  2. **Automated Schema Binding via `SymbolOntology` (`src/kb/qa/accuracy.py`)**:
+     - Implemented `EmpiricalAccuracyRunner.bind_formula_to_table()` to dynamically resolve dataset columns to formula symbols, inject default physical constants, and identify target ground-truth variables.
+  3. **Vectorized Empirical Accuracy Benchmarking (`src/kb/qa/accuracy.py`)**:
+     - Evaluated expressions directly in Polars C++/Rust engine, computing MAE, RMSE, max relative error, and $R^2$.
+     - Automatically updated `kb_formulas.validation_details` with empirical benchmark telemetry and Tier 4 score credits.
+  4. **CLI Command Integration (`src/kb/cli.py`)**:
+     - Added `kb benchmark accuracy` and `kb benchmark --accuracy` commands supporting `--grade`, `--min-score`, `--dataset`, `--target-column`, and `--json`.
+- **Consequences**:
+  - Bridges the gap between static symbolic extraction and scalable data science pipelines, ensuring formulas can execute natively across Polars DataFrames with measured empirical fidelity.
+
+
+
+
+
 
 
 

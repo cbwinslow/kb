@@ -44,11 +44,13 @@ class CitationGraphBuilder:
     async def build_citation_graph(
         self,
         session: AsyncSession | None = None,
+        year_filter: tuple[int, int] | None = None,
     ) -> CitationGraphResult:
         """Scan stored documents, resolve referenced works, and populate kb_citations.
 
         Args:
             session: Optional existing AsyncSession.
+            year_filter: Optional tuple of (start_year, end_year) to filter documents.
 
         Returns:
             CitationGraphResult summarizing established citation edges.
@@ -56,19 +58,101 @@ class CitationGraphBuilder:
         start_time = time.perf_counter()
 
         if session is not None:
-            return await self._execute_build(session, start_time)
+            return await self._execute_build(session, start_time, year_filter=year_filter)
 
         async with self.db_manager.get_session() as sess:
-            return await self._execute_build(sess, start_time)
+            return await self._execute_build(sess, start_time, year_filter=year_filter)
+
+    async def link_document(
+        self,
+        document_id: str,
+        session: AsyncSession | None = None,
+    ) -> int:
+        """Resolve and persist citation edges for a single document against corpus works.
+
+        Args:
+            document_id: Database ID of the document.
+            session: Optional existing AsyncSession.
+
+        Returns:
+            Number of citation links created.
+        """
+        if session is not None:
+            return await self._execute_link_single(session, document_id)
+
+        async with self.db_manager.get_session() as sess:
+            return await self._execute_link_single(sess, document_id)
+
+    async def _execute_link_single(
+        self,
+        session: AsyncSession,
+        document_id: str,
+    ) -> int:
+        """Internal helper linking a single document's references."""
+        doc = (
+            await session.execute(select(Document).where(Document.id == document_id))
+        ).scalar_one_or_none()
+        if not doc or not doc.referenced_works:
+            return 0
+
+        all_docs = (await session.execute(select(Document.id, Document.openalex_id))).all()
+        oa_map: dict[str, str] = {}
+        for d_id, oa_id in all_docs:
+            if oa_id:
+                clean = oa_id.strip()
+                oa_map[clean] = d_id
+                if "/" in clean:
+                    oa_map[clean.split("/")[-1]] = d_id
+
+        existing = (
+            (
+                await session.execute(
+                    select(CitationLink.cited_openalex_id).where(
+                        CitationLink.citing_document_id == document_id
+                    )
+                )
+            )
+            .scalars()
+            .all()
+        )
+        existing_set = set(existing)
+
+        edges_added = 0
+        for ref_id in doc.referenced_works:
+            ref_clean = str(ref_id).strip()
+            if ref_clean in existing_set:
+                continue
+
+            short_ref = ref_clean.split("/")[-1] if "/" in ref_clean else ref_clean
+            matched_id = oa_map.get(ref_clean) or oa_map.get(short_ref)
+
+            link = CitationLink(
+                citing_document_id=doc.id,
+                cited_document_id=matched_id,
+                cited_openalex_id=ref_clean,
+            )
+            session.add(link)
+            existing_set.add(ref_clean)
+            edges_added += 1
+
+        if edges_added > 0:
+            await session.commit()
+
+        return edges_added
 
     async def _execute_build(
         self,
         session: AsyncSession,
         start_time: float,
+        year_filter: tuple[int, int] | None = None,
     ) -> CitationGraphResult:
         """Internal worker executing citation resolution and persistence."""
         # 1. Fetch all documents in corpus
         stmt = select(Document)
+        if year_filter:
+            stmt = stmt.where(Document.year >= year_filter[0]).where(
+                Document.year <= year_filter[1]
+            )
         docs = (await session.execute(stmt)).scalars().all()
 
         # Build index: OpenAlex ID (and URL) -> Document ID
