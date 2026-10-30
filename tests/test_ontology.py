@@ -143,3 +143,42 @@ def test_statcast_and_situational_resolution() -> None:
     assert ont.resolve_canonical("leverage_index") == CanonicalConcept.LEVERAGE_INDEX
     assert ont.resolve_canonical("RE") == CanonicalConcept.RUN_EXPECTANCY
     assert ont.resolve_canonical("run_expectancy") == CanonicalConcept.RUN_EXPECTANCY
+
+
+def test_scientific_and_physical_concept_resolution() -> None:
+    """Verify resolution of foundational scientific, kinematic, aerodynamic, and statistical concepts."""
+    ont = get_symbol_ontology()
+
+    # Kinematics & Mechanics
+    assert ont.resolve_canonical("v") == CanonicalConcept.VELOCITY
+    assert ont.resolve_canonical("v_0") == CanonicalConcept.VELOCITY
+    assert ont.resolve_canonical("a") == CanonicalConcept.ACCELERATION
+    assert ont.resolve_canonical("t") == CanonicalConcept.TIME
+    assert ont.resolve_canonical("m") == CanonicalConcept.MASS
+    assert ont.resolve_canonical("F") == CanonicalConcept.FORCE
+    assert ont.resolve_canonical("g") == CanonicalConcept.GRAVITY
+    assert ont.resolve_canonical("E") == CanonicalConcept.ENERGY
+
+    # Aerodynamics
+    assert ont.resolve_canonical("\\rho") == CanonicalConcept.AIR_DENSITY
+    assert ont.resolve_canonical("rho") == CanonicalConcept.AIR_DENSITY
+    assert ont.resolve_canonical("C_d") == CanonicalConcept.DRAG_COEFFICIENT
+    assert ont.resolve_canonical("c_d") == CanonicalConcept.DRAG_COEFFICIENT
+    assert ont.resolve_canonical("C_l") == CanonicalConcept.LIFT_COEFFICIENT
+    assert ont.resolve_canonical("\\omega") == CanonicalConcept.ANGULAR_VELOCITY
+    assert ont.resolve_canonical("spin_rate") == CanonicalConcept.ANGULAR_VELOCITY
+
+    # Geometry & Distance
+    assert ont.resolve_canonical("r") == CanonicalConcept.RADIUS_DISTANCE
+    assert ont.resolve_canonical("d") == CanonicalConcept.RADIUS_DISTANCE
+    assert ont.resolve_canonical("x") == CanonicalConcept.RADIUS_DISTANCE
+
+    # Statistics & Probability
+    assert ont.resolve_canonical("P") == CanonicalConcept.PROBABILITY
+    assert ont.resolve_canonical("prob") == CanonicalConcept.PROBABILITY
+    assert ont.resolve_canonical("\\mu") == CanonicalConcept.MEAN
+    assert ont.resolve_canonical("mean") == CanonicalConcept.MEAN
+    assert ont.resolve_canonical("\\sigma") == CanonicalConcept.VARIANCE_STDDEV
+    assert ont.resolve_canonical("sigma") == CanonicalConcept.VARIANCE_STDDEV
+    assert ont.resolve_canonical("N") == CanonicalConcept.SAMPLE_SIZE
+    assert ont.resolve_canonical("r_sq") == CanonicalConcept.CORRELATION

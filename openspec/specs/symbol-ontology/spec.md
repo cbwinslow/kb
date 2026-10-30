@@ -28,3 +28,14 @@ The system SHALL maintain canonical concept definitions and aliases for modern S
 #### Scenario: Resolving situational run expectancy and leverage
 - **WHEN** variables such as $\Delta RE$, $RE$, $LI$, or $WPA$ are resolved
 - **THEN** system maps them to canonical concepts 'run_expectancy' and 'leverage_index'
+
+### Requirement: Universal Physical and Statistical Scientific Concepts
+The system SHALL maintain canonical concept definitions and extensive aliases for foundational physical, aerodynamic, and statistical variables in addition to sabermetric metrics.
+
+#### Scenario: Resolving foundational physical symbols
+- **WHEN** variables such as $v, a, t, m, F, \rho, C_d, \omega, r, d$ are resolved
+- **THEN** the system maps them to canonical concepts 'velocity', 'acceleration', 'time', 'mass', 'force', 'air_density', 'drag_coefficient', 'angular_velocity', 'radius_distance'
+
+#### Scenario: Resolving foundational statistical symbols
+- **WHEN** variables such as $P, p, \mu, \sigma, N, n$ are resolved
+- **THEN** the system maps them to canonical concepts 'probability', 'mean', 'variance_stddev', 'sample_size'

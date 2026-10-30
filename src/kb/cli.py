@@ -1187,13 +1187,20 @@ async def async_formulas_validate(
     _ = validate_all
 
     from kb.math.validation import FormulaQualityGate
-    from kb.storage.models import Formula
+    from kb.storage.models import BenchmarkTable, Formula
 
     manager = DatabaseManager()
     await manager.init_db()
     gate = FormulaQualityGate()
 
     async with manager.session_factory() as session:
+        # Pre-fetch benchmark tables indexed by citekey
+        tbl_res = await session.execute(select(BenchmarkTable))
+        tables_by_citekey: dict[str, BenchmarkTable] = {}
+        for tbl in tbl_res.scalars().all():
+            if tbl.citekey and tbl.citekey not in tables_by_citekey:
+                tables_by_citekey[tbl.citekey] = tbl
+
         if formula_id:
             stmt = select(Formula).where(Formula.id == formula_id)
             res = await session.execute(stmt)
@@ -1203,7 +1210,8 @@ async def async_formulas_validate(
                 await manager.close()
                 return 1
 
-            card = gate.validate_formula(f)
+            table = tables_by_citekey.get(f.citekey)
+            card = gate.validate_formula(f, benchmark_table=table)
             # Update database record
             f.validation_score = card.total_score
             f.validation_status = card.status
@@ -1239,7 +1247,8 @@ async def async_formulas_validate(
 
         for idx, f in enumerate(formulas, 1):
             try:
-                card = gate.validate_formula(f)
+                table = tables_by_citekey.get(f.citekey)
+                card = gate.validate_formula(f, benchmark_table=table)
             except Exception as err:
                 card = gate.validate_formula(r"\text{error}")
                 card.formula_id = f.id

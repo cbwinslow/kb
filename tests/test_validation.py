@@ -158,6 +158,54 @@ def test_scorecard_markdown_generation() -> None:
     assert "[PASS]" in md
 
 
+def test_quality_gate_functional_definition_not_cyclic() -> None:
+    """Verify applied function definitions (f(x) = x^2 + 1) are not falsely flagged as cyclic recursion."""
+    gate = FormulaQualityGate()
+    card = gate.validate_formula(r"f(x) = x^2 + 1")
+
+    acyclic_check = next(
+        (c for c in card.checks if c.name == "Acyclic Definition Sanity"),
+        None,
+    )
+    assert acyclic_check is not None
+    assert acyclic_check.passed is True
+    assert acyclic_check.score == 7.0
+
+
+def test_quality_gate_evalf_applied_and_greek_functions() -> None:
+    """Verify expressions with undefined functions and Greek symbols evaluate without namespace errors."""
+    gate = FormulaQualityGate()
+    card = gate.validate_formula(r"F = 0.5 \cdot \rho \cdot v^2")
+
+    finite_check = next(
+        (c for c in card.checks if c.name == "Parameter Space Finite Evaluation"),
+        None,
+    )
+    assert finite_check is not None
+    assert finite_check.passed is True
+    assert finite_check.score == 13.0
+
+
+def test_quality_gate_benchmark_table_linkage() -> None:
+    """Verify benchmark table linkage awards 25.0 points in Tier 4."""
+    from unittest.mock import MagicMock
+
+    gate = FormulaQualityGate()
+    mock_table = MagicMock()
+    mock_table.id = "tbl_sample_123"
+    mock_table.parquet_path = "storage/tables/sample.parquet"
+
+    card = gate.validate_formula(r"y = 2 \cdot x", benchmark_table=mock_table)
+
+    tier4_check = next(
+        (c for c in card.checks if c.tier == ValidationTier.TIER4_EMPIRICAL_BENCHMARK),
+        None,
+    )
+    assert tier4_check is not None
+    assert tier4_check.passed is True
+    assert tier4_check.score == 25.0
+
+
 def test_formula_model_validation_fields() -> None:
     """Verify SQLAlchemy Formula model has the new validation columns."""
     f = Formula(

@@ -52,6 +52,24 @@ class CanonicalConcept(StrEnum):
     EXIT_VELOCITY = "exit_velocity"
     LEVERAGE_INDEX = "leverage_index"
     RUN_EXPECTANCY = "run_expectancy"
+    VELOCITY = "velocity"
+    ACCELERATION = "acceleration"
+    TIME = "time"
+    MASS = "mass"
+    FORCE = "force"
+    GRAVITY = "gravity"
+    AIR_DENSITY = "air_density"
+    DRAG_COEFFICIENT = "drag_coefficient"
+    LIFT_COEFFICIENT = "lift_coefficient"
+    ANGULAR_VELOCITY = "angular_velocity"
+    RADIUS_DISTANCE = "radius_distance"
+    PROBABILITY = "probability"
+    MEAN = "mean"
+    VARIANCE_STDDEV = "variance_stddev"
+    SAMPLE_SIZE = "sample_size"
+    CORRELATION = "correlation"
+    ENERGY = "energy"
+    MOMENTUM = "momentum"
 
 
 @dataclass(frozen=True)
@@ -128,6 +146,10 @@ class SymbolOntology:
         s = str(symbol).strip()
         # Remove LaTeX math delimiters
         s = s.strip("$")
+
+        # Handle special accent wrappers like \bar{x} -> x_bar, \hat{x} -> x_hat
+        s = re.sub(r"\\(?:bar|overline)\{([^}]+)\}", r"\1_bar", s)
+        s = re.sub(r"\\hat\{([^}]+)\}", r"\1_hat", s)
 
         # Strip standard LaTeX font and text wrappers: \text{...}, \mathrm{...}, \mathbf{...}
         s = re.sub(r"\\[a-zA-Z]+\{([^}]+)\}", r"\1", s)
@@ -622,6 +644,244 @@ class SymbolOntology:
                     "delta_re",
                 ],
                 description="Expected runs scored from a specific base-out state through the end of the inning.",
+            ),
+            # Universal scientific, physical, and statistical concepts
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.VELOCITY,
+                latex_repr="v",
+                aliases=[
+                    "v",
+                    "V",
+                    "v_0",
+                    "v_x",
+                    "v_y",
+                    "v_z",
+                    "v_{0}",
+                    "v_{x}",
+                    "v_{y}",
+                    "v_{z}",
+                    "\\vec{v}",
+                    "vel",
+                    "velocity",
+                    "speed",
+                ],
+                description="Linear velocity or speed vector component (m/s or mph).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.ACCELERATION,
+                latex_repr="a",
+                aliases=[
+                    "a",
+                    "A",
+                    "a_x",
+                    "a_y",
+                    "a_z",
+                    "a_{x}",
+                    "a_{y}",
+                    "a_{z}",
+                    "\\vec{a}",
+                    "accel",
+                    "acceleration",
+                ],
+                description="Linear acceleration vector component (m/s^2).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.TIME,
+                latex_repr="t",
+                aliases=[
+                    "t",
+                    "T",
+                    "\\Delta t",
+                    "\\delta t",
+                    "delta_t",
+                    "t_0",
+                    "t_{0}",
+                    "t_f",
+                    "t_{flight}",
+                    "time",
+                    "duration",
+                ],
+                description="Time interval or epoch timestamp (s).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.MASS,
+                latex_repr="m",
+                aliases=["m", "M", "m_{ball}", "m_{bat}", "m_b", "mass", "weight"],
+                description="Mass of projectile, implement, or body (kg or oz).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.FORCE,
+                latex_repr="F",
+                aliases=[
+                    "F",
+                    "f",
+                    "\\vec{F}",
+                    "F_{drag}",
+                    "F_{magnus}",
+                    "F_{gravity}",
+                    "F_d",
+                    "F_m",
+                    "F_g",
+                    "force",
+                ],
+                description="Vector force acting on projectile or body (N or lbf).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.GRAVITY,
+                latex_repr="g",
+                aliases=["g", "G", "g_0", "gravity"],
+                description="Standard gravitational acceleration (9.81 m/s^2 or 32.2 ft/s^2).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.AIR_DENSITY,
+                latex_repr="\\rho",
+                aliases=["\\rho", "rho", "\\rho_{air}", "rho_air", "air_density"],
+                description="Atmospheric air density (kg/m^3).",
+                domain="aerodynamics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.DRAG_COEFFICIENT,
+                latex_repr="C_d",
+                aliases=[
+                    "C_d",
+                    "c_d",
+                    "C_D",
+                    "c_D",
+                    "C_{d}",
+                    "C_{D}",
+                    "drag_coef",
+                    "drag_coefficient",
+                ],
+                description="Dimensionless aerodynamic drag coefficient.",
+                domain="aerodynamics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.LIFT_COEFFICIENT,
+                latex_repr="C_l",
+                aliases=[
+                    "C_l",
+                    "c_l",
+                    "C_L",
+                    "c_L",
+                    "C_{l}",
+                    "C_{L}",
+                    "lift_coef",
+                    "lift_coefficient",
+                ],
+                description="Dimensionless aerodynamic lift / Magnus coefficient.",
+                domain="aerodynamics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.ANGULAR_VELOCITY,
+                latex_repr="\\omega",
+                aliases=[
+                    "\\omega",
+                    "omega",
+                    "\\vec{\\omega}",
+                    "spin",
+                    "spin_rate",
+                    "rpm",
+                    "omega_x",
+                    "omega_y",
+                    "omega_z",
+                ],
+                description="Rotational velocity or spin rate (rad/s or rpm).",
+                domain="aerodynamics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.RADIUS_DISTANCE,
+                latex_repr="r",
+                aliases=[
+                    "r",
+                    "R",
+                    "d",
+                    "x",
+                    "y",
+                    "z",
+                    "h",
+                    "\\Delta x",
+                    "\\Delta y",
+                    "\\Delta z",
+                    "dist",
+                    "distance",
+                    "radius",
+                    "coord",
+                ],
+                description="Spatial coordinate, radius, or distance displacement (m or ft).",
+                domain="geometry",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.PROBABILITY,
+                latex_repr="P",
+                aliases=["P", "p", "\\Pr", "Pr", "prob", "probability"],
+                description="Probability measure bounded in [0, 1].",
+                domain="statistics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.MEAN,
+                latex_repr="\\mu",
+                aliases=["\\mu", "mu", "\\bar{x}", "bar_x", "mean", "expectation"],
+                description="Mathematical expectation or arithmetic mean.",
+                domain="statistics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.VARIANCE_STDDEV,
+                latex_repr="\\sigma",
+                aliases=[
+                    "\\sigma",
+                    "sigma",
+                    "\\sigma^2",
+                    "sigma_sq",
+                    "s^2",
+                    "std",
+                    "variance",
+                    "stddev",
+                    "var",
+                ],
+                description="Population or sample standard deviation and variance.",
+                domain="statistics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.SAMPLE_SIZE,
+                latex_repr="N",
+                aliases=["N", "n", "sample_size", "sample_count", "num_observations"],
+                description="Total sample count or discrete population size.",
+                domain="statistics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.CORRELATION,
+                latex_repr="r",
+                aliases=[
+                    "corr",
+                    "correlation",
+                    "r_{xy}",
+                    "R^2",
+                    "r_sq",
+                    "r_squared",
+                    "pearson_r",
+                ],
+                description="Correlation coefficient or coefficient of determination (R^2).",
+                domain="statistics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.ENERGY,
+                latex_repr="E",
+                aliases=["E", "KE", "PE", "energy", "kinetic_energy"],
+                description="Mechanical kinetic or potential energy (J or ft-lbf).",
+                domain="physics",
+            ),
+            ConceptDefinition(
+                canonical_name=CanonicalConcept.MOMENTUM,
+                latex_repr="p",
+                aliases=["p_{mom}", "momentum", "angular_momentum", "L_{ang}"],
+                description="Linear or angular momentum.",
+                domain="physics",
             ),
         ]
 
