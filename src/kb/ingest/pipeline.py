@@ -560,14 +560,31 @@ class IngestionPipeline:
                 )
                 session.add(tbl_record)
 
-            # 6. Save extracted figures
+            # 6. Save extracted figures and upload image assets to homelab vault
             for fig in getattr(parsed_doc, "figures", []):
+                remote_fig_path = f"/storage/figures/{source.citekey}_fig_{fig.figure_index}.png"
+                if fig.image_bytes:
+                    try:
+                        import tempfile
+
+                        from kb.sync.ssh import SSHStorageSync
+
+                        ssh_sync = SSHStorageSync()
+                        if ssh_sync.is_configured:
+                            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_fig:
+                                tmp_fig.write(fig.image_bytes)
+                                tmp_fig_path = Path(tmp_fig.name)
+                            ssh_sync.upload_file(tmp_fig_path, remote_fig_path)
+                            tmp_fig_path.unlink(missing_ok=True)
+                    except Exception as exc:
+                        logger.debug("Figure upload to homelab vault skipped: %s", exc)
+
                 fig_record = Figure(
                     document_id=doc_record.id,
                     citekey=source.citekey,
                     caption=fig.caption,
                     figure_index=fig.figure_index,
-                    image_path=f"/storage/figures/{source.citekey}_fig_{fig.figure_index}.png",
+                    image_path=remote_fig_path,
                     structure_metadata={
                         "bbox": fig.bounding_box,
                         "page_no": fig.page_no,

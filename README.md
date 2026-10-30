@@ -138,17 +138,29 @@ uv run kb search "Pythagorean expectation formula" --limit 5
 uv run kb ask "How is park-adjusted win probability calculated?"
 ```
 
+### Multi-Hop Equation Chaining & System Solving
+```bash
+# Find and solve multi-hop symbolic derivation chain connecting concepts across papers
+uv run kb equations chain --from "BAT_SPEED" --to "WAR" --max-depth 5
+
+# Chain formulas from a specific root equation with JSON output
+uv run kb formulas chain --formula-id "form_woba" --max-depth 4 --json
+```
+
 ### Interactive UI Dashboard & Live Evaluation API
 ```bash
-# Launch interactive dashboard and live formula evaluation server
+# Launch interactive dashboard with Quality Gate, 1-click repair, and formula playground
 uv run kb ui serve --host 127.0.0.1 --port 8080
-# Endpoints include: /api/stats, /api/lineage, /api/formulas, /api/tables, /api/search, /api/eval
+# Endpoints include: /api/stats, /api/lineage, /api/formulas, /api/tables, /api/search, /api/eval, /api/formulas/{id}/repair, /api/documents/{id}/figures
 ```
 
 ### Performance & Quality Benchmarking Suite
 ```bash
 # Run complete benchmark suite (Scalar vs. Polars speed, embedding latency, search, quality)
 uv run kb benchmark --all
+
+# Run empirical accuracy benchmark against Parquet datasets for Grade A formulas
+uv run kb benchmark accuracy --grade A --limit 50
 
 # Benchmark formula execution throughput on 100,000 rows
 uv run kb benchmark --formulas --rows 100000

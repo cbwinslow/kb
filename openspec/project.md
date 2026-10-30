@@ -62,13 +62,14 @@ FastMCP Server (LAN / ZeroTier)
 * **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and Polars expressions.
 * **Storage Protocol**: Direct encrypted SSH/SFTP synchronization to homelab vault with automatic workstation disk space protection.
 * **Semantic Symbol Ontology**: `SymbolOntology` managing canonical concept registries, author variable aliases, and zero-copy DataFrame column binding for Polars/Pandas.
-* **Equation Chaining & Solver**: `FormulaChainingEngine` providing recursive cross-paper variable substitution, closed-form equation generation, and simultaneous linear system solving via SymPy.
+* **Equation Chaining & Solver**: `FormulaChainingEngine` and `DimensionalValidator` providing recursive cross-paper variable substitution, SI physical dimensional consistency checks, closed-form equation generation, and multi-hop concept pathfinding.
+* **Literature Expansion & Figures**: Targeted 2024–2026 OpenAlex harvester (bat tracking, seam-shifted wake aerodynamics), Docling `PictureItem` figure extraction with homelab SFTP vaulting, and autonomous citation graph linking.
 * **Web Glossary Harvester**: `WebGlossaryHarvester` for ingesting HTML web articles and canonical sabermetric glossaries (FanGraphs, Tom Tango) into clean Markdown with LaTeX math preservation.
-* **Knowledge Graph & GraphQL**: Multi-layer relational GraphQL API schema (`strawberry-graphql`) connecting Documents, Formulas, Variables, Canonical Concepts, Benchmark Tables, and Derivation Chains.
+* **Knowledge Graph & GraphQL**: Multi-layer relational GraphQL API schema (`strawberry-graphql`) connecting Documents, Formulas, Figures, Variables, Canonical Concepts, Benchmark Tables, and Derivation Chains.
 * **Formula Coverage & Repair**: `FormulaCoverageAnalyzer` and `CorpusFormulaRepairer` auditing formula yield, symbol utilization (LHS vs RHS), non-ASCII character distributions, and progressive in-place AST recovery.
-* **Interactive Web Dashboard**: Starlette web application (`kb ui serve`) with interactive Lineage DAG, Formula Playground with parameter sensitivity curves, Knowledge-to-Code generator, and Coverage Scorecard.
+* **Interactive Web Dashboard**: Starlette web application (`kb ui serve`) with interactive Lineage DAG, Formula Playground with parameter sensitivity curves, Quality Gate with Tier 1–4 diagnostic drawers and 1-click automated repair, and Coverage Scorecard.
 * **Observability & QA**: Centralized rotating structured logging, execution telemetry, and ground-truth numerical accuracy verification.
-* **Benchmarking Engine**: `PerformanceBenchmarker` measuring scalar vs. Polars throughput, embedding latency, and corpus quality yields.
+* **Benchmarking Engine**: `PerformanceBenchmarker` and `EmpiricalAccuracyRunner` measuring scalar vs. Polars throughput, embedding latency, corpus quality yields, and empirical MAE/RMSE/$R^2$ against Parquet tracking datasets.
 * **Package Management**: `uv`.
 * **Quality Gates**: `ruff` (linting & formatting), `pyright` (strict typing), `pytest` (test suite).
 * **Architecture Decisions**: Fully documented in [`docs/DECISIONS.md`](../docs/DECISIONS.md).
