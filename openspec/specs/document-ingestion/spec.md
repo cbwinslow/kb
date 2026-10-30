@@ -97,7 +97,7 @@ The system SHALL provide domain-agnostic pipeline abstractions that decouple doc
 - **THEN** the pipeline runs parser, extractor, table, chunker, embedder, and persistence stages sequentially without domain-specific hardcoding, returning execution summary statistics.
 
 #### Scenario: Existing document deduplication
-- **WHEN** a paper source has a citekey or DOI matching an existing record in `kb_documents`
+- **WHEN** a paper source has a citekey, DOI, OpenAlex ID, arXiv ID, or normalized title matching an existing record in `kb_documents`
 - **THEN** the pipeline skips parsing and re-embedding unless an explicit overwrite flag is enabled.
 
 #### Scenario: Isolated document failure
@@ -125,3 +125,14 @@ The system SHALL support bulk paper discovery from OpenAlex queries using high-y
 #### Scenario: Open-access PDF retrieval
 - **WHEN** an OpenAlex work includes an open-access PDF URL
 - **THEN** the runner downloads the PDF to a staging location and enqueues it into the ingestion pipeline with canonical OpenAlex metadata.
+
+### Requirement: Pre-Download Multi-Attribute Candidate Filtering
+The system SHALL verify whether a candidate paper exists in the local database or storage vault across multiple attributes before initiating remote HTTP payload downloads.
+
+#### Scenario: Pre-download duplicate avoidance for OpenAlex and arXiv works
+- **WHEN** a candidate work from OpenAlex or arXiv is evaluated for harvesting
+- **THEN** system queries existing database records for matching DOI, OpenAlex ID, arXiv ID, citekey, or normalized title and skips HTTP PDF retrieval if already present.
+
+#### Scenario: Candidate resolution with partial metadata
+- **WHEN** a candidate paper only has a title and author list without DOI or external ID
+- **THEN** system performs normalized title comparison (case-insensitive, punctuation-stripped) against indexed documents and reports candidate match before downloading.

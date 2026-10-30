@@ -5,6 +5,7 @@ from __future__ import annotations
 import uuid
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 import pytest
 from docling_core.types.doc.document import DoclingDocument
@@ -175,5 +176,96 @@ async def test_batch_runner_isolated_error_resilience(tmp_path: Path) -> None:
     assert len(stats.errors) == 1
     assert stats.errors[0][0] == "broken_paper"
     assert progress_reports == ["success", "error"]
+
+    await db.close()
+
+
+@pytest.mark.asyncio
+async def test_openalex_discoverer_pre_download_dedup(tmp_path: Path) -> None:
+    """Verifies that OpenAlexSourceDiscoverer skips downloading PDFs for already-ingested papers."""
+    from unittest.mock import MagicMock
+
+    from kb.enrich.openalex import OpenAlexClient, OpenAlexWork
+    from kb.ingest.pipeline import OpenAlexSourceDiscoverer
+    from kb.storage.models import Document
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_oa_dedup_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    async with db.get_session() as session:
+        doc = Document(
+            id="doc_oa_1",
+            citekey="openalex_smith2023_w1111",
+            title="Statistical Mechanics of Baseball Pitching",
+            openalex_id="W1111",
+            doi="10.1000/oa.1",
+        )
+        session.add(doc)
+        await session.commit()
+
+    mock_client = MagicMock(spec=OpenAlexClient)
+    mock_client.base_url = "https://api.openalex.org"
+    mock_client.transport = None
+    mock_client.get_headers.return_value = {"User-Agent": "test"}
+
+    work1 = OpenAlexWork(
+        id="https://openalex.org/W1111",
+        title="Statistical Mechanics of Baseball Pitching",
+        doi="10.1000/oa.1",
+        authors=["Jane Smith"],
+        publication_year=2023,
+        cited_by_count=42,
+        pdf_url="https://example.com/pdf1.pdf",
+    )
+    work2 = OpenAlexWork(
+        id="https://openalex.org/W2222",
+        title="New Novel Study of Exit Velocity",
+        doi="10.1000/oa.2",
+        authors=["Bob Jones"],
+        publication_year=2024,
+        cited_by_count=5,
+        pdf_url="https://example.com/pdf2.pdf",
+    )
+
+    def parse_side_effect(item: dict[str, Any]) -> OpenAlexWork:
+        if item.get("id") == "W1111":
+            return work1
+        return work2
+
+    mock_client.parse_work_json.side_effect = parse_side_effect
+
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "results": [{"id": "W1111"}, {"id": "W2222"}]
+    }
+
+    discoverer = OpenAlexSourceDiscoverer(
+        openalex_client=mock_client,
+        download_dir=tmp_path / "oa_downloads",
+        db_manager=db,
+    )
+
+    pdf_download_called_urls: list[str] = []
+
+    async def mock_get(_client: Any, url: str, **_kwargs: Any) -> MagicMock:
+        if "api.openalex.org" in url:
+            return mock_resp
+        pdf_download_called_urls.append(url)
+        mock_pdf_resp = MagicMock()
+        mock_pdf_resp.status_code = 200
+        mock_pdf_resp.content = b"%PDF-1.4 " + (b"A" * 1500)
+        return mock_pdf_resp
+
+    with patch("httpx.AsyncClient.get", new=mock_get):
+        sources = await discoverer.discover(query="baseball", limit=10)
+
+    # work1 should have been skipped BEFORE calling get(work1.pdf_url)
+    assert len(sources) == 1
+    assert sources[0].title == "New Novel Study of Exit Velocity"
+    assert "https://example.com/pdf1.pdf" not in pdf_download_called_urls
+    assert "https://example.com/pdf2.pdf" in pdf_download_called_urls
 
     await db.close()

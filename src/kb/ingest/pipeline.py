@@ -25,6 +25,7 @@ from kb.ingest.chunker import (
     DocumentChunker,
     EnrichedChunk,
 )
+from kb.ingest.dedup import DuplicateResolver
 from kb.ingest.parser import DoclingParser
 from kb.ingest.tables import TableExtractor
 from kb.math.extractor import ExtractedFormula, FormulaExtractor
@@ -247,31 +248,41 @@ class DirectorySourceDiscoverer:
 
 
 class OpenAlexSourceDiscoverer:
-    """Discovers Open Access research papers via OpenAlex API queries with high-yield paging."""
+    """Discovers Open Access research papers via OpenAlex API queries with high-yield paging and smart deduplication."""
 
     def __init__(
         self,
         openalex_client: OpenAlexClient,
         download_dir: Path | str,
         timeout: float = 30.0,
+        db_manager: DatabaseManager | None = None,
+        dedup_resolver: DuplicateResolver | None = None,
     ) -> None:
         self.client = openalex_client
         self.download_dir = Path(download_dir)
         self.timeout = timeout
+        if dedup_resolver is not None:
+            self.dedup_resolver: DuplicateResolver | None = dedup_resolver
+        elif db_manager is not None:
+            self.dedup_resolver = DuplicateResolver(db_manager)
+        else:
+            self.dedup_resolver = None
 
     async def discover(
         self,
         query: str,
         limit: int = 50,
         per_page: int = 50,
+        sort: str = "cited_by_count:desc",
     ) -> list[PaperSource]:
-        """Queries OpenAlex for relevant OA works and downloads candidate PDFs."""
+        """Queries OpenAlex for relevant OA works and downloads candidate PDFs with pre-download deduplication."""
         self.download_dir.mkdir(parents=True, exist_ok=True)
         url = f"{self.client.base_url}/works"
         params: dict[str, Any] = {
             "search": query,
             "filter": "has_oa_accepted_or_published_version:true",
             "per-page": min(per_page, 100),
+            "sort": sort,
         }
 
         discovered_sources: list[PaperSource] = []
@@ -301,6 +312,24 @@ class OpenAlexSourceDiscoverer:
                     author_slug = re.sub(r"[^\w]", "", work.authors[0].split()[-1].lower())
                 year_slug = str(work.publication_year or "undated")
                 citekey = f"openalex_{author_slug}{year_slug}_{work.short_id.lower()}"
+
+                # Pre-download deduplication check
+                if self.dedup_resolver is not None:
+                    dup_match = await self.dedup_resolver.check_candidate(
+                        citekey=citekey,
+                        doi=work.doi,
+                        openalex_id=work.short_id,
+                        title=work.title,
+                        authors=work.authors,
+                        year=work.publication_year,
+                    )
+                    if dup_match.is_duplicate:
+                        logger.info(
+                            "Skipping pre-download candidate '%s': %s",
+                            citekey,
+                            dup_match.details,
+                        )
+                        continue
 
                 target_pdf = self.download_dir / f"{citekey}.pdf"
                 if not target_pdf.exists():
@@ -343,8 +372,10 @@ class IngestionPipeline:
         openalex_client: OpenAlexClient | None = None,
         fixtures_dir: Path | str = "data/fixtures",
         gpu_memory_fraction: float | None = 0.55,
+        dedup_resolver: DuplicateResolver | None = None,
     ) -> None:
         self.db = db_manager
+        self.dedup_resolver = dedup_resolver or DuplicateResolver(db_manager)
         self.embedder = embedder or LocalEmbeddingGenerator()
         self.parser = parser or DoclingParser()
         self.chunker = chunker or DocumentChunker()
@@ -382,15 +413,22 @@ class IngestionPipeline:
             )
 
         # 0. Deduplication check
-        async with self.db.get_session() as session:
-            stmt = select(Document).where(Document.citekey == source.citekey)
-            existing = (await session.execute(stmt)).scalar_one_or_none()
-            if existing and not force:
+        if not force:
+            dup_match = await self.dedup_resolver.check_candidate(
+                citekey=source.citekey,
+                doi=source.doi,
+                openalex_id=source.metadata.get("openalex_id"),
+                arxiv_id=source.metadata.get("arxiv_id"),
+                title=source.title,
+                authors=source.authors,
+                year=source.year,
+            )
+            if dup_match.is_duplicate:
                 return IngestionResult(
                     citekey=source.citekey,
                     status="skipped",
-                    title=existing.title,
-                    reason=f"Document '{source.citekey}' already exists in database.",
+                    title=dup_match.matched_title,
+                    reason=dup_match.details or f"Document '{source.citekey}' already exists in database.",
                     duration_seconds=round(time.monotonic() - start_time, 2),
                 )
 

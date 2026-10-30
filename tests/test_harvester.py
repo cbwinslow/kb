@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from kb.storage.database import DatabaseManager
 from kb.sync.harvester import PreprintHarvester
 
 SAMPLE_ATOM_FEED = """<?xml version="1.0" encoding="utf-8"?>
@@ -52,18 +53,31 @@ def test_parse_atom_feed() -> None:
 
 @pytest.mark.asyncio
 async def test_filter_existing() -> None:
-    mock_db = MagicMock()
-    mock_session = AsyncMock()
-    # In SQLAlchemy async session, session.execute() returns a synchronous Result/CursorResult
-    mock_result = MagicMock()
-    mock_result.fetchall.return_value = [("2305.67890", "arxiv_2305_67890")]
-    mock_session.execute.return_value = mock_result
-    mock_db.session_factory.return_value.__aenter__.return_value = mock_session
+    import uuid
 
-    harvester = PreprintHarvester(db_manager=mock_db)
+    from kb.storage.models import Document
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_harv_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    async with db.get_session() as session:
+        doc = Document(
+            id="doc_h1",
+            citekey="arxiv_2305_67890",
+            title="Physics of the Sweeper Breaking Ball in Major League Baseball",
+            arxiv_id="2305.67890",
+            doi="10.1000/sweeper.1",
+        )
+        session.add(doc)
+        await session.commit()
+
+    harvester = PreprintHarvester(db_manager=db)
     papers = [
-        {"arxiv_id": "2401.12345", "title": "Paper 1"},
-        {"arxiv_id": "2305.67890", "title": "Paper 2"},
+        {"arxiv_id": "2401.12345", "title": "New Bayesian Modeling", "doi": "10.1000/new.1"},
+        {"arxiv_id": "2305.67890", "title": "Physics of the Sweeper", "doi": "10.1000/sweeper.1"},
+        {"arxiv_id": "9999.99999", "title": "Physics of the Sweeper Breaking Ball in Major League Baseball!", "doi": "10.1000/other.1"},
     ]
 
     new_papers = await harvester.filter_existing(papers)

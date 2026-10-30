@@ -24,6 +24,7 @@ This document records the architectural, technical, and mathematical decisions m
 - [ADR-016: Centralized Structured Logging & Stage Timing Telemetry](#adr-016-centralized-structured-logging--stage-timing-telemetry)
 - [ADR-017: Mandatory OpenSpec Discipline and Documentation Integrity](#adr-017-mandatory-openspec-discipline-and-documentation-integrity)
 - [ADR-018: Performance & Quality Benchmarking Suite](#adr-018-performance--quality-benchmarking-suite)
+- [ADR-033: Multi-Attribute Literature Deduplication and High-Yield Cursor-Based Harvester](#adr-033-multi-attribute-literature-deduplication-and-high-yield-cursor-based-harvester)
 
 ---
 
@@ -474,6 +475,28 @@ This document records the architectural, technical, and mathematical decisions m
      - Added `kb benchmark accuracy` and `kb benchmark --accuracy` commands supporting `--grade`, `--min-score`, `--dataset`, `--target-column`, and `--json`.
 - **Consequences**:
   - Bridges the gap between static symbolic extraction and scalable data science pipelines, ensuring formulas can execute natively across Polars DataFrames with measured empirical fidelity.
+
+---
+
+## ADR-033: Multi-Attribute Literature Deduplication and High-Yield Cursor-Based Harvester
+- **Status**: Accepted
+- **Context**:
+  - As literature ingestion expanded into high-volume sabermetrics, statistical modeling, Retrosheet analytics, and Statcast trajectory research, single-attribute citekey matching resulted in duplicate downloads and re-parsing of identical papers with different identifiers.
+  - Previous discoverers downloaded PDFs over HTTP before checking database presence, wasting bandwidth and local disk space.
+  - OpenAlex queries were constrained to single-page batches without pagination or citation popularity sorting.
+- **Decision**:
+  1. **Multi-Attribute Deduplication Engine (`src/kb/ingest/dedup.py`)**:
+     - Implemented `DuplicateResolver` providing 5-tier evaluation: canonical DOI (case/protocol-insensitive), OpenAlex ID (`W...`), arXiv ID (`YYMM.NNNNN`), citekey match, and normalized title comparison (with author last-name validation on short titles).
+  2. **Pre-Download Verification**:
+     - Refactored `OpenAlexSourceDiscoverer` and `PreprintHarvester` to filter candidates against `DuplicateResolver` prior to issuing HTTP GET requests for PDFs.
+  3. **Cursor-Based Deep Paging and Citation-Ranked Sorting (`src/kb/enrich/openalex.py`)**:
+     - Added `OpenAlexClient.search_works_cursor()` supporting `cursor=*` token iteration for querying beyond the 50-100 paper limit and sorting by publication impact (`sort="cited_by_count:desc"`).
+     - Defined curated sabermetric presets (`mlb-modeling`, `retrosheet`, `statcast`, `popular`, `baseball-python`) with `get_preset_queries()`.
+  4. **CLI Harvest Controls (`src/kb/cli.py`)**:
+     - Extended `kb sync harvest` with `--preset`, `--sort [citations|relevance]`, `--max-papers`, `--source [all|openalex|arxiv]`, and `--dry-run-dedup`.
+- **Consequences**:
+  - Eliminates redundant downloads, saves network bandwidth, protects workstation disk thresholds ($\ge 1.5$ GB), and guarantees high-yield capture of foundational sabermetric and modeling literature.
+
 
 
 

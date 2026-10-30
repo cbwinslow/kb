@@ -11,15 +11,14 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-from sqlalchemy import or_, select
 
+from kb.ingest.dedup import DuplicateResolver
 from kb.ingest.pipeline import (
     BatchIngestionRunner,
     IngestionPipeline,
     PaperSource,
 )
 from kb.storage.database import DatabaseManager
-from kb.storage.models import Document
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +71,7 @@ class PreprintHarvester:
         self.fixtures_dir = fixtures_dir or Path("data/fixtures")
         self.fixtures_dir.mkdir(parents=True, exist_ok=True)
         self._external_client = http_client
+        self.dedup_resolver = DuplicateResolver(self.db_manager)
 
     def _clean_text(self, text: str | None) -> str:
         """Strip whitespace, linebreaks, and extra spaces."""
@@ -211,29 +211,24 @@ class PreprintHarvester:
         return entries
 
     async def filter_existing(self, papers: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        """Filter out preprints already ingested into the database."""
+        """Filter out preprints already ingested into the database using multi-attribute deduplication."""
         if not papers:
             return []
 
-        arxiv_ids = [p["arxiv_id"] for p in papers]
-        citekeys = [f"arxiv_{p['arxiv_id'].replace('.', '_')}" for p in papers]
-
-        async with self.db_manager.session_factory() as session:
-            stmt = select(Document.arxiv_id, Document.citekey).where(
-                or_(Document.arxiv_id.in_(arxiv_ids), Document.citekey.in_(citekeys))
-            )
-            res = await session.execute(stmt)
-            existing = res.fetchall()
-            existing_arxiv = {row[0] for row in existing if row[0]}
-            existing_cites = {row[1] for row in existing if row[1]}
-
-        new_papers = [
-            p
+        cands = [
+            {
+                "citekey": f"arxiv_{p['arxiv_id'].replace('.', '_')}",
+                "arxiv_id": p.get("arxiv_id"),
+                "doi": p.get("doi"),
+                "title": p.get("title"),
+                "authors": p.get("authors"),
+                "year": p.get("year"),
+                "_raw": p,
+            }
             for p in papers
-            if p["arxiv_id"] not in existing_arxiv
-            and f"arxiv_{p['arxiv_id'].replace('.', '_')}" not in existing_cites
         ]
-        return new_papers
+        new_cands, _dups = await self.dedup_resolver.filter_candidates(cands)
+        return [c["_raw"] for c in new_cands]
 
     async def harvest(
         self,

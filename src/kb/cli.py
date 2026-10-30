@@ -810,27 +810,118 @@ async def async_ui_serve(host: str = "127.0.0.1", port: int = 8080) -> int:
 async def async_sync_harvest(
     query: str = "baseball OR sabermetrics OR statcast",
     limit: int = 5,
+    max_papers: int | None = None,
+    preset: str | None = None,
+    sort: str = "citations",
+    source: str = "all",
     categories: list[str] | None = None,
     daemon: bool = False,
     interval: float = 3600.0,
+    dry_run_dedup: bool = False,
 ) -> int:
-    """Run the automated preprint harvester."""
+    """Run automated preprint and open-access harvesting with smart deduplication and presets."""
+    from kb.enrich.openalex import OpenAlexClient, get_preset_queries
+    from kb.ingest.dedup import DuplicateResolver
+    from kb.ingest.pipeline import BatchIngestionRunner, IngestionPipeline, OpenAlexSourceDiscoverer
     from kb.sync.harvester import PreprintHarvester
 
-    harvester = PreprintHarvester()
+    target_limit = max_papers if max_papers is not None else limit
+    sort_param = "cited_by_count:desc" if sort == "citations" else "relevance_score:desc"
+
+    queries: list[str] = []
+    if preset:
+        queries = get_preset_queries(preset)
+        print(f"[*] Expanded preset '{preset}' into {len(queries)} targeted queries.")
+    else:
+        queries = [query]
+
     if daemon:
         print(f"[*] Launching preprint harvester daemon (interval={interval}s)...")
+        harvester = PreprintHarvester()
         await harvester.run_daemon(
-            query=query, categories=categories, interval_seconds=interval, limit_per_cycle=limit
+            query=queries[0], categories=categories, interval_seconds=interval, limit_per_cycle=target_limit
         )
-    else:
-        print(f"[*] Running one-shot preprint harvest for '{query}' (limit={limit})...")
-        res = await harvester.harvest(query=query, categories=categories, limit=limit)
-        print(
-            f"[SUMMARY] Scanned: {res.scanned}, New: {res.new_found}, Ingested: {res.ingested}, Skipped: {res.skipped}"
+        return 0
+
+    manager = DatabaseManager()
+    await manager.init_db()
+    dedup = DuplicateResolver(manager)
+
+    total_scanned = 0
+    total_new = 0
+    total_skipped = 0
+    total_ingested = 0
+
+    if dry_run_dedup:
+        print(f"[*] Running DRY-RUN deduplication scan across {len(queries)} queries (sort={sort})...")
+        openalex_client = OpenAlexClient()
+        for q in queries:
+            print(f"  -> Scanning candidate works for '{q}'...")
+            works = await openalex_client.search_works_cursor(
+                query=q,
+                limit=target_limit,
+                sort=sort_param,
+                filter_oa=True,
+            )
+            for w in works:
+                total_scanned += 1
+                dup_match = await dedup.check_candidate(
+                    doi=w.doi,
+                    openalex_id=w.short_id,
+                    title=w.title,
+                    authors=w.authors,
+                    year=w.publication_year,
+                )
+                if dup_match.is_duplicate:
+                    total_skipped += 1
+                    print(f"     [DUPLICATE] {w.title[:50]} -> {dup_match.details}")
+                else:
+                    total_new += 1
+                    print(f"     [NEW] {w.title[:50]} ({w.publication_year}, cited_by={w.cited_by_count})")
+        print(f"\n[DRY RUN SUMMARY] Scanned: {total_scanned}, New: {total_new}, Duplicate: {total_skipped}")
+        await manager.close()
+        return 0
+
+    # Live harvest execution:
+    # 1. Harvest via OpenAlex if source in ("all", "openalex")
+    if source in ("all", "openalex"):
+        print(f"[*] Harvesting OpenAlex literature across {len(queries)} queries (sort={sort}, limit={target_limit})...")
+        oa_client = OpenAlexClient()
+        oa_discoverer = OpenAlexSourceDiscoverer(
+            openalex_client=oa_client,
+            download_dir="data/harvested_pdfs",
+            db_manager=manager,
         )
-        for detail in res.details:
-            print(f"  {detail}")
+        pipeline = IngestionPipeline(db_manager=manager)
+        runner = BatchIngestionRunner(pipeline=pipeline)
+
+        for q in queries:
+            print(f"[*] Querying OpenAlex for: '{q}'...")
+            sources = await oa_discoverer.discover(
+                query=q,
+                limit=target_limit,
+                sort=sort_param,
+            )
+            print(f"    Discovered {len(sources)} new un-ingested candidate PDFs.")
+            if sources:
+                stats = await runner.run(sources)
+                total_scanned += stats.total_scanned
+                total_ingested += stats.total_ingested
+                total_skipped += stats.total_skipped
+
+    # 2. Harvest via arXiv if source in ("all", "arxiv")
+    if source in ("all", "arxiv"):
+        print(f"[*] Harvesting arXiv preprints across {len(queries)} queries (limit={target_limit})...")
+        harvester = PreprintHarvester(db_manager=manager)
+        for q in queries:
+            res = await harvester.harvest(query=q, categories=categories, limit=target_limit)
+            total_scanned += res.scanned
+            total_new += res.new_found
+            total_ingested += res.ingested
+            total_skipped += res.skipped
+
+    await manager.close()
+    print(f"\n[HARVEST COMPLETE] Total Scanned: {total_scanned}, Ingested: {total_ingested}, Skipped: {total_skipped}")
     return 0
 
 
@@ -1887,7 +1978,7 @@ def build_parser() -> argparse.ArgumentParser:
     # sync command
     sync_parser = subparsers.add_parser("sync", help="Preprint synchronization and harvesting")
     sync_sub = sync_parser.add_subparsers(dest="sync_subcommand")
-    sync_harvest_p = sync_sub.add_parser("harvest", help="Harvest fresh preprints from arXiv")
+    sync_harvest_p = sync_sub.add_parser("harvest", help="Harvest fresh preprints from arXiv and OpenAlex")
     sync_harvest_p.add_argument(
         "--query",
         type=str,
@@ -1896,6 +1987,35 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sync_harvest_p.add_argument(
         "--limit", type=int, default=5, help="Maximum preprints to ingest (default: 5)"
+    )
+    sync_harvest_p.add_argument(
+        "--max-papers", type=int, default=None, help="Alias/override for --limit"
+    )
+    sync_harvest_p.add_argument(
+        "--preset",
+        type=str,
+        default=None,
+        choices=["mlb-modeling", "retrosheet", "statcast", "popular", "baseball-python", "all"],
+        help="Curated sabermetric topic preset",
+    )
+    sync_harvest_p.add_argument(
+        "--sort",
+        type=str,
+        default="citations",
+        choices=["citations", "relevance"],
+        help="Ranking strategy: 'citations' (highest impact) or 'relevance'",
+    )
+    sync_harvest_p.add_argument(
+        "--source",
+        type=str,
+        default="all",
+        choices=["all", "openalex", "arxiv"],
+        help="Harvesting source(s)",
+    )
+    sync_harvest_p.add_argument(
+        "--dry-run-dedup",
+        action="store_true",
+        help="Perform duplicate detection and reporting without downloading or ingesting",
     )
     sync_harvest_p.add_argument(
         "--categories", nargs="+", default=None, help="arXiv category filters"
@@ -2294,6 +2414,11 @@ def main(argv: Sequence[str] | None = None) -> None:
                 async_sync_harvest(
                     query=args.query,
                     limit=args.limit,
+                    max_papers=args.max_papers,
+                    preset=args.preset,
+                    sort=args.sort,
+                    source=args.source,
+                    dry_run_dedup=args.dry_run_dedup,
                     categories=args.categories,
                     daemon=args.daemon,
                     interval=args.interval,

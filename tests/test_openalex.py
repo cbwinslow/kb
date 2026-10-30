@@ -128,6 +128,39 @@ class MockOpenAlexTransport(httpx.AsyncBaseTransport):
             }
             return httpx.Response(200, json=payload, request=request)
 
+        # 4c. Cursor pagination search
+        if "cursor=" in url_str:
+            if "cursor=*" in url_str or "cursor=%2A" in url_str:
+                payload = {
+                    "meta": {"next_cursor": "cursor_page_2", "count": 2},
+                    "results": [
+                        {
+                            "id": "https://openalex.org/W_P1",
+                            "title": "Seminal Sabermetric Modeling: Part 1",
+                            "publication_year": 2020,
+                            "cited_by_count": 150,
+                            "topics": [],
+                            "authorships": [{"author": {"display_name": "Bill James"}}],
+                        }
+                    ],
+                }
+                return httpx.Response(200, json=payload, request=request)
+            elif "cursor=cursor_page_2" in url_str:
+                payload = {
+                    "meta": {"next_cursor": None, "count": 2},
+                    "results": [
+                        {
+                            "id": "https://openalex.org/W_P2",
+                            "title": "Seminal Sabermetric Modeling: Part 2",
+                            "publication_year": 2021,
+                            "cited_by_count": 120,
+                            "topics": [],
+                            "authorships": [{"author": {"display_name": "Tom Tango"}}],
+                        }
+                    ],
+                }
+                return httpx.Response(200, json=payload, request=request)
+
         # 5. Missing work (404)
         if "not_found" in url_str:
             return httpx.Response(404, json={"error": "Not found"}, request=request)
@@ -241,3 +274,42 @@ async def test_search_targeted_corpus_2024_2026() -> None:
     assert work.publication_year == 2024
     assert "Biomechanics" in work.title
     assert work.pdf_url is not None
+
+
+@pytest.mark.asyncio
+async def test_search_works_cursor_pagination() -> None:
+    """Verifies that search_works_cursor traverses cursor pages up to limit."""
+    client = OpenAlexClient(transport=MockOpenAlexTransport())
+    works = await client.search_works_cursor(
+        query="sabermetric modeling",
+        limit=5,
+        per_page=1,
+        sort="cited_by_count:desc",
+    )
+
+    assert len(works) == 2
+    assert works[0].title == "Seminal Sabermetric Modeling: Part 1"
+    assert works[0].cited_by_count == 150
+    assert works[1].title == "Seminal Sabermetric Modeling: Part 2"
+    assert works[1].cited_by_count == 120
+
+
+def test_sabermetric_presets_configuration() -> None:
+    """Verifies preset dictionaries and query expansion."""
+    from kb.enrich.openalex import SABERMETRIC_PRESETS, get_preset_queries
+
+    assert "mlb-modeling" in SABERMETRIC_PRESETS
+    assert "retrosheet" in SABERMETRIC_PRESETS
+    assert "statcast" in SABERMETRIC_PRESETS
+    assert "popular" in SABERMETRIC_PRESETS
+    assert "baseball-python" in SABERMETRIC_PRESETS
+
+    modeling_queries = get_preset_queries("mlb-modeling")
+    assert len(modeling_queries) >= 3
+    assert any("statistical modeling" in q.lower() for q in modeling_queries)
+
+    all_queries = get_preset_queries("all")
+    assert len(all_queries) > len(modeling_queries)
+
+    with pytest.raises(ValueError, match="Unknown sabermetric preset"):
+        get_preset_queries("non_existent_preset_xyz")

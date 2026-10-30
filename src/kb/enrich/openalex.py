@@ -52,6 +52,62 @@ class OpenAlexWork:
         return self.id.split("/")[-1]
 
 
+SABERMETRIC_PRESETS: dict[str, list[str]] = {
+    "mlb-modeling": [
+        "Major League Baseball statistical modeling",
+        "win probability baseball run expectancy",
+        "baseball Pythagorean expectation defensive runs saved",
+        "Markov chain baseball scoring models",
+    ],
+    "retrosheet": [
+        "Retrosheet baseball event data modeling",
+        "Retrosheet play-by-play run expectancy",
+        "baseball park factors Retrosheet",
+    ],
+    "statcast": [
+        "Statcast bat tracking Hawk-Eye baseball",
+        "baseball exit velocity launch angle",
+        "seam shifted wake baseball aerodynamics",
+        "baseball spin rate trajectory modeling",
+    ],
+    "popular": [
+        "baseball analytics sabermetrics",
+        "physics of baseball",
+        "Major League Baseball prediction",
+    ],
+    "baseball-python": [
+        "baseball analytics open source python",
+        "sabermetrics computational algorithms python",
+        "Retrosheet data parsing baseball python",
+    ],
+}
+
+
+def get_preset_queries(preset_name: str) -> list[str]:
+    """Retrieves search query terms for a named sabermetric preset.
+
+    Args:
+        preset_name: Key of the preset ('mlb-modeling', 'retrosheet', 'statcast', 'popular', 'baseball-python', or 'all').
+
+    Returns:
+        List of query strings.
+    """
+    preset_key = preset_name.strip().lower()
+    if preset_key in ("all", "full"):
+        all_queries: list[str] = []
+        for q_list in SABERMETRIC_PRESETS.values():
+            for q in q_list:
+                if q not in all_queries:
+                    all_queries.append(q)
+        return all_queries
+    if preset_key not in SABERMETRIC_PRESETS:
+        raise ValueError(
+            f"Unknown sabermetric preset '{preset_name}'. "
+            f"Available presets: {list(SABERMETRIC_PRESETS.keys()) + ['all']}"
+        )
+    return list(SABERMETRIC_PRESETS[preset_key])
+
+
 class OpenAlexClient:
     """Asynchronous client for OpenAlex API with rate-limiting respect and polite pool headers."""
 
@@ -326,6 +382,77 @@ class OpenAlexClient:
                 return [self._parse_work_json(r) for r in results]
             logger.warning("Targeted OpenAlex harvest returned %d: %s", resp.status_code, resp.text)
             return []
+
+    async def search_works_cursor(
+        self,
+        query: str,
+        limit: int = 50,
+        per_page: int = 50,
+        sort: str = "cited_by_count:desc",
+        filter_oa: bool = True,
+        year_range: tuple[int, int] | None = None,
+    ) -> list[OpenAlexWork]:
+        """Queries OpenAlex using cursor-based pagination and popularity sorting.
+
+        Args:
+            query: Search query text.
+            limit: Maximum works to retrieve.
+            per_page: Number of results per API page (max 100).
+            sort: OpenAlex sort parameter (e.g. 'cited_by_count:desc' or 'publication_date:desc').
+            filter_oa: Whether to enforce open-access availability.
+            year_range: Optional (start_year, end_year) tuple filter.
+
+        Returns:
+            List of parsed OpenAlexWork objects up to limit.
+        """
+        works: list[OpenAlexWork] = []
+        cursor: str = "*"
+        filters: list[str] = []
+        if filter_oa:
+            filters.append("has_oa_accepted_or_published_version:true")
+        if year_range:
+            filters.append(f"publication_year:{year_range[0]}-{year_range[1]}")
+
+        url = f"{self.base_url}/works"
+        page_size = min(max(per_page, 1), 100)
+
+        async with httpx.AsyncClient(
+            transport=self.transport, timeout=self.timeout, headers=self._headers()
+        ) as client:
+            while len(works) < limit and cursor:
+                params: dict[str, Any] = {
+                    "search": query,
+                    "per-page": page_size,
+                    "cursor": cursor,
+                    "sort": sort,
+                }
+                if filters:
+                    params["filter"] = ",".join(filters)
+
+                resp = await client.get(url, params=params)
+                if resp.status_code != 200:
+                    logger.warning(
+                        "OpenAlex cursor query failed [%d]: %s", resp.status_code, resp.text
+                    )
+                    break
+
+                data = resp.json()
+                results = data.get("results", [])
+                if not results:
+                    break
+
+                for item in results:
+                    works.append(self._parse_work_json(item))
+                    if len(works) >= limit:
+                        break
+
+                meta = data.get("meta", {})
+                next_cursor = meta.get("next_cursor")
+                if not next_cursor or next_cursor == cursor:
+                    break
+                cursor = next_cursor
+
+        return works
 
     async def download_work_pdf(
         self,
