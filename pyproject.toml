@@ -65,6 +65,8 @@ ignore = [
 known-first-party = ["kb"]
 
 [tool.pyright]
+venvPath = "."
+venv = ".venv"
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
 include = ["src", "tests"]
