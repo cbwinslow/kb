@@ -40,6 +40,46 @@ class EquationSanitizer:
         ("WAR", "W_{AR}"),
     ]
 
+    # Domain acronyms protected as atomic single symbols
+    PROTECTED_ACRONYMS: ClassVar[set[str]] = {
+        "BABIP",
+        "wOBA",
+        "wRAA",
+        "ERA",
+        "FIP",
+        "WAR",
+        "OPS",
+        "wRC",
+        "SLG",
+        "OBP",
+        "ISO",
+        "xwOBA",
+        "WHIP",
+        "DER",
+        "PECOTA",
+        "DIPS",
+        "VORP",
+        "LOB",
+        "UZR",
+        "DRS",
+        "SIERA",
+        "HBP",
+        "IBB",
+        "HR",
+        "AB",
+        "BB",
+        "SO",
+        "SF",
+        "SH",
+        "SB",
+        "CS",
+        "TB",
+        "RBI",
+        "RS",
+        "RA",
+        "IP",
+    }
+
     UNICODE_GREEK_MAP: ClassVar[dict[str, str]] = {
         "α": r"\alpha ",
         "β": r"\beta ",
@@ -302,6 +342,172 @@ class EquationSanitizer:
                 diff -= 1
         return text
 
+    def balance_delimiters(self, text: str) -> str:
+        """Inspect and rebalance mismatched or unclosed delimiters.
+
+        Balances:
+        - Curly braces `{` and `}`
+        - LaTeX sizing delimiters `\\left(` / `\\right)`, `\\left[` / `\\right]`, `\\left\\{` / `\\right\\}`, `\\left|` / `\\right|`
+        - Standard parentheses `(` and `)`
+        - Standard square brackets `[` and `]`
+        - Absolute value pipes `|`
+
+        Args:
+            text: LaTeX mathematical string.
+
+        Returns:
+            Delimiter-balanced LaTeX string.
+        """
+        # 1. Balance curly braces first
+        text = self.balance_braces(text)
+
+        # 2. Balance paired LaTeX \\left and \\right delimiters
+        left_matches = list(re.finditer(r"\\left\s*([\(\[\{\.\|])", text))
+        right_matches = list(re.finditer(r"\\right\s*([\)\]\}\.\|])", text))
+
+        pair_map = {"(": ")", "[": "]", "{": r"\}", "|": "|", ".": "."}
+
+        if len(left_matches) > len(right_matches):
+            diff = len(left_matches) - len(right_matches)
+            unmatched = left_matches[-diff:]
+            closing_tokens: list[str] = []
+            for m in reversed(unmatched):
+                delim = m.group(1)
+                matching_close = pair_map.get(delim, ")")
+                closing_tokens.append(f"\\right{matching_close}")
+            text = text + " " + " ".join(closing_tokens)
+        elif len(right_matches) > len(left_matches):
+            diff = len(right_matches) - len(left_matches)
+            opening_tokens = [r"\left." for _ in range(diff)]
+            text = " ".join(opening_tokens) + " " + text
+
+        # 3. Balance plain parentheses (excluding escaped \\( or \\))
+        open_parens = len(re.findall(r"(?<!\\)\(", text))
+        close_parens = len(re.findall(r"(?<!\\)\)", text))
+        if open_parens > close_parens:
+            text = text + (")" * (open_parens - close_parens))
+        elif close_parens > open_parens:
+            diff = close_parens - open_parens
+            while diff > 0 and text.endswith(")"):
+                text = text[:-1]
+                diff -= 1
+            if diff > 0:
+                text = ("(" * diff) + text
+
+        # 4. Balance square brackets
+        open_brackets = len(re.findall(r"(?<!\\)\[", text))
+        close_brackets = len(re.findall(r"(?<!\\)\]", text))
+        if open_brackets > close_brackets:
+            text = text + ("]" * (open_brackets - close_brackets))
+        elif close_brackets > open_brackets:
+            diff = close_brackets - open_brackets
+            while diff > 0 and text.endswith("]"):
+                text = text[:-1]
+                diff -= 1
+            if diff > 0:
+                text = ("[" * diff) + text
+
+        # 5. Balance unescaped pipe symbols (absolute values)
+        pipes = len(re.findall(r"(?<!\\)\|", text))
+        if pipes % 2 != 0:
+            text = text + "|"
+
+        return text
+
+    def protect_acronyms(self, text: str) -> tuple[str, dict[str, str]]:
+        """Identify multi-character domain acronyms and replace them with safe indexed tokens.
+
+        Handles both unadorned acronyms (e.g. BABIP, wOBA) and previously subscripted forms
+        (e.g. w_{OBA}, B_{B}, H_{R}) to prevent SymPy from decomposing them into single-letter products.
+
+        Args:
+            text: LaTeX string containing potential multi-character acronyms.
+
+        Returns:
+            Tuple of (substituted_latex_text, mapping_from_token_to_acronym).
+        """
+        token_to_acronym: dict[str, str] = {}
+        substituted = text
+
+        compound_dict = dict(self.COMPOUND_SYMBOLS)
+        # RS and RA are canonically represented with subscript in SymPy
+        canonical_syms = {"RS": "R_{S}", "RA": "R_{A}"}
+
+        # Build list of (acronym, pattern_tokens) sorted by length descending
+        all_acronyms = set(self.PROTECTED_ACRONYMS) | set(compound_dict.keys())
+        token_items: list[tuple[str, list[str]]] = []
+        for acr in all_acronyms:
+            tokens = [acr]
+            if acr in compound_dict:
+                tokens.append(compound_dict[acr])
+            token_items.append((acr, tokens))
+
+        token_items.sort(key=lambda item: max(len(t) for t in item[1]), reverse=True)
+
+        token_idx = 0
+        for acr, variants in token_items:
+            variant_pats = [re.escape(v) for v in variants]
+            pat_str = rf"\\(?:text|mathrm|mathbf)\{{{re.escape(acr)}\}}|" + "|".join(
+                rf"\b{vp}\b" if vp.isalnum() else vp for vp in variant_pats
+            )
+            pattern = re.compile(pat_str)
+            if pattern.search(substituted):
+                token = f"p_{{{token_idx}}}"
+                canonical = canonical_syms.get(acr, acr)
+                token_to_acronym[token] = canonical
+                substituted = pattern.sub(token, substituted)
+                token_idx += 1
+
+        return substituted, token_to_acronym
+
+    def extract_cases(self, text: str) -> tuple[str | None, list[tuple[str, str]]] | None:
+        """Detect and extract piecewise cases environment into structured branch pairs.
+
+        Args:
+            text: LaTeX string potentially containing a \\begin{cases} ... \\end{cases} block.
+
+        Returns:
+            Tuple of (lhs_string_or_none, [(branch_expr_latex, branch_cond_latex), ...])
+            or None if no cases environment is present.
+        """
+        cases_match = re.search(r"^(.*?)\s*=\s*\\begin\{cases\}([\s\S]*?)\\end\{cases\}", text)
+        lhs_str: str | None = None
+        if cases_match:
+            lhs_str = cases_match.group(1).strip()
+            body = cases_match.group(2).strip()
+        else:
+            standalone_match = re.search(r"\\begin\{cases\}([\s\S]*?)\\end\{cases\}", text)
+            if not standalone_match:
+                return None
+            body = standalone_match.group(1).strip()
+
+        rows = [r.strip() for r in re.split(r"\\\\", body) if r.strip()]
+        branches: list[tuple[str, str]] = []
+
+        for row in rows:
+            if "&" in row:
+                parts = [p.strip() for p in row.split("&", 1)]
+            elif "," in row:
+                parts = [p.strip() for p in row.split(",", 1)]
+            else:
+                parts = [row, "otherwise"]
+
+            expr_str = parts[0]
+            cond_str = parts[1] if len(parts) > 1 else "otherwise"
+
+            # Strip English conditionals and trailing punctuation
+            cond_str = re.sub(
+                r"\\text\{(?:if|for|when|where)[^}]*\}\s*|\b(?:if|for|when|where)\s+",
+                "",
+                cond_str,
+                flags=re.IGNORECASE,
+            ).strip()
+            cond_str = re.sub(r"[\s,;.]+$", "", cond_str).strip()
+
+            branches.append((expr_str, cond_str))
+
+        return lhs_str, branches
+
     def sanitize(self, raw_latex: str, protect_compound_symbols: bool = True) -> str:
         """Sanitize raw LaTeX string into a clean expression parseable by SymPy.
 
@@ -365,8 +571,8 @@ class EquationSanitizer:
         # 10. Repair unescaped percent signs
         text = re.sub(r"(?<!\\)%", r"\%", text)
 
-        # 11. Balance curly braces
-        text = self.balance_braces(text)
+        # 11. Balance delimiters (braces, parens, brackets, \left/\right)
+        text = self.balance_delimiters(text)
 
         # 12. Protect compound multi-letter variables (e.g. \text{RS} or RS -> R_{S})
         if protect_compound_symbols:

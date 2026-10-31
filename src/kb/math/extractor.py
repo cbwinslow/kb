@@ -9,6 +9,7 @@ import warnings
 from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field
+from sympy import Piecewise, Symbol, true
 from sympy.core.relational import Equality
 from sympy.parsing.latex import parse_latex
 
@@ -82,7 +83,86 @@ class FormulaExtractor:
             raw_hash = hashlib.sha256(clean_raw.encode("utf-8")).hexdigest()[:12]
             formula_id = f"formula_{raw_hash}"
 
-        sanitized = self.sanitizer.sanitize(clean_raw)
+        # 1. Attempt piecewise cases environment reconstruction
+        cases_info = self.sanitizer.extract_cases(clean_raw)
+        if cases_info is not None:
+            lhs_raw, branch_specs = cases_info
+            try:
+                branches: list[tuple[Any, Any]] = []
+                for b_expr_raw, b_cond_raw in branch_specs:
+                    san_expr = self.sanitizer.sanitize(b_expr_raw, protect_compound_symbols=False)
+                    sub_expr, m_expr = self.sanitizer.protect_acronyms(san_expr)
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore", category=SyntaxWarning)
+                        b_expr_parsed = parse_latex(sub_expr)
+                    if b_expr_parsed is None:
+                        raise ValueError(f"Failed to parse branch expression: {b_expr_raw}")
+                    if m_expr:
+                        b_expr_parsed = b_expr_parsed.subs(
+                            {Symbol(k): Symbol(v) for k, v in m_expr.items()}
+                        )
+
+                    if (
+                        re.search(r"otherwise|else", b_cond_raw, re.IGNORECASE)
+                        or not b_cond_raw
+                    ):
+                        b_cond_parsed = true
+                    else:
+                        san_cond = self.sanitizer.sanitize(b_cond_raw, protect_compound_symbols=False)
+                        sub_cond, m_cond = self.sanitizer.protect_acronyms(san_cond)
+                        with warnings.catch_warnings():
+                            warnings.simplefilter("ignore", category=SyntaxWarning)
+                            b_cond_parsed = parse_latex(sub_cond)
+                        if b_cond_parsed is None:
+                            raise ValueError(f"Failed to parse branch condition: {b_cond_raw}")
+                        if m_cond:
+                            b_cond_parsed = b_cond_parsed.subs(
+                                {Symbol(k): Symbol(v) for k, v in m_cond.items()}
+                            )
+
+                    branches.append((b_expr_parsed, b_cond_parsed))
+
+                pw_expr = Piecewise(*branches)
+                if lhs_raw:
+                    san_lhs = self.sanitizer.sanitize(lhs_raw, protect_compound_symbols=False)
+                    sub_lhs, m_lhs = self.sanitizer.protect_acronyms(san_lhs)
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore", category=SyntaxWarning)
+                        lhs_parsed = parse_latex(sub_lhs)
+                    if lhs_parsed is None:
+                        raise ValueError(f"Failed to parse LHS: {lhs_raw}")
+                    if m_lhs:
+                        lhs_parsed = lhs_parsed.subs(
+                            {Symbol(k): Symbol(v) for k, v in m_lhs.items()}
+                        )
+                    final_parsed = Equality(lhs_parsed, pw_expr)
+                    is_eq = True
+                    lhs_str = str(lhs_parsed)
+                    rhs_str = str(pw_expr)
+                else:
+                    final_parsed = pw_expr
+                    is_eq = False
+                    lhs_str = None
+                    rhs_str = str(pw_expr)
+
+                free_symbols = sorted(str(s) for s in final_parsed.free_symbols)
+                return ExtractedFormula(
+                    formula_id=formula_id,
+                    raw_latex=clean_raw,
+                    sanitized_latex=self.sanitizer.sanitize(clean_raw),
+                    sympy_expr=final_parsed,
+                    symbols=free_symbols,
+                    is_valid=True,
+                    is_equality=is_eq,
+                    lhs=lhs_str,
+                    rhs=rhs_str,
+                    chunk_id=chunk_id,
+                )
+            except Exception as exc:  # noqa: BLE001
+                logger.debug("Failed to parse cases formula '%s': %s", clean_raw, exc)
+
+        # 2. Standard formula sanitization and acronym-protected parsing
+        sanitized = self.sanitizer.sanitize(clean_raw, protect_compound_symbols=True)
 
         if not sanitized:
             return ExtractedFormula(
@@ -94,12 +174,19 @@ class FormulaExtractor:
                 chunk_id=chunk_id,
             )
 
+        sub_latex, acronym_map = self.sanitizer.protect_acronyms(sanitized)
+
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", category=SyntaxWarning)
-                parsed = parse_latex(sanitized)
+                parsed = parse_latex(sub_latex)
             if parsed is None:
                 raise ValueError("SymPy parse_latex returned None")
+
+            if acronym_map:
+                parsed = parsed.subs(
+                    {Symbol(k): Symbol(v) for k, v in acronym_map.items()}
+                )
 
             is_eq = isinstance(parsed, Equality)
             free_symbols = sorted(str(s) for s in parsed.free_symbols)

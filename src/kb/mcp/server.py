@@ -378,6 +378,85 @@ def create_mcp_server(
         )
         return [r.model_dump() for r in results]
 
+    @server.tool(
+        name="kb_get_figure",
+        description=(
+            "Retrieves figure metadata, image paths, visual summaries, extracted curve metadata, "
+            "and grounded formula IDs by citekey, figure ID, or figure index."
+        ),
+    )
+    async def kb_get_figure(
+        citekey: str | None = None,
+        figure_id: str | None = None,
+        figure_index: int | None = None,
+    ) -> list[dict[str, Any]]:
+        """Retrieves structured multimodal figure data from the vault."""
+        from kb.storage.models import Figure
+
+        async with db.get_session() as session:
+            stmt = select(Figure)
+            if figure_id:
+                stmt = stmt.where(Figure.id == figure_id)
+            if citekey:
+                stmt = stmt.where(Figure.citekey == citekey)
+            if figure_index is not None:
+                stmt = stmt.where(Figure.figure_index == figure_index)
+
+            records = list((await session.execute(stmt)).scalars().all())
+            return [
+                {
+                    "id": fig.id,
+                    "citekey": fig.citekey,
+                    "figure_index": fig.figure_index,
+                    "caption": fig.caption,
+                    "image_path": fig.image_path,
+                    "vlm_summary": fig.vlm_summary,
+                    "detected_curves": fig.detected_curves or {},
+                    "formula_ids": fig.formula_ids or [],
+                }
+                for fig in records
+            ]
+
+    @server.tool(
+        name="kb_search_figures",
+        description=(
+            "Searches visual figures and diagrams by caption, visual summary, or diagram type. "
+            "Returns figure captions, image paths, visual summaries, and linked formula associations."
+        ),
+    )
+    async def kb_search_figures(
+        query: str,
+        citekey: str | None = None,
+        limit: int = 10,
+    ) -> list[dict[str, Any]]:
+        """Searches scientific figures by caption, visual summary, and keywords."""
+        from kb.storage.models import Figure
+
+        async with db.get_session() as session:
+            stmt = select(Figure)
+            if citekey:
+                stmt = stmt.where(Figure.citekey == citekey)
+
+            search_pattern = f"%{query}%"
+            stmt = stmt.where(
+                Figure.caption.ilike(search_pattern) | Figure.vlm_summary.ilike(search_pattern)
+            ).limit(limit)
+
+            records = list((await session.execute(stmt)).scalars().all())
+            return [
+                {
+                    "id": fig.id,
+                    "citekey": fig.citekey,
+                    "figure_index": fig.figure_index,
+                    "caption": fig.caption,
+                    "image_path": fig.image_path,
+                    "vlm_summary": fig.vlm_summary,
+                    "detected_curves": fig.detected_curves or {},
+                    "formula_ids": fig.formula_ids or [],
+                }
+                for fig in records
+            ]
+
     return server
 
 

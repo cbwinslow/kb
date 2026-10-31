@@ -96,6 +96,18 @@ class DatabaseManager:
                         "ALTER TABLE kb_formulas ADD COLUMN IF NOT EXISTS validation_details JSONB;"
                     )
                 )
+                # Ensure multimodal VLM grounding columns exist on kb_figures
+                await conn.execute(
+                    text("ALTER TABLE kb_figures ADD COLUMN IF NOT EXISTS vlm_summary TEXT;")
+                )
+                await conn.execute(
+                    text(
+                        "ALTER TABLE kb_figures ADD COLUMN IF NOT EXISTS detected_curves JSONB;"
+                    )
+                )
+                await conn.execute(
+                    text("ALTER TABLE kb_figures ADD COLUMN IF NOT EXISTS formula_ids JSONB;")
+                )
             await conn.run_sync(Base.metadata.create_all)
         logger.info("Database schema initialized successfully for %s", self.url.split("@")[-1])
 

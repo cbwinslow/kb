@@ -273,6 +273,13 @@ class Figure(Base):
     caption: Mapped[str | None] = mapped_column(Text, nullable=True)
     figure_index: Mapped[int] = mapped_column(Integer, default=0)
     image_path: Mapped[str | None] = mapped_column(Text, nullable=True)
+    vlm_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
+    detected_curves: Mapped[dict[str, Any] | None] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), nullable=True
+    )
+    formula_ids: Mapped[list[str] | None] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"), nullable=True
+    )
     structure_metadata: Mapped[dict[str, Any]] = mapped_column(
         JSON().with_variant(JSONB, "postgresql"), default=dict
     )

@@ -1106,6 +1106,7 @@ async def async_benchmark_accuracy(
     target_column: str | None = None,
     limit: int = 50,
     as_json: bool = False,
+    run_all: bool = False,
 ) -> int:
     """Run empirical accuracy benchmarks against tabular datasets or benchmark tables."""
     from kb.qa.accuracy import EmpiricalAccuracyRunner
@@ -1117,6 +1118,7 @@ async def async_benchmark_accuracy(
         dataset_path=dataset,
         target_column=target_column,
         limit=limit,
+        run_all=run_all,
     )
     if as_json:
         import json
@@ -2698,6 +2700,7 @@ def main(argv: Sequence[str] | None = None) -> None:
                     target_column=args.target_column,
                     limit=args.limit,
                     as_json=args.json,
+                    run_all=getattr(args, "all", False),
                 )
             )
         else:

@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import logging
 import math
+import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import numpy as np
 import polars as pl
@@ -65,6 +66,158 @@ class TableBindingResult(BaseModel):
     is_bound: bool = Field(default=False, description="Whether all required parameters are bound")
 
 
+class HeuristicColumnMatcher:
+    """Fuzzy column matcher combining domain synonym mappings, ontology aliases, and token similarity."""
+
+    # Domain synonyms bridging mathematical symbols, abbreviations, and empirical tracking column names
+    SYNONYM_GROUPS: ClassVar[list[set[str]]] = [
+        # Velocity / speed
+        {"v_0", "v0", "v", "v_launch", "exit_velocity", "launch_speed", "pitch_speed", "velocity", "speed", "ev"},
+        # Launch angle / pitch angle
+        {"theta", "launch_angle", "angle", "pitch_angle", "vertical_angle", "la"},
+        # Spin rate
+        {"omega", "spin_rate", "spin", "release_spin_rate", "rotational_speed"},
+        # Spin axis / direction
+        {"phi", "spin_axis", "spin_direction", "axis"},
+        # Distance
+        {"d", "x", "dist", "distance", "hit_distance_sc", "total_distance", "carry"},
+        # Aerodynamic coefficients
+        {"cd", "drag_coef", "drag_coefficient", "c_d"},
+        {"cl", "lift_coef", "lift_coefficient", "c_l"},
+        # Baseball run values
+        {"r_s", "rs", "runs_scored", "runs", "r"},
+        {"r_a", "ra", "runs_allowed"},
+        {"w_oba", "woba", "woba_value"},
+        {"b_abip", "babip"},
+        {"f_ip", "fip"},
+        {"e_ra", "era"},
+        {"w_ar", "war"},
+        {"h_r", "hr", "home_runs"},
+        {"b_b", "bb", "walks"},
+        {"s_o", "so", "strikeouts", "k"},
+        {"i_p", "ip", "innings_pitched", "outs"},
+        {"a_b", "ab", "at_bats"},
+    ]
+
+    def __init__(self, ontology: SymbolOntology | None = None) -> None:
+        """Initialize heuristic matcher with ontology and indexed synonym groups."""
+        self.ontology = ontology or get_symbol_ontology()
+        self._lookup: dict[str, set[str]] = {}
+        for group in self.SYNONYM_GROUPS:
+            for item in group:
+                self._lookup[item.lower()] = group
+
+    def _normalize(self, s: str) -> str:
+        clean = re.sub(r"[{}\\^]", "", s)
+        clean = re.sub(r"[\s\-+*/(),]+", "_", clean)
+        return clean.strip("_").lower()
+
+    def _levenshtein_similarity(self, s1: str, s2: str) -> float:
+        """Compute normalized similarity ratio between two strings [0.0, 1.0]."""
+        if s1 == s2:
+            return 1.0
+        if not s1 or not s2:
+            return 0.0
+        len1, len2 = len(s1), len(s2)
+        dp = [[0] * (len2 + 1) for _ in range(len1 + 1)]
+        for i in range(len1 + 1):
+            dp[i][0] = i
+        for j in range(len2 + 1):
+            dp[0][j] = j
+        for i in range(1, len1 + 1):
+            for j in range(1, len2 + 1):
+                cost = 0 if s1[i - 1] == s2[j - 1] else 1
+                dp[i][j] = min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + cost,
+                )
+        dist = dp[len1][len2]
+        max_len = max(len1, len2)
+        return 1.0 - (dist / max_len)
+
+    def match_column(
+        self, symbol: str, available_columns: list[str], threshold: float = 0.75
+    ) -> str | None:
+        """Find the best matching column for a formula parameter symbol.
+
+        Resolution stages:
+        1. Exact match (case sensitive or insensitive)
+        2. Ontology canonical resolution
+        3. Synonym group dictionary matching
+        4. Normalized substring / prefix matching
+        5. Fuzzy Levenshtein token similarity (>= threshold)
+        """
+        if not symbol:
+            return None
+
+        # 1. Exact match
+        if symbol in available_columns:
+            return symbol
+        norm_sym = self._normalize(symbol)
+        for col in available_columns:
+            if self._normalize(col) == norm_sym:
+                return col
+
+        # 2. Ontology match
+        sym_canon = self.ontology.resolve_canonical(symbol)
+        if sym_canon:
+            for col in available_columns:
+                col_canon = self.ontology.resolve_canonical(col)
+                if col_canon == sym_canon:
+                    return col
+
+        # 3. Synonym dictionary match
+        if norm_sym in self._lookup:
+            synonyms = self._lookup[norm_sym]
+            for col in available_columns:
+                if self._normalize(col) in synonyms:
+                    return col
+
+        # 4. Normalized substring / prefix match
+        for col in available_columns:
+            norm_col = self._normalize(col)
+            if norm_sym and len(norm_sym) >= 3 and (norm_sym in norm_col or norm_col in norm_sym):
+                return col
+
+        # 5. Fuzzy Levenshtein similarity
+        best_col: str | None = None
+        best_score = 0.0
+        for col in available_columns:
+            score = self._levenshtein_similarity(norm_sym, self._normalize(col))
+            if score > best_score and score >= threshold:
+                best_score = score
+                best_col = col
+
+        return best_col
+
+
+def discover_fixtures(fixtures_dir: Path | str = "data/fixtures") -> list[dict[str, Any]]:
+    """Scan fixture directory for Parquet and CSV datasets and extract column schemas lazily."""
+    p_dir = Path(fixtures_dir)
+    if not p_dir.exists():
+        return []
+
+    discovered: list[dict[str, Any]] = []
+    for pq_path in p_dir.rglob("*.parquet"):
+        try:
+            schema = pl.read_parquet_schema(pq_path)
+            cols = list(schema.keys())
+            discovered.append(
+                {
+                    "path": str(pq_path),
+                    "name": pq_path.stem,
+                    "format": "parquet",
+                    "columns": cols,
+                    "citekey": pq_path.parent.name if pq_path.parent != p_dir else pq_path.stem,
+                }
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.debug("Failed to read parquet schema for %s: %s", pq_path, exc)
+
+    return discovered
+
+
 class EmpiricalAccuracyRunner:
     """Executes vectorized formulas against tabular benchmark datasets and records telemetry."""
 
@@ -81,11 +234,13 @@ class EmpiricalAccuracyRunner:
         db_manager: DatabaseManager | None = None,
         ontology: SymbolOntology | None = None,
         compiler: FormulaCompiler | None = None,
+        matcher: HeuristicColumnMatcher | None = None,
     ) -> None:
-        """Initialize runner with database manager, ontology, and code compiler."""
+        """Initialize runner with database manager, ontology, code compiler, and heuristic matcher."""
         self.db_manager = db_manager or DatabaseManager()
         self.ontology = ontology or get_symbol_ontology()
         self.compiler = compiler or FormulaCompiler()
+        self.matcher = matcher or HeuristicColumnMatcher(ontology=self.ontology)
 
     def bind_formula_to_table(
         self,
@@ -94,7 +249,7 @@ class EmpiricalAccuracyRunner:
         target_candidate: str | None = None,
         default_constants: dict[str, float] | None = None,
     ) -> TableBindingResult:
-        """Map table column headers to formula symbols using SymbolOntology.
+        """Map table column headers to formula symbols using HeuristicColumnMatcher and SymbolOntology.
 
         Args:
             formula: Formula database entity with symbols and LHS/RHS.
@@ -115,16 +270,17 @@ class EmpiricalAccuracyRunner:
         )
         params = comp.parameters if comp.is_valid and comp.parameters else symbols
 
-        # Determine target column
+        # Determine target column via heuristic matcher
         target_col: str | None = target_candidate
         if not target_col and formula.lhs:
-            lhs_clean = formula.lhs.replace("{", "").replace("}", "").replace("\\", "").strip("_")
-            lhs_mapping = self.ontology.resolve_column_mapping([lhs_clean], columns)
-            if lhs_mapping:
-                target_col = lhs_mapping.get(lhs_clean)
+            target_col = self.matcher.match_column(formula.lhs, columns)
 
-        # Resolve parameter columns via ontology
-        mapping = self.ontology.resolve_column_mapping(params, columns)
+        # Resolve parameter columns via heuristic matcher
+        mapping: dict[str, str] = {}
+        for p in params:
+            m_col = self.matcher.match_column(p, columns)
+            if m_col:
+                mapping[p] = m_col
 
         missing: list[str] = []
         injected_constants: dict[str, float] = {}
@@ -303,6 +459,8 @@ class EmpiricalAccuracyRunner:
         target_column: str | None = None,
         limit: int | None = None,
         persist_telemetry: bool = True,
+        run_all: bool = False,
+        fixtures_dir: Path | str = "data/fixtures",
     ) -> list[dict[str, Any]]:
         """Run vectorized empirical accuracy benchmarks across verified formulas in the corpus."""
         await self.db_manager.init_db()
@@ -353,12 +511,15 @@ class EmpiricalAccuracyRunner:
                     continue
             return results
 
-        # Case 2: Evaluate against matching benchmark tables in database
+        # Case 2: Discover and evaluate across local fixtures if run_all or tables empty
+        discovered = discover_fixtures(fixtures_dir) if (run_all or not tables) else []
         for formula in formulas:
-            # Find candidate tables with matching citekey or columns
+            evaluated = False
+
+            # First, check database BenchmarkTable entries if available
             candidate_tables = [t for t in tables if t.citekey == formula.citekey]
-            if not candidate_tables:
-                candidate_tables = tables[:5]  # Try common benchmark tables
+            if not candidate_tables and not run_all:
+                candidate_tables = tables[:5]
 
             for table in candidate_tables:
                 metrics = await self.benchmark_formula_against_table(
@@ -375,6 +536,42 @@ class EmpiricalAccuracyRunner:
                             "metrics": metrics.to_dict(),
                         }
                     )
+                    evaluated = True
                     break
+
+            if evaluated:
+                continue
+
+            # Second, check discovered parquet fixtures
+            candidate_fixtures = [
+                f for f in discovered if formula.citekey and formula.citekey in f["name"]
+            ]
+            if not candidate_fixtures and run_all:
+                candidate_fixtures = discovered[:20]
+
+            for fixture in candidate_fixtures:
+                binding = self.bind_formula_to_table(formula, fixture["columns"])
+                if not binding.is_bound or not binding.target_column:
+                    continue
+                try:
+                    df = pl.read_parquet(fixture["path"])
+                    metrics = self.evaluate_vectorized(
+                        df=df,
+                        formula=formula,
+                        target_column=binding.target_column,
+                        param_mapping=binding.matched_columns,
+                        constants=binding.constants,
+                    )
+                    results.append(
+                        {
+                            "formula_id": formula.id,
+                            "citekey": formula.citekey,
+                            "fixture_name": fixture["name"],
+                            "metrics": metrics.to_dict(),
+                        }
+                    )
+                    break
+                except Exception:
+                    continue
 
         return results

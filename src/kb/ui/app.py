@@ -2,11 +2,18 @@
 
 from __future__ import annotations
 
+import asyncio
+import contextlib
 import json
+import tempfile
+import time
+import uuid
 from pathlib import Path
 from typing import Any
 
+import httpx
 import polars as pl
+from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from starlette.applications import Starlette
 from starlette.requests import Request
@@ -15,6 +22,7 @@ from starlette.routing import Mount, Route
 from strawberry.asgi import GraphQL
 
 from kb.codegen.compiler import FormulaCompiler
+from kb.enrich.web_search import ScholarlyWebSearcher
 from kb.graphql.schema import schema
 from kb.math.chaining import FormulaChainingEngine
 from kb.math.lineage import DerivationNode, FormulaLineageGraph
@@ -25,11 +33,37 @@ from kb.storage.models import BenchmarkTable, Chunk, Document, Formula
 from kb.storage.search import HybridSearchEngine
 
 
+class IngestJob(BaseModel):
+    """Model tracking background document ingestion job status."""
+
+    job_id: str
+    url: str
+    citekey: str | None = None
+    title: str | None = None
+    status: str = "queued"
+    progress: int = 0
+    message: str | None = None
+    created_at: float = Field(default_factory=time.time)
+    error: str | None = None
+
+
+async def fetch_pdf_bytes(target_url: str) -> bytes:
+    """Download external PDF bytes over HTTP/HTTPS."""
+    async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
+        resp = await client.get(target_url)
+        if resp.status_code != 200:
+            raise RuntimeError(f"HTTP {resp.status_code} downloading {target_url}")
+        return resp.content
+
+
+
+
 def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     """Creates the Starlette application for kb visual dashboard."""
     manager = db_manager or DatabaseManager()
     compiler = FormulaCompiler()
     ontology = get_symbol_ontology()
+    jobs: dict[str, IngestJob] = {}
 
     async def get_stats(_request: Request) -> JSONResponse:
         """Return corpus aggregate statistics."""
@@ -714,6 +748,104 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         card = gate.validate_formula(str(latex_str))
         return JSONResponse(card.to_dict())
 
+    async def search_external(request: Request) -> JSONResponse:
+        """Search external scholarly literature (arXiv, OpenAlex, web)."""
+        query = request.query_params.get("query", "").strip()
+        if not query:
+            return JSONResponse({"error": "Query parameter 'query' is required"}, status_code=400)
+        source = request.query_params.get("source", "all")
+        limit = min(int(request.query_params.get("limit", 10)), 30)
+        searcher = ScholarlyWebSearcher()
+        valid_source = source if source in ("all", "arxiv", "openalex", "web") else "all"
+        try:
+            results = await searcher.search(query=query, source=valid_source, limit=limit)  # type: ignore[arg-type]
+            return JSONResponse([r.model_dump() for r in results])
+        except Exception as exc:
+            return JSONResponse({"error": str(exc)}, status_code=500)
+
+    async def harvest_ingest_url(request: Request) -> JSONResponse:
+        """Enqueue an external preprint/PDF URL for asynchronous background ingestion."""
+        try:
+            body = await request.json()
+        except Exception:
+            return JSONResponse({"error": "Invalid JSON body"}, status_code=400)
+
+        url = body.get("url") if isinstance(body, dict) else None
+        if not url or not isinstance(url, str):
+            return JSONResponse({"error": "'url' field is required"}, status_code=400)
+
+        citekey = body.get("citekey")
+        title = body.get("title")
+        authors = body.get("authors") or []
+        year = body.get("year")
+
+        job_id = f"job_{uuid.uuid4().hex[:12]}"
+        job = IngestJob(job_id=job_id, url=url, citekey=citekey, title=title, status="queued")
+        jobs[job_id] = job
+
+        async def run_ingest_task(target_job_id: str, target_url: str) -> None:
+            active_job = jobs[target_job_id]
+            temp_pdf_path: Path | None = None
+            try:
+                active_job.status = "downloading"
+                active_job.progress = 20
+                from kb.ingest.pipeline import IngestionPipeline, PaperSource
+
+                pdf_bytes = await fetch_pdf_bytes(target_url)
+
+                active_job.status = "parsing"
+                active_job.progress = 50
+
+                with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tf:
+                    tf.write(pdf_bytes)
+                    temp_pdf_path = Path(tf.name)
+
+                pipeline = IngestionPipeline(db_manager=manager)
+                active_job.status = "extracting"
+                active_job.progress = 75
+
+                effective_citekey = citekey or f"paper_{target_job_id}"
+                source = PaperSource(
+                    pdf_path=temp_pdf_path,
+                    citekey=effective_citekey,
+                    title=title,
+                    authors=authors,
+                    year=year,
+                )
+
+                result = await pipeline.ingest_source(source)
+                if result.status == "error":
+                    raise RuntimeError(result.error or "Pipeline ingestion failed")
+
+                active_job.citekey = result.citekey
+                active_job.status = "completed"
+                active_job.progress = 100
+                active_job.message = f"Successfully ingested {result.citekey}"
+            except Exception as e:
+                active_job.status = "failed"
+                active_job.error = str(e)
+            finally:
+                if temp_pdf_path and temp_pdf_path.exists():
+                    with contextlib.suppress(Exception):
+                        temp_pdf_path.unlink()
+                try:
+                    import torch
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                except Exception:
+                    pass
+
+        asyncio.create_task(run_ingest_task(job_id, url))
+        return JSONResponse(job.model_dump(), status_code=202)
+
+    async def get_job_status(request: Request) -> JSONResponse:
+        """Poll ingestion job progress."""
+        job_id = request.path_params.get("job_id")
+        job = jobs.get(job_id) if job_id else None
+        if not job:
+            return JSONResponse({"error": f"Job {job_id} not found"}, status_code=404)
+        return JSONResponse(job.model_dump())
+
     async def index_view(_request: Request) -> HTMLResponse:
         """Serve the interactive single-page dashboard."""
         html_content = """<!DOCTYPE html>
@@ -772,6 +904,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     <button onclick="switchTab('search')" id="tab-btn-search" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Hybrid Retrieval</button>
     <button onclick="switchTab('coverage')" id="tab-btn-coverage" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Coverage & Yield</button>
     <button onclick="switchTab('quality')" id="tab-btn-quality" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Quality Gate & Repair</button>
+    <button onclick="switchTab('explorer')" id="tab-btn-explorer" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Scholarly Explorer</button>
   </div>
 
   <!-- Main Viewports -->
@@ -1050,6 +1183,48 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         <div class="text-sm text-slate-400">Loading formulas quality scorecards...</div>
       </div>
     </section>
+
+    <!-- View 8: Scholarly Explorer & 1-Click Ingest -->
+    <section id="view-explorer" class="flex-1 hidden flex flex-col space-y-4 overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-semibold text-slate-200">Scholarly Explorer & 1-Click Ingestion</h2>
+          <p class="text-xs text-slate-400">Search external scientific literature across arXiv and OpenAlex with 1-click GPU layout ingestion.</p>
+        </div>
+      </div>
+
+      <!-- Search Controls -->
+      <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-wrap gap-3 items-center">
+        <input type="text" id="explorer-query" placeholder="Enter keywords, author, or research question (e.g. baseball aerodynamics, wOBA)..."
+               class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500"
+               onkeydown="if(event.key==='Enter') searchExternalPapers()">
+        <select id="explorer-source" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500">
+          <option value="all">All Sources (arXiv + OpenAlex)</option>
+          <option value="arxiv">arXiv Only</option>
+          <option value="openalex">OpenAlex Only</option>
+          <option value="web">Web Fallback</option>
+        </select>
+        <button onclick="searchExternalPapers()" id="explorer-search-btn" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 rounded-lg text-sm font-medium text-white transition flex items-center space-x-1">
+          <span>Search Literature</span>
+        </button>
+      </div>
+
+      <!-- Active Ingestion Job Status Banner -->
+      <div id="explorer-job-banner" class="hidden p-3 rounded-xl border border-sky-500/50 bg-sky-950/40 text-xs text-sky-200 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="animate-spin inline-block h-3.5 w-3.5 border-2 border-sky-400 border-t-transparent rounded-full"></span>
+          <span id="explorer-job-text">Ingesting preprint...</span>
+        </div>
+        <span id="explorer-job-progress" class="font-mono font-semibold">20%</span>
+      </div>
+
+      <!-- Search Results Container -->
+      <div id="explorer-results" class="space-y-3">
+        <div class="text-sm text-slate-500 italic p-6 text-center border border-dashed border-slate-800 rounded-xl">
+          Enter a query above to search preprints and peer-reviewed literature across arXiv and OpenAlex.
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -1061,7 +1236,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     let playgroundInputs = {};
 
     function switchTab(tabId) {
-      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage', 'quality'].forEach(t => {
+      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage', 'quality', 'explorer'].forEach(t => {
         const viewEl = document.getElementById(`view-${t}`);
         const btnEl = document.getElementById(`tab-btn-${t}`);
         if (viewEl) viewEl.classList.add('hidden');
@@ -1079,6 +1254,109 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       if (tabId === 'tables') loadTables();
       if (tabId === 'coverage') loadCoverage();
       if (tabId === 'quality') loadQualityFormulas();
+    }
+
+    async function searchExternalPapers() {
+      const q = document.getElementById('explorer-query').value.trim();
+      const src = document.getElementById('explorer-source').value;
+      if (!q) return;
+
+      const container = document.getElementById('explorer-results');
+      container.innerHTML = '<div class="text-sm text-sky-400 p-6 text-center"><span class="animate-spin inline-block mr-2">⟳</span> Querying external literature endpoints...</div>';
+
+      try {
+        const res = await fetch(`/api/search/external?query=${encodeURIComponent(q)}&source=${encodeURIComponent(src)}&limit=10`);
+        const results = await res.json();
+        if (!Array.isArray(results) || results.length === 0) {
+          container.innerHTML = '<div class="text-sm text-slate-500 italic p-6 text-center border border-dashed border-slate-800 rounded-xl">No external papers matched your query.</div>';
+          return;
+        }
+
+        container.innerHTML = results.map((r, idx) => {
+          const authors = (r.authors || []).slice(0, 3).join(', ') + ((r.authors || []).length > 3 ? ' et al.' : '');
+          const badgeClass = r.source === 'arxiv' ? 'bg-amber-950/80 text-amber-300 border-amber-800' : 'bg-indigo-950/80 text-indigo-300 border-indigo-800';
+          const pdfBtn = r.pdf_url ? `<a href="${r.pdf_url}" target="_blank" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">View PDF ↗</a>` : '';
+          const ingestBtn = r.pdf_url ? `<button onclick="ingestExternalPaper('${escapeHtml(r.pdf_url)}', '${escapeHtml(r.title)}', ${JSON.stringify(r.authors || [])}, ${r.year || 'null'})" class="px-3 py-1 text-xs rounded bg-sky-600 hover:bg-sky-500 text-white font-medium flex items-center space-x-1"><span>1-Click Ingest</span></button>` : '';
+
+          return `
+            <div class="glass-card p-4 rounded-xl border border-slate-700 space-y-2">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-xs px-2 py-0.5 rounded font-mono border ${badgeClass}">${r.source.toUpperCase()}</span>
+                    ${r.year ? `<span class="text-xs text-slate-400">${r.year}</span>` : ''}
+                    ${r.citation_count !== null && r.citation_count !== undefined ? `<span class="text-xs text-emerald-400 font-mono">${r.citation_count} citations</span>` : ''}
+                  </div>
+                  <h3 class="text-sm font-semibold text-slate-200 mt-1">${escapeHtml(r.title)}</h3>
+                  ${authors ? `<p class="text-xs text-slate-400">${escapeHtml(authors)}</p>` : ''}
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                  ${pdfBtn}
+                  ${ingestBtn}
+                </div>
+              </div>
+              ${r.abstract ? `<p class="text-xs text-slate-400 line-clamp-3">${escapeHtml(r.abstract)}</p>` : ''}
+              <div class="text-[10px] text-slate-500 font-mono break-all">${escapeHtml(r.url)}</div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `<div class="text-sm text-rose-400 p-6 text-center">Failed to fetch external papers: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    async function ingestExternalPaper(pdfUrl, title, authors, year) {
+      const banner = document.getElementById('explorer-job-banner');
+      const text = document.getElementById('explorer-job-text');
+      const progress = document.getElementById('explorer-job-progress');
+
+      banner.classList.remove('hidden');
+      text.innerText = `Submitting ingestion job for "${title.slice(0, 35)}..."`;
+      progress.innerText = '0%';
+
+      try {
+        const res = await fetch('/api/harvest/ingest-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: pdfUrl, title: title, authors: authors, year: year })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to submit ingest job');
+
+        pollJobStatus(data.job_id);
+      } catch (err) {
+        alert('Ingest submission error: ' + err.message);
+        banner.classList.add('hidden');
+      }
+    }
+
+    function pollJobStatus(jobId) {
+      const banner = document.getElementById('explorer-job-banner');
+      const text = document.getElementById('explorer-job-text');
+      const progress = document.getElementById('explorer-job-progress');
+
+      const interval = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/harvest/jobs/${jobId}`);
+          if (!res.ok) return;
+          const data = await res.json();
+
+          text.innerText = `Ingestion: [${data.status.toUpperCase()}] ${data.message || data.url.slice(0, 40)}`;
+          progress.innerText = `${data.progress}%`;
+
+          if (data.status === 'completed') {
+            clearInterval(interval);
+            progress.innerText = '100% ✓';
+            setTimeout(() => { banner.classList.add('hidden'); loadStats(); }, 4000);
+          } else if (data.status === 'failed') {
+            clearInterval(interval);
+            text.innerText = `Ingestion Failed: ${data.error || 'Unknown error'}`;
+            progress.innerText = 'FAILED';
+          }
+        } catch {
+          clearInterval(interval);
+        }
+      }, 1500);
     }
 
     async function loadCoverage() {
@@ -1854,6 +2132,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/chain", endpoint=chain_endpoint, methods=["GET"]),
         Route("/api/coverage", endpoint=get_coverage, methods=["GET"]),
         Route("/api/validate", endpoint=validate_endpoint, methods=["GET", "POST"]),
+        Route("/api/search/external", endpoint=search_external, methods=["GET"]),
+        Route("/api/harvest/ingest-url", endpoint=harvest_ingest_url, methods=["POST"]),
+        Route("/api/harvest/jobs/{job_id}", endpoint=get_job_status, methods=["GET"]),
         Route("/graphql", endpoint=graphql_app, methods=["GET", "POST"]),
         Mount("/graphql", app=graphql_app),
     ]

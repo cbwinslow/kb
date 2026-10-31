@@ -542,6 +542,31 @@ This document records the architectural, technical, and mathematical decisions m
 - **Consequences**:
   - Empowers agents with real-time academic discovery capabilities while keeping the dependency footprint lightweight without heavyweight external search SDKs.
 
+---
+
+## ADR-036: V2 Corpus Intelligence and Multimodal Platform
+- **Status**: Accepted
+- **Context**:
+  - The scientific knowledge base needed to advance into a multimodal research and discovery engine with live external web ingestion, formula recovery for unparsed Grade F expressions, empirical fuzzy schema binding, and multimodal visual grounding for scientific figures.
+- **Decision**:
+  1. **Scholarly UI Explorer & 1-Click Async Ingestion (`src/kb/ui/app.py`)**:
+     - Built an interactive search browser in the Starlette web UI (`kb ui serve`) unifying arXiv Atom feeds, OpenAlex REST endpoints, and web quantitative sources.
+     - Implemented `IngestJob` background task orchestration with temporary disk cleanup and CUDA memory clearing (`torch.cuda.empty_cache()`).
+  2. **Advanced Formula Sanitizer V3 & AST Recovery (`src/kb/math/sanitizer.py`, `src/kb/math/extractor.py`)**:
+     - Implemented `protect_acronyms()` to prevent domain metrics (e.g. `BABIP`, `wOBA`, `wRAA`, `ERA`, `FIP`) from being decomposed into single-letter products by ANTLR LaTeX grammar.
+     - Implemented stack-based delimiter rebalancing for unclosed braces, parentheses, brackets, and `\left`/`\right` sizing tags.
+     - Built piecewise cases parser converting `\begin{cases}` environments into valid SymPy `Piecewise` expressions and Polars `pl.when().then().otherwise()` constructs.
+  3. **Empirical Accuracy Auto-Binding Engine & Fixtures (`src/kb/qa/accuracy.py`)**:
+     - Created `HeuristicColumnMatcher` utilizing domain synonym dictionaries ($v_0 \leftrightarrow \text{exit\_velocity}$, $\theta \leftrightarrow \text{launch\_angle}$) and normalized Levenshtein token similarity.
+     - Added `discover_fixtures()` for lazy schema sniffing across 1,428 Parquet fixtures in `data/fixtures/` and integrated `--all` fixture benchmarking into `kb benchmark accuracy --all`.
+  4. **Multimodal Figure VLM Grounding & FastMCP Server (`src/kb/enrich/vlm.py`, `src/kb/mcp/server.py`, `src/kb/storage/models.py`)**:
+     - Extended `Figure` model with `vlm_summary`, `detected_curves`, and `formula_ids`.
+     - Built `FigureVLMProcessor` to classify diagram types, extract axes and units, and link figure captions to mathematical formula entities.
+     - Exposed `kb_get_figure` and `kb_search_figures` tools on the FastMCP agent server.
+- **Consequences**:
+  - Delivers complete V2 multimodal corpus intelligence, recovers failed formulas into verified ASTs, provides zero-intervention empirical schema binding, and enables AI agents to query scientific figures and diagrams directly.
+
+
 
 
 

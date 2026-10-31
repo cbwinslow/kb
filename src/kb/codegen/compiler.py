@@ -5,8 +5,9 @@ from __future__ import annotations
 import ast
 import re
 import warnings
+from typing import Any
 
-from sympy import Equality, Expr, sympify
+from sympy import Equality, Expr, Piecewise, sympify, true
 from sympy.printing.pycode import pycode
 
 from kb.codegen.models import CodeGenerationResult
@@ -115,7 +116,10 @@ class FormulaCompiler:
             ast.parse(python_source)
 
             # 5. Generate Polars vectorized expression
-            polars_expr_str = self._generate_polars_expression(raw_py_expr, param_list)
+            if isinstance(eval_expr, Piecewise):
+                polars_expr_str = self._piecewise_to_polars(eval_expr, param_map)
+            else:
+                polars_expr_str = self._generate_polars_expression(raw_py_expr, param_list)
 
             return CodeGenerationResult(
                 formula_id=formula_id,
@@ -170,3 +174,33 @@ class FormulaCompiler:
         )
 
         return polars_expr
+
+    def _piecewise_to_polars(self, pw_expr: Piecewise, param_map: dict[str, str]) -> str:
+        """Translate a SymPy Piecewise expression into a chained Polars pl.when().then().otherwise()."""
+        chain = ""
+        param_list = list(param_map.values())
+        for item in pw_expr.args:
+            pair: tuple[Any, ...] = tuple(item)  # type: ignore[assignment]
+            branch_expr, cond = pair[0], pair[1]
+            raw_b_code = str(pycode(branch_expr))
+            for orig, clean in param_map.items():
+                if orig != clean:
+                    raw_b_code = re.sub(rf"\b{re.escape(orig)}\b", clean, raw_b_code)
+            b_code = self._generate_polars_expression(raw_b_code, param_list)
+
+            if cond is True or cond == true or str(cond) == "True":
+                if chain:
+                    chain += f".otherwise({b_code})"
+                else:
+                    chain = b_code
+            else:
+                raw_c_code = str(pycode(cond))
+                for orig, clean in param_map.items():
+                    if orig != clean:
+                        raw_c_code = re.sub(rf"\b{re.escape(orig)}\b", clean, raw_c_code)
+                c_code = self._generate_polars_expression(raw_c_code, param_list)
+                if not chain:
+                    chain = f"pl.when({c_code}).then({b_code})"
+                else:
+                    chain += f".when({c_code}).then({b_code})"
+        return chain
