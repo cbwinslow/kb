@@ -56,22 +56,23 @@ FastMCP Server (LAN / ZeroTier)
 
 * **Document Parsing**: IBM Docling (`docling`) with PyTorch / CUDA acceleration.
 * **Symbolic Math Engine**: `sympy` (`sympy.parsing.latex`) for mathematical verification and Python AST generation.
+* **Formula Sanitizer V3**: Advanced LaTeX normalization, domain acronym protection (`BABIP`, `wOBA`, `ERA`, `FIP`), stack-based delimiter balancing, and `\begin{cases}` piecewise decomposition.
 * **Embeddings & Search**: `BAAI/bge-m3` (dense vectors + sparse lexical weights) with Reciprocal Rank Fusion (RRF) in PostgreSQL.
 * **Relational & Vector Store**: PostgreSQL 16 + `pgvector` via `SQLAlchemy 2.0` (async) and `asyncpg`.
-* **Agent Integration**: `FastMCP` (Model Context Protocol) with dynamic AST compilation and live calculation execution.
+* **Agent Integration**: `FastMCP` (Model Context Protocol) with dynamic AST compilation, live calculation execution, scholarly web search, and multimodal figure queries (`kb_get_figure`, `kb_search_figures`).
 * **Scholarly Web Search**: `ScholarlyWebSearcher` with multi-source async query coordination across arXiv Atom API, OpenAlex REST API with cursor pagination, and web discovery.
 * **Bibliographic Truth**: Zotero local SQLite / Web API integration with Better BibTeX citation keys.
-* **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and Polars expressions.
+* **Code Generation**: Standalone formula library (`kb-formulas`) with typed Python and vectorized Polars expressions (`expr_*`), including piecewise conditional evaluations.
 * **Storage Protocol**: Direct encrypted SSH/SFTP synchronization to homelab vault with automatic workstation disk space protection.
 * **Semantic Symbol Ontology**: `SymbolOntology` managing canonical concept registries, author variable aliases, and zero-copy DataFrame column binding for Polars/Pandas.
 * **Equation Chaining & Solver**: `FormulaChainingEngine` and `DimensionalValidator` providing recursive cross-paper variable substitution, SI physical dimensional consistency checks, closed-form equation generation, and multi-hop concept pathfinding.
-* **Literature Expansion & Figures**: Targeted 2024–2026 OpenAlex harvester (bat tracking, seam-shifted wake aerodynamics), Docling `PictureItem` figure extraction with homelab SFTP vaulting, and autonomous citation graph linking.
+* **Literature Expansion & Figures**: Targeted 2024–2026 OpenAlex harvester (bat tracking, seam-shifted wake aerodynamics), Docling `PictureItem` figure extraction with homelab SFTP vaulting, autonomous citation graph linking, and multimodal VLM semantic grounding (`FigureVLMProcessor`).
 * **Web Glossary Harvester**: `WebGlossaryHarvester` for ingesting HTML web articles and canonical sabermetric glossaries (FanGraphs, Tom Tango) into clean Markdown with LaTeX math preservation.
 * **Knowledge Graph & GraphQL**: Multi-layer relational GraphQL API schema (`strawberry-graphql`) connecting Documents, Formulas, Figures, Variables, Canonical Concepts, Benchmark Tables, and Derivation Chains.
 * **Formula Coverage & Repair**: `FormulaCoverageAnalyzer` and `CorpusFormulaRepairer` auditing formula yield, symbol utilization (LHS vs RHS), non-ASCII character distributions, and progressive in-place AST recovery.
-* **Interactive Web Dashboard**: Starlette web application (`kb ui serve`) with interactive Lineage DAG, Formula Playground with parameter sensitivity curves, Quality Gate with Tier 1–4 diagnostic drawers and 1-click automated repair, and Coverage Scorecard.
+* **Interactive Web Dashboard**: Starlette web application (`kb ui serve`) with interactive Lineage DAG, Formula Playground with parameter sensitivity curves, Quality Gate with Tier 1–4 diagnostic drawers, 1-click automated repair, Coverage Scorecard, and Scholarly Web Explorer with 1-click background preprint ingestion.
 * **Observability & QA**: Centralized rotating structured logging, execution telemetry, and ground-truth numerical accuracy verification.
-* **Benchmarking Engine**: `PerformanceBenchmarker` and `EmpiricalAccuracyRunner` measuring scalar vs. Polars throughput, embedding latency, corpus quality yields, and empirical MAE/RMSE/$R^2$ against Parquet tracking datasets.
+* **Benchmarking Engine**: `PerformanceBenchmarker` and `EmpiricalAccuracyRunner` measuring scalar vs. Polars throughput, embedding latency, corpus quality yields, automated fixture sniffing across 1,428 Parquet fixtures, and empirical MAE/RMSE/$R^2$ with heuristic fuzzy column auto-binding (`kb benchmark accuracy --all`).
 * **Package Management**: `uv`.
-* **Quality Gates**: `ruff` (linting & formatting), `pyright` (strict typing), `pytest` (test suite).
-* **Architecture Decisions**: Fully documented in [`docs/DECISIONS.md`](../docs/DECISIONS.md).
+* **Quality Gates**: `ruff` (linting & formatting), `pyright` (strict typing), `pytest` (202-test automated test suite).
+* **Architecture Decisions**: Fully documented from ADR-001 through ADR-036 in [`docs/DECISIONS.md`](../docs/DECISIONS.md).

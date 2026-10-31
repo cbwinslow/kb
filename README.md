@@ -12,22 +12,22 @@ A high-performance, domain-agnostic scientific research engine and knowledge-to-
    - Operates identically on local development environments (using SQLite / local directories) or enterprise homelabs (using PostgreSQL 16 + pgvector + remote SSH/SFTP storage vaults).
 
 2. **Automated Harvesting & Ingestion**:
-   - Automated arXiv query harvesters with deduplication and metadata enrichment.
-   - High-fidelity PDF layout parsing (Docling) for sections, tables, and math equations.
-   - Enhanced LaTeX sanitizers mapping Unicode Greek symbols, piecewise functions, and OCR artifacts into valid SymPy expressions.
+   - Automated arXiv and OpenAlex query harvesters with multi-attribute deduplication and metadata enrichment.
+   - High-fidelity PDF layout parsing (Docling) for sections, tables, figures, and math equations.
+   - Enhanced LaTeX Sanitizer V3 mapping Unicode Greek symbols, domain acronyms (`BABIP`, `wOBA`, `ERA`, `FIP`), delimiter rebalancing, and `\begin{cases}` piecewise functions into valid SymPy expressions and Polars `when().then().otherwise()` expressions.
 
 3. **Homelab Remote Archiving via SSH/SFTP**:
-   - Direct, encrypted synchronization of raw PDFs and Parquet benchmark fixtures to homelab storage (`/home/.../workspace/kb/`) via SSH keys (`~/.ssh/id_ed25519`).
-   - Prevents local workstation disk exhaustion through automatic host floor monitoring.
+   - Direct, encrypted synchronization of raw PDFs, extracted figures, and Parquet benchmark fixtures to homelab storage (`/home/.../workspace/kb/`) via SSH keys (`~/.ssh/id_ed25519`).
+   - Prevents local workstation disk exhaustion through automatic host floor monitoring ($\ge 1.5$ GB free).
 
 4. **Knowledge-to-Code & Standalone Formula Library**:
-   - Automatically compiles extracted equations into executable Python functions and vectorized Polars expressions (`expr_*`).
+   - Automatically compiles extracted equations into executable Python functions and vectorized Polars expressions (`expr_*`), including conditional piecewise logic.
    - Generates KaTeX-compliant docstrings with complete paper titles, authors, citation keys, and parameter annotations.
-   - Validated against empirical benchmark tables extracted from literature.
+   - Validated against empirical benchmark tables extracted from literature, with heuristic fuzzy column auto-binding across 1,428 Parquet fixtures.
 
-5. **Interactive Visual Dashboard**:
-   - FastMCP server daemon for integration with AI agents.
-   - Interactive HTML5 canvas visualizer showcasing documents, embedded chunks, mathematical formula lineage, and benchmark tables.
+5. **Interactive Visual Dashboard & Agent Tools**:
+   - FastMCP server daemon for integration with AI agents (`kb_search_literature`, `kb_web_search_papers`, `kb_get_figure`, `kb_search_figures`, `kb_get_formula`, `kb_compile_formula`, `kb_execute_formula`).
+   - Interactive HTML5 canvas visualizer showcasing documents, embedded chunks, mathematical formula lineage, Quality Gate with 1-click repair, and Scholarly Web Explorer with 1-click background preprint ingestion.
 
 ---
 
@@ -169,6 +169,9 @@ uv run kb benchmark --all
 # Run empirical accuracy benchmark against Parquet datasets for Grade A formulas
 uv run kb benchmark accuracy --grade A --limit 50
 
+# Run batch empirical accuracy benchmark across all discovered Parquet fixtures
+uv run kb benchmark accuracy --all
+
 # Benchmark formula execution throughput on 100,000 rows
 uv run kb benchmark --formulas --rows 100000
 
@@ -212,15 +215,15 @@ print(df_with_war)
 
 ## Testing & Quality Assurance
 
-Run the complete 90-test automated test suite:
+Run the complete 202-test automated test suite:
 ```bash
 uv run pytest tests/
 ```
 
 Linting and strict type checking:
 ```bash
-uv run ruff check src/ tests/ scripts/ packages/
-uv run pyright src/kb/config.py src/kb/logging.py src/kb/sync/ src/kb/ui/ src/kb/cli.py packages/kb_formulas/src/
+uv run ruff check src/ tests/ packages/
+uv run pyright src/ tests/ packages/
 ```
 
 ---
