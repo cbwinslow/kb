@@ -52,7 +52,7 @@ class OpenAlexWork:
         return self.id.split("/")[-1]
 
 
-SABERMETRIC_PRESETS: dict[str, list[str]] = {
+HARVEST_PRESETS: dict[str, list[str]] = {
     "mlb-modeling": [
         "Major League Baseball statistical modeling",
         "win probability baseball run expectancy",
@@ -80,14 +80,43 @@ SABERMETRIC_PRESETS: dict[str, list[str]] = {
         "sabermetrics computational algorithms python",
         "Retrosheet data parsing baseball python",
     ],
+    "biomechanics": [
+        "biomechanics inverse dynamics joint kinetics",
+        "ground reaction force human locomotion kinematics",
+        "markerless motion capture skeletal tracking",
+        "muscle torque angular velocity biomechanical modeling",
+    ],
+    "aerodynamics-pinn": [
+        "physics-informed neural network fluid aerodynamics",
+        "Magnus effect sphere boundary layer separation",
+        "wake vortex aerodynamics turbulence modeling",
+        "PINN projectile trajectory fluid dynamics",
+    ],
+    "sports-econometrics": [
+        "sports economics salary arbitration empirical modeling",
+        "win-maximizing payroll efficiency regression sports",
+        "attendance demand estimation sports econometrics",
+        "competitive balance econometric analysis sports",
+    ],
+    "kinematics-tracking": [
+        "high speed optical trajectory tracking Kalman filter",
+        "3D ball trajectory reconstruction tracking camera",
+        "Extended Kalman filter projectile state estimation",
+        "inertial measurement unit kinematics sensor fusion",
+    ],
 }
+
+# Alias for backwards compatibility
+SABERMETRIC_PRESETS = HARVEST_PRESETS
 
 
 def get_preset_queries(preset_name: str) -> list[str]:
-    """Retrieves search query terms for a named sabermetric preset.
+    """Retrieves search query terms for a named research harvest preset.
 
     Args:
-        preset_name: Key of the preset ('mlb-modeling', 'retrosheet', 'statcast', 'popular', 'baseball-python', or 'all').
+        preset_name: Key of the preset ('mlb-modeling', 'retrosheet', 'statcast', 'popular',
+            'baseball-python', 'biomechanics', 'aerodynamics-pinn', 'sports-econometrics',
+            'kinematics-tracking', or 'all').
 
     Returns:
         List of query strings.
@@ -95,17 +124,17 @@ def get_preset_queries(preset_name: str) -> list[str]:
     preset_key = preset_name.strip().lower()
     if preset_key in ("all", "full"):
         all_queries: list[str] = []
-        for q_list in SABERMETRIC_PRESETS.values():
+        for q_list in HARVEST_PRESETS.values():
             for q in q_list:
                 if q not in all_queries:
                     all_queries.append(q)
         return all_queries
-    if preset_key not in SABERMETRIC_PRESETS:
+    if preset_key not in HARVEST_PRESETS:
         raise ValueError(
-            f"Unknown sabermetric preset '{preset_name}'. "
-            f"Available presets: {list(SABERMETRIC_PRESETS.keys()) + ['all']}"
+            f"Unknown harvest preset '{preset_name}'. "
+            f"Available presets: {list(HARVEST_PRESETS.keys()) + ['all']}"
         )
-    return list(SABERMETRIC_PRESETS[preset_key])
+    return list(HARVEST_PRESETS[preset_key])
 
 
 class OpenAlexClient:

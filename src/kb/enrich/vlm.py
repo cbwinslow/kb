@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 import re
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, Field
@@ -237,3 +238,94 @@ class FigureVLMProcessor:
 
         await session.commit()
         return results
+
+
+class FigureBatchIndexResult(BaseModel):
+    """Execution summary of batch figure VLM grounding."""
+
+    total_scanned: int = Field(default=0, description="Total figures examined")
+    newly_grounded: int = Field(default=0, description="Figures newly grounded")
+    already_grounded: int = Field(default=0, description="Figures previously grounded")
+    formulas_linked: int = Field(default=0, description="Total formula associations linked")
+    duration_seconds: float = Field(default=0.0, description="Total execution time in seconds")
+    dry_run: bool = Field(default=False, description="Whether execution was simulated")
+
+
+class FigureBatchIndexer:
+    """Orchestrates batch VLM grounding, visual curve extraction, and formula linking across the corpus."""
+
+    def __init__(self, processor: FigureVLMProcessor | None = None) -> None:
+        self.processor = processor or FigureVLMProcessor()
+
+    async def index_all(
+        self,
+        session: AsyncSession,
+        batch_size: int = 50,
+        limit: int | None = None,
+        force: bool = False,
+        dry_run: bool = False,
+        progress_callback: Callable[[int, int, int], None] | None = None,
+    ) -> FigureBatchIndexResult:
+        """Scan figure records, compute multimodal visual grounding, and commit updates."""
+        import time
+
+        start_time = time.perf_counter()
+        stmt = select(Figure)
+        if not force:
+            stmt = stmt.where(Figure.vlm_summary.is_(None))
+        if limit:
+            stmt = stmt.limit(limit)
+
+        figures = list((await session.execute(stmt)).scalars().all())
+        total = len(figures)
+
+        newly_grounded = 0
+        already_grounded = 0
+        formulas_linked_count = 0
+        cached_formulas: dict[str, list[Formula]] = {}
+
+        for idx, fig in enumerate(figures, start=1):
+            if fig.vlm_summary and not force:
+                already_grounded += 1
+                continue
+
+            # Cache formulas per citekey to avoid repeated queries
+            if fig.citekey not in cached_formulas:
+                f_stmt = select(Formula).where(Formula.citekey == fig.citekey)
+                cached_formulas[fig.citekey] = list((await session.execute(f_stmt)).scalars().all())
+
+            grounding = self.processor.analyze_figure(
+                figure_id=fig.id,
+                citekey=fig.citekey,
+                caption=fig.caption,
+                chunk_text=fig.chunk.enriched_text if fig.chunk else None,
+                available_formulas=cached_formulas[fig.citekey],
+            )
+
+            if not dry_run:
+                fig.vlm_summary = grounding.vlm_summary
+                fig.detected_curves = grounding.detected_curves
+                fig.formula_ids = grounding.formula_ids
+
+            newly_grounded += 1
+            formulas_linked_count += len(grounding.formula_ids)
+
+            if not dry_run and idx % batch_size == 0:
+                await session.commit()
+
+            if progress_callback and (idx % 25 == 0 or idx == total):
+                progress_callback(idx, newly_grounded, total)
+
+        if not dry_run and figures:
+            await session.commit()
+
+        duration = time.perf_counter() - start_time
+        return FigureBatchIndexResult(
+            total_scanned=total,
+            newly_grounded=newly_grounded,
+            already_grounded=already_grounded,
+            formulas_linked=formulas_linked_count,
+            duration_seconds=round(duration, 2),
+            dry_run=dry_run,
+        )
+

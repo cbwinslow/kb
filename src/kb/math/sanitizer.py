@@ -12,13 +12,13 @@ class EquationSanitizer:
 
     # Regex patterns for environment, label, tag cleanup
     TAG_RE: ClassVar[re.Pattern[str]] = re.compile(
-        r"[\s,;.]*(?:\\tag\{[^}]*\}|\([0-9]+(?:\.[0-9]+)*\)|\([A-Za-z0-9]+\.[0-9]+\))[\s,;.]*$"
+        r"[\s,;.]*(?:\\tag\*?\{[^}]*\}|\([0-9]+(?:\.[0-9]+)*[a-zA-Z]?\)|\([A-Za-z0-9]+\.[0-9]+[a-zA-Z]?\)|\([a-zA-Z]?[0-9]+[a-zA-Z]?\))[\s,;.]*$"
     )
     LABEL_RE: ClassVar[re.Pattern[str]] = re.compile(r"\\label\{[^}]*\}")
     ENV_STRIP_RE: ClassVar[re.Pattern[str]] = re.compile(
-        r"\\begin\{(?:equation|align|aligned|gather|displaymath)\*?\}"
+        r"\\begin\{(?:equation|align|aligned|gather|displaymath|split|multline|eqnarray|array)\*?(?:\{[^}]*\})?\}"
         r"([\s\S]*?)"
-        r"\\end\{(?:equation|align|aligned|gather|displaymath)\*?\}"
+        r"\\end\{(?:equation|align|aligned|gather|displaymath|split|multline|eqnarray|array)\*?\}"
     )
     DOLLAR_STRIP_RE: ClassVar[re.Pattern[str]] = re.compile(r"^\${1,2}|\${1,2}$")
 
@@ -172,6 +172,13 @@ class EquationSanitizer:
         "Ω": r"\Omega ",
         "†": r"\dagger ",
         "⊤": r"^T",
+        "⊥": r"_\perp ",
+        "≜": "=",
+        "≝": "=",
+        "≔": "=",
+        "⩴": "=",
+        "≚": "=",
+        "≛": "=",
         "⟨": r"\langle ",
         "⟩": r"\rangle ",
         "〈": r"\langle ",
@@ -275,7 +282,11 @@ class EquationSanitizer:
         # Stage 2: Strip Private Use Area OCR font fragments and combining accents
         text = re.sub(r"[\uf8e0-\uf8ff]", "", text)
         text = text.replace("\u20d7", "")  # combining right arrow above (vector accent)
-        text = text.replace("\u02d9", "")  # dot above (time derivative)
+        text = text.replace("\xa8", "").replace(r"\xa8", "")  # diaeresis (¨ double dot)
+        text = text.replace("\u02d8", "").replace(r"\u02d8", "")  # breve (˘)
+        text = text.replace("\u02d9", "").replace(r"\u02d9", "")  # dot above (˙ time derivative)
+        text = text.replace("\u02c6", "").replace(r"\u02c6", "")  # modifier circumflex (ˆ)
+        text = text.replace("\u02dc", "").replace(r"\u02dc", "")  # small tilde (˜)
         text = text.replace("\xaf", "")  # macron / overline (mean)
         text = text.replace("\u0302", "")  # combining circumflex (hat / estimator)
         text = text.replace("\ufe01", "")  # variation selector 2
@@ -571,10 +582,30 @@ class EquationSanitizer:
         # 10. Repair unescaped percent signs
         text = re.sub(r"(?<!\\)%", r"\%", text)
 
-        # 11. Balance delimiters (braces, parens, brackets, \left/\right)
+        # 11. Repair TeX alignment tabs and multi-line equation arrays
+        text = re.sub(r"&=", "=", text)
+        text = re.sub(r"(?<!\\)&", " ", text)
+        if r"\\" in text and not self.extract_cases(raw_latex):
+            lines = [line.strip() for line in text.split(r"\\") if line.strip()]
+            eq_lines = [line for line in lines if "=" in line]
+            if eq_lines:
+                text = eq_lines[0]
+            elif lines:
+                text = lines[0]
+
+        # 12. Plain TeX \over to \frac
+        text = re.sub(r"\{([^{}]+)\s*\\over\s*([^{}]+)\}", r"\\frac{\1}{\2}", text)
+
+        # 13. Multi-pipe norm normalization: reduce 2 or more consecutive pipes to a single pipe
+        text = re.sub(r"\|{2,}", "|", text)
+
+        # 14. Fix \sqrt without braces (e.g. \sqrt x -> \sqrt{x})
+        text = re.sub(r"\\sqrt\s+([A-Za-z0-9\\]+)(?!\{)", r"\\sqrt{\1}", text)
+
+        # 15. Balance delimiters (braces, parens, brackets, \left/\right)
         text = self.balance_delimiters(text)
 
-        # 12. Protect compound multi-letter variables (e.g. \text{RS} or RS -> R_{S})
+        # 16. Protect compound multi-letter variables (e.g. \text{RS} or RS -> R_{S})
         if protect_compound_symbols:
             for symbol, replacement in self.COMPOUND_SYMBOLS:
                 text = re.sub(rf"\\(?:text|mathrm|mathbf)\{{{symbol}\}}", replacement, text)

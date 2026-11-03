@@ -13,19 +13,22 @@ A high-performance, domain-agnostic scientific research engine and knowledge-to-
 
 2. **Automated Harvesting & Ingestion**:
    - Automated arXiv and OpenAlex query harvesters with multi-attribute deduplication and metadata enrichment.
+   - Curated research presets across multi-disciplinary domains: `mlb-modeling`, `statcast`, `retrosheet`, `biomechanics`, `aerodynamics-pinn`, `sports-econometrics`, `kinematics-tracking`.
    - High-fidelity PDF layout parsing (Docling) for sections, tables, figures, and math equations.
-   - Enhanced LaTeX Sanitizer V3 mapping Unicode Greek symbols, domain acronyms (`BABIP`, `wOBA`, `ERA`, `FIP`), delimiter rebalancing, and `\begin{cases}` piecewise functions into valid SymPy expressions and Polars `when().then().otherwise()` expressions.
+   - Enhanced LaTeX Sanitizer V3 recovering Grade-F equations with tag stripping, delimiter rebalancing, Unicode diacritic cleanup, and `\begin{cases}` piecewise decomposition.
 
 3. **Homelab Remote Archiving via SSH/SFTP**:
    - Direct, encrypted synchronization of raw PDFs, extracted figures, and Parquet benchmark fixtures to homelab storage (`/home/.../workspace/kb/`) via SSH keys (`~/.ssh/id_ed25519`).
    - Prevents local workstation disk exhaustion through automatic host floor monitoring ($\ge 1.5$ GB free).
 
 4. **Knowledge-to-Code & Standalone Formula Library**:
-   - Automatically compiles extracted equations into executable Python functions and vectorized Polars expressions (`expr_*`), including conditional piecewise logic.
+   - Over 4,103 Grade A/B formulas elevated and validated across the corpus.
+   - Automatically compiles 1,562 verified Grade A equations into standalone executable Python functions and vectorized Polars expressions (`expr_*`) in `packages/kb_formulas`.
    - Generates KaTeX-compliant docstrings with complete paper titles, authors, citation keys, and parameter annotations.
    - Validated against empirical benchmark tables extracted from literature, with heuristic fuzzy column auto-binding across 1,428 Parquet fixtures.
 
-5. **Interactive Visual Dashboard & Agent Tools**:
+5. **Multimodal VLM Grounding & Agent Tools**:
+   - Batch figure grounding engine (`kb figures index-all`) indexing 490 figures with bounding boxes, axes/units, and visual summaries, and 720 formula linkages.
    - FastMCP server daemon for integration with AI agents (`kb_search_literature`, `kb_web_search_papers`, `kb_get_figure`, `kb_search_figures`, `kb_get_formula`, `kb_compile_formula`, `kb_execute_formula`).
    - Interactive HTML5 canvas visualizer showcasing documents, embedded chunks, mathematical formula lineage, Quality Gate with 1-click repair, and Scholarly Web Explorer with 1-click background preprint ingestion.
 
@@ -107,8 +110,23 @@ uv run kb sync ssh-push
 # Harvest top 10 baseball analytics preprints from arXiv
 uv run kb sync harvest --query "baseball OR sabermetrics OR statcast" --limit 10
 
+# Harvest targeted literature via multi-domain presets with pre-download deduplication
+uv run kb sync harvest --preset aerodynamics-pinn --max-papers 20 --sort citations
+
 # Ingest a specific paper PDF manually
 uv run kb ingest path/to/paper.pdf --citekey author2026 --title "Advanced Run Expectancy"
+```
+
+### Corpus Formula Elevation & Figure Grounding
+```bash
+# Audit corpus relational invariants and formula letter grade distribution
+uv run kb corpus audit
+
+# In-place repair and re-grade formulas across the PostgreSQL corpus
+uv run kb corpus repair-all --batch-size 100
+
+# Pre-compute multimodal visual grounding and formula links across all figures
+uv run kb figures index-all --batch-size 50
 ```
 
 ### Continuous Multi-Source Harvester Daemon

@@ -155,3 +155,74 @@ async def test_mcp_get_and_search_figures() -> None:
     assert not res_search.is_error
     assert len(res_search.content) >= 1
     assert "fig_test_123" in str(res_search.content[0])
+
+
+@pytest.mark.asyncio
+async def test_figure_batch_indexer_live_db() -> None:
+    """Verifies that FigureBatchIndexer scans and updates ungrounded figures."""
+    import uuid
+
+    from sqlalchemy import select
+
+    from kb.enrich.vlm import FigureBatchIndexer, FigureBatchIndexResult
+    from kb.storage.database import DatabaseManager
+    from kb.storage.models import Document, Figure, Formula
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_fig_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    async with db.get_session() as session:
+        doc = Document(id="doc_fig_test", citekey="nathan2024", title="Aerodynamics of Seam Shifted Wake")
+        session.add(doc)
+        await session.flush()
+
+        fig = Figure(
+            id="fig_test_pinn",
+            document_id="doc_fig_test",
+            citekey="nathan2024",
+            caption="Vertical trajectory deflection versus drag coefficient Cd across pitch velocities",
+            figure_index=1,
+            image_path="/vault/figures/test.png",
+            vlm_summary=None,
+        )
+        formula = Formula(
+            id="form_drag_eq",
+            document_id="doc_fig_test",
+            citekey="nathan2024",
+            raw_latex="F_d = \\frac{1}{2} C_d \\rho A v^2",
+            sanitized_latex="F_d = 0.5 * C_d * \\rho * A * v**2",
+            is_valid=True,
+            symbols=["F_d", "C_d", "rho", "A", "v"],
+        )
+        session.add_all([fig, formula])
+        await session.commit()
+
+    indexer = FigureBatchIndexer()
+    async with db.get_session() as session:
+        # Dry run test
+        res_dry = await indexer.index_all(session=session, dry_run=True)
+        assert isinstance(res_dry, FigureBatchIndexResult)
+        assert res_dry.total_scanned == 1
+        assert res_dry.newly_grounded == 1
+        assert res_dry.dry_run is True
+
+        # Live index test
+        res_live = await indexer.index_all(session=session, dry_run=False)
+        assert isinstance(res_live, FigureBatchIndexResult)
+        assert res_live.total_scanned == 1
+        assert res_live.newly_grounded == 1
+
+        # Force re-index test
+        res_force = await indexer.index_all(session=session, force=True)
+        assert res_force.total_scanned == 1
+        assert res_force.newly_grounded == 1
+
+    async with db.get_session() as session:
+        updated_fig = (await session.execute(select(Figure).where(Figure.id == "fig_test_pinn"))).scalar_one()
+        assert updated_fig.vlm_summary is not None
+        assert "versus" in updated_fig.vlm_summary.lower() or "plots" in updated_fig.vlm_summary.lower()
+        assert updated_fig.detected_curves is not None
+
+    await db.close()

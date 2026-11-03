@@ -296,20 +296,29 @@ async def test_search_works_cursor_pagination() -> None:
 
 def test_sabermetric_presets_configuration() -> None:
     """Verifies preset dictionaries and query expansion."""
-    from kb.enrich.openalex import SABERMETRIC_PRESETS, get_preset_queries
+    from kb.enrich.openalex import HARVEST_PRESETS, SABERMETRIC_PRESETS, get_preset_queries
 
     assert "mlb-modeling" in SABERMETRIC_PRESETS
     assert "retrosheet" in SABERMETRIC_PRESETS
     assert "statcast" in SABERMETRIC_PRESETS
     assert "popular" in SABERMETRIC_PRESETS
     assert "baseball-python" in SABERMETRIC_PRESETS
+    assert "biomechanics" in HARVEST_PRESETS
+    assert "aerodynamics-pinn" in HARVEST_PRESETS
+    assert "sports-econometrics" in HARVEST_PRESETS
+    assert "kinematics-tracking" in HARVEST_PRESETS
 
     modeling_queries = get_preset_queries("mlb-modeling")
     assert len(modeling_queries) >= 3
     assert any("statistical modeling" in q.lower() for q in modeling_queries)
 
+    pinn_queries = get_preset_queries("aerodynamics-pinn")
+    assert len(pinn_queries) >= 3
+    assert any("physics-informed neural network" in q.lower() for q in pinn_queries)
+
     all_queries = get_preset_queries("all")
     assert len(all_queries) > len(modeling_queries)
 
-    with pytest.raises(ValueError, match="Unknown sabermetric preset"):
+    with pytest.raises(ValueError, match="Unknown (?:harvest|sabermetric) preset"):
         get_preset_queries("non_existent_preset_xyz")
+

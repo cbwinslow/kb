@@ -1739,6 +1739,59 @@ async def async_corpus_repair_all(
     return 0
 
 
+async def async_figures_index_all(
+    batch_size: int = 50,
+    limit: int | None = None,
+    force: bool = False,
+    dry_run: bool = False,
+    manager: DatabaseManager | None = None,
+) -> int:
+    """Batch ground scientific figures with VLM summaries, curve detections, and formula links."""
+    from kb.enrich.vlm import FigureBatchIndexer
+
+    db_manager = manager or DatabaseManager()
+    await db_manager.init_db()
+
+    indexer = FigureBatchIndexer()
+    mode_str = "DRY RUN (simulation only)" if dry_run else "LIVE MIGRATION (persisting to DB)"
+    print(f"[*] Starting batch figure VLM grounding: {mode_str}")
+    print(f"    Parameters: batch_size={batch_size}, limit={limit or 'unlimited'}, force={force}")
+
+    def progress_cb(processed: int, newly_grounded: int, total: int) -> None:
+        pct = (processed / total * 100.0) if total > 0 else 0.0
+        print(
+            f"    Progress: {processed}/{total} ({pct:.1f}%) | Grounded: {newly_grounded}",
+            end="\r",
+            flush=True,
+        )
+
+    async with db_manager.get_session() as session:
+        res = await indexer.index_all(
+            session=session,
+            batch_size=batch_size,
+            limit=limit,
+            force=force,
+            dry_run=dry_run,
+            progress_callback=progress_cb,
+        )
+
+    print()
+    print("\n[OK] Batch Figure VLM Grounding Summary:")
+    print("=" * 65)
+    print(f"  Mode                : {'DRY RUN' if res.dry_run else 'PERSISTED'}")
+    print(f"  Total Scanned       : {res.total_scanned:,}")
+    print(f"  Newly Grounded      : {res.newly_grounded:,}")
+    print(f"  Already Grounded    : {res.already_grounded:,}")
+    print(f"  Formulas Linked     : {res.formulas_linked:,}")
+    print(f"  Elapsed Time        : {res.duration_seconds:.2f}s")
+    print("=" * 65 + "\n")
+
+    if manager is None:
+        await db_manager.close()
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Builds the argument parser for kb CLI."""
     parser = argparse.ArgumentParser(
@@ -2185,8 +2238,19 @@ def build_parser() -> argparse.ArgumentParser:
         "--preset",
         type=str,
         default=None,
-        choices=["mlb-modeling", "retrosheet", "statcast", "popular", "baseball-python", "all"],
-        help="Curated sabermetric topic preset",
+        choices=[
+            "mlb-modeling",
+            "retrosheet",
+            "statcast",
+            "popular",
+            "baseball-python",
+            "biomechanics",
+            "aerodynamics-pinn",
+            "sports-econometrics",
+            "kinematics-tracking",
+            "all",
+        ],
+        help="Curated topic preset (sabermetrics, biomechanics, aerodynamics-pinn, sports-econometrics, kinematics-tracking)",
     )
     sync_harvest_p.add_argument(
         "--sort",
@@ -2368,6 +2432,27 @@ def build_parser() -> argparse.ArgumentParser:
     )
     corpus_repair_p.add_argument(
         "--dry-run", action="store_true", help="Simulate repair without persisting"
+    )
+
+    # figures command
+    figures_parser = subparsers.add_parser(
+        "figures", help="Scientific figures VLM grounding, visual curve extraction, and indexing"
+    )
+    figures_sub = figures_parser.add_subparsers(dest="figures_subcommand")
+    fig_index_p = figures_sub.add_parser(
+        "index-all", help="Batch ground ungrounded figures with VLM summaries and formula links"
+    )
+    fig_index_p.add_argument(
+        "--batch-size", type=int, default=50, help="Batch size per transaction commit (default: 50)"
+    )
+    fig_index_p.add_argument(
+        "--limit", type=int, default=None, help="Maximum number of figures to index (default: all)"
+    )
+    fig_index_p.add_argument(
+        "--force", action="store_true", help="Force re-indexing of already grounded figures"
+    )
+    fig_index_p.add_argument(
+        "--dry-run", action="store_true", help="Simulate indexing without writing to database"
     )
 
     return parser
@@ -2734,6 +2819,19 @@ def main(argv: Sequence[str] | None = None) -> None:
             sys.exit(code)
         else:
             parser.parse_args(["corpus", "--help"])
+    elif args.subcommand == "figures":
+        if args.figures_subcommand == "index-all":
+            code = asyncio.run(
+                async_figures_index_all(
+                    batch_size=args.batch_size,
+                    limit=args.limit,
+                    force=args.force,
+                    dry_run=args.dry_run,
+                )
+            )
+            sys.exit(code)
+        else:
+            parser.parse_args(["figures", "--help"])
     else:
         parser.print_help()
 

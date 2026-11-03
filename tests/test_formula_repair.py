@@ -113,3 +113,32 @@ async def test_repair_and_grade_corpus_live_db() -> None:
         assert "letter_grade" in f1_db.validation_details
 
     await db.close()
+
+
+def test_grade_f_recovery_heuristics(repairer: CorpusFormulaRepairer) -> None:
+    """Verifies that targeted Grade-F recovery heuristics repair difficult equations."""
+    # 1. Alphanumeric tag with diaeresis
+    res1 = repairer.repair_single("\xa8 \\theta = \\omega^2 \\cdot r (39b)")
+    assert res1.is_valid is True
+    assert res1.is_equality is True
+    assert "theta" in res1.symbols or "omega" in res1.symbols
+
+    # 2. Alignment tab with equation continuation
+    res2 = repairer.repair_single("\\begin{align} y &= a + b \\end{align}")
+    assert res2.is_valid is True
+    assert res2.is_equality is True
+
+    # 3. Plain TeX \\over fraction
+    res3 = repairer.repair_single("{a + b \\over c} = E")
+    assert res3.is_valid is True
+    assert res3.is_equality is True
+
+    # 4. Definition equality symbol ≜
+    res4 = repairer.repair_single("F \u225c m \\cdot a")
+    assert res4.is_valid is True
+    assert res4.is_equality is True
+
+    # 5. Multi-norm triple pipes
+    res5 = repairer.repair_single("|||x||| = 5")
+    assert res5.is_valid is True
+
