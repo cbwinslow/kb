@@ -613,6 +613,38 @@ This document records the architectural, technical, and mathematical decisions m
   - Reduces FastMCP figure search response time from seconds to sub-millisecond database queries via pre-indexed VLM metadata.
   - Prepares automated ingestion pipelines for multi-disciplinary scientific literature while enforcing disk thresholds and deduplication.
 
+---
+
+## ADR-038: Multimodal Figure Studio Gallery in Web UI and Unicode Mathematical AST Recovery (Sanitizer V4)
+- **Status**: Accepted
+- **Context**:
+  - The corpus contains 490 grounded scientific figures with diagram types, axes/units, VLM summaries, detected curves, and formula links. However, the Web UI dashboard previously only presented Documents, Chunks, Lineage, Formulas, Benchmark Tables, and Playground, with no dedicated visual gallery to inspect multimodal figures and their formula bindings.
+  - In-depth formula analysis revealed persistent Grade-F formulas containing unhandled Unicode mathematical symbols and structural forms:
+    - Unicode Mathematical Alphanumerics ($U+1D400..1D7FF$, e.g. mathematical bold/sans-serif variables `𝖴𝖯`, `𝜆`, `𝜋`, `𝜌`, `𝑞`, `𝑗`).
+    - Combining vector arrows (`\u20d7`, e.g. `⃗θ`, `⃗n`, `⃗x`) and combining diacritics (`[\u0300-\u036f]`).
+    - Fullwidth CJK equation numbering tags (`（1）`, `（24）`, `（41）`).
+    - Equivalence relations (`\equiv`, `≡` $\to$ `=`) and unbraced summations (`\sum i` $\to$ `\sum_{i=1}^{N}`).
+    - CJK and function-bearing expectation angle brackets (`\u3008...\u3009` and `\langle P(t) \rangle` with parens $\to$ `(...)`).
+- **Decision**:
+  1. **Unicode Mathematical & Structural AST Recovery (Sanitizer V4) (`src/kb/math/sanitizer.py`)**:
+     - Updated `TAG_RE` to match fullwidth equation numbers `[（\(][A-Za-z0-9\.\-_]+[）\)]`.
+     - Extended `UNICODE_OPERATORS_MAP` with `≡` $\to$ `=`, `≢` $\to$ `\ne`, `⊙` $\to$ `*`, `⋆` $\to$ `*`, `𝜕` $\to$ `\partial`.
+     - Stripped combining diacritics `[\u0300-\u036f]` and combining vector arrows `\u20d7`, and normalized mathematical italic partial `\U0001d715` to `\partial`.
+     - Normalized CJK expectation angle brackets (`\u3008`, `\u2329`) and function-bearing expressions (`\langle P(t) \rangle`) to standard parentheses `(...)`.
+     - Added unbraced `\sum` and `\prod` index wrapping (`\sum i` $\to$ `\sum_{i=1}^{N}`) to satisfy SymPy's ANTLR grammar.
+     - Normalized `\equiv` to `=`.
+  2. **Multimodal Figures & Diagram Studio in Web UI (`src/kb/ui/app.py`)**:
+     - Extended `/api/stats` to report total grounded figures count (`"figures"`).
+     - Added REST endpoints `/api/figures` (with `limit`, `citekey`, `diagram_type`, and search query `q`) and `/api/figures/{id}` (resolving associated formula entities with letter grades and validation scores).
+     - Added interactive `[🖼️ Figures & Multimodal]` tab to the Starlette dashboard (`kb ui serve`) with diagram type filters (`scatter_plot`, `line_plot`, `box_plot`, `architecture`, `surface_3d`, `workflow`), live search, axes/units pills, VLM narrative summaries, and clickable formula linkages.
+  3. **Verification & Quality Assurance**:
+     - Added comprehensive unit tests in `tests/test_ui.py` covering `/api/figures`, `/api/figures/{id}`, `/api/stats`, and document figures.
+     - Added regression unit tests in `tests/test_formula_repair.py` validating Sanitizer V4 against Navier-Stokes, vector projectile dynamics, equivalence relations, and angle brackets.
+- **Consequences**:
+  - Unlocks full visual and multimodal exploration for researchers and AI agents via the Web UI studio.
+  - Successfully recovers Grade F mathematical expressions into verified Grade A/B ASTs with exact symbolic bindings.
+  - Keeps web UI, REST API, CLI, and standalone formula package tightly synchronized.
+
 
 
 

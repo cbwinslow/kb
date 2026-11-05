@@ -29,7 +29,7 @@ from kb.math.lineage import DerivationNode, FormulaLineageGraph
 from kb.math.ontology import get_symbol_ontology
 from kb.storage.database import DatabaseManager
 from kb.storage.embeddings import LocalEmbeddingGenerator
-from kb.storage.models import BenchmarkTable, Chunk, Document, Formula
+from kb.storage.models import BenchmarkTable, Chunk, Document, Figure, Formula
 from kb.storage.search import HybridSearchEngine
 
 
@@ -72,6 +72,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             chk_cnt = (await session.execute(select(func.count(Chunk.id)))).scalar_one()
             frm_cnt = (await session.execute(select(func.count(Formula.id)))).scalar_one()
             tbl_cnt = (await session.execute(select(func.count(BenchmarkTable.id)))).scalar_one()
+            fig_cnt = (await session.execute(select(func.count(Figure.id)))).scalar_one()
             emb_cnt = (
                 await session.execute(
                     select(func.count(Chunk.id)).where(Chunk.embedding.isnot(None))
@@ -84,6 +85,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                     "chunks": chk_cnt,
                     "formulas": frm_cnt,
                     "tables": tbl_cnt,
+                    "figures": fig_cnt,
                     "embedded_chunks": emb_cnt,
                 }
             )
@@ -334,8 +336,6 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     async def get_document_figures(request: Request) -> JSONResponse:
         """Return all figures associated with a specific document ID or citekey."""
         doc_id = request.path_params.get("id", "")
-        from kb.storage.models import Figure
-
         async with manager.session_factory() as session:
             stmt = (
                 select(Figure)
@@ -352,10 +352,102 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                         "caption": f.caption,
                         "figure_index": f.figure_index,
                         "image_path": f.image_path,
-                        "structure_metadata": f.structure_metadata,
+                        "vlm_summary": f.vlm_summary,
+                        "diagram_type": (f.structure_metadata or {}).get("diagram_type", "unknown"),
+                        "axes": (f.structure_metadata or {}).get("axes", {}),
+                        "units": (f.structure_metadata or {}).get("units", {}),
+                        "detected_curves": f.detected_curves or [],
+                        "formula_ids": f.formula_ids or [],
                     }
                     for f in figs
                 ]
+            )
+
+    async def get_figures(request: Request) -> JSONResponse:
+        """Return list of figures with optional filtering by citekey, diagram_type, or search query."""
+        limit = min(int(request.query_params.get("limit", 50)), 200)
+        citekey = request.query_params.get("citekey")
+        diagram_type = request.query_params.get("diagram_type")
+        q = request.query_params.get("q", "").strip()
+
+        async with manager.session_factory() as session:
+            stmt = select(Figure).order_by(Figure.citekey.asc(), Figure.figure_index.asc())
+            if citekey:
+                stmt = stmt.where(Figure.citekey == citekey)
+            if q:
+                stmt = stmt.where(
+                    (Figure.caption.ilike(f"%{q}%")) | (Figure.vlm_summary.ilike(f"%{q}%"))
+                )
+            stmt = stmt.limit(limit)
+            figs = list((await session.execute(stmt)).scalars().all())
+
+            results: list[dict[str, Any]] = []
+            for f in figs:
+                meta = f.structure_metadata or {}
+                d_type = meta.get("diagram_type", "unknown")
+                if diagram_type and diagram_type.lower() != "all" and d_type.lower() != diagram_type.lower():
+                    continue
+                results.append(
+                    {
+                        "id": f.id,
+                        "document_id": f.document_id,
+                        "citekey": f.citekey,
+                        "caption": f.caption,
+                        "figure_index": f.figure_index,
+                        "image_path": f.image_path,
+                        "vlm_summary": f.vlm_summary,
+                        "diagram_type": d_type,
+                        "axes": meta.get("axes", {}),
+                        "units": meta.get("units", {}),
+                        "detected_curves": f.detected_curves or [],
+                        "formula_ids": f.formula_ids or [],
+                    }
+                )
+            return JSONResponse(results)
+
+    async def get_figure_detail(request: Request) -> JSONResponse:
+        """Return single figure metadata along with resolved associated formula entities."""
+        fig_id = request.path_params.get("id", "")
+        async with manager.session_factory() as session:
+            stmt = select(Figure).where(Figure.id == fig_id)
+            f = (await session.execute(stmt)).scalar_one_or_none()
+            if not f:
+                return JSONResponse({"error": f"Figure '{fig_id}' not found"}, status_code=404)
+
+            resolved_formulas: list[dict[str, Any]] = []
+            if f.formula_ids:
+                f_stmt = select(Formula).where(Formula.id.in_(f.formula_ids))
+                f_records = list((await session.execute(f_stmt)).scalars().all())
+                for frm in f_records:
+                    resolved_formulas.append(
+                        {
+                            "id": frm.id,
+                            "raw_latex": frm.raw_latex,
+                            "sanitized_latex": frm.sanitized_latex,
+                            "symbols": frm.symbols,
+                            "validation_status": frm.validation_status,
+                            "validation_score": frm.validation_score,
+                            "letter_grade": (frm.validation_details or {}).get("letter_grade", "F"),
+                        }
+                    )
+
+            meta = f.structure_metadata or {}
+            return JSONResponse(
+                {
+                    "id": f.id,
+                    "document_id": f.document_id,
+                    "citekey": f.citekey,
+                    "caption": f.caption,
+                    "figure_index": f.figure_index,
+                    "image_path": f.image_path,
+                    "vlm_summary": f.vlm_summary,
+                    "diagram_type": meta.get("diagram_type", "unknown"),
+                    "axes": meta.get("axes", {}),
+                    "units": meta.get("units", {}),
+                    "detected_curves": f.detected_curves or [],
+                    "formula_ids": f.formula_ids or [],
+                    "formulas": resolved_formulas,
+                }
             )
 
     async def search_endpoint(request: Request) -> JSONResponse:
@@ -890,6 +982,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-chunks" class="font-semibold text-emerald-400">...</span> chunks</div>
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-formulas" class="font-semibold text-indigo-400">...</span> formulas</div>
       <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-tables" class="font-semibold text-amber-400">...</span> tables</div>
+      <div class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700"><span id="stat-figures" class="font-semibold text-purple-400">...</span> figures</div>
       <a href="/graphql" target="_blank" class="px-3 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700 text-indigo-300 font-mono text-xs hover:bg-indigo-900 transition">GraphQL IDE ↗</a>
     </div>
   </header>
@@ -897,6 +990,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
   <!-- Navigation Tabs -->
   <div class="bg-slate-900 border-b border-slate-800 px-6 py-2 flex space-x-3 overflow-x-auto">
     <button onclick="switchTab('lineage')" id="tab-btn-lineage" class="px-4 py-1.5 text-sm font-medium rounded-lg bg-sky-500 text-white">Lineage Graph (DAG)</button>
+    <button onclick="switchTab('figures')" id="tab-btn-figures" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">🖼️ Figures & Multimodal</button>
     <button onclick="switchTab('formulas')" id="tab-btn-formulas" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Knowledge-to-Code</button>
     <button onclick="switchTab('chaining')" id="tab-btn-chaining" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Equation Chaining</button>
     <button onclick="switchTab('playground')" id="tab-btn-playground" class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-400 hover:text-white">Formula Playground</button>
@@ -934,6 +1028,32 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             <p>Click on any node in the derivation DAG to inspect its LaTeX equation, free symbols, and compiled code.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- View 1.5: Figures & Multimodal Studio -->
+    <section id="view-figures" class="flex-1 hidden flex flex-col space-y-4 overflow-y-auto custom-scroll">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base font-semibold text-slate-200">Multimodal Figures & Diagram Studio</h2>
+          <p class="text-xs text-slate-400">Scientific figures grounded with VLM summaries, detected curves, coordinate axes, and proximal formula linkages.</p>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <select id="figures-type-filter" onchange="loadFigures()" class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-xs outline-none">
+            <option value="all">All Diagram Types</option>
+            <option value="trajectory_plot">Trajectory Plots</option>
+            <option value="contour_map">Contour Maps</option>
+            <option value="scatter_trend">Scatter Trends</option>
+            <option value="schematic">Schematics</option>
+            <option value="bar_chart">Bar Charts</option>
+            <option value="unknown">Other / Unknown</option>
+          </select>
+          <input id="figures-search" type="text" placeholder="Search caption or VLM..." class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-xs outline-none" oninput="loadFigures()">
+          <button onclick="loadFigures()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-slate-200">Refresh</button>
+        </div>
+      </div>
+      <div id="figures-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div class="text-sm text-slate-400">Loading grounded figures...</div>
       </div>
     </section>
 
@@ -1236,7 +1356,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     let playgroundInputs = {};
 
     function switchTab(tabId) {
-      ['lineage', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage', 'quality', 'explorer'].forEach(t => {
+      ['lineage', 'figures', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage', 'quality', 'explorer'].forEach(t => {
         const viewEl = document.getElementById(`view-${t}`);
         const btnEl = document.getElementById(`tab-btn-${t}`);
         if (viewEl) viewEl.classList.add('hidden');
@@ -1248,6 +1368,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       if (targetBtn) targetBtn.className = 'px-4 py-1.5 text-sm font-medium rounded-lg bg-sky-500 text-white';
       currentTab = tabId;
 
+      if (tabId === 'figures') loadFigures();
       if (tabId === 'formulas') loadFormulas();
       if (tabId === 'chaining') initChaining();
       if (tabId === 'playground') initPlayground();
@@ -1493,6 +1614,61 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       }
     }
 
+    async function loadFigures() {
+      const typeEl = document.getElementById('figures-type-filter');
+      const searchEl = document.getElementById('figures-search');
+      const type = typeEl ? typeEl.value : 'all';
+      const q = searchEl ? searchEl.value.trim() : '';
+      const grid = document.getElementById('figures-grid');
+      if (!grid) return;
+      grid.innerHTML = '<div class="text-sm text-sky-400 col-span-full text-center p-6"><span class="animate-spin inline-block mr-2">⟳</span> Fetching grounded multimodal figures...</div>';
+      try {
+        let url = `/api/figures?limit=60`;
+        if (type && type !== 'all') url += `&diagram_type=${encodeURIComponent(type)}`;
+        if (q) url += `&q=${encodeURIComponent(q)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          grid.innerHTML = '<div class="text-sm text-slate-500 italic col-span-full p-6 text-center border border-dashed border-slate-800 rounded-xl">No scientific figures match the active filters.</div>';
+          return;
+        }
+        grid.innerHTML = data.map(fig => {
+          const typeColors = {
+            trajectory_plot: 'bg-emerald-950/80 text-emerald-300 border-emerald-800',
+            contour_map: 'bg-indigo-950/80 text-indigo-300 border-indigo-800',
+            scatter_trend: 'bg-sky-950/80 text-sky-300 border-sky-800',
+            schematic: 'bg-purple-950/80 text-purple-300 border-purple-800',
+            bar_chart: 'bg-amber-950/80 text-amber-300 border-amber-800',
+          };
+          const badgeClass = typeColors[fig.diagram_type] || 'bg-slate-800 text-slate-300 border-slate-700';
+          const axesText = fig.axes && (fig.axes.x || fig.axes.y) ? `X: ${fig.axes.x || '-'} | Y: ${fig.axes.y || '-'}` : null;
+          const formulaChips = (fig.formula_ids || []).slice(0, 3).map(fid =>
+            `<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 font-mono text-[10px] text-sky-400">${escapeHtml(fid.slice(0, 14))}</span>`
+          ).join('');
+          const moreChips = (fig.formula_ids || []).length > 3 ? `<span class="text-[10px] text-slate-500">+${fig.formula_ids.length - 3}</span>` : '';
+
+          return `
+            <div class="glass-card p-4 rounded-xl border border-slate-700 flex flex-col justify-between space-y-3 hover:border-slate-600 transition">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-mono px-2 py-0.5 rounded border ${badgeClass}">${(fig.diagram_type || 'unknown').toUpperCase()}</span>
+                  <span class="text-xs text-slate-400 font-mono">${escapeHtml(fig.citekey)} : Fig ${fig.figure_index}</span>
+                </div>
+                <h4 class="text-xs font-semibold text-slate-200 line-clamp-2">${escapeHtml(fig.caption || 'Scientific Figure')}</h4>
+                <p class="text-xs text-slate-400 line-clamp-3 bg-slate-900/50 p-2 rounded-lg border border-slate-800/80">${escapeHtml(fig.vlm_summary || 'No VLM visual summary generated.')}</p>
+              </div>
+              <div class="space-y-2 pt-2 border-t border-slate-800 text-[11px]">
+                ${axesText ? `<div class="text-slate-400 font-mono truncate"><span class="text-slate-500">Axes:</span> ${escapeHtml(axesText)}</div>` : ''}
+                ${fig.formula_ids && fig.formula_ids.length ? `<div class="flex items-center space-x-1.5 flex-wrap"><span class="text-slate-500 text-[10px]">Formulas:</span> ${formulaChips} ${moreChips}</div>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        grid.innerHTML = `<div class="text-sm text-rose-400 col-span-full p-6 text-center">Failed to load figures: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
     async function loadStats() {
       try {
         const res = await fetch('/api/stats');
@@ -1501,6 +1677,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         document.getElementById('stat-chunks').innerText = data.chunks;
         document.getElementById('stat-formulas').innerText = data.formulas;
         document.getElementById('stat-tables').innerText = data.tables;
+        if (document.getElementById('stat-figures') && data.figures !== undefined) {
+          document.getElementById('stat-figures').innerText = data.figures;
+        }
       } catch (err) {
         console.error('Stats error:', err);
       }
@@ -2122,6 +2301,8 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/stats", endpoint=get_stats, methods=["GET"]),
         Route("/api/documents", endpoint=get_documents, methods=["GET"]),
         Route("/api/documents/{id}/figures", endpoint=get_document_figures, methods=["GET"]),
+        Route("/api/figures", endpoint=get_figures, methods=["GET"]),
+        Route("/api/figures/{id}", endpoint=get_figure_detail, methods=["GET"]),
         Route("/api/lineage", endpoint=get_lineage, methods=["GET"]),
         Route("/api/formulas", endpoint=get_formulas, methods=["GET"]),
         Route("/api/formulas/{id}/repair", endpoint=repair_formula_endpoint, methods=["POST"]),

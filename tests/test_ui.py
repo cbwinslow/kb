@@ -19,6 +19,7 @@ def test_ui_index(test_client: TestClient) -> None:
     assert response.status_code == 200
     assert "Scientific Knowledge Base" in response.text
     assert "Mathematical Derivation Network" in response.text
+    assert "Figures & Multimodal" in response.text
 
 
 def test_ui_stats_endpoint(test_client: TestClient) -> None:
@@ -29,7 +30,15 @@ def test_ui_stats_endpoint(test_client: TestClient) -> None:
     assert "chunks" in data
     assert "formulas" in data
     assert "tables" in data
+    assert "figures" in data
     assert data["documents"] >= 0
+
+
+def test_ui_figures_endpoint(test_client: TestClient) -> None:
+    response = test_client.get("/api/figures?limit=5")
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
 
 
 def test_ui_lineage_endpoint(test_client: TestClient) -> None:
@@ -233,5 +242,118 @@ async def test_ui_repair_endpoint_success() -> None:
     assert "scorecard" in data
     assert "tier_scores" in data["scorecard"]
     assert data["scorecard"]["tier_scores"]["ast_roundtrip"] > 0
+
+    await db.close()
+
+
+@pytest.mark.asyncio
+async def test_ui_figures_crud_and_detail() -> None:
+    """Verify /api/figures, /api/figures/{id}, and document figures endpoints."""
+    import uuid
+
+    from kb.storage.database import DatabaseManager
+    from kb.storage.models import Document, Figure, Formula
+
+    db_id = uuid.uuid4().hex
+    url = f"sqlite+aiosqlite:///file:memdb_fig_{db_id}?mode=memory&cache=shared&uri=true"
+    db = DatabaseManager(database_url=url, echo=False)
+    await db.init_db()
+
+    fig_id = f"fig_{db_id}"
+    form_id = f"form_{db_id}"
+    doc_id = f"doc_{db_id}"
+
+    async with db.session_factory() as session:
+        doc = Document(
+            id=doc_id,
+            citekey="alvarez2024",
+            title="Multimodal Trajectory Analysis",
+            file_path="/tmp/alvarez.pdf",
+            year=2024,
+        )
+        session.add(doc)
+        formula = Formula(
+            id=form_id,
+            document_id=doc.id,
+            citekey="alvarez2024",
+            raw_latex=r"y = v_0 t - \frac{1}{2} g t^2",
+            sanitized_latex=r"y = v_{0} t - \frac{1}{2} g t^{2}",
+            symbols=["y", "v_0", "t", "g"],
+            is_valid=True,
+            is_equality=True,
+            validation_score=94.0,
+            validation_details={"letter_grade": "A"},
+        )
+        session.add(formula)
+        figure = Figure(
+            id=fig_id,
+            document_id=doc.id,
+            citekey="alvarez2024",
+            figure_index=1,
+            caption="Trajectory of high-velocity projectile",
+            image_path="/tmp/fig1.png",
+            vlm_summary="Parabolic trajectory curve showing altitude versus elapsed flight time.",
+            structure_metadata={
+                "diagram_type": "scatter_plot",
+                "axes": {"x": "Time (s)", "y": "Altitude (m)"},
+                "units": {"x": "s", "y": "m"},
+            },
+            detected_curves=["parabola", "ground_level"],
+            formula_ids=[form_id],
+        )
+        session.add(figure)
+        await session.commit()
+
+    app = create_app(db_manager=db)
+    client = TestClient(app)
+
+    # 1. Test /api/figures list
+    res = client.get("/api/figures?limit=10")
+    assert res.status_code == 200
+    figs = res.json()
+    assert len(figs) == 1
+    assert figs[0]["id"] == fig_id
+    assert figs[0]["citekey"] == "alvarez2024"
+    assert figs[0]["diagram_type"] == "scatter_plot"
+    assert figs[0]["axes"]["x"] == "Time (s)"
+    assert figs[0]["formula_ids"] == [form_id]
+
+    # 2. Test /api/figures with diagram_type filter
+    res_match = client.get("/api/figures?diagram_type=scatter_plot")
+    assert res_match.status_code == 200
+    assert len(res_match.json()) == 1
+
+    res_nomatch = client.get("/api/figures?diagram_type=box_plot")
+    assert res_nomatch.status_code == 200
+    assert len(res_nomatch.json()) == 0
+
+    # 3. Test /api/figures with query search
+    res_search = client.get("/api/figures?q=projectile")
+    assert res_search.status_code == 200
+    assert len(res_search.json()) == 1
+
+    # 4. Test /api/figures/{id} with formula resolution
+    res_detail = client.get(f"/api/figures/{fig_id}")
+    assert res_detail.status_code == 200
+    detail = res_detail.json()
+    assert detail["id"] == fig_id
+    assert detail["diagram_type"] == "scatter_plot"
+    assert len(detail["formulas"]) == 1
+    assert detail["formulas"][0]["id"] == form_id
+    assert detail["formulas"][0]["letter_grade"] == "A"
+    assert detail["formulas"][0]["validation_score"] == 94.0
+
+    # 5. Test /api/figures/{id} not found
+    res_notfound = client.get("/api/figures/nonexistent_id")
+    assert res_notfound.status_code == 404
+    assert "not found" in res_notfound.json()["error"]
+
+    # 6. Test /api/documents/{id}/figures
+    res_doc = client.get(f"/api/documents/{doc_id}/figures")
+    assert res_doc.status_code == 200
+    doc_figs = res_doc.json()
+    assert len(doc_figs) == 1
+    assert doc_figs[0]["id"] == fig_id
+    assert doc_figs[0]["vlm_summary"] is not None
 
     await db.close()

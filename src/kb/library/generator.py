@@ -177,6 +177,13 @@ class FormulaLibraryGenerator:
             f"    return ({col_expr})\n"
         )
 
+        # Validate that generated scalar and Polars functions are syntactically valid Python
+        try:
+            ast.parse(scalar_func)
+            ast.parse(polars_func)
+        except Exception:
+            return None
+
         return GeneratedFormulaFunction(
             formula_id=formula.id,
             citekey=formula.citekey,

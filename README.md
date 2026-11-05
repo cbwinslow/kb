@@ -15,7 +15,7 @@ A high-performance, domain-agnostic scientific research engine and knowledge-to-
    - Automated arXiv and OpenAlex query harvesters with multi-attribute deduplication and metadata enrichment.
    - Curated research presets across multi-disciplinary domains: `mlb-modeling`, `statcast`, `retrosheet`, `biomechanics`, `aerodynamics-pinn`, `sports-econometrics`, `kinematics-tracking`.
    - High-fidelity PDF layout parsing (Docling) for sections, tables, figures, and math equations.
-   - Enhanced LaTeX Sanitizer V3 recovering Grade-F equations with tag stripping, delimiter rebalancing, Unicode diacritic cleanup, and `\begin{cases}` piecewise decomposition.
+   - Enhanced LaTeX Sanitizer V4 recovering Grade-F equations with tag stripping, delimiter rebalancing, Unicode diacritic cleanup, `\begin{cases}` piecewise decomposition, and Unicode mathematical AST recovery (Math Alphanumerics, combining vector arrows/overlines, fullwidth equation numbering tags, CJK angle brackets, and unbraced summations).
 
 3. **Homelab Remote Archiving via SSH/SFTP**:
    - Direct, encrypted synchronization of raw PDFs, extracted figures, and Parquet benchmark fixtures to homelab storage (`/home/.../workspace/kb/`) via SSH keys (`~/.ssh/id_ed25519`).
@@ -23,14 +23,14 @@ A high-performance, domain-agnostic scientific research engine and knowledge-to-
 
 4. **Knowledge-to-Code & Standalone Formula Library**:
    - Over 4,103 Grade A/B formulas elevated and validated across the corpus.
-   - Automatically compiles 1,562 verified Grade A equations into standalone executable Python functions and vectorized Polars expressions (`expr_*`) in `packages/kb_formulas`.
+   - Automatically compiles verified Grade A equations into standalone executable Python functions and vectorized Polars expressions (`expr_*`) in `packages/kb_formulas`.
    - Generates KaTeX-compliant docstrings with complete paper titles, authors, citation keys, and parameter annotations.
    - Validated against empirical benchmark tables extracted from literature, with heuristic fuzzy column auto-binding across 1,428 Parquet fixtures.
 
 5. **Multimodal VLM Grounding & Agent Tools**:
    - Batch figure grounding engine (`kb figures index-all`) indexing 490 figures with bounding boxes, axes/units, and visual summaries, and 720 formula linkages.
    - FastMCP server daemon for integration with AI agents (`kb_search_literature`, `kb_web_search_papers`, `kb_get_figure`, `kb_search_figures`, `kb_get_formula`, `kb_compile_formula`, `kb_execute_formula`).
-   - Interactive HTML5 canvas visualizer showcasing documents, embedded chunks, mathematical formula lineage, Quality Gate with 1-click repair, and Scholarly Web Explorer with 1-click background preprint ingestion.
+   - Interactive HTML5 canvas visualizer showcasing documents, embedded chunks, mathematical formula lineage, Quality Gate with 1-click repair, Scholarly Web Explorer with 1-click background preprint ingestion, and Multimodal Figure Studio Gallery with diagram classification filters and formula bindings.
 
 ---
 

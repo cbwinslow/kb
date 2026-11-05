@@ -1696,9 +1696,10 @@ async def async_corpus_repair_all(
 
     def progress_cb(processed: int, recovered: int, total: int) -> None:
         pct = (processed / total * 100.0) if total > 0 else 0.0
+        end_char = "\r" if sys.stdout.isatty() else "\n"
         print(
             f"    Progress: {processed}/{total} ({pct:.1f}%) | Newly Recovered: {recovered}",
-            end="\r",
+            end=end_char,
             flush=True,
         )
 

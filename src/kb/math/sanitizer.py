@@ -12,7 +12,7 @@ class EquationSanitizer:
 
     # Regex patterns for environment, label, tag cleanup
     TAG_RE: ClassVar[re.Pattern[str]] = re.compile(
-        r"[\s,;.]*(?:\\tag\*?\{[^}]*\}|\([0-9]+(?:\.[0-9]+)*[a-zA-Z]?\)|\([A-Za-z0-9]+\.[0-9]+[a-zA-Z]?\)|\([a-zA-Z]?[0-9]+[a-zA-Z]?\))[\s,;.]*$"
+        r"[\s,;.]*(?:\\tag\*?\{[^}]*\}|[（\(][A-Za-z0-9\.\-_]+[）\)])[\s,;.]*$"
     )
     LABEL_RE: ClassVar[re.Pattern[str]] = re.compile(r"\\label\{[^}]*\}")
     ENV_STRIP_RE: ClassVar[re.Pattern[str]] = re.compile(
@@ -138,7 +138,11 @@ class EquationSanitizer:
         "≈": r"\approx ",
         "∼": r"\sim ",
         "≃": r"\simeq ",
-        "≡": r"\equiv ",
+        "≡": "=",
+        "≢": r"\ne ",
+        "⊙": "*",
+        "⋆": "*",
+        "𝜕": r"\partial ",
         "∝": r"\propto ",
         "∞": r"\infty ",
         "∥": "|",
@@ -282,6 +286,7 @@ class EquationSanitizer:
         # Stage 2: Strip Private Use Area OCR font fragments and combining accents
         text = re.sub(r"[\uf8e0-\uf8ff]", "", text)
         text = text.replace("\u20d7", "")  # combining right arrow above (vector accent)
+        text = re.sub(r"[\u0300-\u036f]", "", text)  # combining diacritical marks (overlines, acute, etc.)
         text = text.replace("\xa8", "").replace(r"\xa8", "")  # diaeresis (¨ double dot)
         text = text.replace("\u02d8", "").replace(r"\u02d8", "")  # breve (˘)
         text = text.replace("\u02d9", "").replace(r"\u02d9", "")  # dot above (˙ time derivative)
@@ -290,10 +295,15 @@ class EquationSanitizer:
         text = text.replace("\xaf", "")  # macron / overline (mean)
         text = text.replace("\u0302", "")  # combining circumflex (hat / estimator)
         text = text.replace("\ufe01", "")  # variation selector 2
+        text = text.replace("\U0001d715", r"\partial ").replace("\u2202", r"\partial ")
 
         # Stage 3: Translate operators and relational symbols
         for char, rep in self.UNICODE_OPERATORS_MAP.items():
             text = text.replace(char, rep)
+
+        # Normalize CJK/expectation brackets and function-bearing angle brackets: \langle P(t) \rangle -> (P(t))
+        text = re.sub(r"[\u3008\u2329]\s*(.*?)\s*[\u3009\u232a]", r"(\1)", text)
+        text = re.sub(r"\\langle\s*([A-Za-z0-9_]+\s*\([^)]*\))\s*\\rangle", r"(\1)", text)
 
         # Stage 4: Translate Greek letters (now catches decomposed math Greek)
         for char, rep in self.UNICODE_GREEK_MAP.items():
@@ -577,12 +587,43 @@ class EquationSanitizer:
 
         # 9. Strip trailing semicolons, commas, periods, and spacing tags
         text = re.sub(r"\\(?:quad|qquad)\s*$", "", text)
+        if ";" in text and "=" in text.split(";")[0]:
+            text = text.split(";")[0].strip()
         text = re.sub(r"[\s,;.]+$", "", text).strip()
 
-        # 10. Repair unescaped percent signs
+        # 10. Normalize equivalence operator and wrap unbraced summation/product indices
+        text = text.replace(r"\equiv", "=")
+        # Transform unbraced index \sum i into standard bounded sum \sum_{i=1}^{N}
+        text = re.sub(
+            r"\\sum\s+([a-zA-Z])(?!\s*[_^=])",
+            r"\\sum_{\1=1}^{N} ",
+            text,
+        )
+        text = re.sub(
+            r"\\sum_\{([a-zA-Z])\}(?!\s*\^)",
+            r"\\sum_{\1=1}^{N}",
+            text,
+        )
+        text = re.sub(
+            r"\\sum_\{([a-zA-Z]=[0-9a-zA-Z]+)\}(?!\s*\^)",
+            r"\\sum_{\1}^{N}",
+            text,
+        )
+        text = re.sub(
+            r"\\prod\s+([a-zA-Z])(?!\s*[_^=])",
+            r"\\prod_{\1=1}^{N} ",
+            text,
+        )
+        text = re.sub(
+            r"\\prod_\{([a-zA-Z])\}(?!\s*\^)",
+            r"\\prod_{\1=1}^{N}",
+            text,
+        )
+
+        # 11. Repair unescaped percent signs
         text = re.sub(r"(?<!\\)%", r"\%", text)
 
-        # 11. Repair TeX alignment tabs and multi-line equation arrays
+        # 12. Repair TeX alignment tabs and multi-line equation arrays
         text = re.sub(r"&=", "=", text)
         text = re.sub(r"(?<!\\)&", " ", text)
         if r"\\" in text and not self.extract_cases(raw_latex):

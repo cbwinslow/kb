@@ -33,12 +33,16 @@ __all__ = [
     "expr_val_2610_27416_form_a",
     "calc_r_m_e_s_form_d",
     "expr_r_m_e_s_form_d",
+    "calc_nabla_w_p_c_t_p_r_r_1312_7",
+    "expr_nabla_w_p_c_t_p_r_r_1312_7",
     "calc_m_a_e_form_3",
     "expr_m_a_e_form_3",
     "calc_val_1406_3402_1406_3",
     "expr_val_1406_3402_1406_3",
     "calc_m_a_e_p_form_d",
     "expr_m_a_e_p_form_d",
+    "calc_r_form_3",
+    "expr_r_form_3",
     "calc_openalex_slater2016_w2562199918_form_a",
     "expr_openalex_slater2016_w2562199918_form_a",
     "calc_delta_e_r_form_0",
@@ -49,10 +53,14 @@ __all__ = [
     "expr_val_2610_39452_form_a",
     "calc_l_a_c_c_form_b",
     "expr_l_a_c_c_form_b",
+    "calc_val_2609_10498_form_9",
+    "expr_val_2609_10498_form_9",
     "calc_val_2610_39452_form_0",
     "expr_val_2610_39452_form_0",
     "calc_val_2610_39452_form_c",
     "expr_val_2610_39452_form_c",
+    "calc_p_r_i_w_i_n_s_o_v_e_j_r_form_b",
+    "expr_p_r_i_w_i_n_s_o_v_e_j_r_form_b",
     "calc_p_z_form_7",
     "expr_p_z_form_7",
     "calc_i_y_form_9",
@@ -63,12 +71,16 @@ __all__ = [
     "expr_p_2_form_4",
     "calc_y_form_4",
     "expr_y_form_4",
+    "calc_m_s_e_p_p_m_s_e_w_a_r_form_3",
+    "expr_m_s_e_p_p_m_s_e_w_a_r_form_3",
     "calc_a_s_t_form_0",
     "expr_a_s_t_form_0",
     "calc_f_2_form_9",
     "expr_f_2_form_9",
     "calc_beta_l_a_s_o_s_form_d",
     "expr_beta_l_a_s_o_s_form_d",
+    "calc_d_q_form_2",
+    "expr_d_q_form_2",
     "calc_val_2610_27416_form_e",
     "expr_val_2610_27416_form_e",
     "calc_sigma_u_form_e",
@@ -93,6 +105,10 @@ __all__ = [
     "expr_fangraphs_fip_glossary_form_1",
     "calc_tango_pythagenpat_glossary_form_1",
     "expr_tango_pythagenpat_glossary_form_1",
+    "calc_tangotiger_re24_glossary_form_1",
+    "expr_tangotiger_re24_glossary_form_1",
+    "calc_d_form_1",
+    "expr_d_form_1",
     "calc_val_2609_06739_form_2",
     "expr_val_2609_06739_form_2",
     "calc_statcast_bat_tracking_glossary_form_2",
@@ -101,18 +117,24 @@ __all__ = [
     "expr_bref_war_components_glossary_form_2",
     "calc_b_form_4",
     "expr_b_form_4",
+    "calc_tangotiger_re24_glossary_form_5",
+    "expr_tangotiger_re24_glossary_form_5",
     "calc_fangraphs_woba_glossary_form_5",
     "expr_fangraphs_woba_glossary_form_5",
     "calc_a_p_form_6",
     "expr_a_p_form_6",
     "calc_eta_i_form_f",
     "expr_eta_i_form_f",
+    "calc_statcast_bat_tracking_glossary_form_6",
+    "expr_statcast_bat_tracking_glossary_form_6",
     "calc_fangraphs_fip_glossary_form_6",
     "expr_fangraphs_fip_glossary_form_6",
     "calc_delta_rho_1312_7",
     "expr_delta_rho_1312_7",
     "calc_b_r_s_form_6",
     "expr_b_r_s_form_6",
+    "calc_b_nabla_form_8",
+    "expr_b_nabla_form_8",
     "calc_t_log_e_t_e_form_f",
     "expr_t_log_e_t_e_form_f",
     "calc_val_2607_29041_form_1",
@@ -145,8 +167,14 @@ __all__ = [
     "expr_p_x_form_5",
     "calc_d_c_p_l_s_u_r_form_a",
     "expr_d_c_p_l_s_u_r_form_a",
+    "calc_fangraphs_woba_glossary_form_a",
+    "expr_fangraphs_woba_glossary_form_a",
+    "calc_fangraphs_war_pitcher_glossary_form_a",
+    "expr_fangraphs_war_pitcher_glossary_form_a",
     "calc_n_v_s_form_b",
     "expr_n_v_s_form_b",
+    "calc_tangotiger_leverage_index_glossary_form_b",
+    "expr_tangotiger_leverage_index_glossary_form_b",
     "calc_val_2609_38730_form_b",
     "expr_val_2609_38730_form_b",
     "calc_e_r_o_t_form_c",
@@ -171,18 +199,28 @@ __all__ = [
     "expr_v_n_t_k_x_form_4",
     "calc_tango_pythagenpat_glossary_form_c",
     "expr_tango_pythagenpat_glossary_form_c",
+    "calc_tango_base_runs_glossary_form_c",
+    "expr_tango_base_runs_glossary_form_c",
+    "calc_tango_base_runs_glossary_form_d",
+    "expr_tango_base_runs_glossary_form_d",
     "calc_fangraphs_war_pitcher_glossary_form_d",
     "expr_fangraphs_war_pitcher_glossary_form_d",
+    "calc_fangraphs_wraa_glossary_form_d",
+    "expr_fangraphs_wraa_glossary_form_d",
     "calc_a_p_m_efron_",
     "expr_a_p_m_efron_",
     "calc_d_k_p_l_p_form_9",
     "expr_d_k_p_l_p_form_9",
     "calc_tangotiger_re24_glossary_form_e",
     "expr_tangotiger_re24_glossary_form_e",
+    "calc_fangraphs_woba_glossary_form_e",
+    "expr_fangraphs_woba_glossary_form_e",
     "calc_q_form_4",
     "expr_q_form_4",
     "calc_val_2610_27193_form_5",
     "expr_val_2610_27193_form_5",
+    "calc_c_o_v_a_y_b_y_form_a",
+    "expr_c_o_v_a_y_b_y_form_a",
     "calc_statcast_bat_tracking_glossary_form_f",
     "expr_statcast_bat_tracking_glossary_form_f",
     "calc_val_2609_02306_form_5",
@@ -221,16 +259,26 @@ __all__ = [
     "expr_val_2607_29041_form_0",
     "calc_sim_t_v_form_1",
     "expr_sim_t_v_form_1",
+    "calc_r_x_theta_form_1",
+    "expr_r_x_theta_form_1",
+    "calc_f_l_form_8",
+    "expr_f_l_form_8",
     "calc_tangotiger_re24_glossary_form_f",
     "expr_tangotiger_re24_glossary_form_f",
+    "calc_tangotiger_leverage_index_glossary_form_f",
+    "expr_tangotiger_leverage_index_glossary_form_f",
     "calc_val_2109_09287_2109_0",
     "expr_val_2109_09287_2109_0",
     "calc_val_2207_11332_2207_1",
     "expr_val_2207_11332_2207_1",
     "calc_a_l_r_3_form_9",
     "expr_a_l_r_3_form_9",
+    "calc_val_2610_27416_form_c",
+    "expr_val_2610_27416_form_c",
     "calc_val_2209_07274_2209_0",
     "expr_val_2209_07274_2209_0",
+    "calc_t_2210_0",
+    "expr_t_2210_0",
     "calc_val_2210_06724_2210_0",
     "expr_val_2210_06724_2210_0",
     "calc_theta_d_t_form_d",
@@ -241,6 +289,8 @@ __all__ = [
     "expr_val_2310_01184_2310_0",
     "calc_b_p_k_form_0",
     "expr_b_p_k_form_0",
+    "calc_f_l_form_9",
+    "expr_f_l_form_9",
     "calc_val_30_form_1",
     "expr_val_30_form_1",
     "calc_val_2610_27416_form_2",
@@ -257,22 +307,34 @@ __all__ = [
     "expr_r_t_form_2",
     "calc_v_phi_r_form_3",
     "expr_v_phi_r_form_3",
+    "calc_p_d_p_form_3",
+    "expr_p_d_p_form_3",
     "calc_theta_m_a_x_form_3",
     "expr_theta_m_a_x_form_3",
     "calc_val_2604_21851_form_3",
     "expr_val_2604_21851_form_3",
+    "calc_val_2309_15318_form_4",
+    "expr_val_2309_15318_form_4",
     "calc_val_2607_29041_form_4",
     "expr_val_2607_29041_form_4",
     "calc_lambda_2005_0",
     "expr_lambda_2005_0",
+    "calc_fangraphs_woba_glossary_form_2",
+    "expr_fangraphs_woba_glossary_form_2",
     "calc_s_a_t_u_form_8",
     "expr_s_a_t_u_form_8",
+    "calc_val_2608_10387_form_f",
+    "expr_val_2608_10387_form_f",
     "calc_n_form_6",
     "expr_n_form_6",
     "calc_val_2606_26780_form_6",
     "expr_val_2606_26780_form_6",
     "calc_a_r_form_4",
     "expr_a_r_form_4",
+    "calc_val_1709_07969_form_e",
+    "expr_val_1709_07969_form_e",
+    "calc_w_c_r_form_4",
+    "expr_w_c_r_form_4",
     "calc_w_o_a_b_form_4",
     "expr_w_o_a_b_form_4",
     "calc_t_form_c",
@@ -293,6 +355,8 @@ __all__ = [
     "expr_t_form_9",
     "calc_f_p_form_9",
     "expr_f_p_form_9",
+    "calc_q_m_q_h_q_q_form_d",
+    "expr_q_m_q_h_q_q_form_d",
     "calc_val_2604_21851_form_a",
     "expr_val_2604_21851_form_a",
     "calc_val_2112_14846_2112_1",
@@ -313,6 +377,8 @@ __all__ = [
     "expr_m_a_c_c_form_d",
     "calc_val_2607_29041_form_d",
     "expr_val_2607_29041_form_d",
+    "calc_val_2610_27416_form_f",
+    "expr_val_2610_27416_form_f",
     "calc_val_2309_15318_form_d",
     "expr_val_2309_15318_form_d",
     "calc_val_2607_12629_form_e",
@@ -339,6 +405,8 @@ __all__ = [
     "expr_w_e_v_e_n_t_form_5",
     "calc_p_i_i_theta_form_0",
     "expr_p_i_i_theta_form_0",
+    "calc_statcast_bat_tracking_glossary_form_5",
+    "expr_statcast_bat_tracking_glossary_form_5",
     "calc_c_a_b_form_0",
     "expr_c_a_b_form_0",
     "calc_c_form_6",
@@ -349,6 +417,8 @@ __all__ = [
     "expr_bref_war_components_glossary_form_6",
     "calc_sim_beta_0_form_3",
     "expr_sim_beta_0_form_3",
+    "calc_d_a_r_form_6",
+    "expr_d_a_r_form_6",
     "calc_val_2511_02815_2511_0",
     "expr_val_2511_02815_2511_0",
     "calc_val_2511_17733_2511_1",
@@ -373,6 +443,10 @@ __all__ = [
     "expr_s_di_f_f_i_c_u_l_t_form_6",
     "calc_miller2005_99c4eb",
     "expr_miller2005_99c4eb",
+    "calc_fangraphs_wraa_glossary_form_7",
+    "expr_fangraphs_wraa_glossary_form_7",
+    "calc_w_r_a_a_form_7",
+    "expr_w_r_a_a_form_7",
     "calc_g_m_i_l_form_7",
     "expr_g_m_i_l_form_7",
     "calc_val_2610_31153_form_7",
@@ -383,6 +457,8 @@ __all__ = [
     "expr_l_v_a_l_form_4",
     "calc_val_2609_25525_form_7",
     "expr_val_2609_25525_form_7",
+    "calc_delta_e_t_2_form_2",
+    "expr_delta_e_t_2_form_2",
     "calc_e_b_a_e_s_form_3",
     "expr_e_b_a_e_s_form_3",
     "calc_f_l_x_2511_1",
@@ -395,6 +471,12 @@ __all__ = [
     "expr_log_theta_c_j_theta_j_c_1_e_beyond",
     "calc_f_s_p_y_form_0",
     "expr_f_s_p_y_form_0",
+    "calc_phi_theta_form_1",
+    "expr_phi_theta_form_1",
+    "calc_x_i_j_brown_",
+    "expr_x_i_j_brown_",
+    "calc_x_i_brown_",
+    "expr_x_i_brown_",
     "calc_a_t_w_o_w_a_o_form_9",
     "expr_a_t_w_o_w_a_o_form_9",
     "calc_u_l_s_o_form_4",
@@ -409,8 +491,8 @@ __all__ = [
     "expr_phi_form_1",
     "calc_alpha_s_form_3",
     "expr_alpha_s_form_3",
-    "calc_c_m_s_l_form_3",
-    "expr_c_m_s_l_form_3",
+    "calc_q_c_q_q_q_m_q_g_q_form_6",
+    "expr_q_c_q_q_q_m_q_g_q_form_6",
     "calc_val_1704_00823_form_9",
     "expr_val_1704_00823_form_9",
     "calc_rho_c_o_u_n_t_form_4",
@@ -425,14 +507,16 @@ __all__ = [
     "expr_w_b_y_form_5",
     "calc_f_k_z_form_5",
     "expr_f_k_z_form_5",
+    "calc_d_phi_form_2",
+    "expr_d_phi_form_2",
     "calc_val_2604_21851_form_9",
     "expr_val_2604_21851_form_9",
-    "calc_x_i_j_brown_",
-    "expr_x_i_j_brown_",
     "calc_a_form_a",
     "expr_a_form_a",
     "calc_val_2005_07742_form_5",
     "expr_val_2005_07742_form_5",
+    "calc_f_l_form_5",
+    "expr_f_l_form_5",
     "calc_w_t_z_form_6",
     "expr_w_t_z_form_6",
     "calc_lambda_form_c",
@@ -445,24 +529,42 @@ __all__ = [
     "expr_dv_dt_theta_v_r_v_r_theta_form_b",
     "calc_val_0_k_nu_form_6",
     "expr_val_0_k_nu_form_6",
+    "calc_x_brown_",
+    "expr_x_brown_",
     "calc_val_2604_21851_form_c",
     "expr_val_2604_21851_form_c",
+    "calc_tango_base_runs_glossary_form_9",
+    "expr_tango_base_runs_glossary_form_9",
     "calc_val_2309_15318_form_0",
     "expr_val_2309_15318_form_0",
     "calc_u_2_form_7",
     "expr_u_2_form_7",
+    "calc_tangotiger_leverage_index_glossary_form_9",
+    "expr_tangotiger_leverage_index_glossary_form_9",
     "calc_i_l_form_9",
     "expr_i_l_form_9",
+    "calc_delta_phi_t_form_2",
+    "expr_delta_phi_t_form_2",
+    "calc_val_2610_01307_form_2",
+    "expr_val_2610_01307_form_2",
     "calc_beta_j_n_n_a_form_1",
     "expr_beta_j_n_n_a_form_1",
     "calc_c_a_f_e_a_c_form_6",
     "expr_c_a_f_e_a_c_form_6",
+    "calc_val_2610_01307_form_5",
+    "expr_val_2610_01307_form_5",
     "calc_val_2606_08059_form_7",
     "expr_val_2606_08059_form_7",
+    "calc_val_2604_25278_form_2",
+    "expr_val_2604_25278_form_2",
     "calc_r_b_n_p_a_n_form_f",
     "expr_r_b_n_p_a_n_form_f",
     "calc_fangraphs_wrc_glossary_form_a",
     "expr_fangraphs_wrc_glossary_form_a",
+    "calc_eta_dagger_n_form_0",
+    "expr_eta_dagger_n_form_0",
+    "calc_tau_s_d_phi_form_3",
+    "expr_tau_s_d_phi_form_3",
     "calc_z_l_form_7",
     "expr_z_l_form_7",
     "calc_s_a_n_a_n_1_form_e",
@@ -495,6 +597,10 @@ __all__ = [
     "expr_val_2608_10387_form_2",
     "calc_j_m_e_r_form_3",
     "expr_j_m_e_r_form_3",
+    "calc_partial_c_e_alpha_partial_form_3",
+    "expr_partial_c_e_alpha_partial_form_3",
+    "calc_w_form_4",
+    "expr_w_form_4",
     "calc_val_1704_00823_form_3",
     "expr_val_1704_00823_form_3",
     "calc_val_2610_27057_form_4",
@@ -509,16 +615,22 @@ __all__ = [
     "expr_fangraphs_fip_glossary_form_a",
     "calc_val_0_t_n_q_form_a",
     "expr_val_0_t_n_q_form_a",
+    "calc_val_2608_29935_form_3",
+    "expr_val_2608_29935_form_3",
     "calc_rho_c_o_u_n_t_1704_0",
     "expr_rho_c_o_u_n_t_1704_0",
     "calc_val_2610_29565_form_b",
     "expr_val_2610_29565_form_b",
     "calc_val_2005_07742_form_b",
     "expr_val_2005_07742_form_b",
+    "calc_val_350_glickm",
+    "expr_val_350_glickm",
     "calc_m_tau_form_b",
     "expr_m_tau_form_b",
     "calc_c_a_f_e_a_c_1704_0",
     "expr_c_a_f_e_a_c_1704_0",
+    "calc_f_theta_form_a",
+    "expr_f_theta_form_a",
     "calc_w_c_r_form_b",
     "expr_w_c_r_form_b",
     "calc_val_2512_13304_form_5",
@@ -527,6 +639,10 @@ __all__ = [
     "expr_r_e_t_form_3",
     "calc_val_2610_05080_form_c",
     "expr_val_2610_05080_form_c",
+    "calc_u_q_form_c",
+    "expr_u_q_form_c",
+    "calc_openalex_constantinou2018_w2800560076_form_e",
+    "expr_openalex_constantinou2018_w2800560076_form_e",
     "calc_val_2610_01307_form_c",
     "expr_val_2610_01307_form_c",
     "calc_eq_y_d_p_1_n_p_dsum_i_p_i_form_c",
@@ -545,8 +661,6 @@ __all__ = [
     "expr_v_n_1_form_e",
     "calc_i_n_de_x_2603_2",
     "expr_i_n_de_x_2603_2",
-    "calc_m_o_e_x_form_b",
-    "expr_m_o_e_x_form_b",
     "calc_i_l_form_b",
     "expr_i_l_form_b",
     "calc_d_omega_2_pi_v_form_4",
@@ -555,6 +669,8 @@ __all__ = [
     "expr_beyond_runs_expectancy_jsm2014_beyond",
     "calc_brier_1950_mwr_brier_",
     "expr_brier_1950_mwr_brier_",
+    "calc_val_2610_29685_form_c",
+    "expr_val_2610_29685_form_c",
     "calc_p_brier_",
     "expr_p_brier_",
     "calc_p_t_brier_",
@@ -563,6 +679,8 @@ __all__ = [
     "expr_log_c_theta_theta_c_1_e_beyond",
     "calc_p_i_brown_",
     "expr_p_i_brown_",
+    "calc_bt_secondary_many_routes_2023_bt_sec",
+    "expr_bt_secondary_many_routes_2023_bt_sec",
     "calc_m_q_q_form_5",
     "expr_m_q_q_form_5",
     "calc_openalex_constantinou2018_w2800560076_form_6",
@@ -573,8 +691,6 @@ __all__ = [
     "expr_efron_morris_1975_jasa_efron_",
     "calc_gamma_form_b",
     "expr_gamma_form_b",
-    "calc_bt_secondary_many_routes_2023_bt_sec",
-    "expr_bt_secondary_many_routes_2023_bt_sec",
     "calc_sigma_a_a_sigma_form_7",
     "expr_sigma_a_a_sigma_form_7",
     "calc_f_x_bt_sec",
@@ -589,14 +705,16 @@ __all__ = [
     "expr_p_n_1_form_0",
     "calc_d_n_form_0",
     "expr_d_n_form_0",
+    "calc_val_1408_4306_form_7",
+    "expr_val_1408_4306_form_7",
     "calc_val_2608_10387_form_0",
     "expr_val_2608_10387_form_0",
     "calc_c_f_m_theta_l_o_t_form_0",
     "expr_c_f_m_theta_l_o_t_form_0",
+    "calc_val_2610_01307_form_1",
+    "expr_val_2610_01307_form_1",
     "calc_sigma_2_theta_form_2",
     "expr_sigma_2_theta_form_2",
-    "calc_val_2610_01307_form_2",
-    "expr_val_2610_01307_form_2",
     "calc_m_a_u_di_o_form_2",
     "expr_m_a_u_di_o_form_2",
     "calc_i_k_p_i_2103_1",
@@ -611,14 +729,14 @@ __all__ = [
     "expr_val_2610_01307_form_3",
     "calc_t_t_form_3",
     "expr_t_t_form_3",
+    "calc_val_2610_01307_form_4",
+    "expr_val_2610_01307_form_4",
     "calc_delta_t_0_form_4",
     "expr_delta_t_0_form_4",
     "calc_omega_i_form_4",
     "expr_omega_i_form_4",
     "calc_val_2607_29041_form_7",
     "expr_val_2607_29041_form_7",
-    "calc_val_2610_01307_form_4",
-    "expr_val_2610_01307_form_4",
     "calc_partial_l_mu_partial_2209_0",
     "expr_partial_l_mu_partial_2209_0",
     "calc_partial_l_partial_2_p_sigma_2209_0",
@@ -629,10 +747,16 @@ __all__ = [
     "expr_f_x_form_5",
     "calc_n_omega_form_5",
     "expr_n_omega_form_5",
+    "calc_sim_q_1_i_y_t_form_7",
+    "expr_sim_q_1_i_y_t_form_7",
+    "calc_e_x_v_s_x_form_8",
+    "expr_e_x_v_s_x_form_8",
     "calc_val_2610_01307_form_6",
     "expr_val_2610_01307_form_6",
     "calc_val_2610_01307_form_7",
     "expr_val_2610_01307_form_7",
+    "calc_val_2610_01307_form_8",
+    "expr_val_2610_01307_form_8",
     "calc_val_2402_01914_2402_0",
     "expr_val_2402_01914_2402_0",
     "calc_lambda_o_v_e_r_a_l_l_2501_0",
@@ -643,8 +767,12 @@ __all__ = [
     "expr_l_m_e_s_form_8",
     "calc_l_du_r_form_8",
     "expr_l_du_r_form_8",
+    "calc_val_2610_01307_form_9",
+    "expr_val_2610_01307_form_9",
     "calc_val_2512_13304_form_9",
     "expr_val_2512_13304_form_9",
+    "calc_lambda_mu_nu_beta_form_9",
+    "expr_lambda_mu_nu_beta_form_9",
     "calc_val_2610_01307_form_a",
     "expr_val_2610_01307_form_a",
     "calc_val_2604_25278_form_a",
@@ -703,6 +831,8 @@ __all__ = [
     "expr_w_i_n_p_c_t_form_c",
     "calc_beta_form_c",
     "expr_beta_form_c",
+    "calc_psi_r_a_da_n_2602_2",
+    "expr_psi_r_a_da_n_2602_2",
     "calc_p_m_g_o_d_o_form_6",
     "expr_p_m_g_o_d_o_form_6",
     "calc_psi_r_a_da_n_psi_r_a_n_p_da_2602_2",
@@ -713,10 +843,16 @@ __all__ = [
     "expr_val_2_alpha_e_form_4",
     "calc_r_s_r_s_m_i_x_form_a",
     "expr_r_s_r_s_m_i_x_form_a",
+    "calc_b_h_phi_form_d",
+    "expr_b_h_phi_form_d",
     "calc_delta_r_beta_form_7",
     "expr_delta_r_beta_form_7",
+    "calc_brown_2008_arxiv_brown_",
+    "expr_brown_2008_arxiv_brown_",
     "calc_a_l_r_2_form_b",
     "expr_a_l_r_2_form_b",
+    "calc_val_1701_05976_form_1",
+    "expr_val_1701_05976_form_1",
     "calc_u_p_e_a_k_form_3",
     "expr_u_p_e_a_k_form_3",
     "calc_c_i_j_bt_sec",
@@ -727,6 +863,8 @@ __all__ = [
     "expr_o_f_buchda",
     "calc_v_i_theta_alpha_0_form_e",
     "expr_v_i_theta_alpha_0_form_e",
+    "calc_val_2309_15318_form_e",
+    "expr_val_2309_15318_form_e",
     "calc_p_i_form_e",
     "expr_p_i_form_e",
     "calc_l_form_0",
@@ -751,10 +889,10 @@ __all__ = [
     "expr_delta_e_k_p_form_7",
     "calc_f_o_r_a_c_l_e_s_257_form_3",
     "expr_f_o_r_a_c_l_e_s_257_form_3",
+    "calc_openalex_oneill2010_w2081091143_form_c",
+    "expr_openalex_oneill2010_w2081091143_form_c",
     "calc_l_f_d_w_form_4",
     "expr_l_f_d_w_form_4",
-    "calc_e_a_n_form_4",
-    "expr_e_a_n_form_4",
     "calc_c_g_form_4",
     "expr_c_g_form_4",
     "calc_tau_form_4",
@@ -763,6 +901,8 @@ __all__ = [
     "expr_t_12_form_4",
     "calc_g_r_form_f",
     "expr_g_r_form_f",
+    "calc_b_form_7",
+    "expr_b_form_7",
     "calc_b_theta_form_5",
     "expr_b_theta_form_5",
     "calc_b_phi_form_7",
@@ -789,6 +929,8 @@ __all__ = [
     "expr_m_e_s_form_7",
     "calc_f_s_257_form_8",
     "expr_f_s_257_form_8",
+    "calc_i_pi_form_9",
+    "expr_i_pi_form_9",
     "calc_j_a_o_p_d_theta_form_9",
     "expr_j_a_o_p_d_theta_form_9",
     "calc_i_p_form_7",
@@ -801,6 +943,8 @@ __all__ = [
     "expr_l_k_l_t_form_c",
     "calc_i_p_form_a",
     "expr_i_p_form_a",
+    "calc_q_i_j_form_e",
+    "expr_q_i_j_form_e",
     "calc_delta_x_1_brown_",
     "expr_delta_x_1_brown_",
     "calc_sim_r_i_brown_",
@@ -817,6 +961,10 @@ __all__ = [
     "expr_val_2609_39364_form_a",
     "calc_openalex_bendtsen2017_w2617761836_form_c",
     "expr_openalex_bendtsen2017_w2617761836_form_c",
+    "calc_u_b_beta_j_form_1",
+    "expr_u_b_beta_j_form_1",
+    "calc_abs_y_0_form_b",
+    "expr_abs_y_0_form_b",
     "calc_x_form_b",
     "expr_x_form_b",
     "calc_l_r_e_s_form_d",
@@ -835,6 +983,8 @@ __all__ = [
     "expr_l_m_e_s_form_e",
     "calc_t_23_form_e",
     "expr_t_23_form_e",
+    "calc_false_form_e",
+    "expr_false_form_e",
     "calc_val_2609_38730_form_e",
     "expr_val_2609_38730_form_e",
     "calc_val_2609_39364_form_f",
@@ -845,10 +995,20 @@ __all__ = [
     "expr_f_diebol",
     "calc_p_i_j_j_pi_bt_sec",
     "expr_p_i_j_j_pi_bt_sec",
+    "calc_openalex_higgs2021_w3179134135_form_3",
+    "expr_openalex_higgs2021_w3179134135_form_3",
+    "calc_openalex_higgs2021_w3179134135_form_0",
+    "expr_openalex_higgs2021_w3179134135_form_0",
+    "calc_r_e_w_a_d_r_form_b",
+    "expr_r_e_w_a_d_r_form_b",
     "calc_openalex_truong2019_w3005880794_form_4",
     "expr_openalex_truong2019_w3005880794_form_4",
+    "calc_val_2309_15318_form_b",
+    "expr_val_2309_15318_form_b",
     "calc_l_p_eta_bt_sec",
     "expr_l_p_eta_bt_sec",
+    "calc_partial_partial_t_l_t_r_t_form_3",
+    "expr_partial_partial_t_l_t_r_t_form_3",
     "calc_r_diebol",
     "expr_r_diebol",
     "calc_w_form_1",
@@ -861,6 +1021,10 @@ __all__ = [
     "expr_val_1704_00823_form_4",
     "calc_partial_partial_p_i_j_s_p_bt_sec",
     "expr_partial_partial_p_i_j_s_p_bt_sec",
+    "calc_val_1_b_c_e_y_y_form_b",
+    "expr_val_1_b_c_e_y_y_form_b",
+    "calc_openalex_kang2025_w4409349184_form_4",
+    "expr_openalex_kang2025_w4409349184_form_4",
     "calc_val_3_m_s_e_y_y_form_5",
     "expr_val_3_m_s_e_y_y_form_5",
     "calc_d_form_8",
@@ -877,16 +1041,22 @@ __all__ = [
     "expr_val_2609_25525_form_e",
     "calc_r_p_w_form_d",
     "expr_r_p_w_form_d",
+    "calc_fangraphs_wraa_glossary_form_e",
+    "expr_fangraphs_wraa_glossary_form_e",
     "calc_delta_alpha_alpha_form_e",
     "expr_delta_alpha_alpha_form_e",
     "calc_x_t_0_form_e",
     "expr_x_t_0_form_e",
     "calc_egidi_2018_arxiv1802_egidi_",
     "expr_egidi_2018_arxiv1802_egidi_",
-    "calc_val_2610_27416_form_f",
-    "expr_val_2610_27416_form_f",
+    "calc_s_t_form_e",
+    "expr_s_t_form_e",
+    "calc_alpha_t_form_e",
+    "expr_alpha_t_form_e",
     "calc_miller2005_effa17",
     "expr_miller2005_effa17",
+    "calc_v_e_x_i_t_form_f",
+    "expr_v_e_x_i_t_form_f",
     "calc_val_2601_18774_form_1",
     "expr_val_2601_18774_form_1",
     "calc_b_p_egidi_",
@@ -895,14 +1065,16 @@ __all__ = [
     "expr_val_2610_31563_form_1",
     "calc_val_2608_06635_form_5",
     "expr_val_2608_06635_form_5",
+    "calc_partial_lambda_y_theta_form_1",
+    "expr_partial_lambda_y_theta_form_1",
     "calc_q_s_m_y_form_1",
     "expr_q_s_m_y_form_1",
     "calc_r_w_c_i_form_4",
     "expr_r_w_c_i_form_4",
     "calc_val_2609_20558_form_1",
     "expr_val_2609_20558_form_1",
-    "calc_n_f_d_f_a_i_l_form_2",
-    "expr_n_f_d_f_a_i_l_form_2",
+    "calc_delta_f_k_abs_theta_2_form_1",
+    "expr_delta_f_k_abs_theta_2_form_1",
     "calc_alpha_c_form_2",
     "expr_alpha_c_form_2",
     "calc_psi_form_3",
@@ -919,12 +1091,16 @@ __all__ = [
     "expr_a_0_form_5",
     "calc_r_f_e_e_t_k_delta_q_form_5",
     "expr_r_f_e_e_t_k_delta_q_form_5",
+    "calc_val_2610_27416_form_5",
+    "expr_val_2610_27416_form_5",
     "calc_r_t_form_6",
     "expr_r_t_form_6",
     "calc_val_2609_20558_form_6",
     "expr_val_2609_20558_form_6",
     "calc_e_0_y_4_theta_form_6",
     "expr_e_0_y_4_theta_form_6",
+    "calc_pi_i_j_emptyset_form_9",
+    "expr_pi_i_j_emptyset_form_9",
     "calc_v_mu_form_d",
     "expr_v_mu_form_d",
     "calc_v_x_t_form_f",
@@ -943,6 +1119,8 @@ __all__ = [
     "expr_n_w_s_form_f",
     "calc_eta_m_form_8",
     "expr_eta_m_form_8",
+    "calc_f_k_abs_theta_2_form_9",
+    "expr_f_k_abs_theta_2_form_9",
     "calc_g_r_form_b",
     "expr_g_r_form_b",
     "calc_o_t_form_c",
@@ -951,6 +1129,10 @@ __all__ = [
     "expr_e_c_e_guo_20",
     "calc_val_2609_02306_form_c",
     "expr_val_2609_02306_form_c",
+    "calc_y_theta_form_e",
+    "expr_y_theta_form_e",
+    "calc_val_2610_29685_form_e",
+    "expr_val_2610_29685_form_e",
     "calc_miller2005_0ca92d",
     "expr_miller2005_0ca92d",
     "calc_miller2005_82322c",
@@ -973,12 +1155,16 @@ __all__ = [
     "expr_maher_secondary_dependence_2021_maher_",
     "calc_val_2608_27423_form_1",
     "expr_val_2608_27423_form_1",
+    "calc_c_d_c_l_form_1",
+    "expr_c_d_c_l_form_1",
     "calc_f_alpha_s_form_d",
     "expr_f_alpha_s_form_d",
     "calc_l_guo_20",
     "expr_l_guo_20",
     "calc_miller_2005_pythag_derivation_form_2",
     "expr_miller_2005_pythag_derivation_form_2",
+    "calc_val_2610_29685_form_2",
+    "expr_val_2610_29685_form_2",
     "calc_miller_2007_pythag_weibull_form_2",
     "expr_miller_2007_pythag_weibull_form_2",
     "calc_miller_2007_pythag_weibull_form_3",
@@ -997,20 +1183,28 @@ __all__ = [
     "expr_phi_v_i_r_t_form_5",
     "calc_val_2609_02306_form_6",
     "expr_val_2609_02306_form_6",
-    "calc_e_a_m_form_6",
-    "expr_e_a_m_form_6",
+    "calc_val_2608_26548_form_6",
+    "expr_val_2608_26548_form_6",
     "calc_openalex_list2003_w2030360026_form_2",
     "expr_openalex_list2003_w2030360026_form_2",
+    "calc_phi_h_r_t_form_4",
+    "expr_phi_h_r_t_form_4",
     "calc_theta_form_7",
     "expr_theta_form_7",
     "calc_val_2604_21851_form_8",
     "expr_val_2604_21851_form_8",
     "calc_val_2610_18361_form_8",
     "expr_val_2610_18361_form_8",
+    "calc_openalex_list2003_w2030360026_form_9",
+    "expr_openalex_list2003_w2030360026_form_9",
+    "calc_sin_30_01_o_form_8",
+    "expr_sin_30_01_o_form_8",
     "calc_val_2610_18361_form_9",
     "expr_val_2610_18361_form_9",
     "calc_d_form_9",
     "expr_d_form_9",
+    "calc_openalex_list2003_w2030360026_form_8",
+    "expr_openalex_list2003_w2030360026_form_8",
     "calc_db_tau_form_9",
     "expr_db_tau_form_9",
     "calc_l_y_k_u_form_1",
@@ -1021,10 +1215,16 @@ __all__ = [
     "expr_partial_x_c_k_epsilon_partial_form_a",
     "calc_e_t_form_b",
     "expr_e_t_form_b",
+    "calc_openalex_list2003_w2030360026_form_3",
+    "expr_openalex_list2003_w2030360026_form_3",
     "calc_val_2608_23163_form_2",
     "expr_val_2608_23163_form_2",
+    "calc_c_o_v_a_m_a_n_form_a",
+    "expr_c_o_v_a_m_a_n_form_a",
     "calc_val_2602_19513_form_c",
     "expr_val_2602_19513_form_c",
+    "calc_val_2610_18361_form_b",
+    "expr_val_2610_18361_form_b",
     "calc_a_s_h_0_di_f_f_i_c_u_l_t_form_b",
     "expr_a_s_h_0_di_f_f_i_c_u_l_t_form_b",
     "calc_val_2610_18361_form_c",
@@ -1033,6 +1233,8 @@ __all__ = [
     "expr_i_b_a_l_l_form_e",
     "calc_s_s_k_i_l_l_n_gneiti",
     "expr_s_s_k_i_l_l_n_gneiti",
+    "calc_delta_phi_form_b",
+    "expr_delta_phi_form_b",
     "calc_val_1704_00823_1704_0",
     "expr_val_1704_00823_1704_0",
     "calc_r_u_form_2",
@@ -1057,6 +1259,8 @@ __all__ = [
     "expr_r_l_b_b_form_4",
     "calc_openalex_toplak2011_w2081056419_form_9",
     "expr_openalex_toplak2011_w2081056419_form_9",
+    "calc_delta_omega_form_e",
+    "expr_delta_omega_form_e",
     "calc_val_2609_24299_form_4",
     "expr_val_2609_24299_form_4",
     "calc_val_2609_19460_form_5",
@@ -1067,10 +1271,14 @@ __all__ = [
     "expr_f_l_b_b_n_form_4",
     "calc_openalex_constantinou2018_w2800560076_form_7",
     "expr_openalex_constantinou2018_w2800560076_form_7",
+    "calc_openalex_constantinou2018_w2800560076_form_a",
+    "expr_openalex_constantinou2018_w2800560076_form_a",
     "calc_guo_2017_calibration_guo_20",
     "expr_guo_2017_calibration_guo_20",
     "calc_u_form_4",
     "expr_u_form_4",
+    "calc_openalex_constantinou2018_w2800560076_form_1",
+    "expr_openalex_constantinou2018_w2800560076_form_1",
     "calc_s_2_harvey",
     "expr_s_2_harvey",
     "calc_val_2610_27416_form_d",
@@ -1085,6 +1293,8 @@ __all__ = [
     "expr_c_v_a_r_alpha_x_c_form_3",
     "calc_openalex_constantinou2018_w2800560076_form_b",
     "expr_openalex_constantinou2018_w2800560076_form_b",
+    "calc_openalex_constantinou2018_w2800560076_form_2",
+    "expr_openalex_constantinou2018_w2800560076_form_2",
     "calc_j_f_k_l_s_j_f_k_l_pi_form_a",
     "expr_j_f_k_l_s_j_f_k_l_pi_form_a",
     "calc_val_1_12_2_harvey",
@@ -1095,8 +1305,6 @@ __all__ = [
     "expr_c_i_maher_",
     "calc_f_s_b_y_2005_0",
     "expr_f_s_b_y_2005_0",
-    "calc_openalex_constantinou2018_w2800560076_form_a",
-    "expr_openalex_constantinou2018_w2800560076_form_a",
     "calc_u_form_0",
     "expr_u_form_0",
     "calc_w_form_0",
@@ -1121,10 +1329,10 @@ __all__ = [
     "expr_l_e_q_u_2333_c_1_form_3",
     "calc_l_w_i_g_n_form_3",
     "expr_l_w_i_g_n_form_3",
+    "calc_r_form_2",
+    "expr_r_form_2",
     "calc_p_form_4",
     "expr_p_form_4",
-    "calc_val_2610_01307_form_8",
-    "expr_val_2610_01307_form_8",
     "calc_glickman_2001_jas_dynamic_paired_glickm",
     "expr_glickman_2001_jas_dynamic_paired_glickm",
     "calc_r_form_4",
@@ -1189,6 +1397,8 @@ __all__ = [
     "expr_val_2610_31153_form_b",
     "calc_miller_2005_pythag_derivation_form_d",
     "expr_miller_2005_pythag_derivation_form_d",
+    "calc_val_2_theta_partial_lambda_y_form_d",
+    "expr_val_2_theta_partial_lambda_y_form_d",
     "calc_val_2609_19460_form_d",
     "expr_val_2609_19460_form_d",
     "calc_math_0509698_form_d",
@@ -1199,8 +1409,10 @@ __all__ = [
     "expr_sim_h_dagger_n_form_1",
     "calc_d_xi_xi_form_2",
     "expr_d_xi_xi_form_2",
-    "calc_a_v_g_t_i_e_m_form_3",
-    "expr_a_v_g_t_i_e_m_form_3",
+    "calc_abs_omega_form_a",
+    "expr_abs_omega_form_a",
+    "calc_a_t_a_d_i_q_b_t_b_d_i_q_form_9",
+    "expr_a_t_a_d_i_q_b_t_b_d_i_q_form_9",
     "calc_t_form_8",
     "expr_t_form_8",
     "calc_theta_w_form_1",
@@ -1223,6 +1435,8 @@ __all__ = [
     "expr_s_form_e",
     "calc_sigma_form_2",
     "expr_sigma_form_2",
+    "calc_val_2303_03898_form_2",
+    "expr_val_2303_03898_form_2",
     "calc_f_a_e_o_r_form_3",
     "expr_f_a_e_o_r_form_3",
     "calc_val_2609_06739_form_4",
@@ -1231,6 +1445,8 @@ __all__ = [
     "expr_c_tau_form_4",
     "calc_tau_e_t_x_form_4",
     "expr_tau_e_t_x_form_4",
+    "calc_theta_form_2",
+    "expr_theta_form_2",
     "calc_theta_l_r_t_form_5",
     "expr_theta_l_r_t_form_5",
     "calc_p_a_form_5",
@@ -1243,6 +1459,8 @@ __all__ = [
     "expr_val_2609_06739_form_5",
     "calc_val_2607_29041_form_6",
     "expr_val_2607_29041_form_6",
+    "calc_val_2608_08157_form_7",
+    "expr_val_2608_08157_form_7",
     "calc_u_h_i_n_form_e",
     "expr_u_h_i_n_form_e",
     "calc_i_d_s_form_8",
@@ -1259,6 +1477,8 @@ __all__ = [
     "expr_w_e_s_form_9",
     "calc_r_t_theta_form_9",
     "expr_r_t_theta_form_9",
+    "calc_val_2610_27057_form_9",
+    "expr_val_2610_27057_form_9",
     "calc_f_i_form_9",
     "expr_f_i_form_9",
     "calc_val_2610_31563_form_2",
@@ -1267,10 +1487,14 @@ __all__ = [
     "expr_val_2610_05080_form_9",
     "calc_v_form_9",
     "expr_v_form_9",
+    "calc_val_1408_4306_form_a",
+    "expr_val_1408_4306_form_a",
     "calc_h_d_form_a",
     "expr_h_d_form_a",
     "calc_shin_family_2024_cambridge_form_b",
     "expr_shin_family_2024_cambridge_form_b",
+    "calc_val_2601_18161_form_b",
+    "expr_val_2601_18161_form_b",
     "calc_niculescu_mizil_caruana_2005_form_b",
     "expr_niculescu_mizil_caruana_2005_form_b",
     "calc_val_2610_31563_form_8",
@@ -1281,6 +1505,8 @@ __all__ = [
     "expr_val_2608_27423_form_c",
     "calc_val_2601_11904_form_c",
     "expr_val_2601_11904_form_c",
+    "calc_rho_d_r_z_form_c",
+    "expr_rho_d_r_z_form_c",
     "calc_r_c_l_e_a_r_form_c",
     "expr_r_c_l_e_a_r_form_c",
     "calc_val_2608_10387_form_c",
@@ -1299,38 +1525,64 @@ __all__ = [
     "expr_h_l_i_j_c_1_form_d",
     "calc_niculescu_mizil_caruana_2005_form_d",
     "expr_niculescu_mizil_caruana_2005_form_d",
-    "calc_false_form_e",
-    "expr_false_form_e",
     "calc_val_2608_27423_form_f",
     "expr_val_2608_27423_form_f",
+    "calc_val_2_t_xi_form_0",
+    "expr_val_2_t_xi_form_0",
+    "calc_val_1_t_xi_form_0",
+    "expr_val_1_t_xi_form_0",
     "calc_val_2609_06739_form_c",
     "expr_val_2609_06739_form_c",
+    "calc_val_2602_05895_form_c",
+    "expr_val_2602_05895_form_c",
+    "calc_val_2512_18323_form_f",
+    "expr_val_2512_18323_form_f",
     "calc_sqrt_2_e_y_form_4",
     "expr_sqrt_2_e_y_form_4",
     "calc_de_v_a_l_form_1",
     "expr_de_v_a_l_form_1",
+    "calc_openalex_iv2010_w2125230147_form_9",
+    "expr_openalex_iv2010_w2125230147_form_9",
     "calc_p_r_form_e",
     "expr_p_r_form_e",
     "calc_f_l_b_b_n_form_6",
     "expr_f_l_b_b_n_form_6",
+    "calc_i_pi_form_a",
+    "expr_i_pi_form_a",
+    "calc_val_2610_27416_form_3",
+    "expr_val_2610_27416_form_3",
+    "calc_q_c_q_q_q_m_q_g_q_form_a",
+    "expr_q_c_q_q_q_m_q_g_q_form_a",
     "calc_val_1810_06655_form_a",
     "expr_val_1810_06655_form_a",
     "calc_val_1810_06655_form_0",
     "expr_val_1810_06655_form_0",
+    "calc_val_1810_06655_form_f",
+    "expr_val_1810_06655_form_f",
     "calc_val_1810_06655_form_6",
     "expr_val_1810_06655_form_6",
+    "calc_val_1810_06655_form_9",
+    "expr_val_1810_06655_form_9",
+    "calc_val_1810_06655_form_4",
+    "expr_val_1810_06655_form_4",
+    "calc_val_1810_06655_form_d",
+    "expr_val_1810_06655_form_d",
     "calc_val_1810_06655_form_3",
     "expr_val_1810_06655_form_3",
     "calc_r_i_t_form_c",
     "expr_r_i_t_form_c",
     "calc_q_l_y_t_form_7",
     "expr_q_l_y_t_form_7",
+    "calc_sim_f_t_y_form_4",
+    "expr_sim_f_t_y_form_4",
+    "calc_val_12_sim_q_3_i_y_t_form_f",
+    "expr_val_12_sim_q_3_i_y_t_form_f",
     "calc_q_l_y_t_form_a",
     "expr_q_l_y_t_form_a",
+    "calc_sim_c_1_i_t_form_9",
+    "expr_sim_c_1_i_t_form_9",
     "calc_q_l_y_t_form_c",
     "expr_q_l_y_t_form_c",
-    "calc_val_1810_06655_form_9",
-    "expr_val_1810_06655_form_9",
     "calc_val_1810_06655_form_e",
     "expr_val_1810_06655_form_e",
     "calc_p_i_i_l_form_5",
@@ -1343,14 +1595,26 @@ __all__ = [
     "expr_y_2_form_7",
     "calc_y_0_y_1_y_2_form_3",
     "expr_y_0_y_1_y_2_form_3",
+    "calc_y_m_y_d_y_y_form_9",
+    "expr_y_m_y_d_y_y_form_9",
+    "calc_val_2609_24299_form_b",
+    "expr_val_2609_24299_form_b",
+    "calc_val_2609_24299_form_a",
+    "expr_val_2609_24299_form_a",
     "calc_val_2609_24299_form_7",
     "expr_val_2609_24299_form_7",
+    "calc_theta_form_6",
+    "expr_theta_form_6",
     "calc_w_i_j_form_a",
     "expr_w_i_j_form_a",
     "calc_lambda_form_f",
     "expr_lambda_form_f",
     "calc_val_2005_07742_form_9",
     "expr_val_2005_07742_form_9",
+    "calc_val_2604_25278_form_5",
+    "expr_val_2604_25278_form_5",
+    "calc_val_2610_01307_form_b",
+    "expr_val_2610_01307_form_b",
     "calc_d_f_form_d",
     "expr_d_f_form_d",
     "calc_sigma_c_p_form_4",
@@ -1369,10 +1633,14 @@ __all__ = [
     "expr_rho_c_r_b_l_form_6",
     "calc_tau_c_r_b_l_form_b",
     "expr_tau_c_r_b_l_form_b",
+    "calc_xi_m_xi_d_xi_xi_form_5",
+    "expr_xi_m_xi_d_xi_xi_form_5",
     "calc_epsilon_i_1312_7",
     "expr_epsilon_i_1312_7",
     "calc_m_r_r_r_c_o_form_d",
     "expr_m_r_r_r_c_o_form_d",
+    "calc_t_de_t_e_c_t_form_0",
+    "expr_t_de_t_e_c_t_form_0",
     "calc_m_c_p_form_8",
     "expr_m_c_p_form_8",
     "calc_a_m_r_form_3",
@@ -1407,6 +1675,8 @@ __all__ = [
     "expr_p_i_j_form_6",
     "calc_eq_e_x_e_f_y_form_8",
     "expr_eq_e_x_e_f_y_form_8",
+    "calc_val_1408_4306_form_9",
+    "expr_val_1408_4306_form_9",
     "calc_f_tau_form_c",
     "expr_f_tau_form_c",
     "calc_val_1905_04632_form_a",
@@ -1419,6 +1689,14 @@ __all__ = [
     "expr_p_a_form_b",
     "calc_val_2608_08157_form_b",
     "expr_val_2608_08157_form_b",
+    "calc_i_dd_omega_dd_t_form_b",
+    "expr_i_dd_omega_dd_t_form_b",
+    "calc_beta_r_t_form_b",
+    "expr_beta_r_t_form_b",
+    "calc_d_n_form_b",
+    "expr_d_n_form_b",
+    "calc_g_form_c",
+    "expr_g_form_c",
     "calc_v_f_f_form_c",
     "expr_v_f_f_form_c",
     "calc_l_k_x_k_u_form_c",
@@ -1431,10 +1709,16 @@ __all__ = [
     "expr_i_n_de_x_form_0",
     "calc_c_v_z_form_0",
     "expr_c_v_z_form_0",
+    "calc_d_f_form_0",
+    "expr_d_f_form_0",
     "calc_m_p_p_form_4",
     "expr_m_p_p_form_4",
+    "calc_delta_m_form_4",
+    "expr_delta_m_form_4",
     "calc_m_n_p_form_5",
     "expr_m_n_p_form_5",
+    "calc_phi_form_5",
+    "expr_phi_form_5",
     "calc_m_p_j_e_p_form_5",
     "expr_m_p_j_e_p_form_5",
     "calc_c_e_form_5",
@@ -1451,16 +1735,26 @@ __all__ = [
     "expr_d_gamma_form_8",
     "calc_a_j_u_form_9",
     "expr_a_j_u_form_9",
+    "calc_alpha_t_form_9",
+    "expr_alpha_t_form_9",
     "calc_w_a_p_form_9",
     "expr_w_a_p_form_9",
+    "calc_val_2608_29935_form_9",
+    "expr_val_2608_29935_form_9",
     "calc_val_1205_2071_form_9",
     "expr_val_1205_2071_form_9",
     "calc_val_2604_25278_form_9",
     "expr_val_2604_25278_form_9",
     "calc_e_form_a",
     "expr_e_form_a",
+    "calc_delta_m_p_e_a_k_form_b",
+    "expr_delta_m_p_e_a_k_form_b",
+    "calc_delta_m_form_b",
+    "expr_delta_m_form_b",
     "calc_d_i_v_form_c",
     "expr_d_i_v_form_c",
+    "calc_partial_delta_e_alpha_partial_form_c",
+    "expr_partial_delta_e_alpha_partial_form_c",
     "calc_c_g_f_r_form_c",
     "expr_c_g_f_r_form_c",
     "calc_g_rho_form_d",
@@ -1481,12 +1775,16 @@ __all__ = [
     "expr_r_beta_form_e",
     "calc_val_0902_1360_form_e",
     "expr_val_0902_1360_form_e",
+    "calc_omega_2_form_e",
+    "expr_omega_2_form_e",
     "calc_val_2512_13304_form_0",
     "expr_val_2512_13304_form_0",
     "calc_j_a_o_p_d_theta_form_1",
     "expr_j_a_o_p_d_theta_form_1",
     "calc_y_r_s_h_s_y_p_s_form_1",
     "expr_y_r_s_h_s_y_p_s_form_1",
+    "calc_val_2512_18323_form_2",
+    "expr_val_2512_18323_form_2",
     "calc_j_0_form_2",
     "expr_j_0_form_2",
     "calc_val_2512_13304_form_3",
@@ -1503,6 +1801,8 @@ __all__ = [
     "expr_val_2512_13304_form_4",
     "calc_val_2610_29565_form_4",
     "expr_val_2610_29565_form_4",
+    "calc_val_2610_05080_form_4",
+    "expr_val_2610_05080_form_4",
     "calc_z_form_4",
     "expr_z_form_4",
     "calc_w_c_y_form_6",
@@ -1519,14 +1819,12 @@ __all__ = [
     "expr_k_theta_l_form_7",
     "calc_val_2609_39852_form_9",
     "expr_val_2609_39852_form_9",
-    "calc_val_2610_01307_form_9",
-    "expr_val_2610_01307_form_9",
     "calc_e_u_p_p_e_r_form_a",
     "expr_e_u_p_p_e_r_form_a",
-    "calc_val_2610_01307_form_b",
-    "expr_val_2610_01307_form_b",
     "calc_val_2610_04813_form_b",
     "expr_val_2610_04813_form_b",
+    "calc_val_2610_27416_form_b",
+    "expr_val_2610_27416_form_b",
     "calc_e_s_m_o_o_h_t_form_b",
     "expr_e_s_m_o_o_h_t_form_b",
     "calc_val_2608_29935_form_b",
@@ -1535,6 +1833,10 @@ __all__ = [
     "expr_g_theta_form_b",
     "calc_val_2610_04813_form_c",
     "expr_val_2610_04813_form_c",
+    "calc_val_2601_18161_form_c",
+    "expr_val_2601_18161_form_c",
+    "calc_partial_partial_t_phi_h_r_t_form_c",
+    "expr_partial_partial_t_phi_h_r_t_form_c",
     "calc_k_l_l_s_form_c",
     "expr_k_l_l_s_form_c",
     "calc_e_p_e_n_form_d",
@@ -1553,6 +1855,8 @@ __all__ = [
     "expr_val_2610_31153_form_0",
     "calc_r_s_r_s_m_i_x_form_0",
     "expr_r_s_r_s_m_i_x_form_0",
+    "calc_val_2512_13304_form_a",
+    "expr_val_2512_13304_form_a",
     "calc_e_a_sim_t_a_s_h_0_a_form_0",
     "expr_e_a_sim_t_a_s_h_0_a_form_0",
     "calc_t_di_f_f_i_c_u_l_t_form_0",
@@ -1571,8 +1875,6 @@ __all__ = [
     "expr_l_b_a_e_s_form_a",
     "calc_l_f_k_l_theta_form_a",
     "expr_l_f_k_l_theta_form_a",
-    "calc_w_form_4",
-    "expr_w_form_4",
     "calc_r_s_r_pi_form_4",
     "expr_r_s_r_pi_form_4",
     "calc_val_2609_38730_form_5",
@@ -1581,6 +1883,8 @@ __all__ = [
     "expr_val_2610_31563_form_5",
     "calc_p_u_form_5",
     "expr_p_u_form_5",
+    "calc_gamma_tau_form_5",
+    "expr_gamma_tau_form_5",
     "calc_g_s_p_e_c_t_r_a_l_form_5",
     "expr_g_s_p_e_c_t_r_a_l_form_5",
     "calc_e_r_e_c_n_o_form_c",
@@ -1611,8 +1915,6 @@ __all__ = [
     "expr_j_5_form_9",
     "calc_val_2609_38730_form_9",
     "expr_val_2609_38730_form_9",
-    "calc_val_2512_13304_form_a",
-    "expr_val_2512_13304_form_a",
     "calc_val_2512_13304_form_b",
     "expr_val_2512_13304_form_b",
     "calc_val_2512_13304_form_c",
@@ -1631,20 +1933,22 @@ __all__ = [
     "expr_e_f_i_n_a_l_form_e",
     "calc_j_f_k_l_theta_form_e",
     "expr_j_f_k_l_theta_form_e",
+    "calc_l_t_r_t_form_f",
+    "expr_l_t_r_t_form_f",
     "calc_n_q_form_0",
     "expr_n_q_form_0",
     "calc_val_2608_27423_form_0",
     "expr_val_2608_27423_form_0",
-    "calc_c_t_form_0",
-    "expr_c_t_form_0",
+    "calc_val_2610_27416_form_0",
+    "expr_val_2610_27416_form_0",
     "calc_val_2610_29049_form_0",
     "expr_val_2610_29049_form_0",
+    "calc_c_t_form_0",
+    "expr_c_t_form_0",
     "calc_val_2608_10387_form_1",
     "expr_val_2608_10387_form_1",
     "calc_e_0_a_4_i_form_2",
     "expr_e_0_a_4_i_form_2",
-    "calc_val_2610_29685_form_2",
-    "expr_val_2610_29685_form_2",
     "calc_l_omega_b_form_3",
     "expr_l_omega_b_form_3",
     "calc_val_2610_29066_form_3",
@@ -1675,6 +1979,8 @@ __all__ = [
     "expr_val_2608_26548_form_8",
     "calc_e_u_s_t_form_9",
     "expr_e_u_s_t_form_9",
+    "calc_val_2610_27416_form_9",
+    "expr_val_2610_27416_form_9",
     "calc_p_b_a_s_e_l_i_e_n_form_9",
     "expr_p_b_a_s_e_l_i_e_n_form_9",
     "calc_val_2610_31563_form_9",
@@ -1685,12 +1991,12 @@ __all__ = [
     "expr_val_2610_31563_form_a",
     "calc_l_p_m_form_a",
     "expr_l_p_m_form_a",
-    "calc_o_b_k_s_form_9",
-    "expr_o_b_k_s_form_9",
     "calc_c_p_form_a",
     "expr_c_p_form_a",
     "calc_val_2610_31153_form_a",
     "expr_val_2610_31153_form_a",
+    "calc_val_2610_29685_form_a",
+    "expr_val_2610_29685_form_a",
     "calc_val_2608_10387_form_a",
     "expr_val_2608_10387_form_a",
     "calc_val_1610_03464_form_b",
@@ -1701,8 +2007,6 @@ __all__ = [
     "expr_f_r_form_4",
     "calc_val_2608_26548_form_b",
     "expr_val_2608_26548_form_b",
-    "calc_val_2610_27416_form_c",
-    "expr_val_2610_27416_form_c",
     "calc_q_s_h_0_di_f_f_i_c_u_l_t_form_c",
     "expr_q_s_h_0_di_f_f_i_c_u_l_t_form_c",
     "calc_j_form_5",
@@ -1719,6 +2023,8 @@ __all__ = [
     "expr_val_2610_27057_form_b",
     "calc_val_1610_03464_form_e",
     "expr_val_1610_03464_form_e",
+    "calc_val_2610_31153_form_f",
+    "expr_val_2610_31153_form_f",
     "calc_e_a_s_sim_c_a_s_h_a_form_f",
     "expr_e_a_s_sim_c_a_s_h_a_form_f",
     "calc_phi_x_form_0",
@@ -1727,8 +2033,6 @@ __all__ = [
     "expr_val_2608_08157_form_1",
     "calc_val_2608_23163_form_1",
     "expr_val_2608_23163_form_1",
-    "calc_m_r_s_form_1",
-    "expr_m_r_s_form_1",
     "calc_h_g_form_1",
     "expr_h_g_form_1",
     "calc_val_2610_28223_form_1",
@@ -1781,6 +2085,8 @@ __all__ = [
     "expr_d_form_d",
     "calc_val_2610_31153_form_e",
     "expr_val_2610_31153_form_e",
+    "calc_w_alpha_beta_form_e",
+    "expr_w_alpha_beta_form_e",
     "calc_val_2_a_sigma_form_e",
     "expr_val_2_a_sigma_form_e",
     "calc_i_theta_form_f",
@@ -1799,6 +2105,8 @@ __all__ = [
     "expr_val_2309_15318_form_3",
     "calc_a_w_form_3",
     "expr_a_w_form_3",
+    "calc_dl_dt_form_3",
+    "expr_dl_dt_form_3",
     "calc_d_f_form_4",
     "expr_d_f_form_4",
     "calc_val_2610_26568_form_4",
@@ -1813,6 +2121,8 @@ __all__ = [
     "expr_h_form_6",
     "calc_val_2610_26568_form_d",
     "expr_val_2610_26568_form_d",
+    "calc_p_s_i_j_k_form_d",
+    "expr_p_s_i_j_k_form_d",
     "calc_e_y_form_6",
     "expr_e_y_form_6",
     "calc_val_2610_27057_form_7",
@@ -1833,12 +2143,16 @@ __all__ = [
     "expr_val_2608_23163_form_a",
     "calc_r_h_form_a",
     "expr_r_h_form_a",
+    "calc_partial_t_v_i_t_i_form_8",
+    "expr_partial_t_v_i_t_i_form_8",
     "calc_a_l_r_form_a",
     "expr_a_l_r_form_a",
+    "calc_val_2608_08157_form_a",
+    "expr_val_2608_08157_form_a",
     "calc_w_form_a",
     "expr_w_form_a",
-    "calc_h_m_form_b",
-    "expr_h_m_form_b",
+    "calc_val_4_pi_3_epsilon_323_form_b",
+    "expr_val_4_pi_3_epsilon_323_form_b",
     "calc_o_v_x_y_e_e_i_j_k_l_form_b",
     "expr_o_v_x_y_e_e_i_j_k_l_form_b",
     "calc_l_o_t_v_form_c",
@@ -1887,8 +2201,6 @@ __all__ = [
     "expr_val_2610_26568_form_e",
     "calc_psi_t_form_4",
     "expr_psi_t_form_4",
-    "calc_n_g_n_l_s_form_5",
-    "expr_n_g_n_l_s_form_5",
     "calc_phi_eta_form_5",
     "expr_phi_eta_form_5",
     "calc_d_form_6",
@@ -1897,10 +2209,16 @@ __all__ = [
     "expr_val_2601_06439_form_f",
     "calc_p_i_t_form_6",
     "expr_p_i_t_form_6",
+    "calc_s_d_t_form_6",
+    "expr_s_d_t_form_6",
+    "calc_l_form_6",
+    "expr_l_form_6",
     "calc_c_p_form_f",
     "expr_c_p_form_f",
     "calc_y_form_f",
     "expr_y_form_f",
+    "calc_val_1408_4306_form_f",
+    "expr_val_1408_4306_form_f",
     "calc_val_2610_26568_form_7",
     "expr_val_2610_26568_form_7",
     "calc_l_s_h_a_r_e_d_i_form_7",
@@ -1909,6 +2227,8 @@ __all__ = [
     "expr_val_2610_25605_form_8",
     "calc_val_2601_06439_form_9",
     "expr_val_2601_06439_form_9",
+    "calc_c_2_s_r_z_form_9",
+    "expr_c_2_s_r_z_form_9",
     "calc_p_m_form_9",
     "expr_p_m_form_9",
     "calc_true_form_9",
@@ -1917,8 +2237,10 @@ __all__ = [
     "expr_val_2610_26568_form_9",
     "calc_beta_c_v_a_r_alpha_v_p_form_9",
     "expr_beta_c_v_a_r_alpha_v_p_form_9",
-    "calc_e_s_k_n_y_form_b",
-    "expr_e_s_k_n_y_form_b",
+    "calc_val_2610_26568_form_a",
+    "expr_val_2610_26568_form_a",
+    "calc_t_s_p_i_n_do_n_w_form_c",
+    "expr_t_s_p_i_n_do_n_w_form_c",
     "calc_val_2610_26568_form_c",
     "expr_val_2610_26568_form_c",
     "calc_f_p_b_form_d",
@@ -1935,14 +2257,14 @@ __all__ = [
     "expr_e_form_1",
     "calc_w_b_x_form_1",
     "expr_w_b_x_form_1",
-    "calc_val_2604_25278_form_2",
-    "expr_val_2604_25278_form_2",
     "calc_l_form_2",
     "expr_l_form_2",
+    "calc_tau_infty_t_x_form_3",
+    "expr_tau_infty_t_x_form_3",
     "calc_val_2608_12291_form_2",
     "expr_val_2608_12291_form_2",
-    "calc_val_2608_29935_form_3",
-    "expr_val_2608_29935_form_3",
+    "calc_f_i_omega_form_3",
+    "expr_f_i_omega_form_3",
     "calc_p_r_dk_e_form_3",
     "expr_p_r_dk_e_form_3",
     "calc_e_p_form_3",
@@ -2001,10 +2323,16 @@ __all__ = [
     "expr_val_2610_25605_form_d",
     "calc_val_2610_25581_form_e",
     "expr_val_2610_25581_form_e",
+    "calc_val_2608_29935_form_e",
+    "expr_val_2608_29935_form_e",
+    "calc_l_2_l_s_form_e",
+    "expr_l_2_l_s_form_e",
     "calc_val_2609_10457_form_f",
     "expr_val_2609_10457_form_f",
     "calc_i_z_form_f",
     "expr_i_z_form_f",
+    "calc_val_2610_25605_form_f",
+    "expr_val_2610_25605_form_f",
     "calc_e_p_form_1",
     "expr_e_p_form_1",
     "calc_v_infty_t_x_form_1",
@@ -2015,12 +2343,22 @@ __all__ = [
     "expr_t_p_x_p_y_p_z_1_form_5",
     "calc_v_t_t_x_form_5",
     "expr_v_t_t_x_form_5",
+    "calc_v_infty_t_x_form_6",
+    "expr_v_infty_t_x_form_6",
+    "calc_partial_i_v_i_t_i_form_6",
+    "expr_partial_i_v_i_t_i_form_6",
+    "calc_val_2608_12291_form_7",
+    "expr_val_2608_12291_form_7",
+    "calc_g_c_e_pi_form_7",
+    "expr_g_c_e_pi_form_7",
     "calc_val_2608_29935_form_8",
     "expr_val_2608_29935_form_8",
     "calc_val_2608_12291_form_8",
     "expr_val_2608_12291_form_8",
     "calc_w_c_x_form_9",
     "expr_w_c_x_form_9",
+    "calc_dpi_a_s_form_a",
+    "expr_dpi_a_s_form_a",
     "calc_i_w_form_a",
     "expr_i_w_form_a",
     "calc_val_2608_29935_form_a",
@@ -2035,14 +2373,20 @@ __all__ = [
     "expr_val_2608_12291_form_c",
     "calc_q_dt_p_form_c",
     "expr_q_dt_p_form_c",
+    "calc_l_c_e_theta_d_form_c",
+    "expr_l_c_e_theta_d_form_c",
     "calc_val_2_r_phi_form_d",
     "expr_val_2_r_phi_form_d",
     "calc_val_2602_05895_form_e",
     "expr_val_2602_05895_form_e",
+    "calc_val_2608_12291_form_f",
+    "expr_val_2608_12291_form_f",
     "calc_val_2610_30212_form_0",
     "expr_val_2610_30212_form_0",
     "calc_tau_t_l_form_0",
     "expr_tau_t_l_form_0",
+    "calc_tau_f_t_x_form_0",
+    "expr_tau_f_t_x_form_0",
     "calc_v_infty_t_x_v_infty_t_y_form_1",
     "expr_v_infty_t_x_v_infty_t_y_form_1",
     "calc_val_2610_31153_form_2",
@@ -2057,16 +2401,24 @@ __all__ = [
     "expr_val_2610_05080_form_6",
     "calc_sigma_j_l_form_6",
     "expr_sigma_j_l_form_6",
+    "calc_val_2608_12291_form_9",
+    "expr_val_2608_12291_form_9",
+    "calc_val_2608_12291_form_a",
+    "expr_val_2608_12291_form_a",
     "calc_val_2604_13861_form_6",
     "expr_val_2604_13861_form_6",
     "calc_h_a_p_e_x_form_b",
     "expr_h_a_p_e_x_form_b",
     "calc_s_form_c",
     "expr_s_form_c",
+    "calc_abs_v_infty_s_y_v_infty_t_x_form_c",
+    "expr_abs_v_infty_s_y_v_infty_t_x_form_c",
+    "calc_tau_t_t_x_form_c",
+    "expr_tau_t_t_x_form_c",
+    "calc_val_2608_12291_form_d",
+    "expr_val_2608_12291_form_d",
     "calc_v_beta_t_t_x_form_f",
     "expr_v_beta_t_t_x_form_f",
-    "calc_val_2608_12291_form_f",
-    "expr_val_2608_12291_form_f",
     "calc_val_2610_31563_form_f",
     "expr_val_2610_31563_form_f",
     "calc_y_s_form_0",
@@ -2095,10 +2447,14 @@ __all__ = [
     "expr_val_2602_19513_form_6",
     "calc_pi_i_j_form_7",
     "expr_pi_i_j_form_7",
+    "calc_val_2610_29066_form_6",
+    "expr_val_2610_29066_form_6",
     "calc_omega_s_form_6",
     "expr_omega_s_form_6",
     "calc_sigma_a_x_form_7",
     "expr_sigma_a_x_form_7",
+    "calc_a_s_form_7",
+    "expr_a_s_form_7",
     "calc_val_2604_13861_form_7",
     "expr_val_2604_13861_form_7",
     "calc_partial_p_w_t_partial_s_i_form_8",
@@ -2111,12 +2467,10 @@ __all__ = [
     "expr_k_epsilon_s_l_l_s_form_8",
     "calc_val_2610_30212_form_9",
     "expr_val_2610_30212_form_9",
-    "calc_val_2608_12291_form_a",
-    "expr_val_2608_12291_form_a",
     "calc_val_2610_30212_form_a",
     "expr_val_2610_30212_form_a",
-    "calc_val_2608_12291_form_d",
-    "expr_val_2608_12291_form_d",
+    "calc_tau_r_t_l_form_d",
+    "expr_tau_r_t_l_form_d",
     "calc_val_2610_31153_form_d",
     "expr_val_2610_31153_form_d",
     "calc_j_p_form_d",
@@ -2125,10 +2479,6 @@ __all__ = [
     "expr_val_2610_30212_form_e",
     "calc_val_2610_30212_form_f",
     "expr_val_2610_30212_form_f",
-    "calc_val_2610_31153_form_f",
-    "expr_val_2610_31153_form_f",
-    "calc_val_2610_27416_form_0",
-    "expr_val_2610_27416_form_0",
     "calc_val_2610_27416_form_1",
     "expr_val_2610_27416_form_1",
     "calc_g_i_form_1",
@@ -2191,12 +2541,12 @@ __all__ = [
     "expr_v_form_c",
     "calc_t_a_b_form_c",
     "expr_t_a_b_form_c",
-    "calc_val_2610_29685_form_c",
-    "expr_val_2610_29685_form_c",
     "calc_val_2610_29066_form_d",
     "expr_val_2610_29066_form_d",
     "calc_val_2604_13861_form_d",
     "expr_val_2604_13861_form_d",
+    "calc_val_2602_19513_form_f",
+    "expr_val_2602_19513_form_f",
     "calc_pi_s_form_d",
     "expr_pi_s_form_d",
     "calc_t_k_form_d",
@@ -2205,12 +2555,8 @@ __all__ = [
     "expr_val_2602_19513_form_e",
     "calc_v_b_t_r_b_w_form_e",
     "expr_v_b_t_r_b_w_form_e",
-    "calc_val_2610_29685_form_e",
-    "expr_val_2610_29685_form_e",
     "calc_c_e_x_a_c_t_form_f",
     "expr_c_e_x_a_c_t_form_f",
-    "calc_val_2602_19513_form_f",
-    "expr_val_2602_19513_form_f",
     "calc_e_a_g_v_form_0",
     "expr_e_a_g_v_form_0",
     "calc_i_z_form_1",
@@ -2225,8 +2571,8 @@ __all__ = [
     "expr_val_2609_24040_form_1",
     "calc_ds_h_o_e_r_form_2",
     "expr_ds_h_o_e_r_form_2",
-    "calc_val_2610_27416_form_3",
-    "expr_val_2610_27416_form_3",
+    "calc_abs_n_b_f_f_p_form_3",
+    "expr_abs_n_b_f_f_p_form_3",
     "calc_val_2608_23776_form_3",
     "expr_val_2608_23776_form_3",
     "calc_val_2608_02081_form_3",
@@ -2255,8 +2601,6 @@ __all__ = [
     "expr_val_2512_18467_form_8",
     "calc_val_2602_19513_form_8",
     "expr_val_2602_19513_form_8",
-    "calc_g_c_r_form_8",
-    "expr_g_c_r_form_8",
     "calc_a_s_t_form_1",
     "expr_a_s_t_form_1",
     "calc_val_2610_28285_form_9",
@@ -2303,8 +2647,6 @@ __all__ = [
     "expr_t_x_1_form_f",
     "calc_l_o_s_s_2206_0",
     "expr_l_o_s_s_2206_0",
-    "calc_delta_r_e_e_v_e_n_t_2208_0",
-    "expr_delta_r_e_e_v_e_n_t_2208_0",
     "calc_w_k_form_0",
     "expr_w_k_form_0",
     "calc_l_i_m_i_n_f_n_b_n_form_0",
@@ -2323,6 +2665,8 @@ __all__ = [
     "expr_delta_h_k_form_2",
     "calc_i_y_i_y_form_2",
     "expr_i_y_i_y_form_2",
+    "calc_val_2610_25605_form_3",
+    "expr_val_2610_25605_form_3",
     "calc_c_t_form_3",
     "expr_c_t_form_3",
     "calc_val_2609_10498_form_4",
@@ -2385,8 +2729,6 @@ __all__ = [
     "expr_c_form_2",
     "calc_val_2610_25581_form_3",
     "expr_val_2610_25581_form_3",
-    "calc_p_k_form_5",
-    "expr_p_k_form_5",
     "calc_val_2610_25605_form_5",
     "expr_val_2610_25605_form_5",
     "calc_delta_h_form_6",
@@ -2405,14 +2747,10 @@ __all__ = [
     "expr_val_2601_18774_form_8",
     "calc_val_2610_27057_form_8",
     "expr_val_2610_27057_form_8",
-    "calc_val_2609_10498_form_9",
-    "expr_val_2609_10498_form_9",
     "calc_val_2507_16328_form_9",
     "expr_val_2507_16328_form_9",
     "calc_l_r_o_o_t_form_9",
     "expr_l_r_o_o_t_form_9",
-    "calc_val_2610_26568_form_a",
-    "expr_val_2610_26568_form_a",
     "calc_val_2609_10498_form_a",
     "expr_val_2609_10498_form_a",
     "calc_i_y_form_a",
@@ -2443,8 +2781,6 @@ __all__ = [
     "expr_z_2603_2",
     "calc_i_z_2609_0",
     "expr_i_z_2609_0",
-    "calc_t_s_e_delta_brown_",
-    "expr_t_s_e_delta_brown_",
     "calc_delta_t_e_s_brown_",
     "expr_delta_t_e_s_brown_",
     "calc_p_egidi_",
@@ -2463,8 +2799,6 @@ __all__ = [
     "expr_a_q_form_6",
     "calc_e_j_form_6",
     "expr_e_j_form_6",
-    "calc_l_v_form_6",
-    "expr_l_v_form_6",
     "calc_val_2610_25581_form_7",
     "expr_val_2610_25581_form_7",
     "calc_u_2_s_4_form_7",
@@ -2485,6 +2819,8 @@ __all__ = [
     "expr_val_2610_25581_form_c",
     "calc_val_2610_25581_form_d",
     "expr_val_2610_25581_form_d",
+    "calc_val_2610_25605_form_e",
+    "expr_val_2610_25605_form_e",
     "calc_val_2610_27193_form_e",
     "expr_val_2610_27193_form_e",
     "calc_u_2_s_1_form_f",
@@ -2505,14 +2841,16 @@ __all__ = [
     "expr_w_p_c_t_p_r_s_r_a_1312_7",
     "calc_sim_omega_l_l_r_form_3",
     "expr_sim_omega_l_l_r_form_3",
+    "calc_abs_x_i_h_c_sim_form_3",
+    "expr_abs_x_i_h_c_sim_form_3",
     "calc_val_2610_27416_form_4",
     "expr_val_2610_27416_form_4",
     "calc_val_2609_25525_form_4",
     "expr_val_2609_25525_form_4",
+    "calc_f_s_form_5",
+    "expr_f_s_form_5",
     "calc_p_form_5",
     "expr_p_form_5",
-    "calc_val_2610_27416_form_5",
-    "expr_val_2610_27416_form_5",
     "calc_sigma_a_c_form_5",
     "expr_sigma_a_c_form_5",
     "calc_val_2610_25581_form_5",
@@ -2523,10 +2861,8 @@ __all__ = [
     "expr_y_form_6",
     "calc_partial_v_tau_form_6",
     "expr_partial_v_tau_form_6",
-    "calc_val_2608_12291_form_7",
-    "expr_val_2608_12291_form_7",
-    "calc_val_2608_12291_form_9",
-    "expr_val_2608_12291_form_9",
+    "calc_f_s_form_8",
+    "expr_f_s_form_8",
     "calc_r_form_9",
     "expr_r_form_9",
     "calc_lambda_a_e_form_a",
@@ -2579,12 +2915,12 @@ __all__ = [
     "expr_val_2601_18774_form_a",
     "calc_xi_e_form_a",
     "expr_xi_e_form_a",
-    "calc_val_2610_27416_form_b",
-    "expr_val_2610_27416_form_b",
     "calc_val_2608_12291_form_b",
     "expr_val_2608_12291_form_b",
     "calc_c_t_form_b",
     "expr_c_t_form_b",
+    "calc_abs_c_x_form_c",
+    "expr_abs_c_x_form_c",
     "calc_omega_l_l_r_sim_j_l_c_form_e",
     "expr_omega_l_l_r_sim_j_l_c_form_e",
     "calc_val_2512_18467_form_0",
@@ -2597,10 +2933,10 @@ __all__ = [
     "expr_o_n_e_t_h_i_r_df_o_m_r_form_1",
     "calc_val_2512_18467_form_2",
     "expr_val_2512_18467_form_2",
-    "calc_val_2503_11669_form_3",
-    "expr_val_2503_11669_form_3",
     "calc_val_2512_00312_form_3",
     "expr_val_2512_00312_form_3",
+    "calc_val_2503_11669_form_3",
+    "expr_val_2503_11669_form_3",
     "calc_val_2503_11669_form_5",
     "expr_val_2503_11669_form_5",
     "calc_val_2506_05866_form_5",
@@ -2623,8 +2959,12 @@ __all__ = [
     "expr_d_k_p_l_p_form_8",
     "calc_k_p_form_8",
     "expr_k_p_form_8",
+    "calc_val_2609_06739_form_8",
+    "expr_val_2609_06739_form_8",
     "calc_val_2503_11669_form_8",
     "expr_val_2503_11669_form_8",
+    "calc_i_pi_form_8",
+    "expr_i_pi_form_8",
     "calc_g_x_form_9",
     "expr_g_x_form_9",
     "calc_val_2503_11669_form_9",
@@ -2755,6 +3095,8 @@ __all__ = [
     "expr_r_t_o_t_x_y_v_formul",
     "calc_a_c_c_b_m_guo_20",
     "expr_a_c_c_b_m_guo_20",
+    "calc_c_o_n_f_b_m_guo_20",
+    "expr_c_o_n_f_b_m_guo_20",
     "calc_p_i_k_2103_1",
     "expr_p_i_k_2103_1",
     "calc_sim_f_y_t_2207_1",
@@ -2763,12 +3105,16 @@ __all__ = [
     "expr_sim_f_y_i_y_i_i_n_2207_1",
     "calc_delta_e_r_2208_0",
     "expr_delta_e_r_2208_0",
+    "calc_a_s_a_m_2208_0",
+    "expr_a_s_a_m_2208_0",
     "calc_x_p_2209_0",
     "expr_x_p_2209_0",
     "calc_q_2210_0",
     "expr_q_2210_0",
     "calc_u_2210_0",
     "expr_u_2210_0",
+    "calc_val_2210_02383_2210_0",
+    "expr_val_2210_02383_2210_0",
     "calc_x_w_o_b_a_t_x_2210_0",
     "expr_x_w_o_b_a_t_x_2210_0",
     "calc_theta_b_j_2210_0",
@@ -2777,6 +3123,8 @@ __all__ = [
     "expr_f_x_y_2310_0",
     "calc_theta_2402_0",
     "expr_theta_2402_0",
+    "calc_i_pi_form_6",
+    "expr_i_pi_form_6",
     "calc_val_2501_09153_2501_0",
     "expr_val_2501_09153_2501_0",
     "calc_a_k_2511_1",
@@ -2785,8 +3133,6 @@ __all__ = [
     "expr_mu_p_a_x_2602_2",
     "calc_psi_p_2602_2",
     "expr_psi_p_2602_2",
-    "calc_psi_r_a_da_n_2602_2",
-    "expr_psi_r_a_da_n_2602_2",
     "calc_psi_r_a_da_n_psi_r_a_da_n_2602_2",
     "expr_psi_r_a_da_n_psi_r_a_da_n_2602_2",
     "calc_eq_y_d_p_1_n_p_dsum_i_p_i_2603_2",
@@ -2811,8 +3157,6 @@ __all__ = [
     "expr_delta_0_x_1_i_brown_",
     "calc_z_i_brown_",
     "expr_z_i_brown_",
-    "calc_brown_2008_arxiv_brown_",
-    "expr_brown_2008_arxiv_brown_",
     "calc_p_s_i_bt_sec",
     "expr_p_s_i_bt_sec",
     "calc_p_i_j_p_i_j_bt_sec",
@@ -2943,6 +3287,8 @@ __all__ = [
     "expr_r_p_s_form_1",
     "calc_p_form_1",
     "expr_p_form_1",
+    "calc_nguyen_matthews_2022_aging_form_1",
+    "expr_nguyen_matthews_2022_aging_form_1",
     "calc_h_p_form_1",
     "expr_h_p_form_1",
     "calc_m_f_form_2",
@@ -2977,6 +3323,8 @@ __all__ = [
     "expr_q_h_e_a_t_form_6",
     "calc_nabla_a_f_dagger_form_7",
     "expr_nabla_a_f_dagger_form_7",
+    "calc_nguyen_matthews_2022_aging_form_7",
+    "expr_nguyen_matthews_2022_aging_form_7",
     "calc_val_2610_27416_form_7",
     "expr_val_2610_27416_form_7",
     "calc_shin_family_2024_cambridge_form_7",
@@ -2989,10 +3337,10 @@ __all__ = [
     "expr_m_q_form_9",
     "calc_val_0911_4503_form_9",
     "expr_val_0911_4503_form_9",
-    "calc_equiv_tan_gamma_u_q_u_form_9",
-    "expr_equiv_tan_gamma_u_q_u_form_9",
     "calc_val_2609_21639_form_a",
     "expr_val_2609_21639_form_a",
+    "calc_val_2609_21639_form_c",
+    "expr_val_2609_21639_form_c",
     "calc_f_t_y_0_sigma_y_y_0_form_c",
     "expr_f_t_y_0_sigma_y_y_0_form_c",
     "calc_val_0911_4503_form_d",
@@ -3003,10 +3351,18 @@ __all__ = [
     "expr_shin_family_2024_cambridge_form_e",
     "calc_a_phi_z_form_e",
     "expr_a_phi_z_form_e",
+    "calc_alpha_phi_sim_form_2",
+    "expr_alpha_phi_sim_form_2",
+    "calc_f_mu_form_4",
+    "expr_f_mu_form_4",
+    "calc_epsilon_e_o_form_5",
+    "expr_epsilon_e_o_form_5",
     "calc_nabla_p_f_dagger_form_7",
     "expr_nabla_p_f_dagger_form_7",
-    "calc_val_2610_27416_form_9",
-    "expr_val_2610_27416_form_9",
+    "calc_gamma_form_7",
+    "expr_gamma_form_7",
+    "calc_j_form_d",
+    "expr_j_form_d",
     "calc_q_c_f_h_form_e",
     "expr_q_c_f_h_form_e",
     "calc_val_0911_4503_form_e",
@@ -3023,6 +3379,8 @@ __all__ = [
     "expr_n_omega_form_0",
     "calc_m_z_form_0",
     "expr_m_z_form_0",
+    "calc_val_2610_29565_form_1",
+    "expr_val_2610_29565_form_1",
     "calc_r_b_p_a_form_1",
     "expr_r_b_p_a_form_1",
     "calc_l_t_e_o_form_3",
@@ -3063,6 +3421,8 @@ __all__ = [
     "expr_val_2609_38730_form_0",
     "calc_delta_t_form_0",
     "expr_delta_t_form_0",
+    "calc_delta_phi_form_1",
+    "expr_delta_phi_form_1",
     "calc_t_c_form_2",
     "expr_t_c_form_2",
     "calc_delta_m_s_e_e_form_3",
@@ -3087,12 +3447,16 @@ __all__ = [
     "expr_d_i_form_a",
     "calc_m_form_c",
     "expr_m_form_c",
+    "calc_val_2610_27576_form_c",
+    "expr_val_2610_27576_form_c",
     "calc_val_2609_02306_form_d",
     "expr_val_2609_02306_form_d",
     "calc_j_theta_form_d",
     "expr_j_theta_form_d",
     "calc_m_y_t_form_d",
     "expr_m_y_t_form_d",
+    "calc_alpha_form_d",
+    "expr_alpha_form_d",
     "calc_e_w_o_k_r_form_d",
     "expr_e_w_o_k_r_form_d",
     "calc_x_form_e",
@@ -3107,6 +3471,8 @@ __all__ = [
     "expr_val_2609_38730_form_f",
     "calc_omega_t_a_alpha_form_f",
     "expr_omega_t_a_alpha_form_f",
+    "calc_alpha_form_f",
+    "expr_alpha_form_f",
     "calc_val_2609_24299_form_0",
     "expr_val_2609_24299_form_0",
     "calc_delta_0_form_0",
@@ -3123,10 +3489,6 @@ __all__ = [
     "expr_epsilon_n_form_9",
     "calc_p_i_n_form_a",
     "expr_p_i_n_form_a",
-    "calc_val_2609_24299_form_a",
-    "expr_val_2609_24299_form_a",
-    "calc_val_2609_24299_form_b",
-    "expr_val_2609_24299_form_b",
     "calc_omega_form_e",
     "expr_omega_form_e",
     "calc_x_1_form_f",
@@ -3445,6 +3807,33 @@ def expr_r_m_e_s_form_d(b: str = "b", dr: str = "dr", m: str = "m", n: str = "n"
     return (pl.col(r)*(pl.col(o)*(pl.col(o)*(pl.col(t)*(pl.col(t)*(pl.col(o)*(pl.col(p)*(pl.col(r)*(pl.col(o)*(pl.col(o)*(pl.col(t)*(pl.col(m)*(pl.col(o)*(pl.col(dr)*(pl.col(o)*(pl.col(o)*(pl.col(t)*(pl.col(m)*(pl.col(o)*(pl.col(dr)*(pl.col(o)*(pl.col(o)*(pl.col(t)*(pl.col(b)*(pl.col(o)*(pl.col(t)*(1*(pl.col(n)*pl.col(n)))))))))))))))))))))))))))))
 
 
+def calc_nabla_w_p_c_t_p_r_r_1312_7(p: float) -> float:
+    r"""Compute mathematical metric extracted from 1312_7158.
+
+    **Source**:
+    - Title: openWAR: An Open Source System for Evaluating Overall Player Performance in Major League Baseball (2013)
+    - Authors: Benjamin S. Baumer, Shane T. Jensen, Gregory J. Matthews
+    - Citation Key: `1312_7158`
+
+    **KaTeX Formula**:
+    $$
+    \nabla WPctp(r, r) = p4 (1r , - 1r) = p 4r \cdot  \langle 1,-1\rangle
+    $$
+
+    Args:
+        p (float): Input parameter `p`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(4*p)
+
+
+def expr_nabla_w_p_c_t_p_r_r_1312_7(p: str = "p") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_nabla_w_p_c_t_p_r_r_1312_7`."""
+    return (4*pl.col(p))
+
+
 def calc_m_a_e_form_3(n: float) -> float:
     r"""Compute mathematical metric extracted from openalex_lee2025_w4409781220.
 
@@ -3526,6 +3915,34 @@ def calc_m_a_e_p_form_d(n: float) -> float:
 def expr_m_a_e_p_form_d(n: str = "n") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_a_e_p_form_d`."""
     return (100*pl.col(n)**2)
+
+
+def calc_r_form_3(m: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_rizk2018_w2608273748.
+
+    **Source**:
+    - Title: OCAMS: The OSIRIS-REx Camera Suite (2018)
+    - Authors: B. Rizk, C. Drouet d’Aubigny, Dathon R. Golish et al.
+    - Citation Key: `openalex_rizk2018_w2608273748`
+
+    **KaTeX Formula**:
+    $$
+    R = 0.001 -8.67 \times  10 -7 [ m-m\infty  s ] +1.75\times 10 -8 [ m-m\infty  s ] 2 -2.64\times 10 -14 [ m-m\infty  s ] 3
+    $$
+
+    Args:
+        m (float): Input parameter `m`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.inf*m*s - 65*m - 95.599)
+
+
+def expr_r_form_3(m: str = "m", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_r_form_3`."""
+    return (math.inf*pl.col(m)*pl.col(s) - 65*pl.col(m) - 95.599)
 
 
 def calc_openalex_slater2016_w2562199918_form_a(i: float, l: float, n: float, o: float, r: float, t: float) -> float:
@@ -3681,6 +4098,35 @@ def expr_l_a_c_c_form_b(N: str = "N", a: str = "a") -> pl.Expr:
     return (13*(pl.col(N)*pl.col(a)))
 
 
+def calc_val_2609_10498_form_9(i: float, p: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_10498.
+
+    **Source**:
+    - Title: Field Converter: Geometry-Initialized Temporal Residual Refinement for World-Grounded Player Pose Estimation from Soccer Broadcasts (2026)
+    - Authors: Simon Khan, Laurent Gajny, Jennyfer Lecompte et al.
+    - Citation Key: `arxiv_2609_10498`
+
+    **KaTeX Formula**:
+    $$
+    \sim pi,t = ui,t,j * vi,t,j * 1 
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        p (float): Input parameter `p`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(i*p*sim)
+
+
+def expr_val_2609_10498_form_9(i: str = "i", p: str = "p", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2609_10498_form_9`."""
+    return (pl.col(i)*pl.col(p)*pl.col(sim))
+
+
 def calc_val_2610_39452_form_0(s: float, sigma: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_39452.
 
@@ -3735,6 +4181,37 @@ def calc_val_2610_39452_form_c(P: float, Phi: float) -> float:
 def expr_val_2610_39452_form_c(P: str = "P", Phi: str = "Phi") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_39452_form_c`."""
     return (-pl.col(P) + pl.col(Phi))
+
+
+def calc_p_r_i_w_i_n_s_o_v_e_j_r_form_b(alpha: float, e: float, i: float, j: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2508_19848.
+
+    **Source**:
+    - Title: Hierarchy and ranking in pairwise sports contests (2025)
+    - Authors: Bogdán Asztalos, Boldizsár Balázs, Gergely Palla et al.
+    - Citation Key: `arxiv_2508_19848`
+
+    **KaTeX Formula**:
+    $$
+    Pr(i wins over j) = 1 2 \alpha  + (1 - \alpha ) 1 1 + e \beta  (s j-si )
+    $$
+
+    Args:
+        alpha (float): Input parameter `alpha`.
+        e (float): Input parameter `e`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(alpha + e*(math.gamma(-i*s + j*s)**2/math.gamma(-2*i*s + 2*j*s)) + 11)
+
+
+def expr_p_r_i_w_i_n_s_o_v_e_j_r_form_b(alpha: str = "alpha", e: str = "e", i: str = "i", j: str = "j", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_p_r_i_w_i_n_s_o_v_e_j_r_form_b`."""
+    return (pl.col(alpha) + pl.col(e)*(math.gamma(-pl.col(i)*pl.col(s) + pl.col(j)*pl.col(s))**2/math.gamma(-2*pl.col(i)*pl.col(s) + 2*pl.col(j)*pl.col(s))) + 11)
 
 
 def calc_p_z_form_7(P: float, a: float, e: float, l: float, o: float, omega: float, p: float, s: float, t: float, z: float) -> float:
@@ -3891,6 +4368,39 @@ def expr_y_form_4(alpha: str = "alpha", beta: str = "beta", epsilon: str = "epsi
     return (pl.col(epsilon) + (pl.col(alpha) + pl.col(beta)*pl.col(x)))
 
 
+def calc_m_s_e_p_p_m_s_e_w_a_r_form_3(E: float, d: float, e: float, n: float, r: float, u: float, w: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_39088.
+
+    **Source**:
+    - Title: Comparing wins above replacement across baseball history (2026)
+    - Authors: Michael Doane
+    - Citation Key: `arxiv_2610_39088`
+
+    **KaTeX Formula**:
+    $$
+    MSE W_{AR} -MSE PP =E w [ d 2 ]+2E w [ e run d ] . (S17)
+    $$
+
+    Args:
+        E (float): Input parameter `E`.
+        d (float): Input parameter `d`.
+        e (float): Input parameter `e`.
+        n (float): Input parameter `n`.
+        r (float): Input parameter `r`.
+        u (float): Input parameter `u`.
+        w (float): Input parameter `w`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(E*(w*(2*d)) + 2*(E*(w*(e*(r*(u*(d*n)))))))
+
+
+def expr_m_s_e_p_p_m_s_e_w_a_r_form_3(E: str = "E", d: str = "d", e: str = "e", n: str = "n", r: str = "r", u: str = "u", w: str = "w") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_m_s_e_p_p_m_s_e_w_a_r_form_3`."""
+    return (pl.col(E)*(pl.col(w)*(2*pl.col(d))) + 2*(pl.col(E)*(pl.col(w)*(pl.col(e)*(pl.col(r)*(pl.col(u)*(pl.col(d)*pl.col(n))))))))
+
+
 def calc_a_s_t_form_0(n: float, s: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2601_18774.
 
@@ -3979,6 +4489,33 @@ def calc_beta_l_a_s_o_s_form_d(a: float, beta: float, g: float, i: float, m: flo
 def expr_beta_l_a_s_o_s_form_d(a: str = "a", beta: str = "beta", g: str = "g", i: str = "i", m: str = "m", n: str = "n", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_beta_l_a_s_o_s_form_d`."""
     return (pl.col(a)*(pl.col(r)*(pl.col(g)*(pl.col(m)*(pl.col(i)*(pl.col(beta)*pl.col(n)))))))
+
+
+def calc_d_q_form_2(q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_07617.
+
+    **Source**:
+    - Title: Forecasting the Winner of a Live Tennis Match (2026)
+    - Authors: Charles Xie, Aneesh Muppidi
+    - Citation Key: `arxiv_2609_07617`
+
+    **KaTeX Formula**:
+    $$
+    D(q) = q2 q2 + (1 - q)2 ,
+    $$
+
+    Args:
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(4*q**2 - 2*q + 2)
+
+
+def expr_d_q_form_2(q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_d_q_form_2`."""
+    return (4*pl.col(q)**2 - 2*pl.col(q) + 2)
 
 
 def calc_val_2610_27416_form_e(V: float, Y: float, h: float, i: float, m: float, s: float, t: float) -> float:
@@ -4338,6 +4875,67 @@ def expr_tango_pythagenpat_glossary_form_1(R_A: str = "R_A") -> pl.Expr:
     return (pl.col(R_A))
 
 
+def calc_tangotiger_re24_glossary_form_1(R_p_l_a_y: float) -> float:
+    r"""Compute mathematical metric extracted from tangotiger_re24_glossary.
+
+    **Source**:
+    - Title: Tom Tango: 24-State Run Expectancy Matrix (RE24) and Transition Values (2026)
+    - Authors: Tom Tango, Mitchel Lichtman, Andrew Dolphin
+    - Citation Key: `tangotiger_re24_glossary`
+
+    **KaTeX Formula**:
+    $$
+    R_{play}
+    $$
+
+    Args:
+        R_p_l_a_y (float): Input parameter `R_p_l_a_y`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(R_p*(l*(a*y)))
+
+
+def expr_tangotiger_re24_glossary_form_1(R_p_l_a_y: str = "R_p_l_a_y") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tangotiger_re24_glossary_form_1`."""
+    return (R_p*(l*(a*y)))
+
+
+def calc_d_form_1(C: float, D: float, L: float, S: float, alpha: float, m: float, omega: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    D = q*S*(CL\alpha +CD)/(m*\omega 22)
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        D (float): Input parameter `D`.
+        L (float): Input parameter `L`.
+        S (float): Input parameter `S`.
+        alpha (float): Input parameter `alpha`.
+        m (float): Input parameter `m`.
+        omega (float): Input parameter `omega`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(((S*q)*(C*D + C*(L*alpha)))/((m*(22*omega))))
+
+
+def expr_d_form_1(C: str = "C", D: str = "D", L: str = "L", S: str = "S", alpha: str = "alpha", m: str = "m", omega: str = "omega", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_d_form_1`."""
+    return (((pl.col(S)*pl.col(q))*(pl.col(C)*pl.col(D) + pl.col(C)*(pl.col(L)*pl.col(alpha))))/((pl.col(m)*(22*pl.col(omega)))))
+
+
 def calc_val_2609_06739_form_2(D: float, equiv: float, p: float, phi: float, v: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_06739.
 
@@ -4458,6 +5056,34 @@ def expr_b_form_4(BB: str = "BB", H: str = "H", HR: str = "HR", TB: str = "TB") 
     return (0.1*pl.col(BB) - 0.6*pl.col(H) - 3*pl.col(HR) + 1.4*pl.col(TB))
 
 
+def calc_tangotiger_re24_glossary_form_5(Delta: float, R: float) -> float:
+    r"""Compute mathematical metric extracted from tangotiger_re24_glossary.
+
+    **Source**:
+    - Title: Tom Tango: 24-State Run Expectancy Matrix (RE24) and Transition Values (2026)
+    - Authors: Tom Tango, Mitchel Lichtman, Andrew Dolphin
+    - Citation Key: `tangotiger_re24_glossary`
+
+    **KaTeX Formula**:
+    $$
+    \Delta RE
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        R (float): Input parameter `R`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.e*Delta*R)
+
+
+def expr_tangotiger_re24_glossary_form_5(Delta: str = "Delta", R: str = "R") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tangotiger_re24_glossary_form_5`."""
+    return (math.e*pl.col(Delta)*pl.col(R))
+
+
 def calc_fangraphs_woba_glossary_form_5(A: float, P: float) -> float:
     r"""Compute mathematical metric extracted from fangraphs_woba_glossary.
 
@@ -4550,6 +5176,33 @@ def expr_eta_i_form_f(T: str = "T", a: str = "a", beta: str = "beta", c: str = "
     return (pl.col(x)**pl.col(T)*(pl.col(gamma)*pl.col(i)) + (pl.col(a)*(pl.col(c)*pl.col(i)) + pl.col(beta)*(pl.col(dd)*pl.col(i))))
 
 
+def calc_statcast_bat_tracking_glossary_form_6(q: float) -> float:
+    r"""Compute mathematical metric extracted from statcast_bat_tracking_glossary.
+
+    **Source**:
+    - Title: MLB Statcast 2.0: Bat Tracking Collision Physics and Swing Mechanics (2026)
+    - Authors: Tom Tango, MLB Advanced Media, David Kagan
+    - Citation Key: `statcast_bat_tracking_glossary`
+
+    **KaTeX Formula**:
+    $$
+    q
+    $$
+
+    Args:
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(q)
+
+
+def expr_statcast_bat_tracking_glossary_form_6(q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_statcast_bat_tracking_glossary_form_6`."""
+    return (pl.col(q))
+
+
 def calc_fangraphs_fip_glossary_form_6(BB: float) -> float:
     r"""Compute mathematical metric extracted from fangraphs_fip_glossary.
 
@@ -4640,6 +5293,34 @@ def calc_b_r_s_form_6(A: float, B: float, C: float, D: float) -> float:
 def expr_b_r_s_form_6(A: str = "A", B: str = "B", C: str = "C", D: str = "D") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_b_r_s_form_6`."""
     return (pl.col(A)*pl.col(B)/(pl.col(B) + pl.col(C)) + pl.col(D))
+
+
+def calc_b_nabla_form_8(J: float, c: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2309_15318.
+
+    **Source**:
+    - Title: A Global 3-D Simulation of Magnetospheric Accretion: I. Magnetically Disrupted Disks and Surface Accretion (2023)
+    - Authors: Zhaohuan Zhu, James M. Stone, Nuria Calvet
+    - Citation Key: `arxiv_2309_15318`
+
+    **KaTeX Formula**:
+    $$
+    \nabla \times B = 4\pi J c
+    $$
+
+    Args:
+        J (float): Input parameter `J`.
+        c (float): Input parameter `c`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(4*math.pi*J*c)
+
+
+def expr_b_nabla_form_8(J: str = "J", c: str = "c") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_b_nabla_form_8`."""
+    return (4*math.pi*pl.col(J)*pl.col(c))
 
 
 def calc_t_log_e_t_e_form_f(t: float) -> float:
@@ -5101,6 +5782,63 @@ def expr_d_c_p_l_s_u_r_form_a(C_A_P: str = "C_A_P", D: str = "D", R: str = "R", 
     return (100*((pl.col(D)*(C_A*P*pl.col(R)))/((pl.col(l)*(pl.col(g)*(pl.col(D)*(C_A*P*pl.col(R))))))))
 
 
+def calc_fangraphs_woba_glossary_form_a(B: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_woba_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted On-Base Average (wOBA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_woba_glossary`
+
+    **KaTeX Formula**:
+    $$
+    2B
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*B)
+
+
+def expr_fangraphs_woba_glossary_form_a(B: str = "B") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_woba_glossary_form_a`."""
+    return (2*pl.col(B))
+
+
+def calc_fangraphs_war_pitcher_glossary_form_a(A: float, R: float, g: float, l: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_war_pitcher_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Wins Above Replacement (WAR) for Pitchers (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_war_pitcher_glossary`
+
+    **KaTeX Formula**:
+    $$
+    lgERA
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        R (float): Input parameter `R`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.e*A*R*g*l)
+
+
+def expr_fangraphs_war_pitcher_glossary_form_a(A: str = "A", R: str = "R", g: str = "g", l: str = "l") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_war_pitcher_glossary_form_a`."""
+    return (math.e*pl.col(A)*pl.col(R)*pl.col(g)*pl.col(l))
+
+
 def calc_n_v_s_form_b(n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_24299.
 
@@ -5126,6 +5864,33 @@ def calc_n_v_s_form_b(n: float) -> float:
 def expr_n_v_s_form_b(n: str = "n") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_n_v_s_form_b`."""
     return (pl.col(n))
+
+
+def calc_tangotiger_leverage_index_glossary_form_b(E_P_W: float) -> float:
+    r"""Compute mathematical metric extracted from tangotiger_leverage_index_glossary.
+
+    **Source**:
+    - Title: Tom Tango: Leverage Index (LI) and Win Probability Added (2026)
+    - Authors: Tom Tango
+    - Citation Key: `tangotiger_leverage_index_glossary`
+
+    **KaTeX Formula**:
+    $$
+    E_{WP}
+    $$
+
+    Args:
+        E_P_W (float): Input parameter `E_P_W`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(E_P*W)
+
+
+def expr_tangotiger_leverage_index_glossary_form_b(E_P_W: str = "E_P_W") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tangotiger_leverage_index_glossary_form_b`."""
+    return (E_P*W)
 
 
 def calc_val_2609_38730_form_b(X: float, e: float, i: float, n: float, v: float) -> float:
@@ -5470,6 +6235,60 @@ def expr_tango_pythagenpat_glossary_form_c(R_S: str = "R_S") -> pl.Expr:
     return (pl.col(R_S))
 
 
+def calc_tango_base_runs_glossary_form_c(C: float) -> float:
+    r"""Compute mathematical metric extracted from tango_base_runs_glossary.
+
+    **Source**:
+    - Title: Base Runs (BsR) Offensive Estimator (2026)
+    - Authors: David Smyth, Tom Tango
+    - Citation Key: `tango_base_runs_glossary`
+
+    **KaTeX Formula**:
+    $$
+    C
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(C)
+
+
+def expr_tango_base_runs_glossary_form_c(C: str = "C") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tango_base_runs_glossary_form_c`."""
+    return (pl.col(C))
+
+
+def calc_tango_base_runs_glossary_form_d(B: float) -> float:
+    r"""Compute mathematical metric extracted from tango_base_runs_glossary.
+
+    **Source**:
+    - Title: Base Runs (BsR) Offensive Estimator (2026)
+    - Authors: David Smyth, Tom Tango
+    - Citation Key: `tango_base_runs_glossary`
+
+    **KaTeX Formula**:
+    $$
+    B
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(B)
+
+
+def expr_tango_base_runs_glossary_form_d(B: str = "B") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tango_base_runs_glossary_form_d`."""
+    return (pl.col(B))
+
+
 def calc_fangraphs_war_pitcher_glossary_form_d(IP: float) -> float:
     r"""Compute mathematical metric extracted from fangraphs_war_pitcher_glossary.
 
@@ -5495,6 +6314,38 @@ def calc_fangraphs_war_pitcher_glossary_form_d(IP: float) -> float:
 def expr_fangraphs_war_pitcher_glossary_form_d(IP: str = "IP") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_fangraphs_war_pitcher_glossary_form_d`."""
     return (pl.col(IP))
+
+
+def calc_fangraphs_wraa_glossary_form_d(A: float, B: float, O: float, g: float, l: float, w: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_wraa_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted Runs Above Average (wRAA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_wraa_glossary`
+
+    **KaTeX Formula**:
+    $$
+    lgwOBA
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        B (float): Input parameter `B`.
+        O (float): Input parameter `O`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+        w (float): Input parameter `w`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(l*(g*(w*(O*(A*B)))))
+
+
+def expr_fangraphs_wraa_glossary_form_d(A: str = "A", B: str = "B", O: str = "O", g: str = "g", l: str = "l", w: str = "w") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_wraa_glossary_form_d`."""
+    return (pl.col(l)*(pl.col(g)*(pl.col(w)*(pl.col(O)*(pl.col(A)*pl.col(B))))))
 
 
 def calc_a_p_m_efron_(P: float) -> float:
@@ -5583,6 +6434,33 @@ def expr_tangotiger_re24_glossary_form_e(E_e_d_n: str = "E_e_d_n", R: str = "R")
     return (E_e*(d*n)*pl.col(R))
 
 
+def calc_fangraphs_woba_glossary_form_e(B: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_woba_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted On-Base Average (wOBA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_woba_glossary`
+
+    **KaTeX Formula**:
+    $$
+    1B
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(B)
+
+
+def expr_fangraphs_woba_glossary_form_e(B: str = "B") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_woba_glossary_form_e`."""
+    return (pl.col(B))
+
+
 def calc_q_form_4(L: float, R: float, phi: float, psi: float, theta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2603_08746.
 
@@ -5639,6 +6517,37 @@ def calc_val_2610_27193_form_5(V: float) -> float:
 def expr_val_2610_27193_form_5(V: str = "V") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_27193_form_5`."""
     return (pl.col(V))
+
+
+def calc_c_o_v_a_y_b_y_form_a(A: float, Delta: float, a: float, b: float, sigma: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    Cov(ya, yb) = \sigma 2A\Delta ab
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        Delta (float): Input parameter `Delta`.
+        a (float): Input parameter `a`.
+        b (float): Input parameter `b`.
+        sigma (float): Input parameter `sigma`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*A*Delta*a*b*sigma)
+
+
+def expr_c_o_v_a_y_b_y_form_a(A: str = "A", Delta: str = "Delta", a: str = "a", b: str = "b", sigma: str = "sigma") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_c_o_v_a_y_b_y_form_a`."""
+    return (2*pl.col(A)*pl.col(Delta)*pl.col(a)*pl.col(b)*pl.col(sigma))
 
 
 def calc_statcast_bat_tracking_glossary_form_f(v_b_a_t: float) -> float:
@@ -6195,6 +7104,67 @@ def expr_sim_t_v_form_1(N: str = "N", emptyset: str = "emptyset", gamma: str = "
     return (pl.col(N)*pl.col(gamma) + pl.col(emptyset)*pl.col(v))
 
 
+def calc_r_x_theta_form_1(theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    Rx(\theta ) =  1 0 0 0 \cos(\theta ) -\sin(\theta ) 0 \sin(\theta ) \cos(\theta )
+    $$
+
+    Args:
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(1000*math.cos(theta))
+
+
+def expr_r_x_theta_form_1(theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_r_x_theta_form_1`."""
+    return (1000*math.cos(pl.col(theta)))
+
+
+def calc_f_l_form_8(C: float, L: float, dcdot: float, dm: float, g: float, r: float, rho: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    FL = CL \cdot  \pi r2d md \cdot  12 \rho g|u|2
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        L (float): Input parameter `L`.
+        dcdot (float): Input parameter `dcdot`.
+        dm (float): Input parameter `dm`.
+        g (float): Input parameter `g`.
+        r (float): Input parameter `r`.
+        rho (float): Input parameter `rho`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(48*math.pi*C*L*dcdot*dm*g*r*rho*abs(u))
+
+
+def expr_f_l_form_8(C: str = "C", L: str = "L", dcdot: str = "dcdot", dm: str = "dm", g: str = "g", r: str = "r", rho: str = "rho", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_l_form_8`."""
+    return (48*math.pi*pl.col(C)*pl.col(L)*pl.col(dcdot)*pl.col(dm)*pl.col(g)*pl.col(r)*pl.col(rho)*abs(pl.col(u)))
+
+
 def calc_tangotiger_re24_glossary_form_f(E_s_t_a_r_t: float, R: float) -> float:
     r"""Compute mathematical metric extracted from tangotiger_re24_glossary.
 
@@ -6221,6 +7191,35 @@ def calc_tangotiger_re24_glossary_form_f(E_s_t_a_r_t: float, R: float) -> float:
 def expr_tangotiger_re24_glossary_form_f(E_s_t_a_r_t: str = "E_s_t_a_r_t", R: str = "R") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_tangotiger_re24_glossary_form_f`."""
     return (E_s*(t*(a*(r*t)))*pl.col(R))
+
+
+def calc_tangotiger_leverage_index_glossary_form_f(Delta: float, P_m_i_n: float, W: float) -> float:
+    r"""Compute mathematical metric extracted from tangotiger_leverage_index_glossary.
+
+    **Source**:
+    - Title: Tom Tango: Leverage Index (LI) and Win Probability Added (2026)
+    - Authors: Tom Tango
+    - Citation Key: `tangotiger_leverage_index_glossary`
+
+    **KaTeX Formula**:
+    $$
+    \Delta WP_{min}
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        P_m_i_n (float): Input parameter `P_m_i_n`.
+        W (float): Input parameter `W`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Delta*(P_m*(i*n)*W))
+
+
+def expr_tangotiger_leverage_index_glossary_form_f(Delta: str = "Delta", P_m_i_n: str = "P_m_i_n", W: str = "W") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tangotiger_leverage_index_glossary_form_f`."""
+    return (pl.col(Delta)*(P_m*(i*n)*pl.col(W)))
 
 
 def calc_val_2109_09287_2109_0(i: float, p: float) -> float:
@@ -6309,6 +7308,35 @@ def expr_a_l_r_3_form_9(L: str = "L", R: str = "R", phi: str = "phi", theta: str
     return (-math.sin(pl.col(L)*pl.col(R)*pl.col(phi))*math.sin(pl.col(L)*pl.col(R)*pl.col(theta))*math.cos(pl.col(L)*pl.col(R)*pl.col(phi))*math.cos(pl.col(L)*pl.col(R)*pl.col(theta))**2)
 
 
+def calc_val_2610_27416_form_c(Phi: float, n: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    (\sim \Phi -1 )n,n' =  I ; n = n' \sim \Phi K,r,M n-1 \cdot  \cdot  \cdot  \sim \Phi K,r,M n' ; n' < n O ; n < n'
+    $$
+
+    Args:
+        Phi (float): Input parameter `Phi`.
+        n (float): Input parameter `n`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(n*(Phi*sim - 1))
+
+
+def expr_val_2610_27416_form_c(Phi: str = "Phi", n: str = "n", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_c`."""
+    return (pl.col(n)*(pl.col(Phi)*pl.col(sim) - 1))
+
+
 def calc_val_2209_07274_2209_0(X: float, i: float) -> float:
     r"""Compute mathematical metric extracted from 2209_07274.
 
@@ -6335,6 +7363,35 @@ def calc_val_2209_07274_2209_0(X: float, i: float) -> float:
 def expr_val_2209_07274_2209_0(X: str = "X", i: str = "i") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2209_07274_2209_0`."""
     return (pl.col(X)*pl.col(i)**2)
+
+
+def calc_t_2210_0(B: float, U: float, m: float) -> float:
+    r"""Compute mathematical metric extracted from 2210_02383.
+
+    **Source**:
+    - Title: Filling the Gaps: A Multiple Imputation Approach to Estimating Aging Curves in Baseball (2022)
+    - Authors: Quang Nguyen, Gregory J. Matthews
+    - Citation Key: `2210_02383`
+
+    **KaTeX Formula**:
+    $$
+    T = U + (1 + 1m ) B ,
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+        U (float): Input parameter `U`.
+        m (float): Input parameter `m`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(B*(m + 1) + U)
+
+
+def expr_t_2210_0(B: str = "B", U: str = "U", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_t_2210_0`."""
+    return (pl.col(B)*(pl.col(m) + 1) + pl.col(U))
 
 
 def calc_val_2210_06724_2210_0(g: float, l: float, o: float) -> float:
@@ -6484,6 +7541,39 @@ def calc_b_p_k_form_0(a: float, m: float, x: float) -> float:
 def expr_b_p_k_form_0(a: str = "a", m: str = "m", x: str = "x") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_b_p_k_form_0`."""
     return (pl.col(a)*pl.col(m)*pl.col(x))
+
+
+def calc_f_l_form_9(dm: float, domega: float, dtimes: float, g: float, r: float, rho: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    FL = \pi \rho gr3d md \omega d \times  u
+    $$
+
+    Args:
+        dm (float): Input parameter `dm`.
+        domega (float): Input parameter `domega`.
+        dtimes (float): Input parameter `dtimes`.
+        g (float): Input parameter `g`.
+        r (float): Input parameter `r`.
+        rho (float): Input parameter `rho`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(3*math.pi*dm*domega*dtimes*g*r*rho*u)
+
+
+def expr_f_l_form_9(dm: str = "dm", domega: str = "domega", dtimes: str = "dtimes", g: str = "g", r: str = "r", rho: str = "rho", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_l_form_9`."""
+    return (3*math.pi*pl.col(dm)*pl.col(domega)*pl.col(dtimes)*pl.col(g)*pl.col(r)*pl.col(rho)*pl.col(u))
 
 
 def calc_val_30_form_1(L: float) -> float:
@@ -6714,6 +7804,37 @@ def expr_v_phi_r_form_3(Omega: str = "Omega", R: str = "R", phi: str = "phi", v:
     return (pl.col(Omega)*pl.col(R) + pl.col(phi)*pl.col(v))
 
 
+def calc_p_d_p_form_3(c: float, i: float, r: float, t: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_27698.
+
+    **Source**:
+    - Title: Evaluating Loss Functions in Differentiable Out-of-Domain Sound-Matching with Partial Parameter Distance (2026)
+    - Authors: Amir Salimi, Daniel Penner, Kalvin Eng et al.
+    - Citation Key: `arxiv_2608_27698`
+
+    **KaTeX Formula**:
+    $$
+    PPD = |\theta tcrit -  \theta crit|2
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+        i (float): Input parameter `i`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*abs(c*i*r*t**2*theta - c*i*r*t*theta))
+
+
+def expr_p_d_p_form_3(c: str = "c", i: str = "i", r: str = "r", t: str = "t", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_p_d_p_form_3`."""
+    return (2*abs(pl.col(c)*pl.col(i)*pl.col(r)*pl.col(t)**2*pl.col(theta) - pl.col(c)*pl.col(i)*pl.col(r)*pl.col(t)*pl.col(theta)))
+
+
 def calc_theta_m_a_x_form_3(N: float, a: float, e: float, l: float, v: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29142.
 
@@ -6777,6 +7898,34 @@ def expr_val_2604_21851_form_3(f: str = "f", i: str = "i", l: str = "l", m: str 
     return (pl.col(f)*pl.col(i)**2*pl.col(l)*pl.col(m)*pl.col(n)*pl.col(t))
 
 
+def calc_val_2309_15318_form_4(R: float, partial: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2309_15318.
+
+    **Source**:
+    - Title: A Global 3-D Simulation of Magnetospheric Accretion: I. Magnetically Disrupted Disks and Surface Accretion (2023)
+    - Authors: Zhaohuan Zhu, James M. Stone, Nuria Calvet
+    - Citation Key: `arxiv_2309_15318`
+
+    **KaTeX Formula**:
+    $$
+    \partial R\langle \rho v\phi \rangle  \partial t =- 1R \partial  \partial R (R2 \langle \rho vRv\phi  - BRB\phi \rangle ) - \partial  \partial z (R\langle \rho vzv\phi  -BzB\phi \rangle )
+    $$
+
+    Args:
+        R (float): Input parameter `R`.
+        partial (float): Input parameter `partial`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(R*partial)
+
+
+def expr_val_2309_15318_form_4(R: str = "R", partial: str = "partial") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2309_15318_form_4`."""
+    return (pl.col(R)*pl.col(partial))
+
+
 def calc_val_2607_29041_form_4(mu: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2607_29041.
 
@@ -6833,6 +7982,33 @@ def expr_lambda_2005_0(b: str = "b", n: str = "n", p: str = "p") -> pl.Expr:
     return ((pl.col(b).sqrt()*pl.col(n)) + ((pl.col(n).sqrt())*(pl.col(n).sqrt()) + (pl.col(n).sqrt()*pl.col(p))))
 
 
+def calc_fangraphs_woba_glossary_form_2(B: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_woba_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted On-Base Average (wOBA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_woba_glossary`
+
+    **KaTeX Formula**:
+    $$
+    3B
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(3*B)
+
+
+def expr_fangraphs_woba_glossary_form_2(B: str = "B") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_woba_glossary_form_2`."""
+    return (3*pl.col(B))
+
+
 def calc_s_a_t_u_form_8(a: float, m: float, u: float, x: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2601_06439.
 
@@ -6861,6 +8037,42 @@ def calc_s_a_t_u_form_8(a: float, m: float, u: float, x: float) -> float:
 def expr_s_a_t_u_form_8(a: str = "a", m: str = "m", u: str = "u", x: str = "x") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_a_t_u_form_8`."""
     return (pl.col(a)*pl.col(m)*pl.col(u)*pl.col(x))
+
+
+def calc_val_2608_10387_form_f(F: float, approx: float, chi: float, dcos: float, dx: float, g: float, m: float, phi: float, s: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_10387.
+
+    **Source**:
+    - Title: Hip Energized Monopedal Hopping (2026)
+    - Authors: Shane Rozen-Levy, Griffon McMahon, Daniel Koditschek
+    - Citation Key: `arxiv_2608_10387`
+
+    **KaTeX Formula**:
+    $$
+    dx\chi mg \approx  d \cos(\theta  - \phi )Fs
+    $$
+
+    Args:
+        F (float): Input parameter `F`.
+        approx (float): Input parameter `approx`.
+        chi (float): Input parameter `chi`.
+        dcos (float): Input parameter `dcos`.
+        dx (float): Input parameter `dx`.
+        g (float): Input parameter `g`.
+        m (float): Input parameter `m`.
+        phi (float): Input parameter `phi`.
+        s (float): Input parameter `s`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(F*approx*chi*dcos*dx*g*m*s*(-phi + theta))
+
+
+def expr_val_2608_10387_form_f(F: str = "F", approx: str = "approx", chi: str = "chi", dcos: str = "dcos", dx: str = "dx", g: str = "g", m: str = "m", phi: str = "phi", s: str = "s", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_10387_form_f`."""
+    return (pl.col(F)*pl.col(approx)*pl.col(chi)*pl.col(dcos)*pl.col(dx)*pl.col(g)*pl.col(m)*pl.col(s)*(-pl.col(phi) + pl.col(theta)))
 
 
 def calc_n_form_6(B: float, n: float, omega: float) -> float:
@@ -6950,6 +8162,72 @@ def calc_a_r_form_4(B: float, C: float, G: float, M: float, i: float, n: float, 
 def expr_a_r_form_4(B: str = "B", C: str = "C", G: str = "G", M: str = "M", i: str = "i", n: str = "n", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_r_form_4`."""
     return ((80/7)*pl.col(B)*pl.col(G)*pl.col(M)**2*pl.col(r)**2/(pl.col(C)*pl.col(i)*pl.col(n)))
+
+
+def calc_val_1709_07969_form_e(e: float, t: float, tau: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1709_07969.
+
+    **Source**:
+    - Title: Optimal-power Configurations for Hover Solutions in Mono-spinners (2017)
+    - Authors: Mojtaba Hedayatpour, Mehran Mehrandezh, Farrokh Janabi-Sharifi
+    - Citation Key: `arxiv_1709_07969`
+
+    **KaTeX Formula**:
+    $$
+    I T \omega \omega  B+I p \omega \omega  p+sk(\omega B)(I T \omega B+I p(\omega  p+\omega B)) =\tau ext
+    $$
+
+    Args:
+        e (float): Input parameter `e`.
+        t (float): Input parameter `t`.
+        tau (float): Input parameter `tau`.
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(e*t*tau*x)
+
+
+def expr_val_1709_07969_form_e(e: str = "e", t: str = "t", tau: str = "tau", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1709_07969_form_e`."""
+    return (pl.col(e)*pl.col(t)*pl.col(tau)*pl.col(x))
+
+
+def calc_w_c_r_form_4(A: float, A_s_c_a_e_l: float, B: float, O: float, P: float, R: float, g: float, l: float, w: float, wOBA: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_wrc_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted Runs Created (wRC and wRC+) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_wrc_glossary`
+
+    **KaTeX Formula**:
+    $$
+    wRC = \left(\frac{w_{OBA} - lgwOBA}{wOBA_{scale}} + \frac{lgR}{lgPA}\right) \cdot PA
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        A_s_c_a_e_l (float): Input parameter `A_s_c_a_e_l`.
+        B (float): Input parameter `B`.
+        O (float): Input parameter `O`.
+        P (float): Input parameter `P`.
+        R (float): Input parameter `R`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+        w (float): Input parameter `w`.
+        wOBA (float): Input parameter `wOBA`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(A*P*((1/(A_s*(c*(a*(e*l)))*B*O*w))*(-l*g*(w*(O*(A*B))) + wOBA) + (l*(R*g))/((l*(g*(A*P))))))
+
+
+def expr_w_c_r_form_4(A: str = "A", A_s_c_a_e_l: str = "A_s_c_a_e_l", B: str = "B", O: str = "O", P: str = "P", R: str = "R", g: str = "g", l: str = "l", w: str = "w", wOBA: str = "wOBA") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_w_c_r_form_4`."""
+    return (pl.col(A)*pl.col(P)*((1/(A_s*(c*(a*(e*pl.col(l))))*pl.col(B)*pl.col(O)*pl.col(w)))*(-pl.col(l)*pl.col(g)*(pl.col(w)*(pl.col(O)*(pl.col(A)*pl.col(B)))) + pl.col(wOBA)) + (pl.col(l)*(pl.col(R)*pl.col(g)))/((pl.col(l)*(pl.col(g)*(pl.col(A)*pl.col(P)))))))
 
 
 def calc_w_o_a_b_form_4(AB: float, B: float, BB: float, HBP: float, HR: float, IBB: float, SF: float, u: float) -> float:
@@ -7265,6 +8543,40 @@ def expr_f_p_form_9(c: str = "c", h: str = "h", l: str = "l", p: str = "p", sigm
     return (pl.col(c)*pl.col(p) + pl.col(h)*pl.col(l)*math.sin(pl.col(theta))*math.sin(2*pl.col(theta))*math.cos(2*pl.col(sigma)*pl.col(theta)) - math.cos(pl.col(theta))*math.cos(2*pl.col(theta)))
 
 
+def calc_q_m_q_h_q_q_form_d(J: float, T: float, c: float, f: float, m: float, s: float, tau: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_11733.
+
+    **Source**:
+    - Title: Reflex-Informed Neuromuscular Reinforcement Learning for Muscle-Driven Locomotion (2026)
+    - Authors: Jian Zhou, Xingyu Zhang, Rui Ma et al.
+    - Citation Key: `arxiv_2609_11733`
+
+    **KaTeX Formula**:
+    $$
+    M(q)q +h(q, q) = \tau mus +J Tc fc
+    $$
+
+    Args:
+        J (float): Input parameter `J`.
+        T (float): Input parameter `T`.
+        c (float): Input parameter `c`.
+        f (float): Input parameter `f`.
+        m (float): Input parameter `m`.
+        s (float): Input parameter `s`.
+        tau (float): Input parameter `tau`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(J*T*c**2*f + m*s*tau*u)
+
+
+def expr_q_m_q_h_q_q_form_d(J: str = "J", T: str = "T", c: str = "c", f: str = "f", m: str = "m", s: str = "s", tau: str = "tau", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_q_m_q_h_q_q_form_d`."""
+    return (pl.col(J)*pl.col(T)*pl.col(c)**2*pl.col(f) + pl.col(m)*pl.col(s)*pl.col(tau)*pl.col(u))
+
+
 def calc_val_2604_21851_form_a(f: float, i: float, l: float, m: float, n: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2604_21851.
 
@@ -7566,6 +8878,33 @@ def calc_val_2607_29041_form_d(N: float, beta: float) -> float:
 def expr_val_2607_29041_form_d(N: str = "N", beta: str = "beta") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_d`."""
     return (pl.col(N)*pl.col(beta))
+
+
+def calc_val_2610_27416_form_f(u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    u1,1 u1,a-1 u1,2n-c+1 u1,2n u1,a u1,2n-c ... \cdot  \cdot  \cdot  ... ... \cdot  \cdot  \cdot  ... ... \cdot  \cdot  \cdot  ... u2n ,1 u2n ,a-1 u2n ,2n-c+1 u2n ,2n u2n ,a u2n ,2n-c
+    $$
+
+    Args:
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(u)
+
+
+def expr_val_2610_27416_form_f(u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_f`."""
+    return (pl.col(u))
 
 
 def calc_val_2309_15318_form_d(R: float) -> float:
@@ -7941,6 +9280,33 @@ def expr_p_i_i_theta_form_0(beta: str = "beta", e: str = "e", i: str = "i", pi: 
     return (-(pl.col(beta)*(pl.col(i)*((2*pl.col(i))*pl.col(theta))))/2 + (1*(1*((2*pl.col(pi))/((pl.col(beta)*pl.col(i))))))/((2*pl.col(e))))
 
 
+def calc_statcast_bat_tracking_glossary_form_5(v_p_i_t_c_h: float) -> float:
+    r"""Compute mathematical metric extracted from statcast_bat_tracking_glossary.
+
+    **Source**:
+    - Title: MLB Statcast 2.0: Bat Tracking Collision Physics and Swing Mechanics (2026)
+    - Authors: Tom Tango, MLB Advanced Media, David Kagan
+    - Citation Key: `statcast_bat_tracking_glossary`
+
+    **KaTeX Formula**:
+    $$
+    v_{pitch}
+    $$
+
+    Args:
+        v_p_i_t_c_h (float): Input parameter `v_p_i_t_c_h`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(v_p*(i*(t*(c*h))))
+
+
+def expr_statcast_bat_tracking_glossary_form_5(v_p_i_t_c_h: str = "v_p_i_t_c_h") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_statcast_bat_tracking_glossary_form_5`."""
+    return (v_p*(i*(t*(c*h))))
+
+
 def calc_c_a_b_form_0(C: float, a: float, n: float, o: float, s: float, t: float) -> float:
     r"""Compute mathematical metric extracted from openalex_meyer2008_w1992303757.
 
@@ -8095,6 +9461,39 @@ def calc_sim_beta_0_form_3(a: float, beta: float, de: float, f: float, k: float,
 def expr_sim_beta_0_form_3(a: str = "a", beta: str = "beta", de: str = "de", f: str = "f", k: str = "k", p: str = "p", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_sim_beta_0_form_3`."""
     return (-pl.col(beta)*pl.col(de)*pl.col(f) + (pl.col(beta)*(pl.col(p)*(pl.col(a)*(pl.col(k)*pl.col(r)))) + 0*pl.col(beta)))
+
+
+def calc_d_a_r_form_6(A: float, A_p_0: float, D: float, E: float, R: float, g: float, l: float) -> float:
+    r"""Compute mathematical metric extracted from bp_drc_plus_glossary.
+
+    **Source**:
+    - Title: Baseball Prospectus: Deserved Runs Created Plus (DRC+) and DRA (2026)
+    - Authors: Jonathan Judge, Baseball Prospectus
+    - Citation Key: `bp_drc_plus_glossary`
+
+    **KaTeX Formula**:
+    $$
+    DRA = \left(\frac{DRA_{R_{A}}}{lgRA}\right) \cdot lgERA
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        A_p_0 (float): Input parameter `A_p_0`.
+        D (float): Input parameter `D`.
+        E (float): Input parameter `E`.
+        R (float): Input parameter `R`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((l*(g*(E*(A*R))))*((D*(A_p_0*R))/((l*(g*(A*R))))))
+
+
+def expr_d_a_r_form_6(A: str = "A", A_p_0: str = "A_p_0", D: str = "D", E: str = "E", R: str = "R", g: str = "g", l: str = "l") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_d_a_r_form_6`."""
+    return ((pl.col(l)*(pl.col(g)*(pl.col(E)*(pl.col(A)*pl.col(R)))))*((pl.col(D)*(pl.col(A_p_0)*pl.col(R)))/((pl.col(l)*(pl.col(g)*(pl.col(A)*pl.col(R)))))))
 
 
 def calc_val_2511_02815_2511_0(a: float, c: float, d: float, e: float, l: float, n: float, o: float, r: float, s: float, u: float, w: float) -> float:
@@ -8448,6 +9847,71 @@ def expr_miller2005_99c4eb(R_A: str = "R_A", R_S: str = "R_S", beta: str = "beta
     return (pl.col(gamma)*(pl.col(R_A) - pl.col(beta)) + pl.col(gamma)*(pl.col(R_S) - pl.col(beta))*math.gamma(pl.col(R_S) - pl.col(beta)))
 
 
+def calc_fangraphs_wraa_glossary_form_7(A_s_c_a_e_l: float, B: float, O: float, w: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_wraa_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted Runs Above Average (wRAA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_wraa_glossary`
+
+    **KaTeX Formula**:
+    $$
+    wOBA_{scale}
+    $$
+
+    Args:
+        A_s_c_a_e_l (float): Input parameter `A_s_c_a_e_l`.
+        B (float): Input parameter `B`.
+        O (float): Input parameter `O`.
+        w (float): Input parameter `w`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(w*(O*(A_s*(c*(a*(e*l)))*B)))
+
+
+def expr_fangraphs_wraa_glossary_form_7(A_s_c_a_e_l: str = "A_s_c_a_e_l", B: str = "B", O: str = "O", w: str = "w") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_wraa_glossary_form_7`."""
+    return (pl.col(w)*(pl.col(O)*(A_s*(c*(a*(e*l)))*pl.col(B))))
+
+
+def calc_w_r_a_a_form_7(A: float, A_s_c_a_e_l: float, B: float, O: float, P: float, g: float, l: float, w: float, wOBA: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_wraa_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted Runs Above Average (wRAA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_wraa_glossary`
+
+    **KaTeX Formula**:
+    $$
+    wRAA = \frac{w_{OBA} - lgwOBA}{wOBA_{scale}} \cdot PA
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        A_s_c_a_e_l (float): Input parameter `A_s_c_a_e_l`.
+        B (float): Input parameter `B`.
+        O (float): Input parameter `O`.
+        P (float): Input parameter `P`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+        w (float): Input parameter `w`.
+        wOBA (float): Input parameter `wOBA`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(A*P*(-l*g*(w*(O*(A*B))) + wOBA)/(A_s*(c*(a*(e*l)))*B*O*w))
+
+
+def expr_w_r_a_a_form_7(A: str = "A", A_s_c_a_e_l: str = "A_s_c_a_e_l", B: str = "B", O: str = "O", P: str = "P", g: str = "g", l: str = "l", w: str = "w", wOBA: str = "wOBA") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_w_r_a_a_form_7`."""
+    return (pl.col(A)*pl.col(P)*(-pl.col(l)*pl.col(g)*(pl.col(w)*(pl.col(O)*(pl.col(A)*pl.col(B)))) + pl.col(wOBA))/(A_s*(c*(a*(e*pl.col(l))))*pl.col(B)*pl.col(O)*pl.col(w)))
+
+
 def calc_g_m_i_l_form_7(I_j: float, L: float, M: float) -> float:
     r"""Compute mathematical metric extracted from tangotiger_leverage_index_glossary.
 
@@ -8593,6 +10057,39 @@ def calc_val_2609_25525_form_7(A: float, n: float, o: float, w: float) -> float:
 def expr_val_2609_25525_form_7(A: str = "A", n: str = "n", o: str = "o", w: str = "w") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_25525_form_7`."""
     return (pl.col(A)*pl.col(n)*pl.col(o)*pl.col(w))
+
+
+def calc_delta_e_t_2_form_2(C: float, D: float, S: float, T: float, V: float, alpha: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \Delta E(T2) = q*S*(CD0 + \alpha 2 *CD\alpha )*V*T2/2
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        D (float): Input parameter `D`.
+        S (float): Input parameter `S`.
+        T (float): Input parameter `T`.
+        V (float): Input parameter `V`.
+        alpha (float): Input parameter `alpha`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(((2*T)*(V*((S*q)*(C*(0*D) + (2*alpha)*(C*(D*alpha))))))/2)
+
+
+def expr_delta_e_t_2_form_2(C: str = "C", D: str = "D", S: str = "S", T: str = "T", V: str = "V", alpha: str = "alpha", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_e_t_2_form_2`."""
+    return (((2*pl.col(T))*(pl.col(V)*((pl.col(S)*pl.col(q))*(pl.col(C)*(0*pl.col(D)) + (2*pl.col(alpha))*(pl.col(C)*(pl.col(D)*pl.col(alpha)))))))/2)
 
 
 def calc_e_b_a_e_s_form_3(s: float) -> float:
@@ -8767,6 +10264,96 @@ def calc_f_s_p_y_form_0(e: float, n: float, p: float, t: float, y: float) -> flo
 def expr_f_s_p_y_form_0(e: str = "e", n: str = "n", p: str = "p", t: str = "t", y: str = "y") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_s_p_y_form_0`."""
     return (pl.col(e)*pl.col(n)*pl.col(p)*pl.col(t)*pl.col(y))
+
+
+def calc_phi_theta_form_1(alpha: float, d: float, e: float, s: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+
+    **Source**:
+    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
+    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
+    - Citation Key: `arxiv_2608_29935`
+
+    **KaTeX Formula**:
+    $$
+    \phi (\theta ) = e2\alpha   t21 + t22 + t23 + 1 t1ed1 t1s12 + t2ed2 t1s13 + t2s23 + t3ed3 s212 + s213 + s223 + e2d2 + e2d3 -s12ed1 -s13ed1 s213 + s223 + e2d1 + e2d3 -s12s13 - s23ed2 s212 + e2d1 + e2d2
+    $$
+
+    Args:
+        alpha (float): Input parameter `alpha`.
+        d (float): Input parameter `d`.
+        e (float): Input parameter `e`.
+        s (float): Input parameter `s`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(42*alpha*e*t - 12521*d*e*s**2 + 64*d*e*s*t**2 + 1908*d*e*s*t - 12*d*e*s + 24*d*e - 156*s**2 + 46*s*t + 659*s + 45*t)
+
+
+def expr_phi_theta_form_1(alpha: str = "alpha", d: str = "d", e: str = "e", s: str = "s", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_phi_theta_form_1`."""
+    return (42*pl.col(alpha)*pl.col(e)*pl.col(t) - 12521*pl.col(d)*pl.col(e)*pl.col(s)**2 + 64*pl.col(d)*pl.col(e)*pl.col(s)*pl.col(t)**2 + 1908*pl.col(d)*pl.col(e)*pl.col(s)*pl.col(t) - 12*pl.col(d)*pl.col(e)*pl.col(s) + 24*pl.col(d)*pl.col(e) - 156*pl.col(s)**2 + 46*pl.col(s)*pl.col(t) + 659*pl.col(s) + 45*pl.col(t))
+
+
+def calc_x_i_j_brown_(H: float, N: float, i: float, j: float) -> float:
+    r"""Compute mathematical metric extracted from brown_2008_aoas.
+
+    **Source**:
+    - Title: Supplement to 'In-season prediction of batting averages...': Major league batting records for 2005 (2008)
+    - Authors: Brown, L. D.
+    - Citation Key: `brown_2008_aoas`
+
+    **KaTeX Formula**:
+    $$
+    Xj i = \arcsin \sqrt{Hj} i + 1/4 Nj i + 1/2
+    $$
+
+    Args:
+        H (float): Input parameter `H`.
+        N (float): Input parameter `N`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((math.asin(i*math.sqrt(H*j)) + 1/((4*(N*(i*j))))) + 1/2)
+
+
+def expr_x_i_j_brown_(H: str = "H", N: str = "N", i: str = "i", j: str = "j") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_x_i_j_brown_`."""
+    return ((math.asin(pl.col(i)*(pl.col(H).sqrt()*pl.col(j))) + 1/((4*(pl.col(N)*(pl.col(i)*pl.col(j)))))) + 1/2)
+
+
+def calc_x_i_brown_(H: float, N: float, i: float) -> float:
+    r"""Compute mathematical metric extracted from brown_2008_aoas.
+
+    **Source**:
+    - Title: Supplement to 'In-season prediction of batting averages...': Major league batting records for 2005 (2008)
+    - Authors: Brown, L. D.
+    - Citation Key: `brown_2008_aoas`
+
+    **KaTeX Formula**:
+    $$
+    Xi = \arcsin \sqrt{Hi} + 1/4 Ni + 1/2 , \theta i = \arcsin \sqrt{pi}
+    $$
+
+    Args:
+        H (float): Input parameter `H`.
+        N (float): Input parameter `N`.
+        i (float): Input parameter `i`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((math.asin(math.sqrt(H*i)) + 1/((4*(N*i)))) + 1/2)
+
+
+def expr_x_i_brown_(H: str = "H", N: str = "N", i: str = "i") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_x_i_brown_`."""
+    return ((math.asin((pl.col(H).sqrt()*pl.col(i))) + 1/((4*(pl.col(N)*pl.col(i))))) + 1/2)
 
 
 def calc_a_t_w_o_w_a_o_form_9(S: float, T: float) -> float:
@@ -8971,31 +10558,34 @@ def expr_alpha_s_form_3(alpha: str = "alpha") -> pl.Expr:
     return (math.sin(pl.col(alpha)))
 
 
-def calc_c_m_s_l_form_3(CS: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_10457.
+def calc_q_c_q_q_q_m_q_g_q_form_6(e: float, t: float, tau: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_08157.
 
     **Source**:
-    - Title: AnimateCanvas: Learning Implicit Motion Planning from Composable Kinematic Cues (2026)
-    - Authors: Zeyu Ling, Di Kang, Qing Shuai et al.
-    - Citation Key: `arxiv_2609_10457`
+    - Title: Event-Time Hybrid Optimal Control for Robotic Table Tennis Serves (2026)
+    - Authors: Thomas Gossard, Till Köpff, Andreas Ziegler
+    - Citation Key: `arxiv_2608_08157`
 
     **KaTeX Formula**:
     $$
-    CMS[l] =  1 |CS | \sum  g\in CS \sum b,i \sum d\in g VbiSbidlbid \sum b,i \sum d\in g VbiSbid , |CS| > 0, 0, |CS| = 0
+    M(q)  q + C(q, q) q + g(q) = \tau  + \tau ext
     $$
 
     Args:
-        CS (float): Input parameter `CS`.
+        e (float): Input parameter `e`.
+        t (float): Input parameter `t`.
+        tau (float): Input parameter `tau`.
+        x (float): Input parameter `x`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(abs(CS))
+    return float(e*t*tau*x + tau)
 
 
-def expr_c_m_s_l_form_3(CS: str = "CS") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_c_m_s_l_form_3`."""
-    return (abs(pl.col(CS)))
+def expr_q_c_q_q_q_m_q_g_q_form_6(e: str = "e", t: str = "t", tau: str = "tau", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_q_c_q_q_q_m_q_g_q_form_6`."""
+    return (pl.col(e)*pl.col(t)*pl.col(tau)*pl.col(x) + pl.col(tau))
 
 
 def calc_val_1704_00823_form_9(Theta: float, u: float) -> float:
@@ -9198,6 +10788,36 @@ def expr_f_k_z_form_5(k: str = "k") -> pl.Expr:
     return (math.e*math.factorial(pl.col(k) - 1))
 
 
+def calc_d_phi_form_2(d: float, gamma: float, pi: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+
+    **Source**:
+    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
+    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
+    - Citation Key: `arxiv_2608_29935`
+
+    **KaTeX Formula**:
+    $$
+    \phi d = \pi  + \theta d - \gamma d
+    $$
+
+    Args:
+        d (float): Input parameter `d`.
+        gamma (float): Input parameter `gamma`.
+        pi (float): Input parameter `pi`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-d*gamma + (d*theta + pi))
+
+
+def expr_d_phi_form_2(d: str = "d", gamma: str = "gamma", pi: str = "pi", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_d_phi_form_2`."""
+    return (-pl.col(d)*pl.col(gamma) + (pl.col(d)*pl.col(theta) + pl.col(pi)))
+
+
 def calc_val_2604_21851_form_9(D: float, K: float, S: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2604_21851.
 
@@ -9225,36 +10845,6 @@ def calc_val_2604_21851_form_9(D: float, K: float, S: float) -> float:
 def expr_val_2604_21851_form_9(D: str = "D", K: str = "K", S: str = "S") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2604_21851_form_9`."""
     return (pl.col(D)*(pl.col(K)*pl.col(S)))
-
-
-def calc_x_i_j_brown_(H: float, N: float, i: float, j: float) -> float:
-    r"""Compute mathematical metric extracted from brown_2008_aoas.
-
-    **Source**:
-    - Title: Supplement to 'In-season prediction of batting averages...': Major league batting records for 2005 (2008)
-    - Authors: Brown, L. D.
-    - Citation Key: `brown_2008_aoas`
-
-    **KaTeX Formula**:
-    $$
-    Xj i = \sin \sqrt{Hj} i + 1/4 Nj i + 1/2
-    $$
-
-    Args:
-        H (float): Input parameter `H`.
-        N (float): Input parameter `N`.
-        i (float): Input parameter `i`.
-        j (float): Input parameter `j`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float((math.sin(i*math.sqrt(H*j)) + 1/((4*(N*(i*j))))) + 1/2)
-
-
-def expr_x_i_j_brown_(H: str = "H", N: str = "N", i: str = "i", j: str = "j") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_x_i_j_brown_`."""
-    return ((math.sin(pl.col(i)*(pl.col(H).sqrt()*pl.col(j))) + 1/((4*(pl.col(N)*(pl.col(i)*pl.col(j)))))) + 1/2)
 
 
 def calc_a_form_a(T: float, a: float, b: float) -> float:
@@ -9313,6 +10903,36 @@ def calc_val_2005_07742_form_5(V: float, a: float, r: float) -> float:
 def expr_val_2005_07742_form_5(V: str = "V", a: str = "a", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2005_07742_form_5`."""
     return (pl.col(V)*pl.col(a)*pl.col(r))
+
+
+def calc_f_l_form_5(A: float, dtimes: float, omega: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    FL = A\omega d \times  u
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        dtimes (float): Input parameter `dtimes`.
+        omega (float): Input parameter `omega`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(A*dtimes*omega*u)
+
+
+def expr_f_l_form_5(A: str = "A", dtimes: str = "dtimes", omega: str = "omega", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_l_form_5`."""
+    return (pl.col(A)*pl.col(dtimes)*pl.col(omega)*pl.col(u))
 
 
 def calc_w_t_z_form_6(t: float) -> float:
@@ -9492,6 +11112,34 @@ def expr_val_0_k_nu_form_6(k: str = "k", n: str = "n") -> pl.Expr:
     return (pl.col(k)*pl.col(n))
 
 
+def calc_x_brown_(H: float, N: float) -> float:
+    r"""Compute mathematical metric extracted from brown_2008_arxiv.
+
+    **Source**:
+    - Title: In-season prediction of batting averages: a field test of empirical Bayes and Bayes methodologies (2008)
+    - Authors: Brown, L. D.
+    - Citation Key: `brown_2008_arxiv`
+
+    **KaTeX Formula**:
+    $$
+    X = \arcsin \sqrt{H} + 1/4 N + 1/2
+    $$
+
+    Args:
+        H (float): Input parameter `H`.
+        N (float): Input parameter `N`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((math.asin(math.sqrt(H)) + 1/((4*N))) + 1/2)
+
+
+def expr_x_brown_(H: str = "H", N: str = "N") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_x_brown_`."""
+    return ((math.asin((pl.col(H).sqrt())) + 1/((4*pl.col(N)))) + 1/2)
+
+
 def calc_val_2604_21851_form_c(i: float, l: float, m: float, p: float, s: float, t: float, u: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2604_21851.
 
@@ -9523,6 +11171,33 @@ def calc_val_2604_21851_form_c(i: float, l: float, m: float, p: float, s: float,
 def expr_val_2604_21851_form_c(i: str = "i", l: str = "l", m: str = "m", p: str = "p", s: str = "s", t: str = "t", u: str = "u") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2604_21851_form_c`."""
     return (pl.col(i)*pl.col(l)*pl.col(m)*pl.col(p)*pl.col(s)*pl.col(t)*pl.col(u))
+
+
+def calc_tango_base_runs_glossary_form_9(TB: float) -> float:
+    r"""Compute mathematical metric extracted from tango_base_runs_glossary.
+
+    **Source**:
+    - Title: Base Runs (BsR) Offensive Estimator (2026)
+    - Authors: David Smyth, Tom Tango
+    - Citation Key: `tango_base_runs_glossary`
+
+    **KaTeX Formula**:
+    $$
+    T_{B}
+    $$
+
+    Args:
+        TB (float): Input parameter `TB`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(TB)
+
+
+def expr_tango_base_runs_glossary_form_9(TB: str = "TB") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tango_base_runs_glossary_form_9`."""
+    return (pl.col(TB))
 
 
 def calc_val_2309_15318_form_0(f: float) -> float:
@@ -9585,6 +11260,35 @@ def expr_u_2_form_7(A: str = "A", AB: str = "AB", B: str = "B", delta: str = "de
     return (2*pl.col(A)*pl.col(AB)*pl.col(B)*pl.col(u) - pl.col(A)*2*(pl.col(u)*(22*pl.col(A))) - pl.col(B)*2*(pl.col(u)*(22*pl.col(B))) - pl.col(sim)*pl.col(delta)*(pl.col(nabla)*(2*(pl.col(u)*(2*pl.col(delta))))))
 
 
+def calc_tangotiger_leverage_index_glossary_form_9(Delta: float, P_m_a_x: float, W: float) -> float:
+    r"""Compute mathematical metric extracted from tangotiger_leverage_index_glossary.
+
+    **Source**:
+    - Title: Tom Tango: Leverage Index (LI) and Win Probability Added (2026)
+    - Authors: Tom Tango
+    - Citation Key: `tangotiger_leverage_index_glossary`
+
+    **KaTeX Formula**:
+    $$
+    \Delta WP_{max}
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        P_m_a_x (float): Input parameter `P_m_a_x`.
+        W (float): Input parameter `W`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Delta*(P_m*(a*x)*W))
+
+
+def expr_tangotiger_leverage_index_glossary_form_9(Delta: str = "Delta", P_m_a_x: str = "P_m_a_x", W: str = "W") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tangotiger_leverage_index_glossary_form_9`."""
+    return (pl.col(Delta)*(P_m*(a*x)*pl.col(W)))
+
+
 def calc_i_l_form_9(Delta: float, E_P_W: float, P_m_a_x: float, P_m_i_n: float, W: float) -> float:
     r"""Compute mathematical metric extracted from tangotiger_leverage_index_glossary.
 
@@ -9614,6 +11318,63 @@ def calc_i_l_form_9(Delta: float, E_P_W: float, P_m_a_x: float, P_m_i_n: float, 
 def expr_i_l_form_9(Delta: str = "Delta", E_P_W: str = "E_P_W", P_m_a_x: str = "P_m_a_x", P_m_i_n: str = "P_m_i_n", W: str = "W") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_i_l_form_9`."""
     return ((pl.col(Delta)*(P_m*(a*x)*pl.col(W)) - pl.col(Delta)*P_m*(i*n)*pl.col(W))/E_P*pl.col(W))
+
+
+def calc_delta_phi_t_form_2(b: float, n: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2604_25278.
+
+    **Source**:
+    - Title: The GMRT High-Resolution Southern Sky Survey for pulsars and transients -- VIII: Orbital Variability and the Evolution of a 1-Day He-WD Millisecond Pulsar J2101-4802 (2026)
+    - Authors: Ankita Ghosh, Bhaswati Bhattacharyya, David L. Kaplan et al.
+    - Citation Key: `arxiv_2604_25278`
+
+    **KaTeX Formula**:
+    $$
+    \Delta \phi (t) = nb 2! (t - t0)2 + nb 3! (t - t0)3 + \cdot  \cdot  \cdot
+    $$
+
+    Args:
+        b (float): Input parameter `b`.
+        n (float): Input parameter `n`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(22*b*n*t)
+
+
+def expr_delta_phi_t_form_2(b: str = "b", n: str = "n", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_phi_t_form_2`."""
+    return (22*pl.col(b)*pl.col(n)*pl.col(t))
+
+
+def calc_val_2610_01307_form_2(L: float, epsilon: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    \rho 0  Fw(dw[n], \omega [n]) \le  \sqrt{2\epsilon}  L , \forall n \in  N
+    $$
+
+    Args:
+        L (float): Input parameter `L`.
+        epsilon (float): Input parameter `epsilon`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((0 <= math.sqrt(2)*L*math.sqrt(epsilon)))
+
+
+def expr_val_2610_01307_form_2(L: str = "L", epsilon: str = "epsilon") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_2`."""
+    return ((0 <= math.sqrt(2)*pl.col(L)*(pl.col(epsilon).sqrt())))
 
 
 def calc_beta_j_n_n_a_form_1(P: float) -> float:
@@ -9670,6 +11431,34 @@ def expr_c_a_f_e_a_c_form_6(N: str = "N") -> pl.Expr:
     return (4000*(1*pl.col(N)))
 
 
+def calc_val_2610_01307_form_5(L: float, epsilon: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    \rho 0  Fw(dw[n], \omega [n]) \le  \sqrt{2\epsilon}  L , \forall n \in  N
+    $$
+
+    Args:
+        L (float): Input parameter `L`.
+        epsilon (float): Input parameter `epsilon`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((0 <= math.sqrt(2)*L*math.sqrt(epsilon)))
+
+
+def expr_val_2610_01307_form_5(L: str = "L", epsilon: str = "epsilon") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_5`."""
+    return ((0 <= math.sqrt(2)*pl.col(L)*(pl.col(epsilon).sqrt())))
+
+
 def calc_val_2606_08059_form_7(Delta: float, e: float, g: float, l: float, q: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2606_08059.
 
@@ -9699,6 +11488,35 @@ def calc_val_2606_08059_form_7(Delta: float, e: float, g: float, l: float, q: fl
 def expr_val_2606_08059_form_7(Delta: str = "Delta", e: str = "e", g: str = "g", l: str = "l", q: str = "q") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2606_08059_form_7`."""
     return (pl.col(Delta)*pl.col(e)*pl.col(g)*pl.col(l)*pl.col(q))
+
+
+def calc_val_2604_25278_form_2(P: float, T: float, b: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2604_25278.
+
+    **Source**:
+    - Title: The GMRT High-Resolution Southern Sky Survey for pulsars and transients -- VIII: Orbital Variability and the Evolution of a 1-Day He-WD Millisecond Pulsar J2101-4802 (2026)
+    - Authors: Ankita Ghosh, Bhaswati Bhattacharyya, David L. Kaplan et al.
+    - Citation Key: `arxiv_2604_25278`
+
+    **KaTeX Formula**:
+    $$
+    \Delta T0 \approx  Pb \cdot  |nb| 3! T 3 = |  Pb| 6 Pb T 3
+    $$
+
+    Args:
+        P (float): Input parameter `P`.
+        T (float): Input parameter `T`.
+        b (float): Input parameter `b`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(18*P*T*b*abs(P*b))
+
+
+def expr_val_2604_25278_form_2(P: str = "P", T: str = "T", b: str = "b") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2604_25278_form_2`."""
+    return (18*pl.col(P)*pl.col(T)*pl.col(b)*abs(pl.col(P)*pl.col(b)))
 
 
 def calc_r_b_n_p_a_n_form_f(g: float, l: float, o: float) -> float:
@@ -9757,6 +11575,65 @@ def calc_fangraphs_wrc_glossary_form_a(R: float, g: float, l: float) -> float:
 def expr_fangraphs_wrc_glossary_form_a(R: str = "R", g: str = "g", l: str = "l") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_fangraphs_wrc_glossary_form_a`."""
     return (pl.col(R)*pl.col(g)*pl.col(l))
+
+
+def calc_eta_dagger_n_form_0(E: float, S: float, dagger: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    \eta \dagger [n]=ES\dagger [n][ M\sum  m=1 I\sum  i=1 \beta \dagger ,m,i [n]G( \theta tx,\dagger ,m,i [n])G( \theta rx,\dagger ,m,i[n])]
+    $$
+
+    Args:
+        E (float): Input parameter `E`.
+        S (float): Input parameter `S`.
+        dagger (float): Input parameter `dagger`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(E*(S*(dagger*n)))
+
+
+def expr_eta_dagger_n_form_0(E: str = "E", S: str = "S", dagger: str = "dagger", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_eta_dagger_n_form_0`."""
+    return (pl.col(E)*(pl.col(S)*(pl.col(dagger)*pl.col(n))))
+
+
+def calc_tau_s_d_phi_form_3(c: float, d: float, phi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+
+    **Source**:
+    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
+    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
+    - Citation Key: `arxiv_2608_29935`
+
+    **KaTeX Formula**:
+    $$
+    \tau s(\phi d) = c3\phi 3d + c2\phi 2d + c1\phi d + c0
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+        d (float): Input parameter `d`.
+        phi (float): Input parameter `phi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(14*c*d*phi)
+
+
+def expr_tau_s_d_phi_form_3(c: str = "c", d: str = "d", phi: str = "phi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tau_s_d_phi_form_3`."""
+    return (14*pl.col(c)*pl.col(d)*pl.col(phi))
 
 
 def calc_z_l_form_7(F: float, L: float, Z: float, l: float) -> float:
@@ -10226,6 +12103,65 @@ def expr_j_m_e_r_form_3(D: str = "D", M: str = "M", N: str = "N") -> pl.Expr:
     return ((1*pl.col(M))*(pl.col(D)*pl.col(N)))
 
 
+def calc_partial_c_e_alpha_partial_form_3(D: float, alpha: float, m: float, omega: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \partial (EC)/\partial \alpha  = m*(D*\omega 2)2 *\alpha
+    $$
+
+    Args:
+        D (float): Input parameter `D`.
+        alpha (float): Input parameter `alpha`.
+        m (float): Input parameter `m`.
+        omega (float): Input parameter `omega`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(4*D*alpha*m*omega)
+
+
+def expr_partial_c_e_alpha_partial_form_3(D: str = "D", alpha: str = "alpha", m: str = "m", omega: str = "omega") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_c_e_alpha_partial_form_3`."""
+    return (4*pl.col(D)*pl.col(alpha)*pl.col(m)*pl.col(omega))
+
+
+def calc_w_form_4(e: float, kappa: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29049.
+
+    **Source**:
+    - Title: ART-MPG: Autoregressive R/T Manifold Path Guiding (2026)
+    - Authors: Zehao Zhao, Yanyang Yang, Xiaole Zhang et al.
+    - Citation Key: `arxiv_2610_29049`
+
+    **KaTeX Formula**:
+    $$
+    w = 1+\kappa -1 \log(u1 + (1-u1)e-2\kappa  ) , \phi  = 2\pi u2
+    $$
+
+    Args:
+        e (float): Input parameter `e`.
+        kappa (float): Input parameter `kappa`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(kappa - math.log(e*(1 - u) - 2*kappa + u) + 1)
+
+
+def expr_w_form_4(e: str = "e", kappa: str = "kappa", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_w_form_4`."""
+    return (pl.col(kappa) - (pl.col(e).log()*(1 - pl.col(u)) - 2*pl.col(kappa) + pl.col(u)) + 1)
+
+
 def calc_val_1704_00823_form_3(g: float, l: float, o: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1704_00823.
 
@@ -10429,6 +12365,37 @@ def expr_val_0_t_n_q_form_a(n: str = "n") -> pl.Expr:
     return (pl.col(n))
 
 
+def calc_val_2608_29935_form_3(d: float, dcos: float, dsin: float, gamma: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+
+    **Source**:
+    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
+    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
+    - Citation Key: `arxiv_2608_29935`
+
+    **KaTeX Formula**:
+    $$
+    K1 \cos \gamma d - K4 \cos \theta d + K5 = \cos \theta d \cos \gamma d + \sin \theta d \sin \gamma d
+    $$
+
+    Args:
+        d (float): Input parameter `d`.
+        dcos (float): Input parameter `dcos`.
+        dsin (float): Input parameter `dsin`.
+        gamma (float): Input parameter `gamma`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.sin(theta*(dsin*(d*gamma))) + math.cos(theta*(dcos*(d*gamma))))
+
+
+def expr_val_2608_29935_form_3(d: str = "d", dcos: str = "dcos", dsin: str = "dsin", gamma: str = "gamma", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_29935_form_3`."""
+    return (math.sin(pl.col(theta)*(pl.col(dsin)*(pl.col(d)*pl.col(gamma)))) + math.cos(pl.col(theta)*(pl.col(dcos)*(pl.col(d)*pl.col(gamma)))))
+
+
 def calc_rho_c_o_u_n_t_1704_0(E: float) -> float:
     r"""Compute mathematical metric extracted from 1704_00823.
 
@@ -10513,6 +12480,33 @@ def expr_val_2005_07742_form_b(f: str = "f", p: str = "p", s: str = "s") -> pl.E
     return (pl.col(f)*pl.col(p)*pl.col(s))
 
 
+def calc_val_350_glickm(c: float) -> float:
+    r"""Compute mathematical metric extracted from glickman_1999_glicko1.
+
+    **Source**:
+    - Title: glicko (1999)
+    - Authors: Mark E. Glickman, "The Glicko system" (Harvard University, 6-page description of Glicko-1 with worked examples). Date not printed in the PDF et al.
+    - Citation Key: `glickman_1999_glicko1`
+
+    **KaTeX Formula**:
+    $$
+    350 = \sqrt{502} + c2
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*c + math.sqrt(502))
+
+
+def expr_val_350_glickm(c: str = "c") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_350_glickm`."""
+    return (2*pl.col(c) + math.sqrt(502))
+
+
 def calc_m_tau_form_b(B: float, T: float, g: float, tau: float, w: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29565.
 
@@ -10569,6 +12563,37 @@ def calc_c_a_f_e_a_c_1704_0(N: float) -> float:
 def expr_c_a_f_e_a_c_1704_0(N: str = "N") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_a_f_e_a_c_1704_0`."""
     return (4000*(1*pl.col(N)))
+
+
+def calc_f_theta_form_a(A: float, Lambda: float, N: float, e: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    F ( \theta ) = e-| \theta |2 /2\Lambda 2 \sum  n An \sqrt n1!n2! \cdot  \cdot  \cdot  nNpars ! ( \theta 1 \Lambda  )n1 ( \theta 2 \Lambda  )n2 \cdot  \cdot  \cdot  ( \theta Npars \Lambda  )nNpars
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        Lambda (float): Input parameter `Lambda`.
+        N (float): Input parameter `N`.
+        e (float): Input parameter `e`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(e - (2*abs(theta))/(2*(Lambda*(2*(builtins.sum(A*(n*((n*math.factorial(2))*math.factorial(math.sqrt(1*n)))) for n in range(1, N+1)))))))
+
+
+def expr_f_theta_form_a(A: str = "A", Lambda: str = "Lambda", N: str = "N", e: str = "e", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_theta_form_a`."""
+    return (pl.col(e) - (2*abs(pl.col(theta)))/(2*(pl.col(Lambda)*(2*(builtins.sum(pl.col(A)*(n*((n*math.factorial(2))*math.factorial(math.sqrt(1*n)))) for n in range(1, pl.col(N)+1)))))))
 
 
 def calc_w_c_r_form_b(A: float, R: float, w: float) -> float:
@@ -10684,6 +12709,67 @@ def calc_val_2610_05080_form_c(p: float, theta: float) -> float:
 def expr_val_2610_05080_form_c(p: str = "p", theta: str = "theta") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_05080_form_c`."""
     return (pl.col(p)*pl.col(theta))
+
+
+def calc_u_q_form_c(N: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29565.
+
+    **Source**:
+    - Title: Preserving Operator Intent Under Actuation Constraints: Teleoperation of Manipulators with Coupled Transmissions (2026)
+    - Authors: Xuhan Miao, Zijin Han, Yutong Shen et al.
+    - Citation Key: `arxiv_2610_29565`
+
+    **KaTeX Formula**:
+    $$
+    U(q) = N\sum  k=1 mkg0hk(q), g(q) = \partial U(q) \partial q
+    $$
+
+    Args:
+        N (float): Input parameter `N`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(N)
+
+
+def expr_u_q_form_c(N: str = "N") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_u_q_form_c`."""
+    return (pl.col(N))
+
+
+def calc_openalex_constantinou2018_w2800560076_form_e(a: float, e: float, g: float, l: float, o: float, p: float, q: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_constantinou2018_w2800560076.
+
+    **Source**:
+    - Title: Dolores: a model that predicts football match outcomes from all over the world (2018)
+    - Authors: Anthony Costa Constantinou
+    - Citation Key: `openalex_constantinou2018_w2800560076`
+
+    **KaTeX Formula**:
+    $$
+    e equal1 | | |go - gp | | |
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        e (float): Input parameter `e`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+        o (float): Input parameter `o`.
+        p (float): Input parameter `p`.
+        q (float): Input parameter `q`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(a*e**2*l*q*u*abs(g*o - g*p))
+
+
+def expr_openalex_constantinou2018_w2800560076_form_e(a: str = "a", e: str = "e", g: str = "g", l: str = "l", o: str = "o", p: str = "p", q: str = "q", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_constantinou2018_w2800560076_form_e`."""
+    return (pl.col(a)*pl.col(e)**2*pl.col(l)*pl.col(q)*pl.col(u)*abs(pl.col(g)*pl.col(o) - pl.col(g)*pl.col(p)))
 
 
 def calc_val_2610_01307_form_c(t: float, theta: float, x: float) -> float:
@@ -10951,33 +13037,6 @@ def expr_i_n_de_x_2603_2(z: str = "z") -> pl.Expr:
     return (20*pl.col(z) + 100)
 
 
-def calc_m_o_e_x_form_b(n: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_28223.
-
-    **Source**:
-    - Title: Local Inference of LLMs on Long Contexts: A Data Systems Perspective (2026)
-    - Authors: Mattias Dürrmeier, Alberto Lerner
-    - Citation Key: `arxiv_2610_28223`
-
-    **KaTeX Formula**:
-    $$
-    MoE(x) = n\sum  i G(x)iEi (x) G(x) = softmax(TopK(xWg), k)
-    $$
-
-    Args:
-        n (float): Input parameter `n`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(n)
-
-
-def expr_m_o_e_x_form_b(n: str = "n") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_m_o_e_x_form_b`."""
-    return (pl.col(n))
-
-
 def calc_i_l_form_b(L: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_28993.
 
@@ -11094,6 +13153,38 @@ def calc_brier_1950_mwr_brier_(r: float) -> float:
 def expr_brier_1950_mwr_brier_(r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_brier_1950_mwr_brier_`."""
     return (pl.col(r))
+
+
+def calc_val_2610_29685_form_c(Lambda: float, N: float, e: float, n: float, pi: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    \phi n( \theta ) \equiv  1 (2\pi \Lambda 2 )N/4 e-| \theta |2 /2\Lambda 2 1 \sqrt n1!n2! \cdot  \cdot  \cdot  nN! ( \theta 1 \Lambda  )n1 ( \theta 2 \Lambda  )n2 \cdot  \cdot  \cdot  ( \theta N \Lambda  )nN . (A3)
+    $$
+
+    Args:
+        Lambda (float): Input parameter `Lambda`.
+        N (float): Input parameter `N`.
+        e (float): Input parameter `e`.
+        n (float): Input parameter `n`.
+        pi (float): Input parameter `pi`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-(2*abs(theta))/(2*(Lambda*(21*((n*math.factorial(2))*math.factorial(math.sqrt(1*n)))))) + (1*(N*(2*(pi*(2*Lambda)))))/((4*e)))
+
+
+def expr_val_2610_29685_form_c(Lambda: str = "Lambda", N: str = "N", e: str = "e", n: str = "n", pi: str = "pi", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_c`."""
+    return (-(2*abs(pl.col(theta)))/(2*(pl.col(Lambda)*(21*((pl.col(n)*math.factorial(2))*math.factorial((1*pl.col(n).sqrt())))))) + (1*(pl.col(N)*(2*(pl.col(pi)*(2*pl.col(Lambda))))))/((4*pl.col(e))))
 
 
 def calc_p_brier_(B: float, c: float, f: float, t: float, z: float) -> float:
@@ -11213,6 +13304,36 @@ def calc_p_i_brown_(U: float, i: float) -> float:
 def expr_p_i_brown_(U: str = "U", i: str = "i") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_brown_`."""
     return (-pl.col(U)*pl.col(i) + 1)
+
+
+def calc_bt_secondary_many_routes_2023_bt_sec(j: float, k: float, l: float, p: float) -> float:
+    r"""Compute mathematical metric extracted from bt_secondary_many_routes_2023.
+
+    **Source**:
+    - Title: arxiv_2312.13619
+    - Authors: Scientific Literature
+    - Citation Key: `bt_secondary_many_routes_2023`
+
+    **KaTeX Formula**:
+    $$
+    pjk > pjl,
+    $$
+
+    Args:
+        j (float): Input parameter `j`.
+        k (float): Input parameter `k`.
+        l (float): Input parameter `l`.
+        p (float): Input parameter `p`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((j*k*p > j*l*p))
+
+
+def expr_bt_secondary_many_routes_2023_bt_sec(j: str = "j", k: str = "k", l: str = "l", p: str = "p") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_bt_secondary_many_routes_2023_bt_sec`."""
+    return ((pl.col(j)*pl.col(k)*pl.col(p) > pl.col(j)*pl.col(l)*pl.col(p)))
 
 
 def calc_m_q_q_form_5(M: float, N: float, T: float, c: float, m: float, u: float, v: float, w: float) -> float:
@@ -11370,38 +13491,6 @@ def calc_gamma_form_b(R_A: float, R_S: float) -> float:
 def expr_gamma_form_b(R_A: str = "R_A", R_S: str = "R_S") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_gamma_form_b`."""
     return ((pl.col(R_A) + pl.col(R_S))**0.285)
-
-
-def calc_bt_secondary_many_routes_2023_bt_sec(g: float, i: float, k: float, l: float, o: float, p: float) -> float:
-    r"""Compute mathematical metric extracted from bt_secondary_many_routes_2023.
-
-    **Source**:
-    - Title: arxiv_2312.13619
-    - Authors: Scientific Literature
-    - Citation Key: `bt_secondary_many_routes_2023`
-
-    **KaTeX Formula**:
-    $$
-    log pij pji + log pjk pkj = log pik pki .
-    $$
-
-    Args:
-        g (float): Input parameter `g`.
-        i (float): Input parameter `i`.
-        k (float): Input parameter `k`.
-        l (float): Input parameter `l`.
-        o (float): Input parameter `o`.
-        p (float): Input parameter `p`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(g*i**2*k**2*l*o*p**2)
-
-
-def expr_bt_secondary_many_routes_2023_bt_sec(g: str = "g", i: str = "i", k: str = "k", l: str = "l", o: str = "o", p: str = "p") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_bt_secondary_many_routes_2023_bt_sec`."""
-    return (pl.col(g)*pl.col(i)**2*pl.col(k)**2*pl.col(l)*pl.col(o)*pl.col(p)**2)
 
 
 def calc_sigma_a_a_sigma_form_7(A: float, B: float, N: float, a: float, b: float, i: float, n: float, r: float, sigma: float, t: float, y: float) -> float:
@@ -11618,6 +13707,37 @@ def expr_d_n_form_0(L: str = "L", gamma: str = "gamma", n: str = "n", w: str = "
     return (pl.col(L)*(pl.col(gamma)*(pl.col(n)*pl.col(w)) + (-pl.col(gamma)*pl.col(w)*(1*pl.col(n)) + (pl.col(gamma).log()*(pl.col(n)*pl.col(w)) + 1, math.e))))
 
 
+def calc_val_1408_4306_form_7(c: float, l: float, o: float, sim: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    tcol \sim  (nd \cdot  \pi r2d\cdot  < vd-d >)-1
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+        l (float): Input parameter `l`.
+        o (float): Input parameter `o`.
+        sim (float): Input parameter `sim`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(c*l*o*sim*t)
+
+
+def expr_val_1408_4306_form_7(c: str = "c", l: str = "l", o: str = "o", sim: str = "sim", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1408_4306_form_7`."""
+    return (pl.col(c)*pl.col(l)*pl.col(o)*pl.col(sim)*pl.col(t))
+
+
 def calc_val_2608_10387_form_0(Upsilon: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_10387.
 
@@ -11673,6 +13793,34 @@ def expr_c_f_m_theta_l_o_t_form_0(E: str = "E", tau: str = "tau") -> pl.Expr:
     return (pl.col(E)*pl.col(tau))
 
 
+def calc_val_2610_01307_form_1(dagger: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    q\dagger ,m,i[n] =\beta \dagger ,m,i[n] G( \sim  \theta tx,\dagger ,m,i[n]) G( \sim  \theta rx,\dagger ,m,i[n])
+    $$
+
+    Args:
+        dagger (float): Input parameter `dagger`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(dagger*q)
+
+
+def expr_val_2610_01307_form_1(dagger: str = "dagger", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_1`."""
+    return (pl.col(dagger)*pl.col(q))
+
+
 def calc_sigma_2_theta_form_2(Omega: float, R: float, kappa: float, sigma: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2601_18161.
 
@@ -11701,35 +13849,6 @@ def calc_sigma_2_theta_form_2(Omega: float, R: float, kappa: float, sigma: float
 def expr_sigma_2_theta_form_2(Omega: str = "Omega", R: str = "R", kappa: str = "kappa", sigma: str = "sigma") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_sigma_2_theta_form_2`."""
     return (96*pl.col(Omega)*pl.col(R)*pl.col(kappa)*pl.col(sigma))
-
-
-def calc_val_2610_01307_form_2(t: float, theta: float, x: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_01307.
-
-    **Source**:
-    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
-    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
-    - Citation Key: `arxiv_2610_01307`
-
-    **KaTeX Formula**:
-    $$
-    \theta tx,†[n] = \arccos( dT† [n]\omega [n] d†[n] )
-    $$
-
-    Args:
-        t (float): Input parameter `t`.
-        theta (float): Input parameter `theta`.
-        x (float): Input parameter `x`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(t*theta*x)
-
-
-def expr_val_2610_01307_form_2(t: str = "t", theta: str = "theta", x: str = "x") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_2`."""
-    return (pl.col(t)*pl.col(theta)*pl.col(x))
 
 
 def calc_m_a_u_di_o_form_2(M: float, c: float, e: float, f: float, l: float, r: float, s: float, t: float) -> float:
@@ -11942,6 +14061,35 @@ def expr_t_t_form_3(T: str = "T", w: str = "w", z: str = "z") -> pl.Expr:
     return (pl.col(T)**2*pl.col(w)**2*pl.col(z)**2)
 
 
+def calc_val_2610_01307_form_4(D: float, epsilon: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    D[n] \le  \epsilon , \forall n \in  N
+    $$
+
+    Args:
+        D (float): Input parameter `D`.
+        epsilon (float): Input parameter `epsilon`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((D*n <= epsilon))
+
+
+def expr_val_2610_01307_form_4(D: str = "D", epsilon: str = "epsilon", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_4`."""
+    return ((pl.col(D)*pl.col(n) <= pl.col(epsilon)))
+
+
 def calc_delta_t_0_form_4(Delta: float, P: float, b: float, phi: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2604_25278.
 
@@ -12028,35 +14176,6 @@ def calc_val_2607_29041_form_7(i: float, m: float, n: float, y: float) -> float:
 def expr_val_2607_29041_form_7(i: str = "i", m: str = "m", n: str = "n", y: str = "y") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_7`."""
     return (pl.col(i)*pl.col(m)*pl.col(n)*pl.col(y))
-
-
-def calc_val_2610_01307_form_4(r: float, theta: float, x: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_01307.
-
-    **Source**:
-    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
-    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
-    - Citation Key: `arxiv_2610_01307`
-
-    **KaTeX Formula**:
-    $$
-    \theta rx,†(p[n]) = \arccos( dT† [n]nref d†[n] )
-    $$
-
-    Args:
-        r (float): Input parameter `r`.
-        theta (float): Input parameter `theta`.
-        x (float): Input parameter `x`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(r*theta*x)
-
-
-def expr_val_2610_01307_form_4(r: str = "r", theta: str = "theta", x: str = "x") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_4`."""
-    return (pl.col(r)*pl.col(theta)*pl.col(x))
 
 
 def calc_partial_l_mu_partial_2209_0(P: float) -> float:
@@ -12202,6 +14321,61 @@ def expr_n_omega_form_5(a: str = "a", g: str = "g", n: str = "n") -> pl.Expr:
     return (pl.col(a)*pl.col(n) + pl.col(g)*abs(pl.col(a)*pl.col(n) + pl.col(g)))
 
 
+def calc_sim_q_1_i_y_t_form_7(i: float, m: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \sim Q1i(y, t) = 1mi mi\sum  j=1 h-1 T H ( y - Yij hY ) K ( t - tij hT ) , \sim Q2i(y, t) = 1mi mi\sum  j=1 h-1 T K ( t - tij hT )
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        m (float): Input parameter `m`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(1*(m*(i*(i*m))))
+
+
+def expr_sim_q_1_i_y_t_form_7(i: str = "i", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_sim_q_1_i_y_t_form_7`."""
+    return (1*(pl.col(m)*(pl.col(i)*(pl.col(i)*pl.col(m)))))
+
+
+def calc_e_x_v_s_x_form_8(R: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_31563.
+
+    **Source**:
+    - Title: When to Follow the Teacher: Advantage-Based On-Policy Distillation (2026)
+    - Authors: Mahdi Sabbaghi, George Pappas, Hamed Hassani et al.
+    - Citation Key: `arxiv_2610_31563`
+
+    **KaTeX Formula**:
+    $$
+    Ex[V S (x)] = R(S),
+    $$
+
+    Args:
+        R (float): Input parameter `R`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(R)
+
+
+def expr_e_x_v_s_x_form_8(R: str = "R") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_e_x_v_s_x_form_8`."""
+    return (pl.col(R))
+
+
 def calc_val_2610_01307_form_6(r: float, theta: float, x: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_01307.
 
@@ -12256,6 +14430,39 @@ def calc_val_2610_01307_form_7(a: float) -> float:
 def expr_val_2610_01307_form_7(a: str = "a") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_01307_form_7`."""
     return (pl.col(a))
+
+
+def calc_val_2610_01307_form_8(T: float, a: float, g: float, m: float, n: float, u: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    |a[n] + g| \le  Tmax mu , \forall n \in  N, (40j)
+    $$
+
+    Args:
+        T (float): Input parameter `T`.
+        a (float): Input parameter `a`.
+        g (float): Input parameter `g`.
+        m (float): Input parameter `m`.
+        n (float): Input parameter `n`.
+        u (float): Input parameter `u`.
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((abs(a*n + g) <= T*a*m**2*u*x))
+
+
+def expr_val_2610_01307_form_8(T: str = "T", a: str = "a", g: str = "g", m: str = "m", n: str = "n", u: str = "u", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_8`."""
+    return ((abs(pl.col(a)*pl.col(n) + pl.col(g)) <= pl.col(T)*pl.col(a)*pl.col(m)**2*pl.col(u)*pl.col(x)))
 
 
 def calc_val_2402_01914_2402_0(L: float) -> float:
@@ -12394,6 +14601,38 @@ def expr_l_du_r_form_8(L: str = "L") -> pl.Expr:
     return (pl.col(L)**2)
 
 
+def calc_val_2610_01307_form_9(delta: float, n: float, o: float, omega: float, r: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    |\omega [n+1]-\omega [n]|2 \le \delta rot, \forall n\in N \{N}, (40l)
+    $$
+
+    Args:
+        delta (float): Input parameter `delta`.
+        n (float): Input parameter `n`.
+        o (float): Input parameter `o`.
+        omega (float): Input parameter `omega`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((2*abs(n*omega - omega*(n + 1)) <= delta*o*r*t))
+
+
+def expr_val_2610_01307_form_9(delta: str = "delta", n: str = "n", o: str = "o", omega: str = "omega", r: str = "r", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_9`."""
+    return ((2*abs(pl.col(n)*pl.col(omega) - pl.col(omega)*(pl.col(n) + 1)) <= pl.col(delta)*pl.col(o)*pl.col(r)*pl.col(t)))
+
+
 def calc_val_2512_13304_form_9(T: float, x: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_13304.
 
@@ -12420,6 +14659,37 @@ def calc_val_2512_13304_form_9(T: float, x: float) -> float:
 def expr_val_2512_13304_form_9(T: str = "T", x: str = "x") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2512_13304_form_9`."""
     return (pl.col(T)*pl.col(x))
+
+
+def calc_lambda_mu_nu_beta_form_9(Gamma: float, beta: float, delta: float, i: float, j: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    \Lambda \mu \nu (\beta ) =  \Gamma  -\Gamma \beta  -\Gamma \beta  \delta ij + (\Gamma - 1)\beta i\beta j/\beta  2
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        beta (float): Input parameter `beta`.
+        delta (float): Input parameter `delta`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((-Gamma*beta*(delta*(i*j)) + (-Gamma*beta + Gamma)) + ((beta*(i*(beta*j)))*(Gamma - 1))/((2*beta)))
+
+
+def expr_lambda_mu_nu_beta_form_9(Gamma: str = "Gamma", beta: str = "beta", delta: str = "delta", i: str = "i", j: str = "j") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_lambda_mu_nu_beta_form_9`."""
+    return ((-pl.col(Gamma)*pl.col(beta)*(pl.col(delta)*(pl.col(i)*pl.col(j))) + (-pl.col(Gamma)*pl.col(beta) + pl.col(Gamma))) + ((pl.col(beta)*(pl.col(i)*(pl.col(beta)*pl.col(j))))*(pl.col(Gamma) - 1))/((2*pl.col(beta))))
 
 
 def calc_val_2610_01307_form_a(a: float) -> float:
@@ -13269,6 +15539,33 @@ def expr_beta_form_c(i: str = "i", l: str = "l", m: str = "m", n: str = "n") -> 
     return (pl.col(l)*(pl.col(i)*(pl.col(m)*pl.col(n))))
 
 
+def calc_psi_r_a_da_n_2602_2(C: float) -> float:
+    r"""Compute mathematical metric extracted from 2602_23233.
+
+    **Source**:
+    - Title: The Counterfactual Combine: A Causal Framework for Player Evaluation (2026)
+    - Authors: Herbert P. Susmann, Antonio D'Alessandro
+    - Citation Key: `2602_23233`
+
+    **KaTeX Formula**:
+    $$
+    \psi rand a = 1 |C| \sum  i\in C 1m m\sum  a'=1 \mu * (a' , Xi)
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(abs(C))
+
+
+def expr_psi_r_a_da_n_2602_2(C: str = "C") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_psi_r_a_da_n_2602_2`."""
+    return (abs(pl.col(C)))
+
+
 def calc_p_m_g_o_d_o_form_6(A: float, M: float, N: float, U: float, alpha: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_26031.
 
@@ -13396,7 +15693,7 @@ def expr_val_2_alpha_e_form_4(k: str = "k", m: str = "m", n: str = "n", o: str =
     return (21*pl.col(k)*pl.col(m)*pl.col(n)**2*pl.col(o)*pl.col(t)*pl.col(w) + 45*pl.col(t) + 1)
 
 
-def calc_r_s_r_s_m_i_x_form_a(eta: float) -> float:
+def calc_r_s_r_s_m_i_x_form_a(E: float, N: float, S: float, eta: float, h: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
     **Source**:
@@ -13410,17 +15707,54 @@ def calc_r_s_r_s_m_i_x_form_a(eta: float) -> float:
     $$
 
     Args:
+        E (float): Input parameter `E`.
+        N (float): Input parameter `N`.
+        S (float): Input parameter `S`.
         eta (float): Input parameter `eta`.
+        h (float): Input parameter `h`.
+        sim (float): Input parameter `sim`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(eta)
+    return float(eta*(builtins.sum(E*(h*(t*(S*sim))) for t in range(1, N+1))))
 
 
-def expr_r_s_r_s_m_i_x_form_a(eta: str = "eta") -> pl.Expr:
+def expr_r_s_r_s_m_i_x_form_a(E: str = "E", N: str = "N", S: str = "S", eta: str = "eta", h: str = "h", sim: str = "sim") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_s_r_s_m_i_x_form_a`."""
-    return (pl.col(eta))
+    return (pl.col(eta)*(builtins.sum(pl.col(E)*(pl.col(h)*(t*(pl.col(S)*pl.col(sim)))) for t in range(1, pl.col(N)+1))))
+
+
+def calc_b_h_phi_form_d(B: float, Omega: float, eta: float, r: float, s: float, z: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2309_15318.
+
+    **Source**:
+    - Title: A Global 3-D Simulation of Magnetospheric Accretion: I. Magnetically Disrupted Disks and Surface Accretion (2023)
+    - Authors: Zhaohuan Zhu, James M. Stone, Nuria Calvet
+    - Citation Key: `arxiv_2309_15318`
+
+    **KaTeX Formula**:
+    $$
+    B\phi  H = (\Omega -\Omega s)rBz \eta
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+        Omega (float): Input parameter `Omega`.
+        eta (float): Input parameter `eta`.
+        r (float): Input parameter `r`.
+        s (float): Input parameter `s`.
+        z (float): Input parameter `z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(B*eta*r*z*(-Omega*s + Omega))
+
+
+def expr_b_h_phi_form_d(B: str = "B", Omega: str = "Omega", eta: str = "eta", r: str = "r", s: str = "s", z: str = "z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_b_h_phi_form_d`."""
+    return (pl.col(B)*pl.col(eta)*pl.col(r)*pl.col(z)*(-pl.col(Omega)*pl.col(s) + pl.col(Omega)))
 
 
 def calc_delta_r_beta_form_7(g: float, pi: float) -> float:
@@ -13449,6 +15783,36 @@ def calc_delta_r_beta_form_7(g: float, pi: float) -> float:
 def expr_delta_r_beta_form_7(g: str = "g", pi: str = "pi") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_delta_r_beta_form_7`."""
     return (pl.col(g)*pl.col(pi))
+
+
+def calc_brown_2008_arxiv_brown_(G: float, i: float, sim: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from brown_2008_arxiv.
+
+    **Source**:
+    - Title: In-season prediction of batting averages: a field test of empirical Bayes and Bayes methodologies (2008)
+    - Authors: Brown, L. D.
+    - Citation Key: `brown_2008_arxiv`
+
+    **KaTeX Formula**:
+    $$
+    \theta i \sim  G, independent
+    $$
+
+    Args:
+        G (float): Input parameter `G`.
+        i (float): Input parameter `i`.
+        sim (float): Input parameter `sim`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(G*i*sim*theta)
+
+
+def expr_brown_2008_arxiv_brown_(G: str = "G", i: str = "i", sim: str = "sim", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_brown_2008_arxiv_brown_`."""
+    return (pl.col(G)*pl.col(i)*pl.col(sim)*pl.col(theta))
 
 
 def calc_a_l_r_2_form_b(L: float, R: float, phi: float, psi: float, theta: float) -> float:
@@ -13480,6 +15844,34 @@ def calc_a_l_r_2_form_b(L: float, R: float, phi: float, psi: float, theta: float
 def expr_a_l_r_2_form_b(L: str = "L", R: str = "R", phi: str = "phi", psi: str = "psi", theta: str = "theta") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_l_r_2_form_b`."""
     return (math.sin(pl.col(L)*pl.col(R)*pl.col(phi))*math.sin(pl.col(L)*pl.col(R)*pl.col(psi))**2*math.sin(pl.col(L)*pl.col(R)*pl.col(theta))*math.cos(pl.col(L)*pl.col(R)*pl.col(theta)) - math.sin(pl.col(L)*pl.col(R)*pl.col(phi))*math.cos(pl.col(L)*pl.col(R)*pl.col(psi)) + math.sin(pl.col(L)*pl.col(R)*pl.col(psi))*math.sin(pl.col(L)*pl.col(R)*pl.col(theta))*math.cos(pl.col(L)*pl.col(R)*pl.col(phi))**2*math.cos(pl.col(L)*pl.col(R)*pl.col(psi)))
+
+
+def calc_val_1701_05976_form_1(q: float, tau: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1701_05976.
+
+    **Source**:
+    - Title: How often does the best team win? A unified approach to understanding randomness in North American sport (2017)
+    - Authors: Michael J. Lopez, Gregory J. Matthews, Benjamin S. Baumer
+    - Citation Key: `arxiv_1701_05976`
+
+    **KaTeX Formula**:
+    $$
+    \tau  2 q,game \sim  Uniform(0, 1000) \alpha q0 \sim  N(0, 10000) \tau  2 q,season \sim  Uniform(0, 1000) \gamma q,season \sim  Uniform(0, 1) \tau  2 q,week \sim  Uniform(0, 1000) \gamma q,week \sim  Uniform(0, 1.5) \tau  2 q,\alpha  \sim  Uniform(0, 1000)
+    $$
+
+    Args:
+        q (float): Input parameter `q`.
+        tau (float): Input parameter `tau`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*q*tau)
+
+
+def expr_val_1701_05976_form_1(q: str = "q", tau: str = "tau") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1701_05976_form_1`."""
+    return (2*pl.col(q)*pl.col(tau))
 
 
 def calc_u_p_e_a_k_form_3(a: float, e: float, f: float, l: float, p: float, x: float, z: float) -> float:
@@ -13627,6 +16019,40 @@ def calc_v_i_theta_alpha_0_form_e(i: float, v: float) -> float:
 def expr_v_i_theta_alpha_0_form_e(i: str = "i", v: str = "v") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_v_i_theta_alpha_0_form_e`."""
     return (pl.col(i)*pl.col(v))
+
+
+def calc_val_2309_15318_form_e(R: float, a: float, alpha: float, i: float, n: float, sim: float, t: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2309_15318.
+
+    **Source**:
+    - Title: A Global 3-D Simulation of Magnetospheric Accretion: I. Magnetically Disrupted Disks and Surface Accretion (2023)
+    - Authors: Zhaohuan Zhu, James M. Stone, Nuria Calvet
+    - Citation Key: `arxiv_2309_15318`
+
+    **KaTeX Formula**:
+    $$
+    \alpha int \sim  0.1 \times  (R/au)-1.5
+    $$
+
+    Args:
+        R (float): Input parameter `R`.
+        a (float): Input parameter `a`.
+        alpha (float): Input parameter `alpha`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        sim (float): Input parameter `sim`.
+        t (float): Input parameter `t`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(0.1*R*alpha*i*n*sim*t/(a*u) - 1.5)
+
+
+def expr_val_2309_15318_form_e(R: str = "R", a: str = "a", alpha: str = "alpha", i: str = "i", n: str = "n", sim: str = "sim", t: str = "t", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2309_15318_form_e`."""
+    return (0.1*pl.col(R)*pl.col(alpha)*pl.col(i)*pl.col(n)*pl.col(sim)*pl.col(t)/(pl.col(a)*pl.col(u)) - 1.5)
 
 
 def calc_p_i_form_e(P: float, R: float, c: float, i: float, k: float, m: float, tau: float) -> float:
@@ -13998,6 +16424,42 @@ def expr_f_o_r_a_c_l_e_s_257_form_3(U: str = "U", a: str = "a", c: str = "c", dp
     return (pl.col(dphi)*pl.col(f)**2*pl.col(w)*(pl.col(U)*pl.col(a)*pl.col(c)*pl.col(e)*pl.col(l)*pl.col(o)*pl.col(r)*pl.col(s) + 257 + 1/pl.col(s)))
 
 
+def calc_openalex_oneill2010_w2081091143_form_c(L: float, approx: float, e: float, g: float, j: float, p: float, r: float, rho: float, s: float, v: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_oneill2010_w2081091143.
+
+    **Source**:
+    - Title: THREE-DIMENSIONAL SIMULATIONS OF BI-DIRECTED MAGNETOHYDRODYNAMIC JETS INTERACTING WITH CLUSTER ENVIRONMENTS (2010)
+    - Authors: S. M. O'Neill, T. W. Jones
+    - Citation Key: `openalex_oneill2010_w2081091143`
+
+    **KaTeX Formula**:
+    $$
+    Lj \approx  2.12 \times  10 45 [ 1.90 ( \rho  \rho j )( v vj )3 + ( p pj )( v vj )] erg s -1
+    $$
+
+    Args:
+        L (float): Input parameter `L`.
+        approx (float): Input parameter `approx`.
+        e (float): Input parameter `e`.
+        g (float): Input parameter `g`.
+        j (float): Input parameter `j`.
+        p (float): Input parameter `p`.
+        r (float): Input parameter `r`.
+        rho (float): Input parameter `rho`.
+        s (float): Input parameter `s`.
+        v (float): Input parameter `v`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2215.4*L*approx*e*g*j*r*s*(j**2*p**2*v**2 + 5.7*j**2*rho**2*v**2) - 1)
+
+
+def expr_openalex_oneill2010_w2081091143_form_c(L: str = "L", approx: str = "approx", e: str = "e", g: str = "g", j: str = "j", p: str = "p", r: str = "r", rho: str = "rho", s: str = "s", v: str = "v") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_oneill2010_w2081091143_form_c`."""
+    return (2215.4*pl.col(L)*pl.col(approx)*pl.col(e)*pl.col(g)*pl.col(j)*pl.col(r)*pl.col(s)*(pl.col(j)**2*pl.col(p)**2*pl.col(v)**2 + 5.7*pl.col(j)**2*pl.col(rho)**2*pl.col(v)**2) - 1)
+
+
 def calc_l_f_d_w_form_4(B: float, df: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_38730.
 
@@ -14024,33 +16486,6 @@ def calc_l_f_d_w_form_4(B: float, df: float) -> float:
 def expr_l_f_d_w_form_4(B: str = "B", df: str = "df") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_f_d_w_form_4`."""
     return (pl.col(B)**2*pl.col(df))
-
-
-def calc_e_a_n_form_4(Z: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29685.
-
-    **Source**:
-    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
-    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
-    - Citation Key: `arxiv_2610_29685`
-
-    **KaTeX Formula**:
-    $$
-    E(An) = Z -1 \int  \prod  i dAi \sqrt 2\pi \sigma 2A  \exp - \sum  j A2 j 2\sigma 2A  An (34) \int  (\prod  a dka 2\pi  ) \exp i \sum  b kb(yb - \sum  l AlTl ( \theta b)) - \sigma 2A 2 \sum  ab ka\Delta abkb  , Cov(Am,An) = Z -1 \int  \prod  i dAi \sqrt 2\pi \sigma 2A  \exp - \sum  j A2 j 2\sigma 2A - \sigma 2A 2 \sum  ab ka\Delta abkb  AmAn \int  \prod  a dka 2\pi  \exp i \sum  b kb(yb - \sum  l AlTl ( \theta b))
-    $$
-
-    Args:
-        Z (float): Input parameter `Z`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(Z - 1)
-
-
-def expr_e_a_n_form_4(Z: str = "Z") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_e_a_n_form_4`."""
-    return (pl.col(Z) - 1)
 
 
 def calc_c_g_form_4(C: float) -> float:
@@ -14168,6 +16603,35 @@ def calc_g_r_form_f(G: float, dm: float, r: float, rho: float, s: float) -> floa
 def expr_g_r_form_f(G: str = "G", dm: str = "dm", r: str = "r", rho: str = "rho", s: str = "s") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_g_r_form_f`."""
     return (-12*math.pi*pl.col(G)*pl.col(dm)*pl.col(r)**2*pl.col(rho)*pl.col(s)*(2*pl.col(dm)*pl.col(r) - 2*pl.col(r)**2 + 2*(pl.col(dm).log()*pl.col(r)**2 + 1)))
+
+
+def calc_b_form_7(B: float, phi: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_oneill2010_w2081091143.
+
+    **Source**:
+    - Title: THREE-DIMENSIONAL SIMULATIONS OF BI-DIRECTED MAGNETOHYDRODYNAMIC JETS INTERACTING WITH CLUSTER ENVIRONMENTS (2010)
+    - Authors: S. M. O'Neill, T. W. Jones
+    - Citation Key: `openalex_oneill2010_w2081091143`
+
+    **KaTeX Formula**:
+    $$
+    B = B\theta   \theta  + B\phi   \phi
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+        phi (float): Input parameter `phi`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(B*phi**2 + B*theta**2)
+
+
+def expr_b_form_7(B: str = "B", phi: str = "phi", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_b_form_7`."""
+    return (pl.col(B)*pl.col(phi)**2 + pl.col(B)*pl.col(theta)**2)
 
 
 def calc_b_theta_form_5(F: float, m: float, phi: float, r: float, theta: float) -> float:
@@ -14556,6 +17020,36 @@ def expr_f_s_257_form_8(U: str = "U", c: str = "c", dphi: str = "dphi", f: str =
     return (pl.col(U)*pl.col(c)*pl.col(dphi)*pl.col(f)**2*pl.col(s)*pl.col(t)*pl.col(w)*pl.col(x))
 
 
+def calc_i_pi_form_9(i: float, n: float, p: float, z: float) -> float:
+    r"""Compute mathematical metric extracted from shin_family_2024_cambridge.
+
+    **Source**:
+    - Title: shin_family_2024
+    - Authors: Scientific Literature
+    - Citation Key: `shin_family_2024_cambridge`
+
+    **KaTeX Formula**:
+    $$
+    \pi i = \sqrt{zpi} + (1 - z)p2i n\sum  j=1 \sqrt{zpj} + (1 - z)p2j
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        p (float): Input parameter `p`.
+        z (float): Input parameter `z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*i*n*p*(1 - z) + math.sqrt(i*p*z))
+
+
+def expr_i_pi_form_9(i: str = "i", n: str = "n", p: str = "p", z: str = "z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_i_pi_form_9`."""
+    return (2*pl.col(i)*pl.col(n)*pl.col(p)*(1 - pl.col(z)) + (pl.col(i).sqrt()*pl.col(p)*pl.col(z)))
+
+
 def calc_j_a_o_p_d_theta_form_9(H: float, R: float, S: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
@@ -14735,6 +17229,34 @@ def calc_i_p_form_a(beta: float, i: float, pi: float, z: float) -> float:
 def expr_i_p_form_a(beta: str = "beta", i: str = "i", pi: str = "pi", z: str = "z") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_i_p_form_a`."""
     return (-pl.col(z)*pl.col(i)*(2*(1 - pl.col(i)*pl.col(z))) + (pl.col(i)*(2*pl.col(z).sqrt()) + 4*((pl.col(pi)*(2*(pl.col(beta)*pl.col(i))))*(1 - pl.col(i)*pl.col(z)))))
+
+
+def calc_q_i_j_form_e(P: float, i: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+
+    **Source**:
+    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
+    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
+    - Citation Key: `arxiv_2610_25605`
+
+    **KaTeX Formula**:
+    $$
+    Qi(j) = Pi(j).
+    $$
+
+    Args:
+        P (float): Input parameter `P`.
+        i (float): Input parameter `i`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(P*i)
+
+
+def expr_q_i_j_form_e(P: str = "P", i: str = "i") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_q_i_j_form_e`."""
+    return (pl.col(P)*pl.col(i))
 
 
 def calc_delta_x_1_brown_(mu: float) -> float:
@@ -14962,6 +17484,60 @@ def calc_openalex_bendtsen2017_w2617761836_form_c(p: float) -> float:
 def expr_openalex_bendtsen2017_w2617761836_form_c(p: str = "p") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_openalex_bendtsen2017_w2617761836_form_c`."""
     return (pl.col(p))
+
+
+def calc_u_b_beta_j_form_1(n: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_bendtsen2017_w2617761836.
+
+    **Source**:
+    - Title: Regimes in baseball players’ career data (2017)
+    - Authors: Marcus Bendtsen
+    - Citation Key: `openalex_bendtsen2017_w2617761836`
+
+    **KaTeX Formula**:
+    $$
+    ub(\beta  * j ) = { n}
+    $$
+
+    Args:
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(n)
+
+
+def expr_u_b_beta_j_form_1(n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_u_b_beta_j_form_1`."""
+    return (pl.col(n))
+
+
+def calc_abs_y_0_form_b(J: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    |Y0| = J\sum  j=1 ||| X0|||j \le  J\sum  j=1 ( c2 )j \le  c < 1
+    $$
+
+    Args:
+        J (float): Input parameter `J`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(J)
+
+
+def expr_abs_y_0_form_b(J: str = "J") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_abs_y_0_form_b`."""
+    return (pl.col(J))
 
 
 def calc_x_form_b(A: float, B: float, a: float, r: float, x: float, y: float) -> float:
@@ -15220,6 +17796,33 @@ def expr_t_23_form_e(l: str = "l", theta: str = "theta") -> pl.Expr:
     return (-math.sin(3*pl.col(theta))*math.sin(300100001*pl.col(theta))*math.sin(90*pl.col(l)*pl.col(theta))*math.cos(3*pl.col(theta))*math.cos(90*pl.col(l)*pl.col(theta)) + math.cos(3*pl.col(theta)))
 
 
+def calc_false_form_e(emptyset: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_38730.
+
+    **Source**:
+    - Title: Bounded Channel-Adaptive Spectral Learning for Forward-Consistent Inverse Flapping-Wing Aerodynamics (2026)
+    - Authors: Haichuan Li
+    - Citation Key: `arxiv_2609_38730`
+
+    **KaTeX Formula**:
+    $$
+    Etrain \cap  Eval = Etrain \cap  Etest = Eval \cap  Etest = \emptyset
+    $$
+
+    Args:
+        emptyset (float): Input parameter `emptyset`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(emptyset)
+
+
+def expr_false_form_e(emptyset: str = "emptyset") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_false_form_e`."""
+    return (pl.col(emptyset))
+
+
 def calc_val_2609_38730_form_e(a: float, h: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_38730.
 
@@ -15367,6 +17970,101 @@ def expr_p_i_j_j_pi_bt_sec(a: str = "a", f: str = "f", i: str = "i", j: str = "j
     return (math.pi*pl.col(a)*pl.col(f)*pl.col(i)**3*pl.col(j)*pl.col(l)**2*pl.col(o)*pl.col(p)*pl.col(r))
 
 
+def calc_openalex_higgs2021_w3179134135_form_3(i: float, j: float, y: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_higgs2021_w3179134135.
+
+    **Source**:
+    - Title: Bayesian analysis of home advantage in North American professional sports before and during COVID-19 (2021)
+    - Authors: Nico Higgs, Ian Stavness
+    - Citation Key: `openalex_higgs2021_w3179134135`
+
+    **KaTeX Formula**:
+    $$
+    (1) yij |\mu ij , \alpha ij \sim  NegativeBinomial(\mu ij , \alpha ij )
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        y (float): Input parameter `y`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(i*j*y)
+
+
+def expr_openalex_higgs2021_w3179134135_form_3(i: str = "i", j: str = "j", y: str = "y") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_higgs2021_w3179134135_form_3`."""
+    return (pl.col(i)*pl.col(j)*pl.col(y))
+
+
+def calc_openalex_higgs2021_w3179134135_form_0(N: float, gamma: float, p: float, s: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_higgs2021_w3179134135.
+
+    **Source**:
+    - Title: Bayesian analysis of home advantage in North American professional sports before and during COVID-19 (2021)
+    - Authors: Nico Higgs, Ian Stavness
+    - Citation Key: `openalex_higgs2021_w3179134135`
+
+    **KaTeX Formula**:
+    $$
+    (4) \gamma sp \sim  N(\theta  * , \sigma  2* ) \beta sp \sim  N(0, 1) afii9838 \sim  Uniform(0, 1000) \omega s \sim  N(0, \sigma s\omega ) \delta s \sim  N(0, \sigma s\delta ) \sigma s\omega  \sim  HalfNormal(1) \sigma s\delta  \sim  HalfNormal
+    $$
+
+    Args:
+        N (float): Input parameter `N`.
+        gamma (float): Input parameter `gamma`.
+        p (float): Input parameter `p`.
+        s (float): Input parameter `s`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(4*(gamma*(s*(p*(N*sim)))))
+
+
+def expr_openalex_higgs2021_w3179134135_form_0(N: str = "N", gamma: str = "gamma", p: str = "p", s: str = "s", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_higgs2021_w3179134135_form_0`."""
+    return (4*(pl.col(gamma)*(pl.col(s)*(pl.col(p)*(pl.col(N)*pl.col(sim))))))
+
+
+def calc_r_e_w_a_d_r_form_b(Gamma: float, a: float, e: float, h: float, p: float, r: float, s: float, sigma: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2601_06439.
+
+    **Source**:
+    - Title: Deep Reinforcement Learning based Control Design for Aircraft Recovery from Loss-of-Control Scenario (2026)
+    - Authors: Imran Sayyed, Aayush Konar, Nandan Kumar Sinha
+    - Citation Key: `arxiv_2601_06439`
+
+    **KaTeX Formula**:
+    $$
+    Reward = rphase1 + rphase2 + \Gamma \sigma t+1 - \sigma t
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        a (float): Input parameter `a`.
+        e (float): Input parameter `e`.
+        h (float): Input parameter `h`.
+        p (float): Input parameter `p`.
+        r (float): Input parameter `r`.
+        s (float): Input parameter `s`.
+        sigma (float): Input parameter `sigma`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Gamma*sigma*t + 3*a*e*h*p*r*s - sigma*t + 1)
+
+
+def expr_r_e_w_a_d_r_form_b(Gamma: str = "Gamma", a: str = "a", e: str = "e", h: str = "h", p: str = "p", r: str = "r", s: str = "s", sigma: str = "sigma", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_r_e_w_a_d_r_form_b`."""
+    return (pl.col(Gamma)*pl.col(sigma)*pl.col(t) + 3*pl.col(a)*pl.col(e)*pl.col(h)*pl.col(p)*pl.col(r)*pl.col(s) - pl.col(sigma)*pl.col(t) + 1)
+
+
 def calc_openalex_truong2019_w3005880794_form_4(a: float, l: float, m: float, o: float, t: float, u: float) -> float:
     r"""Compute mathematical metric extracted from openalex_truong2019_w3005880794.
 
@@ -15399,6 +18097,37 @@ def expr_openalex_truong2019_w3005880794_form_4(a: str = "a", l: str = "l", m: s
     return (pl.col(a)*pl.col(l)*pl.col(m)*pl.col(o)*pl.col(t)*pl.col(u))
 
 
+def calc_val_2309_15318_form_b(c: float, n: float, o: float, s: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2309_15318.
+
+    **Source**:
+    - Title: A Global 3-D Simulation of Magnetospheric Accretion: I. Magnetically Disrupted Disks and Surface Accretion (2023)
+    - Authors: Zhaohuan Zhu, James M. Stone, Nuria Calvet
+    - Citation Key: `arxiv_2309_15318`
+
+    **KaTeX Formula**:
+    $$
+    \int  R (\rho vv\phi  - B_{B}\phi ) \cdot  dS = const
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+        n (float): Input parameter `n`.
+        o (float): Input parameter `o`.
+        s (float): Input parameter `s`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(c*(o*(n*(s*t))))
+
+
+def expr_val_2309_15318_form_b(c: str = "c", n: str = "n", o: str = "o", s: str = "s", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2309_15318_form_b`."""
+    return (pl.col(c)*(pl.col(o)*(pl.col(n)*(pl.col(s)*pl.col(t)))))
+
+
 def calc_l_p_eta_bt_sec(n: float, p: float) -> float:
     r"""Compute mathematical metric extracted from bt_secondary_many_routes_2023.
 
@@ -15425,6 +18154,36 @@ def calc_l_p_eta_bt_sec(n: float, p: float) -> float:
 def expr_l_p_eta_bt_sec(n: str = "n", p: str = "p") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_p_eta_bt_sec`."""
     return (-pl.col(n) + pl.col(p))
+
+
+def calc_partial_partial_t_l_t_r_t_form_3(Gamma: float, beta: float, c: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    \partial  \partial t LT (r, t) = -\beta c\Gamma \sin(2\theta )
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        beta (float): Input parameter `beta`.
+        c (float): Input parameter `c`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-beta*c*(Gamma*math.sin(2*theta)))
+
+
+def expr_partial_partial_t_l_t_r_t_form_3(Gamma: str = "Gamma", beta: str = "beta", c: str = "c", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_partial_t_l_t_r_t_form_3`."""
+    return (-pl.col(beta)*pl.col(c)*(pl.col(Gamma)*math.sin(2*pl.col(theta))))
 
 
 def calc_r_diebol(P: float, p: float) -> float:
@@ -15600,6 +18359,60 @@ def calc_partial_partial_p_i_j_s_p_bt_sec(i: float, j: float, n: float, p: float
 def expr_partial_partial_p_i_j_s_p_bt_sec(i: str = "i", j: str = "j", n: str = "n", p: str = "p", partial: str = "partial") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_partial_partial_p_i_j_s_p_bt_sec`."""
     return (pl.col(i)*pl.col(j)*pl.col(n)*pl.col(p)*pl.col(partial)**2)
+
+
+def calc_val_1_b_c_e_y_y_form_b(N: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_kang2025_w4409349184.
+
+    **Source**:
+    - Title: Data-driven approaches for predicting Tommy John Surgery risk in major league baseball pitchers (2025)
+    - Authors: Bosuk Kang, Minsu Park, Angel Pasqual del Pobil et al.
+    - Citation Key: `openalex_kang2025_w4409349184`
+
+    **KaTeX Formula**:
+    $$
+    (1) BCE(y, y) = - 1 N N\sum  i=1 (yi \log(yi) + (1 - yi) \log(1 - yi))
+    $$
+
+    Args:
+        N (float): Input parameter `N`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-N*N)
+
+
+def expr_val_1_b_c_e_y_y_form_b(N: str = "N") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1_b_c_e_y_y_form_b`."""
+    return (-pl.col(N)*pl.col(N))
+
+
+def calc_openalex_kang2025_w4409349184_form_4(N: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_kang2025_w4409349184.
+
+    **Source**:
+    - Title: Data-driven approaches for predicting Tommy John Surgery risk in major league baseball pitchers (2025)
+    - Authors: Bosuk Kang, Minsu Park, Angel Pasqual del Pobil et al.
+    - Citation Key: `openalex_kang2025_w4409349184`
+
+    **KaTeX Formula**:
+    $$
+    (2) Weighted BCE(y, y) = - 1 N N\sum  i=1 (w1yi \log(yi) + (1 - yi) \log(1 - yi))
+    $$
+
+    Args:
+        N (float): Input parameter `N`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-N*N)
+
+
+def expr_openalex_kang2025_w4409349184_form_4(N: str = "N") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_kang2025_w4409349184_form_4`."""
+    return (-pl.col(N)*pl.col(N))
 
 
 def calc_val_3_m_s_e_y_y_form_5(N: float) -> float:
@@ -15826,6 +18639,33 @@ def expr_r_p_w_form_d(G: str = "G", R_A: str = "R_A", R_S: str = "R_S") -> pl.Ex
     return (10*((pl.col(R_A).sqrt() + pl.col(R_S))/pl.col(G)))
 
 
+def calc_fangraphs_wraa_glossary_form_e(wOBA: float) -> float:
+    r"""Compute mathematical metric extracted from fangraphs_wraa_glossary.
+
+    **Source**:
+    - Title: FanGraphs Sabermetric Library: Weighted Runs Above Average (wRAA) (2026)
+    - Authors: FanGraphs
+    - Citation Key: `fangraphs_wraa_glossary`
+
+    **KaTeX Formula**:
+    $$
+    w_{OBA}
+    $$
+
+    Args:
+        wOBA (float): Input parameter `wOBA`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(wOBA)
+
+
+def expr_fangraphs_wraa_glossary_form_e(wOBA: str = "wOBA") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_fangraphs_wraa_glossary_form_e`."""
+    return (pl.col(wOBA))
+
+
 def calc_delta_alpha_alpha_form_e(C: float, D: float, S: float, T: float, V: float, alpha: float, e: float, m: float, omega: float, q: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1205_2071.
 
@@ -15922,34 +18762,72 @@ def expr_egidi_2018_arxiv1802_egidi_(a: str = "a", t: str = "t") -> pl.Expr:
     return (pl.col(a)*pl.col(t)**3)
 
 
-def calc_val_2610_27416_form_f(L: float, T: float, epsilon: float, sigma: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+def calc_s_t_form_e(d: float, drho: float, g: float, m: float, nu: float, r: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
 
     **Source**:
-    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
-    - Authors: Koichi Miyamoto
-    - Citation Key: `arxiv_2610_27416`
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
 
     **KaTeX Formula**:
     $$
-    \sqrt{L} 8\sigma 2T \epsilon
+    ts = md 6\pi rd\rho g\nu  \sim  104 r2d,1R1/4 1 \sim  4 tspindown
     $$
 
     Args:
-        L (float): Input parameter `L`.
-        T (float): Input parameter `T`.
-        epsilon (float): Input parameter `epsilon`.
-        sigma (float): Input parameter `sigma`.
+        d (float): Input parameter `d`.
+        drho (float): Input parameter `drho`.
+        g (float): Input parameter `g`.
+        m (float): Input parameter `m`.
+        nu (float): Input parameter `nu`.
+        r (float): Input parameter `r`.
+        sim (float): Input parameter `sim`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(16*math.sqrt(L)*T*epsilon*sigma)
+    return float(1248*math.pi*d**2*drho*g*m*nu*r**2*sim)
 
 
-def expr_val_2610_27416_form_f(L: str = "L", T: str = "T", epsilon: str = "epsilon", sigma: str = "sigma") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_f`."""
-    return (16*(pl.col(L).sqrt())*pl.col(T)*pl.col(epsilon)*pl.col(sigma))
+def expr_s_t_form_e(d: str = "d", drho: str = "drho", g: str = "g", m: str = "m", nu: str = "nu", r: str = "r", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_s_t_form_e`."""
+    return (1248*math.pi*pl.col(d)**2*pl.col(drho)*pl.col(g)*pl.col(m)*pl.col(nu)*pl.col(r)**2*pl.col(sim))
+
+
+def calc_alpha_t_form_e(C: float, S: float, delta: float, gamma: float, i: float, n: float, o: float, s: float, xi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \alpha (t) = i*\gamma 0 + (\gamma 0+\delta 0)*(Cos\xi 2 + i*Sin\xi 2) + \delta 0*(Cos\xi 1 + i*Sin\xi 1)
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        S (float): Input parameter `S`.
+        delta (float): Input parameter `delta`.
+        gamma (float): Input parameter `gamma`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        o (float): Input parameter `o`.
+        s (float): Input parameter `s`.
+        xi (float): Input parameter `xi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((0*delta)*(C*(o*(s*(1*xi))) + i*(S*(i*(n*(1*xi))))) + (i*(0*gamma) + (0*delta + 0*gamma)*(C*(o*(s*(2*xi))) + i*(S*(i*(n*(2*xi)))))))
+
+
+def expr_alpha_t_form_e(C: str = "C", S: str = "S", delta: str = "delta", gamma: str = "gamma", i: str = "i", n: str = "n", o: str = "o", s: str = "s", xi: str = "xi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_alpha_t_form_e`."""
+    return ((0*pl.col(delta))*(pl.col(C)*(pl.col(o)*(pl.col(s)*(1*pl.col(xi)))) + pl.col(i)*(pl.col(S)*(pl.col(i)*(pl.col(n)*(1*pl.col(xi)))))) + (pl.col(i)*(0*pl.col(gamma)) + (0*pl.col(delta) + 0*pl.col(gamma))*(pl.col(C)*(pl.col(o)*(pl.col(s)*(2*pl.col(xi)))) + pl.col(i)*(pl.col(S)*(pl.col(i)*(pl.col(n)*(2*pl.col(xi))))))))
 
 
 def calc_miller2005_effa17(r: float) -> float:
@@ -15977,6 +18855,36 @@ def calc_miller2005_effa17(r: float) -> float:
 def expr_miller2005_effa17(r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller2005_effa17`."""
     return (math.e*pl.col(r))
+
+
+def calc_v_e_x_i_t_form_f(e: float, q: float, v_b_a_t: float, v_p_i_t_c_h: float) -> float:
+    r"""Compute mathematical metric extracted from statcast_bat_tracking_glossary.
+
+    **Source**:
+    - Title: MLB Statcast 2.0: Bat Tracking Collision Physics and Swing Mechanics (2026)
+    - Authors: Tom Tango, MLB Advanced Media, David Kagan
+    - Citation Key: `statcast_bat_tracking_glossary`
+
+    **KaTeX Formula**:
+    $$
+    v_{exit} = q \cdot v_{pitch} + (1 + e) \cdot v_{bat}
+    $$
+
+    Args:
+        e (float): Input parameter `e`.
+        q (float): Input parameter `q`.
+        v_b_a_t (float): Input parameter `v_b_a_t`.
+        v_p_i_t_c_h (float): Input parameter `v_p_i_t_c_h`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(q*v_p*(i*(t*(c*h))) + v_b*(a*t)*(e + 1))
+
+
+def expr_v_e_x_i_t_form_f(e: str = "e", q: str = "q", v_b_a_t: str = "v_b_a_t", v_p_i_t_c_h: str = "v_p_i_t_c_h") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_v_e_x_i_t_form_f`."""
+    return (pl.col(q)*v_p*(i*(t*(c*h))) + v_b*(a*t)*(pl.col(e) + 1))
 
 
 def calc_val_2601_18774_form_1(D: float, e: float, n: float, p: float, r: float, u: float) -> float:
@@ -16099,6 +19007,35 @@ def expr_val_2608_06635_form_5(f: str = "f") -> pl.Expr:
     return (pl.col(f))
 
 
+def calc_partial_lambda_y_theta_form_1(C: float, Lambda: float, partial: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    \partial \Lambda Y ( \theta ) = \partial \Lambda C0( \theta ,  \theta a)B-1 ab yb (62) = { 1 \Lambda 3 | \theta  -  \theta a|2C0( \theta ,  \theta a)B-1 ab -C0( \theta ,  \theta a)(B-1 [ d d\Lambda  B] B-1 )ab} yb
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        Lambda (float): Input parameter `Lambda`.
+        partial (float): Input parameter `partial`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(partial*(Lambda*(0*C)))
+
+
+def expr_partial_lambda_y_theta_form_1(C: str = "C", Lambda: str = "Lambda", partial: str = "partial") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_lambda_y_theta_form_1`."""
+    return (pl.col(partial)*(pl.col(Lambda)*(0*pl.col(C))))
+
+
 def calc_q_s_m_y_form_1(T: float, gamma: float, h: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_17701.
 
@@ -16187,35 +19124,32 @@ def expr_val_2609_20558_form_1(p: str = "p", r: str = "r") -> pl.Expr:
     return (pl.col(p)*pl.col(r))
 
 
-def calc_n_f_d_f_a_i_l_form_2(N: float, a: float, f: float, i: float, l: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29142.
+def calc_delta_f_k_abs_theta_2_form_1(K: float, alpha: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
 
     **Source**:
-    - Title: State-Dependent Objective Coordination for End-to-End Balance and Navigation (2026)
-    - Authors: Xuhao Huang, Xitao Xu, Yuxin Zheng et al.
-    - Citation Key: `arxiv_2610_29142`
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
 
     **KaTeX Formula**:
     $$
-    NFDfail = 1 Nfail \sum  i\in Efail max(dT,i - dgoal , 0) max(d0,i - dgoal , \epsilon )
+    \delta fK (| \theta |2 ) = \alpha K,2| \theta |4 + \alpha K,3| \theta |6 + \alpha K,4| \theta |8 + \cdot  \cdot  \cdot
     $$
 
     Args:
-        N (float): Input parameter `N`.
-        a (float): Input parameter `a`.
-        f (float): Input parameter `f`.
-        i (float): Input parameter `i`.
-        l (float): Input parameter `l`.
+        K (float): Input parameter `K`.
+        alpha (float): Input parameter `alpha`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(1*(N*(f*(a*(i*l)))))
+    return float(K*alpha)
 
 
-def expr_n_f_d_f_a_i_l_form_2(N: str = "N", a: str = "a", f: str = "f", i: str = "i", l: str = "l") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_n_f_d_f_a_i_l_form_2`."""
-    return (1*(pl.col(N)*(pl.col(f)*(pl.col(a)*(pl.col(i)*pl.col(l))))))
+def expr_delta_f_k_abs_theta_2_form_1(K: str = "K", alpha: str = "alpha") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_f_k_abs_theta_2_form_1`."""
+    return (pl.col(K)*pl.col(alpha))
 
 
 def calc_alpha_c_form_2(alpha: float) -> float:
@@ -16453,6 +19387,34 @@ def expr_r_f_e_e_t_k_delta_q_form_5(L: str = "L", g: str = "g", o: str = "o") ->
     return (pl.col(L)*pl.col(g)*pl.col(o))
 
 
+def calc_val_2610_27416_form_5(C: float, epsilon: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    \epsilon C\sqrt r|C|F \le  \epsilon 3
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        epsilon (float): Input parameter `epsilon`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(C*epsilon)
+
+
+def expr_val_2610_27416_form_5(C: str = "C", epsilon: str = "epsilon") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_5`."""
+    return (pl.col(C)*pl.col(epsilon))
+
+
 def calc_r_t_form_6(a: float, b: float, e: float, f: float, l: float, n: float, r: float, s: float, t: float, v: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29142.
 
@@ -16542,6 +19504,35 @@ def calc_e_0_y_4_theta_form_6(A: float, sigma: float) -> float:
 def expr_e_0_y_4_theta_form_6(A: str = "A", sigma: str = "sigma") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_0_y_4_theta_form_6`."""
     return (12*pl.col(A)*pl.col(sigma))
+
+
+def calc_pi_i_j_emptyset_form_9(i: float, j: float, p: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_18361.
+
+    **Source**:
+    - Title: Adaptive Handling of Deadline Misses via Stochastic MPC (2026)
+    - Authors: Melanie Gallant, Paolo Pazzaglia, Christoph Mark et al.
+    - Citation Key: `arxiv_2610_18361`
+
+    **KaTeX Formula**:
+    $$
+    \pi ij(\emptyset ) =  pij
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        p (float): Input parameter `p`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(i*j*p)
+
+
+def expr_pi_i_j_emptyset_form_9(i: str = "i", j: str = "j", p: str = "p") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_pi_i_j_emptyset_form_9`."""
+    return (pl.col(i)*pl.col(j)*pl.col(p))
 
 
 def calc_v_mu_form_d(mu: float) -> float:
@@ -16799,6 +19790,35 @@ def expr_eta_m_form_8(C: str = "C", k: str = "k", m: str = "m") -> pl.Expr:
     return (2*pl.col(C)*pl.col(k)*pl.col(m)*abs(pl.col(k)))
 
 
+def calc_f_k_abs_theta_2_form_9(Lambda: float, e: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    fK (| \theta |2 ) = e-| \theta |2 /2\Lambda 2
+    $$
+
+    Args:
+        Lambda (float): Input parameter `Lambda`.
+        e (float): Input parameter `e`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(e - (2*abs(theta))/(2*(2*Lambda)))
+
+
+def expr_f_k_abs_theta_2_form_9(Lambda: str = "Lambda", e: str = "e", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_k_abs_theta_2_form_9`."""
+    return (pl.col(e) - (2*abs(pl.col(theta)))/(2*(2*pl.col(Lambda))))
+
+
 def calc_g_r_form_b(n: float, t: float, u: float, v: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_20558.
 
@@ -16912,6 +19932,64 @@ def calc_val_2609_02306_form_c(C: float) -> float:
 def expr_val_2609_02306_form_c(C: str = "C") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_02306_form_c`."""
     return (pl.col(C))
+
+
+def calc_y_theta_form_e(A: float, Lambda: float, N: float, e: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    Y ( \theta ) = e-| \theta |2 /2\Lambda 2 \sum  n An \sqrt n1!n2! \cdot  \cdot  \cdot  nNpars! ( \theta 1 \Lambda  )n1 ( \theta 2 \Lambda  )n2 \cdot  \cdot  \cdot  ( \theta N \Lambda  )nNpars , (18) Cov0(Y ( \theta a), Y ( \theta b)) = \sigma 2Ae-| \theta a- \theta b |2 /2\Lambda 2 , Var0(Y ( \theta )) = \sigma 2A
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        Lambda (float): Input parameter `Lambda`.
+        N (float): Input parameter `N`.
+        e (float): Input parameter `e`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(e - (2*abs(theta))/(2*(Lambda*(2*(builtins.sum(A*(n*((n*math.factorial(2))*math.factorial(math.sqrt(1*n)))) for n in range(1, N+1)))))))
+
+
+def expr_y_theta_form_e(A: str = "A", Lambda: str = "Lambda", N: str = "N", e: str = "e", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_y_theta_form_e`."""
+    return (pl.col(e) - (2*abs(pl.col(theta)))/(2*(pl.col(Lambda)*(2*(builtins.sum(pl.col(A)*(n*((n*math.factorial(2))*math.factorial(math.sqrt(1*n)))) for n in range(1, pl.col(N)+1)))))))
+
+
+def calc_val_2610_29685_form_e(dP: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    dP( A, \sigma A,\Lambda ) \sim  \prod  n dAn (2\pi \sigma 2A)1/2 e-A2n /2\sigma 2A Ntrain \prod  a=1 \delta [y( \theta a) - Y ( \theta a)]
+    $$
+
+    Args:
+        dP (float): Input parameter `dP`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(dP)
+
+
+def expr_val_2610_29685_form_e(dP: str = "dP") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_e`."""
+    return (pl.col(dP))
 
 
 def calc_miller2005_0ca92d(alpha: float, mu: float) -> float:
@@ -17237,6 +20315,34 @@ def expr_val_2608_27423_form_1(A: str = "A", B: str = "B", C: str = "C", D: str 
     return (pl.col(A)*pl.col(B)*pl.col(C)*pl.col(D))
 
 
+def calc_c_d_c_l_form_1(Delta: float, psi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_30305.
+
+    **Source**:
+    - Title: Exact turning invariants for projectile motion under quadratic drag and a vertical-axis Magnus force (2026)
+    - Authors: Pragyaan Gaur
+    - Citation Key: `arxiv_2609_30305`
+
+    **KaTeX Formula**:
+    $$
+    CD CL = \ln(|w0|/|wf |) \Delta \psi
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        psi (float): Input parameter `psi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.nan*Delta*psi)
+
+
+def expr_c_d_c_l_form_1(Delta: str = "Delta", psi: str = "psi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_c_d_c_l_form_1`."""
+    return (math.nan*pl.col(Delta)*pl.col(psi))
+
+
 def calc_f_alpha_s_form_d(alpha: float, s: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2602_19513.
 
@@ -17317,6 +20423,36 @@ def calc_miller_2005_pythag_derivation_form_2(r: float) -> float:
 def expr_miller_2005_pythag_derivation_form_2(r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_miller_2005_pythag_derivation_form_2`."""
     return (math.e*pl.col(r))
+
+
+def calc_val_2610_29685_form_2(a: float, b: float, equiv: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    \theta  \equiv  \theta a + \theta b 2 , (81) \Delta \theta  \equiv  \theta a - \theta b 2 , \theta + \equiv  \theta max,i -  \theta , \theta - \equiv  -\theta max,i -  \theta , p \equiv  1 2\theta max,i e-\gamma \Delta \theta 2 , (82) q \equiv  12 \sqrt \pi \gamma  [erf(\sqrt \gamma \theta +) - erf(\sqrt \gamma \theta -)] r \equiv  \theta +e-\gamma \theta 2+ - \theta -e-\gamma \theta 2-
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        b (float): Input parameter `b`.
+        equiv (float): Input parameter `equiv`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(a*equiv*theta**2 + 2*b*theta)
+
+
+def expr_val_2610_29685_form_2(a: str = "a", b: str = "b", equiv: str = "equiv", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_2`."""
+    return (pl.col(a)*pl.col(equiv)*pl.col(theta)**2 + 2*pl.col(b)*pl.col(theta))
 
 
 def calc_miller_2007_pythag_weibull_form_2(P: float, b: float, o: float, r: float) -> float:
@@ -17587,31 +20723,31 @@ def expr_val_2609_02306_form_6(a: str = "a", e: str = "e", k: str = "k", n: str 
     return (-pl.col(a)*pl.col(e)*pl.col(p) + pl.col(e)*pl.col(k)*pl.col(n)*pl.col(propto)*pl.col(v))
 
 
-def calc_e_a_m_form_6(Z: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+def calc_val_2608_26548_form_6(approx: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_26548.
 
     **Source**:
-    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
-    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
-    - Citation Key: `arxiv_2610_29685`
+    - Title: Camera Calibration Using Inaccurate and Asynchronous Discrete GPS Trajectory from Drones (2026)
+    - Authors: R. Yang, Y. Bar-Shalom, H. A. J. Huang
+    - Citation Key: `arxiv_2608_26548`
 
     **KaTeX Formula**:
     $$
-    E(Am) = -Z -1 \int  (\prod  a dka 2\pi  ) \exp [- \sum  b \sigma 2A 2 (Tm( \theta b)kb)2 + i \sum  b kbyb - \sigma 2A 2 \sum  ab ka\Delta abkb] (36) \int  \prod  i dAi \sqrt 2\pi \sigma 2A  i\sigma 2A (\sum  c T m( \theta c)kc) \exp - \sum  l A2l 2\sigma 2A
+    \sin ( 30.01 \times  \pi  180 ) \approx \sin ( 30\times \pi  180 ) + 0.01\times \pi  180 \cos ( 30\times \pi  180 ) \approx 0.5 + 0.00175 \times  0.866 \approx 0.50015
     $$
 
     Args:
-        Z (float): Input parameter `Z`.
+        approx (float): Input parameter `approx`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(-Z - 1)
+    return float(0.000757977325*approx + 0.9*math.pi*approx)
 
 
-def expr_e_a_m_form_6(Z: str = "Z") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_e_a_m_form_6`."""
-    return (-pl.col(Z) - 1)
+def expr_val_2608_26548_form_6(approx: str = "approx") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_26548_form_6`."""
+    return (0.000757977325*pl.col(approx) + 0.9*math.pi*pl.col(approx))
 
 
 def calc_openalex_list2003_w2030360026_form_2(S: float, a: float, b: float, de: float, o: float, p: float, r: float, t: float) -> float:
@@ -17646,6 +20782,40 @@ def calc_openalex_list2003_w2030360026_form_2(S: float, a: float, b: float, de: 
 def expr_openalex_list2003_w2030360026_form_2(S: str = "S", a: str = "a", b: str = "b", de: str = "de", o: str = "o", p: str = "p", r: str = "r", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_openalex_list2003_w2030360026_form_2`."""
     return (5*(pl.col(p)*(pl.col(r)*(pl.col(o)*(pl.col(b)*(pl.col(S)*(pl.col(t)*(pl.col(r)*(pl.col(a)*(1*pl.col(de)))))))))))
+
+
+def calc_phi_h_r_t_form_4(Gamma: float, beta: float, c: float, k: float, t: float, theta: float, y: float, z: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    \Phi H(r, t) = (\Gamma \theta  -1) \sin(\theta )k y + (\Gamma \theta  +1) \cos(\theta )k z -\Gamma  \cos(2\theta )k\beta  ct
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        beta (float): Input parameter `beta`.
+        c (float): Input parameter `c`.
+        k (float): Input parameter `k`.
+        t (float): Input parameter `t`.
+        theta (float): Input parameter `theta`.
+        y (float): Input parameter `y`.
+        z (float): Input parameter `z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-Gamma*(k*(beta*(c*t)))*math.cos(2*theta) + (((k*y)*math.sin(theta))*(Gamma*theta - 1) + ((k*z)*math.cos(theta))*(Gamma*theta + 1)))
+
+
+def expr_phi_h_r_t_form_4(Gamma: str = "Gamma", beta: str = "beta", c: str = "c", k: str = "k", t: str = "t", theta: str = "theta", y: str = "y", z: str = "z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_phi_h_r_t_form_4`."""
+    return (-pl.col(Gamma)*(pl.col(k)*(pl.col(beta)*(pl.col(c)*pl.col(t))))*math.cos(2*pl.col(theta)) + (((pl.col(k)*pl.col(y))*math.sin(pl.col(theta)))*(pl.col(Gamma)*pl.col(theta) - 1) + ((pl.col(k)*pl.col(z))*math.cos(pl.col(theta)))*(pl.col(Gamma)*pl.col(theta) + 1)))
 
 
 def calc_theta_form_7(m: float, o: float, s: float) -> float:
@@ -17735,6 +20905,63 @@ def expr_val_2610_18361_form_8(l: str = "l", u: str = "u") -> pl.Expr:
     return (pl.col(l)*pl.col(u))
 
 
+def calc_openalex_list2003_w2030360026_form_9(a: float, d: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_list2003_w2030360026.
+
+    **Source**:
+    - Title: Does Market Experience Eliminate Market Anomalies? (2003)
+    - Authors: John A. List
+    - Citation Key: `openalex_list2003_w2030360026`
+
+    **KaTeX Formula**:
+    $$
+    1000 and
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        d (float): Input parameter `d`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(1000*a*d*n)
+
+
+def expr_openalex_list2003_w2030360026_form_9(a: str = "a", d: str = "d", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_list2003_w2030360026_form_9`."""
+    return (1000*pl.col(a)*pl.col(d)*pl.col(n))
+
+
+def calc_sin_30_01_o_form_8(approx: float, o: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_26548.
+
+    **Source**:
+    - Title: Camera Calibration Using Inaccurate and Asynchronous Discrete GPS Trajectory from Drones (2026)
+    - Authors: R. Yang, Y. Bar-Shalom, H. A. J. Huang
+    - Citation Key: `arxiv_2608_26548`
+
+    **KaTeX Formula**:
+    $$
+    \sin(30.01o ) = \sin(30o + 0.01o ) \approx  \sin(30o ) + 0.01o \times  [\sin(30o )]' \approx  \sin(30o ) + 0.01o \times  \cos(30o ) \approx 0.5 + 0.01 \times  0.866 \approx 0.50866
+    $$
+
+    Args:
+        approx (float): Input parameter `approx`.
+        o (float): Input parameter `o`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(approx*math.sin(30*o)*math.sin(30.01*o) + 0.01*o*math.sin(30*o))
+
+
+def expr_sin_30_01_o_form_8(approx: str = "approx", o: str = "o") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_sin_30_01_o_form_8`."""
+    return (pl.col(approx)*math.sin(30*pl.col(o))*math.sin(30.01*pl.col(o)) + 0.01*pl.col(o)*math.sin(30*pl.col(o)))
+
+
 def calc_val_2610_18361_form_9(l: float, x: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_18361.
 
@@ -17790,6 +21017,35 @@ def calc_d_form_9(R: float, psi: float, r: float) -> float:
 def expr_d_form_9(R: str = "R", psi: str = "psi", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_d_form_9`."""
     return ((pl.col(R) + pl.col(r))*math.sin(pl.col(psi)))
+
+
+def calc_openalex_list2003_w2030360026_form_8(a: float, d: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_list2003_w2030360026.
+
+    **Source**:
+    - Title: Does Market Experience Eliminate Market Anomalies? (2003)
+    - Authors: John A. List
+    - Citation Key: `openalex_list2003_w2030360026`
+
+    **KaTeX Formula**:
+    $$
+    200 and
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        d (float): Input parameter `d`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(200*a*d*n)
+
+
+def expr_openalex_list2003_w2030360026_form_8(a: str = "a", d: str = "d", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_list2003_w2030360026_form_8`."""
+    return (200*pl.col(a)*pl.col(d)*pl.col(n))
 
 
 def calc_db_tau_form_9(B: float, C: float, D: float, R: float, c: float, dB: float, e: float, gamma: float, r: float, rho: float, tau: float) -> float:
@@ -17955,6 +21211,35 @@ def expr_e_t_form_b(J: str = "J") -> pl.Expr:
     return (pl.col(J)**2)
 
 
+def calc_openalex_list2003_w2030360026_form_3(a: float, d: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_list2003_w2030360026.
+
+    **Source**:
+    - Title: Does Market Experience Eliminate Market Anomalies? (2003)
+    - Authors: John A. List
+    - Citation Key: `openalex_list2003_w2030360026`
+
+    **KaTeX Formula**:
+    $$
+    160 and
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        d (float): Input parameter `d`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(160*a*d*n)
+
+
+def expr_openalex_list2003_w2030360026_form_3(a: str = "a", d: str = "d", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_list2003_w2030360026_form_3`."""
+    return (160*pl.col(a)*pl.col(d)*pl.col(n))
+
+
 def calc_val_2608_23163_form_2(approx: float, g: float, i: float, m: float, n: float, o: float, r: float, t: float, tau: float, w: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_23163.
 
@@ -17991,6 +21276,33 @@ def expr_val_2608_23163_form_2(approx: str = "approx", g: str = "g", i: str = "i
     return (pl.col(approx)*pl.col(g)*pl.col(i)*pl.col(m)*pl.col(n)*pl.col(o)**2*pl.col(r)*pl.col(t)*pl.col(tau)**2*pl.col(w))
 
 
+def calc_c_o_v_a_m_a_n_form_a(Z: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    Cov(Am,An) = Z -1 \int  (\prod  a dka 2\pi  ) ei \sum b kbyb- \sigma 2A 2 \sum ab ka\Delta abkb (35) \int  \prod  i dAi  AmAn \exp - 1 2\sigma 2A (Ai + i\sigma 2A \sum  b Ti ]( \theta b)kb)2 - \sigma 2A 2 \sum  b,l Tl ( \theta b)kb 2 = Z -1 (\int  \prod  a dka 2\pi  ) \exp [- \sigma 2A 2 (Tm( \theta b)kb)2 + ikbyb - \sigma 2A 2 ka\Delta abkb] \int  \prod  i dAi  (An - i\sigma 2A \sum  b Tk( \theta b)kb)(Am - i\sigma 2ATm( \theta c)kc) \exp - \sum  l A2l 2\sigma 2A
+    $$
+
+    Args:
+        Z (float): Input parameter `Z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Z - 1)
+
+
+def expr_c_o_v_a_m_a_n_form_a(Z: str = "Z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_c_o_v_a_m_a_n_form_a`."""
+    return (pl.col(Z) - 1)
+
+
 def calc_val_2602_19513_form_c(delta: float, tau: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2602_19513.
 
@@ -18017,6 +21329,33 @@ def calc_val_2602_19513_form_c(delta: float, tau: float) -> float:
 def expr_val_2602_19513_form_c(delta: str = "delta", tau: str = "tau") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_c`."""
     return (-pl.col(delta) + pl.col(tau))
+
+
+def calc_val_2610_18361_form_b(Theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_18361.
+
+    **Source**:
+    - Title: Adaptive Handling of Deadline Misses via Stochastic MPC (2026)
+    - Authors: Melanie Gallant, Paolo Pazzaglia, Christoph Mark et al.
+    - Citation Key: `arxiv_2610_18361`
+
+    **KaTeX Formula**:
+    $$
+    \Theta  := {H} \cup  nM⋃ k=1{K, C}k
+    $$
+
+    Args:
+        Theta (float): Input parameter `Theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Theta)
+
+
+def expr_val_2610_18361_form_b(Theta: str = "Theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_18361_form_b`."""
+    return (pl.col(Theta))
 
 
 def calc_a_s_h_0_di_f_f_i_c_u_l_t_form_b(epsilon: float) -> float:
@@ -18137,6 +21476,33 @@ def calc_s_s_k_i_l_l_n_gneiti(S: float, c: float, e: float, f: float, n: float, 
 def expr_s_s_k_i_l_l_n_gneiti(S: str = "S", c: str = "c", e: str = "e", f: str = "f", n: str = "n", o: str = "o", p: str = "p", r: str = "r", s: str = "s", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_s_s_k_i_l_l_n_gneiti`."""
     return (-pl.col(S)*pl.col(r)*(pl.col(e)*(pl.col(f)*pl.col(n))) + (pl.col(S)*(pl.col(f)*(pl.col(c)*(pl.col(s)*(pl.col(n)*pl.col(t))))) - pl.col(S)*pl.col(r)*(pl.col(e)*(pl.col(f)*(pl.col(n)*(pl.col(S)*(pl.col(o)*(pl.col(p)*(pl.col(n)*pl.col(t))))))))))
+
+
+def calc_delta_phi_form_b(dP: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_18116.
+
+    **Source**:
+    - Title: Chirality Inversion and Giant Optical Activity in Scalable Self-Assembled Metamaterials (2026)
+    - Authors: Antonio Carone, Aso Rahimzadegan, Birgül Kalkan et al.
+    - Citation Key: `arxiv_2610_18116`
+
+    **KaTeX Formula**:
+    $$
+    \Delta \phi  = 2\pi d P
+    $$
+
+    Args:
+        dP (float): Input parameter `dP`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*math.pi*dP)
+
+
+def expr_delta_phi_form_b(dP: str = "dP") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_phi_form_b`."""
+    return (2*math.pi*pl.col(dP))
 
 
 def calc_val_1704_00823_1704_0(g: float, l: float, o: float) -> float:
@@ -18495,6 +21861,34 @@ def expr_openalex_toplak2011_w2081056419_form_9(a: str = "a", i: str = "i", l: s
     return (1.1*pl.col(a)*pl.col(i)*pl.col(l)*pl.col(n)*pl.col(o)*pl.col(t)**2)
 
 
+def calc_delta_omega_form_e(epsilon: float, omega: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    \Delta \omega  = \arctan(\epsilon \omega )
+    $$
+
+    Args:
+        epsilon (float): Input parameter `epsilon`.
+        omega (float): Input parameter `omega`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.atan(epsilon*omega))
+
+
+def expr_delta_omega_form_e(epsilon: str = "epsilon", omega: str = "omega") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_omega_form_e`."""
+    return (math.atan(pl.col(epsilon)*pl.col(omega)))
+
+
 def calc_val_2609_24299_form_4(Q: float, theta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_24299.
 
@@ -18649,6 +22043,44 @@ def expr_openalex_constantinou2018_w2800560076_form_7(A: str = "A", H: str = "H"
     return (2*pl.col(A)*pl.col(b)*pl.col(r)*pl.col(tau) + pl.col(H)*pl.col(a)*pl.col(b)**2*pl.col(e)*pl.col(l)*pl.col(q)*pl.col(r)**2*pl.col(tau)**2*pl.col(u))
 
 
+def calc_openalex_constantinou2018_w2800560076_form_a(A: float, H: float, a: float, b: float, e: float, gamma: float, l: float, q: float, r: float, t: float, u: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_constantinou2018_w2800560076.
+
+    **Source**:
+    - Title: Dolores: a model that predicts football match outcomes from all over the world (2018)
+    - Authors: Anthony Costa Constantinou
+    - Citation Key: `openalex_constantinou2018_w2800560076`
+
+    **KaTeX Formula**:
+    $$
+    brxAt equal1 brxAt-1 + ( brxHt - brxHt-1 ) \times  \gamma
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        H (float): Input parameter `H`.
+        a (float): Input parameter `a`.
+        b (float): Input parameter `b`.
+        e (float): Input parameter `e`.
+        gamma (float): Input parameter `gamma`.
+        l (float): Input parameter `l`.
+        q (float): Input parameter `q`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
+        u (float): Input parameter `u`.
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(gamma*((-b*r*(x*(H*t)) + b*(r*(x*(H*t)))) - 1) + (b*(r*(x*(A*(t*(e*(q*(u*(a*(l*(1*(b*(r*(x*(A*t)))))))))))))) - 1))
+
+
+def expr_openalex_constantinou2018_w2800560076_form_a(A: str = "A", H: str = "H", a: str = "a", b: str = "b", e: str = "e", gamma: str = "gamma", l: str = "l", q: str = "q", r: str = "r", t: str = "t", u: str = "u", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_constantinou2018_w2800560076_form_a`."""
+    return (pl.col(gamma)*((-pl.col(b)*pl.col(r)*(pl.col(x)*(pl.col(H)*pl.col(t))) + pl.col(b)*(pl.col(r)*(pl.col(x)*(pl.col(H)*pl.col(t))))) - 1) + (pl.col(b)*(pl.col(r)*(pl.col(x)*(pl.col(A)*(pl.col(t)*(pl.col(e)*(pl.col(q)*(pl.col(u)*(pl.col(a)*(pl.col(l)*(1*(pl.col(b)*(pl.col(r)*(pl.col(x)*(pl.col(A)*pl.col(t))))))))))))))) - 1))
+
+
 def calc_guo_2017_calibration_guo_20(P: float) -> float:
     r"""Compute mathematical metric extracted from guo_2017_calibration.
 
@@ -18704,6 +22136,44 @@ def calc_u_form_4(nu: float, t: float, x: float, y: float) -> float:
 def expr_u_form_4(nu: str = "nu", t: str = "t", x: str = "x", y: str = "y") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_form_4`."""
     return ((-2*pl.col(nu).exp()*pl.col(t))*math.sin(pl.col(y))*math.cos(pl.col(x)))
+
+
+def calc_openalex_constantinou2018_w2800560076_form_1(A: float, H: float, a: float, b: float, e: float, gamma: float, l: float, q: float, r: float, t: float, u: float, y: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_constantinou2018_w2800560076.
+
+    **Source**:
+    - Title: Dolores: a model that predicts football match outcomes from all over the world (2018)
+    - Authors: Anthony Costa Constantinou
+    - Citation Key: `openalex_constantinou2018_w2800560076`
+
+    **KaTeX Formula**:
+    $$
+    bryHt equal1 bryHt-1 + ( bryAt - bryAt-1 ) \times  \gamma
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        H (float): Input parameter `H`.
+        a (float): Input parameter `a`.
+        b (float): Input parameter `b`.
+        e (float): Input parameter `e`.
+        gamma (float): Input parameter `gamma`.
+        l (float): Input parameter `l`.
+        q (float): Input parameter `q`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
+        u (float): Input parameter `u`.
+        y (float): Input parameter `y`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(gamma*((-b*r*(y*(A*t)) + b*(r*(y*(A*t)))) - 1) + (b*(r*(y*(H*(t*(e*(q*(u*(a*(l*(1*(b*(r*(y*(H*t)))))))))))))) - 1))
+
+
+def expr_openalex_constantinou2018_w2800560076_form_1(A: str = "A", H: str = "H", a: str = "a", b: str = "b", e: str = "e", gamma: str = "gamma", l: str = "l", q: str = "q", r: str = "r", t: str = "t", u: str = "u", y: str = "y") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_constantinou2018_w2800560076_form_1`."""
+    return (pl.col(gamma)*((-pl.col(b)*pl.col(r)*(pl.col(y)*(pl.col(A)*pl.col(t))) + pl.col(b)*(pl.col(r)*(pl.col(y)*(pl.col(A)*pl.col(t))))) - 1) + (pl.col(b)*(pl.col(r)*(pl.col(y)*(pl.col(H)*(pl.col(t)*(pl.col(e)*(pl.col(q)*(pl.col(u)*(pl.col(a)*(pl.col(l)*(1*(pl.col(b)*(pl.col(r)*(pl.col(y)*(pl.col(H)*pl.col(t))))))))))))))) - 1))
 
 
 def calc_s_2_harvey(Z: float, n: float, r: float) -> float:
@@ -18917,7 +22387,41 @@ def expr_openalex_constantinou2018_w2800560076_form_b(a: str = "a", e: str = "e"
     return (pl.col(a)*pl.col(e)*pl.col(g)**2*pl.col(l)*pl.col(p)**2*pl.col(q)*pl.col(u)*pl.col(x) - 10.426718*pl.col(a)*pl.col(e)*pl.col(g)*pl.col(l)*pl.col(p)*pl.col(q)*pl.col(u)*pl.col(y) - 0.306230646045*pl.col(a)*pl.col(e)*pl.col(l)*pl.col(q)*pl.col(u))
 
 
-def calc_j_f_k_l_s_j_f_k_l_pi_form_a(H: float, eta: float) -> float:
+def calc_openalex_constantinou2018_w2800560076_form_2(a: float, e: float, g: float, l: float, o: float, p: float, q: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_constantinou2018_w2800560076.
+
+    **Source**:
+    - Title: Dolores: a model that predicts football match outcomes from all over the world (2018)
+    - Authors: Anthony Costa Constantinou
+    - Citation Key: `openalex_constantinou2018_w2800560076`
+
+    **KaTeX Formula**:
+    $$
+    e equal1 | | |go - gp | | | equal1 |2 - 0.397265| equal1 1.602735
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        e (float): Input parameter `e`.
+        g (float): Input parameter `g`.
+        l (float): Input parameter `l`.
+        o (float): Input parameter `o`.
+        p (float): Input parameter `p`.
+        q (float): Input parameter `q`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(11.602735*a**2*e**3*l**2*q**2*u**2*abs(2*abs(a*e*l*q*u)*abs(g*o - g*p) - 0.397265))
+
+
+def expr_openalex_constantinou2018_w2800560076_form_2(a: str = "a", e: str = "e", g: str = "g", l: str = "l", o: str = "o", p: str = "p", q: str = "q", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_constantinou2018_w2800560076_form_2`."""
+    return (11.602735*pl.col(a)**2*pl.col(e)**3*pl.col(l)**2*pl.col(q)**2*pl.col(u)**2*abs(2*abs(pl.col(a)*pl.col(e)*pl.col(l)*pl.col(q)*pl.col(u))*abs(pl.col(g)*pl.col(o) - pl.col(g)*pl.col(p)) - 0.397265))
+
+
+def calc_j_f_k_l_s_j_f_k_l_pi_form_a(E: float, H: float, N: float, S: float, eta: float, h: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
     **Source**:
@@ -18931,18 +22435,23 @@ def calc_j_f_k_l_s_j_f_k_l_pi_form_a(H: float, eta: float) -> float:
     $$
 
     Args:
+        E (float): Input parameter `E`.
         H (float): Input parameter `H`.
+        N (float): Input parameter `N`.
+        S (float): Input parameter `S`.
         eta (float): Input parameter `eta`.
+        h (float): Input parameter `h`.
+        sim (float): Input parameter `sim`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(H*eta)
+    return float(eta*(H*(builtins.sum(E*(h*(t*(S*sim))) for t in range(1, N+1)))))
 
 
-def expr_j_f_k_l_s_j_f_k_l_pi_form_a(H: str = "H", eta: str = "eta") -> pl.Expr:
+def expr_j_f_k_l_s_j_f_k_l_pi_form_a(E: str = "E", H: str = "H", N: str = "N", S: str = "S", eta: str = "eta", h: str = "h", sim: str = "sim") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_j_f_k_l_s_j_f_k_l_pi_form_a`."""
-    return (pl.col(H)*pl.col(eta))
+    return (pl.col(eta)*(pl.col(H)*(builtins.sum(pl.col(E)*(pl.col(h)*(t*(pl.col(S)*pl.col(sim)))) for t in range(1, pl.col(N)+1)))))
 
 
 def calc_val_1_12_2_harvey(n: float) -> float:
@@ -19057,41 +22566,6 @@ def calc_f_s_b_y_2005_0(e: float, n: float, p: float, t: float, y: float) -> flo
 def expr_f_s_b_y_2005_0(e: str = "e", n: str = "n", p: str = "p", t: str = "t", y: str = "y") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_s_b_y_2005_0`."""
     return (pl.col(e)*pl.col(n)*pl.col(p)*pl.col(t)*pl.col(y))
-
-
-def calc_openalex_constantinou2018_w2800560076_form_a(P: float, R: float, S: float, a: float, e: float, l: float, q: float, r: float, u: float) -> float:
-    r"""Compute mathematical metric extracted from openalex_constantinou2018_w2800560076.
-
-    **Source**:
-    - Title: Dolores: a model that predicts football match outcomes from all over the world (2018)
-    - Authors: Anthony Costa Constantinou
-    - Citation Key: `openalex_constantinou2018_w2800560076`
-
-    **KaTeX Formula**:
-    $$
-    RPS equal1 1 r -1 r-1\sum  i equal11 ⎛⎝ i\sum  j equal11 ( p j - e j )⎞⎠2
-    $$
-
-    Args:
-        P (float): Input parameter `P`.
-        R (float): Input parameter `R`.
-        S (float): Input parameter `S`.
-        a (float): Input parameter `a`.
-        e (float): Input parameter `e`.
-        l (float): Input parameter `l`.
-        q (float): Input parameter `q`.
-        r (float): Input parameter `r`.
-        u (float): Input parameter `u`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float((R*(P*(S*(e*(q*(u*(a*(l*(11*r)))))))) - 1*r) - 1)
-
-
-def expr_openalex_constantinou2018_w2800560076_form_a(P: str = "P", R: str = "R", S: str = "S", a: str = "a", e: str = "e", l: str = "l", q: str = "q", r: str = "r", u: str = "u") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_openalex_constantinou2018_w2800560076_form_a`."""
-    return ((pl.col(R)*(pl.col(P)*(pl.col(S)*(pl.col(e)*(pl.col(q)*(pl.col(u)*(pl.col(a)*(pl.col(l)*(11*pl.col(r))))))))) - 1*pl.col(r)) - 1)
 
 
 def calc_u_form_0(x: float, y: float) -> float:
@@ -19455,6 +22929,39 @@ def expr_l_w_i_g_n_form_3(T: str = "T", g: str = "g", m: str = "m", o: str = "o"
     return (-pl.col(T)*pl.col(m)*pl.col(o)**2*pl.col(r)*pl.col(t)*math.cos(pl.col(theta)) + pl.col(g)*pl.col(m))
 
 
+def calc_r_form_2(D: float, a: float, d: float, i: float, l: float, pm: float, v: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_25621.
+
+    **Source**:
+    - Title: Dissonance Spectrum explicitly models perceptual frequency interactions for better music understanding (2026)
+    - Authors: Tianle Wang, Xinyi Tong, Liangke Zhao et al.
+    - Citation Key: `arxiv_2608_25621`
+
+    **KaTeX Formula**:
+    $$
+    r =  D\pm  *valid,f x(ref)
+    $$
+
+    Args:
+        D (float): Input parameter `D`.
+        a (float): Input parameter `a`.
+        d (float): Input parameter `d`.
+        i (float): Input parameter `i`.
+        l (float): Input parameter `l`.
+        pm (float): Input parameter `pm`.
+        v (float): Input parameter `v`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(D*a*d*i*l*pm*v)
+
+
+def expr_r_form_2(D: str = "D", a: str = "a", d: str = "d", i: str = "i", l: str = "l", pm: str = "pm", v: str = "v") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_r_form_2`."""
+    return (pl.col(D)*pl.col(a)*pl.col(d)*pl.col(i)*pl.col(l)*pl.col(pm)*pl.col(v))
+
+
 def calc_p_form_4(v: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2303_03898.
 
@@ -19480,33 +22987,6 @@ def calc_p_form_4(v: float) -> float:
 def expr_p_form_4(v: str = "v") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_form_4`."""
     return (pl.col(v))
-
-
-def calc_val_2610_01307_form_8(s: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_01307.
-
-    **Source**:
-    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
-    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
-    - Citation Key: `arxiv_2610_01307`
-
-    **KaTeX Formula**:
-    $$
-    s.t. p[1] = pI, p[N] = pF, (40b)
-    $$
-
-    Args:
-        s (float): Input parameter `s`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(s)
-
-
-def expr_val_2610_01307_form_8(s: str = "s") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_8`."""
-    return (pl.col(s))
 
 
 def calc_glickman_2001_jas_dynamic_paired_glickm(m: float, t: float, u: float) -> float:
@@ -20437,6 +23917,37 @@ def expr_miller_2005_pythag_derivation_form_d(P: str = "P", b: str = "b", o: str
     return (pl.col(P)*pl.col(b)*pl.col(o)*pl.col(r))
 
 
+def calc_val_2_theta_partial_lambda_y_form_d(A: float, Lambda: float, N: float, b: float, sigma: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    (\partial \Lambda Y )2 ( \theta ) = \sigma 2A \Lambda 6 \sum  ab {C0( \theta b,  \theta )| \theta b -  \theta |2 | \theta  -  \theta a|2C0( \theta ,  \theta a)B-1 ab } (72) - \sigma 2A \Lambda 6 \sum  ab {C0( \theta b,  \theta )| \theta  -  \theta a|2C0( \theta ,  \theta a)(B-1B'B-1 )ab} - \sigma 2A \Lambda 6 \sum  ab {C0( \theta b,  \theta )| \theta  -  \theta b|2C0( \theta ,  \theta a)(B-1B'B-1 )ab} + \sigma 2A \Lambda 6 \sum  ab {C0( \theta b,  \theta )C0( \theta ,  \theta a)(B-1B'B-1B'B-1 )ab}
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        Lambda (float): Input parameter `Lambda`.
+        N (float): Input parameter `N`.
+        b (float): Input parameter `b`.
+        sigma (float): Input parameter `sigma`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(sigma*(2*(A*(Lambda*(6*(builtins.sum(b for a in range(1, N+1))))))))
+
+
+def expr_val_2_theta_partial_lambda_y_form_d(A: str = "A", Lambda: str = "Lambda", N: str = "N", b: str = "b", sigma: str = "sigma") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2_theta_partial_lambda_y_form_d`."""
+    return (pl.col(sigma)*(2*(pl.col(A)*(pl.col(Lambda)*(6*(builtins.sum(pl.col(b) for a in range(1, pl.col(N)+1))))))))
+
+
 def calc_val_2609_19460_form_d(n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_19460.
 
@@ -20584,34 +24095,64 @@ def expr_d_xi_xi_form_2(T: str = "T", dT: str = "dT", gamma: str = "gamma", h: s
     return (pl.col(T)*(pl.col(dT)*(pl.col(q)*(pl.col(h)*(pl.col(s)*(pl.col(h)*(pl.col(phi)*(pl.col(h)*(pl.col(theta)*(pl.col(gamma)*pl.col(h)))))))))))
 
 
-def calc_a_v_g_t_i_e_m_form_3(N: float, c: float, s: float, u: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29142.
+def calc_abs_omega_form_a(p: float, q: float, r: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2601_06439.
 
     **Source**:
-    - Title: State-Dependent Objective Coordination for End-to-End Balance and Navigation (2026)
-    - Authors: Xuhao Huang, Xitao Xu, Yuxin Zheng et al.
-    - Citation Key: `arxiv_2610_29142`
+    - Title: Deep Reinforcement Learning based Control Design for Aircraft Recovery from Loss-of-Control Scenario (2026)
+    - Authors: Imran Sayyed, Aayush Konar, Nandan Kumar Sinha
+    - Citation Key: `arxiv_2601_06439`
 
     **KaTeX Formula**:
     $$
-    AvgTime = 1 Nsucc \sum  i\in Esucc Ti
+    |\omega | = \sqrt{p2} + q2 + r2
     $$
 
     Args:
-        N (float): Input parameter `N`.
-        c (float): Input parameter `c`.
-        s (float): Input parameter `s`.
-        u (float): Input parameter `u`.
+        p (float): Input parameter `p`.
+        q (float): Input parameter `q`.
+        r (float): Input parameter `r`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(1*(N*(s*(u*(c*c)))))
+    return float(math.sqrt(2)*math.sqrt(p) + 2*q + 2*r)
 
 
-def expr_a_v_g_t_i_e_m_form_3(N: str = "N", c: str = "c", s: str = "s", u: str = "u") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_a_v_g_t_i_e_m_form_3`."""
-    return (1*(pl.col(N)*(pl.col(s)*(pl.col(u)*(pl.col(c)*pl.col(c))))))
+def expr_abs_omega_form_a(p: str = "p", q: str = "q", r: str = "r") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_abs_omega_form_a`."""
+    return (math.sqrt(2)*(pl.col(p).sqrt()) + 2*pl.col(q) + 2*pl.col(r))
+
+
+def calc_a_t_a_d_i_q_b_t_b_d_i_q_form_9(A: float, R: float, X: float, e: float, z: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_sutton1988_w2100677568.
+
+    **Source**:
+    - Title: Learning to Predict by the Methods of Temporal Differences (1988)
+    - Authors: Richard S. Sutton
+    - Citation Key: `openalex_sutton1988_w2100677568`
+
+    **KaTeX Formula**:
+    $$
+    aT D( I - Q)a + bT D( I - Q)b = (Xz )*Xz Re A
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        R (float): Input parameter `R`.
+        X (float): Input parameter `X`.
+        e (float): Input parameter `e`.
+        z (float): Input parameter `z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((X*z)*(X*(z*(R*(A*e)))))
+
+
+def expr_a_t_a_d_i_q_b_t_b_d_i_q_form_9(A: str = "A", R: str = "R", X: str = "X", e: str = "e", z: str = "z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_a_t_a_d_i_q_b_t_b_d_i_q_form_9`."""
+    return ((pl.col(X)*pl.col(z))*(pl.col(X)*(pl.col(z)*(pl.col(R)*(pl.col(A)*pl.col(e))))))
 
 
 def calc_t_form_8(l: float) -> float:
@@ -20930,6 +24471,36 @@ def expr_sigma_form_2(alpha: str = "alpha", e: str = "e", omega: str = "omega", 
     return (-2*pl.col(alpha)*pl.col(e) - 42*pl.col(p)*pl.col(w)*abs(pl.col(omega)))
 
 
+def calc_val_2303_03898_form_2(W: float, i: float, j: float, p: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2303_03898.
+
+    **Source**:
+    - Title: Virtual Omnidirectional Perception for Downwash Prediction within a Team of Nano Multirotors Flying in Close Proximity (2023)
+    - Authors: Akmaral Moldagalieva, Wolfgang Hönig
+    - Citation Key: `arxiv_2303_03898`
+
+    **KaTeX Formula**:
+    $$
+    | E-1 (pWi -pWj )|2 \ge  2
+    $$
+
+    Args:
+        W (float): Input parameter `W`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        p (float): Input parameter `p`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((2*abs(-W*i*p + W*j*p + math.e) >= 2))
+
+
+def expr_val_2303_03898_form_2(W: str = "W", i: str = "i", j: str = "j", p: str = "p") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2303_03898_form_2`."""
+    return ((2*abs(-pl.col(W)*pl.col(i)*pl.col(p) + pl.col(W)*pl.col(j)*pl.col(p) + math.e) >= 2))
+
+
 def calc_f_a_e_o_r_form_3(e: float, l: float, p: float, r: float, rho: float, s: float, v: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2309_15318.
 
@@ -21047,6 +24618,37 @@ def calc_tau_e_t_x_form_4(dB: float, dp: float, f: float, p: float, tau: float) 
 def expr_tau_e_t_x_form_4(dB: str = "dB", dp: str = "dp", f: str = "f", p: str = "p", tau: str = "tau") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_tau_e_t_x_form_4`."""
     return (pl.col(dB)*pl.col(tau) + pl.col(dp)*pl.col(tau) + pl.col(f)*pl.col(tau) + pl.col(p)*pl.col(tau))
+
+
+def calc_theta_form_2(g: float, m: float, r: float, tau: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_10387.
+
+    **Source**:
+    - Title: Hip Energized Monopedal Hopping (2026)
+    - Authors: Shane Rozen-Levy, Griffon McMahon, Daniel Koditschek
+    - Citation Key: `arxiv_2608_10387`
+
+    **KaTeX Formula**:
+    $$
+    \theta  = \tau  mr2 + g \sin \theta  r - 2 r  \theta  r
+    $$
+
+    Args:
+        g (float): Input parameter `g`.
+        m (float): Input parameter `m`.
+        r (float): Input parameter `r`.
+        tau (float): Input parameter `tau`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(g*math.sin(r*theta) + 2*m*r*tau - 2*r**2*theta)
+
+
+def expr_theta_form_2(g: str = "g", m: str = "m", r: str = "r", tau: str = "tau", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_theta_form_2`."""
+    return (pl.col(g)*math.sin(pl.col(r)*pl.col(theta)) + 2*pl.col(m)*pl.col(r)*pl.col(tau) - 2*pl.col(r)**2*pl.col(theta))
 
 
 def calc_theta_l_r_t_form_5(A: float, C: float, b: float, t: float) -> float:
@@ -21216,6 +24818,37 @@ def calc_val_2607_29041_form_6(f: float) -> float:
 def expr_val_2607_29041_form_6(f: str = "f") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2607_29041_form_6`."""
     return (pl.col(f))
+
+
+def calc_val_2608_08157_form_7(T: float, e: float, n: float, r: float, y: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_08157.
+
+    **Source**:
+    - Title: Event-Time Hybrid Optimal Control for Robotic Table Tennis Serves (2026)
+    - Authors: Thomas Gossard, Till Köpff, Andreas Ziegler
+    - Citation Key: `arxiv_2608_08157`
+
+    **KaTeX Formula**:
+    $$
+    eTy nr \ge  0
+    $$
+
+    Args:
+        T (float): Input parameter `T`.
+        e (float): Input parameter `e`.
+        n (float): Input parameter `n`.
+        r (float): Input parameter `r`.
+        y (float): Input parameter `y`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((T*e*n*r*y >= 0))
+
+
+def expr_val_2608_08157_form_7(T: str = "T", e: str = "e", n: str = "n", r: str = "r", y: str = "y") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_08157_form_7`."""
+    return ((pl.col(T)*pl.col(e)*pl.col(n)*pl.col(r)*pl.col(y) >= 0))
 
 
 def calc_u_h_i_n_form_e(J: float, f: float) -> float:
@@ -21441,6 +25074,37 @@ def expr_r_t_theta_form_9(theta: str = "theta") -> pl.Expr:
     return (math.pi*pl.col(theta))
 
 
+def calc_val_2610_27057_form_9(C: float, dC: float, dlog: float, equiv: float, mu: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27057.
+
+    **Source**:
+    - Title: Probing Lepton Flavor Violation at FCC-ee (2026)
+    - Authors: L. Allwicher, R. Bartocci, M. Cepeda et al.
+    - Citation Key: `arxiv_2610_27057`
+
+    **KaTeX Formula**:
+    $$
+    C \equiv  dC d \log \mu  . (B4)
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        dC (float): Input parameter `dC`.
+        dlog (float): Input parameter `dlog`.
+        equiv (float): Input parameter `equiv`.
+        mu (float): Input parameter `mu`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(C*dC*dlog*equiv*mu)
+
+
+def expr_val_2610_27057_form_9(C: str = "C", dC: str = "dC", dlog: str = "dlog", equiv: str = "equiv", mu: str = "mu") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27057_form_9`."""
+    return (pl.col(C)*pl.col(dC)*pl.col(dlog)*pl.col(equiv)*pl.col(mu))
+
+
 def calc_f_i_form_9(f: float, i: float, k: float, omega: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_23163.
 
@@ -21557,6 +25221,40 @@ def expr_v_form_9(x: str = "x", y: str = "y") -> pl.Expr:
     return (4*math.sin(math.pi*pl.col(x))*math.sin(math.pi*pl.col(y))*math.cos(math.pi*pl.col(x)))
 
 
+def calc_val_1408_4306_form_a(K: float, c: float, equiv: float, eta: float, p: float, q: float, s: float, v: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    \eta  \equiv  2p + 2q + 3 4 ( cs vK )2
+    $$
+
+    Args:
+        K (float): Input parameter `K`.
+        c (float): Input parameter `c`.
+        equiv (float): Input parameter `equiv`.
+        eta (float): Input parameter `eta`.
+        p (float): Input parameter `p`.
+        q (float): Input parameter `q`.
+        s (float): Input parameter `s`.
+        v (float): Input parameter `v`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(68*K*c*s*v + 2*equiv*eta*p + 2*q)
+
+
+def expr_val_1408_4306_form_a(K: str = "K", c: str = "c", equiv: str = "equiv", eta: str = "eta", p: str = "p", q: str = "q", s: str = "s", v: str = "v") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1408_4306_form_a`."""
+    return (68*pl.col(K)*pl.col(c)*pl.col(s)*pl.col(v) + 2*pl.col(equiv)*pl.col(eta)*pl.col(p) + 2*pl.col(q))
+
+
 def calc_h_d_form_a(H: float, S: float, alpha: float, g: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1408_4306.
 
@@ -21616,6 +25314,36 @@ def calc_shin_family_2024_cambridge_form_b(e: float, h: float, r: float, w: floa
 def expr_shin_family_2024_cambridge_form_b(e: str = "e", h: str = "h", r: str = "r", w: str = "w") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_shin_family_2024_cambridge_form_b`."""
     return (pl.col(e)**2*pl.col(h)*pl.col(r)*pl.col(w))
+
+
+def calc_val_2601_18161_form_b(R: float, Sigma: float, propto: float, sigma: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2601_18161.
+
+    **Source**:
+    - Title: In-depth analysis of bar formation mechanisms of disk galaxies in halos of different concentrations (2026)
+    - Authors: T. Worrakitpoonpon
+    - Citation Key: `arxiv_2601_18161`
+
+    **KaTeX Formula**:
+    $$
+    \sigma 2R \propto  \Sigma
+    $$
+
+    Args:
+        R (float): Input parameter `R`.
+        Sigma (float): Input parameter `Sigma`.
+        propto (float): Input parameter `propto`.
+        sigma (float): Input parameter `sigma`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*R*Sigma*propto*sigma)
+
+
+def expr_val_2601_18161_form_b(R: str = "R", Sigma: str = "Sigma", propto: str = "propto", sigma: str = "sigma") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2601_18161_form_b`."""
+    return (2*pl.col(R)*pl.col(Sigma)*pl.col(propto)*pl.col(sigma))
 
 
 def calc_niculescu_mizil_caruana_2005_form_b(y: float) -> float:
@@ -21753,6 +25481,33 @@ def calc_val_2601_11904_form_c(P: float) -> float:
 def expr_val_2601_11904_form_c(P: str = "P") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_11904_form_c`."""
     return (pl.col(P))
+
+
+def calc_rho_d_r_z_form_c(R: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2601_18161.
+
+    **Source**:
+    - Title: In-depth analysis of bar formation mechanisms of disk galaxies in halos of different concentrations (2026)
+    - Authors: T. Worrakitpoonpon
+    - Citation Key: `arxiv_2601_18161`
+
+    **KaTeX Formula**:
+    $$
+    \rho d(R, z) = Md 4\pi R2 0 z0 e-R/R0 sech2( z z0 )
+    $$
+
+    Args:
+        R (float): Input parameter `R`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.nan*R)
+
+
+def expr_rho_d_r_z_form_c(R: str = "R") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_rho_d_r_z_form_c`."""
+    return (math.nan*pl.col(R))
 
 
 def calc_r_c_l_e_a_r_form_c(S: float) -> float:
@@ -22014,33 +25769,6 @@ def expr_niculescu_mizil_caruana_2005_form_d(P: str = "P") -> pl.Expr:
     return (pl.col(P))
 
 
-def calc_false_form_e(h: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_06739.
-
-    **Source**:
-    - Title: The profit-bias identity in sports betting: bookmaker profit as the public's prediction error (2026)
-    - Authors: Jacek P. Dmochowski
-    - Citation Key: `arxiv_2609_06739`
-
-    **KaTeX Formula**:
-    $$
-    1- 1O = D- (1+\phi h)(1+\phi v) D = 1 - \phi h\phi v D = h
-    $$
-
-    Args:
-        h (float): Input parameter `h`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(h)
-
-
-def expr_false_form_e(h: str = "h") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_false_form_e`."""
-    return (pl.col(h))
-
-
 def calc_val_2608_27423_form_f(J: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_27423.
 
@@ -22066,6 +25794,62 @@ def calc_val_2608_27423_form_f(J: float) -> float:
 def expr_val_2608_27423_form_f(J: str = "J") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_27423_form_f`."""
     return (pl.col(J))
+
+
+def calc_val_2_t_xi_form_0(omega: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \xi 2(t) = \omega 2*t + \pi /2
+    $$
+
+    Args:
+        omega (float): Input parameter `omega`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*omega*t + (1/2)*math.pi)
+
+
+def expr_val_2_t_xi_form_0(omega: str = "omega", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2_t_xi_form_0`."""
+    return (2*pl.col(omega)*pl.col(t) + (1/2)*math.pi)
+
+
+def calc_val_1_t_xi_form_0(omega: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \xi 1(t) = \omega 1*t - \pi /2
+    $$
+
+    Args:
+        omega (float): Input parameter `omega`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(omega*t - 1/2*math.pi)
+
+
+def expr_val_1_t_xi_form_0(omega: str = "omega", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1_t_xi_form_0`."""
+    return (pl.col(omega)*pl.col(t) - 1/2*math.pi)
 
 
 def calc_val_2609_06739_form_c(b: float, v: float) -> float:
@@ -22094,6 +25878,70 @@ def calc_val_2609_06739_form_c(b: float, v: float) -> float:
 def expr_val_2609_06739_form_c(b: str = "b", v: str = "v") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_06739_form_c`."""
     return (pl.col(b)*pl.col(v))
+
+
+def calc_val_2602_05895_form_c(C: float, L: float, P: float, T: float, a: float, approx: float, g: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2602_05895.
+
+    **Source**:
+    - Title: Residual Reinforcement Learning for Waste-Container Lifting Using Large-Scale Cranes with Underactuated Tools (2026)
+    - Authors: Qi Li, Karsten Berns
+    - Citation Key: `arxiv_2602_05895`
+
+    **KaTeX Formula**:
+    $$
+    L \theta  + g\theta  \approx  -aTCP
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        L (float): Input parameter `L`.
+        P (float): Input parameter `P`.
+        T (float): Input parameter `T`.
+        a (float): Input parameter `a`.
+        approx (float): Input parameter `approx`.
+        g (float): Input parameter `g`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-C*P*T*a + L*theta + approx*g*theta)
+
+
+def expr_val_2602_05895_form_c(C: str = "C", L: str = "L", P: str = "P", T: str = "T", a: str = "a", approx: str = "approx", g: str = "g", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2602_05895_form_c`."""
+    return (-pl.col(C)*pl.col(P)*pl.col(T)*pl.col(a) + pl.col(L)*pl.col(theta) + pl.col(approx)*pl.col(g)*pl.col(theta))
+
+
+def calc_val_2512_18323_form_f(B: float, F: float, nu: float, propto: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    F\nu  \propto  B2_\perp  = B2 x + B2 y
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+        F (float): Input parameter `F`.
+        nu (float): Input parameter `nu`.
+        propto (float): Input parameter `propto`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*B*F*nu*propto)
+
+
+def expr_val_2512_18323_form_f(B: str = "B", F: str = "F", nu: str = "nu", propto: str = "propto") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2512_18323_form_f`."""
+    return (2*pl.col(B)*pl.col(F)*pl.col(nu)*pl.col(propto))
 
 
 def calc_sqrt_2_e_y_form_4(C: float, H: float, Y: float, e: float, v: float) -> float:
@@ -22164,6 +26012,36 @@ def expr_de_v_a_l_form_1(a: str = "a", b: str = "b", d: str = "d", e: str = "e",
     return (pl.col(a)*pl.col(b)*pl.col(e)*pl.col(m)*pl.col(r) + 2*pl.col(b)*pl.col(d)*pl.col(o)*pl.col(s) + 2*pl.col(d)*pl.col(o)*pl.col(p)*pl.col(s) + math.sqrt(2)*(pl.col(a).sqrt()*pl.col(d)*pl.col(g)*pl.col(n)))
 
 
+def calc_openalex_iv2010_w2125230147_form_9(dL: float, i: float, j: float, p: float) -> float:
+    r"""Compute mathematical metric extracted from openalex_iv2010_w2125230147.
+
+    **Source**:
+    - Title: pplacer: linear time maximum-likelihood and Bayesian phylogenetic placement of sequences onto a fixed reference tree (2010)
+    - Authors: Frederick A. Matsen IV, Robin B. Kodner, E. Virginia Armbrust
+    - Citation Key: `openalex_iv2010_w2125230147`
+
+    **KaTeX Formula**:
+    $$
+    p p d L i j ij ij / \sum
+    $$
+
+    Args:
+        dL (float): Input parameter `dL`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        p (float): Input parameter `p`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(dL*i**3*j**3*p**2)
+
+
+def expr_openalex_iv2010_w2125230147_form_9(dL: str = "dL", i: str = "i", j: str = "j", p: str = "p") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_openalex_iv2010_w2125230147_form_9`."""
+    return (pl.col(dL)*pl.col(i)**3*pl.col(j)**3*pl.col(p)**2)
+
+
 def calc_p_r_form_e(P: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2006_03348.
 
@@ -22216,6 +26094,100 @@ def calc_f_l_b_b_n_form_6(G: float) -> float:
 def expr_f_l_b_b_n_form_6(G: str = "G") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_f_l_b_b_n_form_6`."""
     return (pl.col(G))
+
+
+def calc_i_pi_form_a(i: float, n: float, p: float, z: float) -> float:
+    r"""Compute mathematical metric extracted from strumbelj_2014_ijf.
+
+    **Source**:
+    - Title: Strumbelj_WorkingPaper2013
+    - Authors: Scientific Literature
+    - Citation Key: `strumbelj_2014_ijf`
+
+    **KaTeX Formula**:
+    $$
+    \pi i = \sqrt{zpi} + (1 - z)p2i n\sum  j=1 \sqrt{zpj} + (1 - z)p2j
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        p (float): Input parameter `p`.
+        z (float): Input parameter `z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*i*n*p*(1 - z) + math.sqrt(i*p*z))
+
+
+def expr_i_pi_form_a(i: str = "i", n: str = "n", p: str = "p", z: str = "z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_i_pi_form_a`."""
+    return (2*pl.col(i)*pl.col(n)*pl.col(p)*(1 - pl.col(z)) + (pl.col(i).sqrt()*pl.col(p)*pl.col(z)))
+
+
+def calc_val_2610_27416_form_3(C: float, U: float, Y: float, f: float, m: float, mu: float, r: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    | \mu 'f - 1 4r UmY |C|F r\sum  n=1 N\sum  i=1 Cn,i Mn,i Y,hist | \le  \epsilon OE
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        U (float): Input parameter `U`.
+        Y (float): Input parameter `Y`.
+        f (float): Input parameter `f`.
+        m (float): Input parameter `m`.
+        mu (float): Input parameter `mu`.
+        r (float): Input parameter `r`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(C*abs(14*U*Y*m*r - f*mu))
+
+
+def expr_val_2610_27416_form_3(C: str = "C", U: str = "U", Y: str = "Y", f: str = "f", m: str = "m", mu: str = "mu", r: str = "r") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_3`."""
+    return (pl.col(C)*abs(14*pl.col(U)*pl.col(Y)*pl.col(m)*pl.col(r) - pl.col(f)*pl.col(mu)))
+
+
+def calc_q_c_q_q_q_m_q_g_q_form_a(e: float, q: float, t: float, tau: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29565.
+
+    **Source**:
+    - Title: Preserving Operator Intent Under Actuation Constraints: Teleoperation of Manipulators with Coupled Transmissions (2026)
+    - Authors: Xuhan Miao, Zijin Han, Yutong Shen et al.
+    - Citation Key: `arxiv_2610_29565`
+
+    **KaTeX Formula**:
+    $$
+    M(q) q +C(q,  q)  q + g(q) = \tau q + \tau ext
+    $$
+
+    Args:
+        e (float): Input parameter `e`.
+        q (float): Input parameter `q`.
+        t (float): Input parameter `t`.
+        tau (float): Input parameter `tau`.
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(e*t*tau*x + q*tau)
+
+
+def expr_q_c_q_q_q_m_q_g_q_form_a(e: str = "e", q: str = "q", t: str = "t", tau: str = "tau", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_q_c_q_q_q_m_q_g_q_form_a`."""
+    return (pl.col(e)*pl.col(t)*pl.col(tau)*pl.col(x) + pl.col(q)*pl.col(tau))
 
 
 def calc_val_1810_06655_form_a(P: float) -> float:
@@ -22272,6 +26244,33 @@ def expr_val_1810_06655_form_0(D: str = "D") -> pl.Expr:
     return (pl.col(D))
 
 
+def calc_val_1810_06655_form_f(Lambda: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \Lambda 1 := \int T E(|C1(t)|) dt \int T E(|C1(t)|) dt + \int T E(|C2(t)|) dt , \Lambda 2 := 1-\Lambda 1
+    $$
+
+    Args:
+        Lambda (float): Input parameter `Lambda`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(1*Lambda)
+
+
+def expr_val_1810_06655_form_f(Lambda: str = "Lambda") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1810_06655_form_f`."""
+    return (1*pl.col(Lambda))
+
+
 def calc_val_1810_06655_form_6(i: float, rho: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1810_06655.
 
@@ -22298,6 +26297,89 @@ def calc_val_1810_06655_form_6(i: float, rho: float) -> float:
 def expr_val_1810_06655_form_6(i: str = "i", rho: str = "rho") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1810_06655_form_6`."""
     return (pl.col(i)*pl.col(rho))
+
+
+def calc_val_1810_06655_form_9(i: float, nu: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \nu i := \int  T [Ri(t) -\rho i]2 dt
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        nu (float): Input parameter `nu`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(i*nu)
+
+
+def expr_val_1810_06655_form_9(i: str = "i", nu: str = "nu") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1810_06655_form_9`."""
+    return (pl.col(i)*pl.col(nu))
+
+
+def calc_val_1810_06655_form_4(i: float, zeta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \zeta i := \int  T R'i(t) dt = Ri(1) -Ri(0), and \eta i := \int  T R'2 i (t) dt
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        zeta (float): Input parameter `zeta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(i*zeta)
+
+
+def expr_val_1810_06655_form_4(i: str = "i", zeta: str = "zeta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1810_06655_form_4`."""
+    return (pl.col(i)*pl.col(zeta))
+
+
+def calc_val_1810_06655_form_d(t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \gamma (t) := var[R' (t)] = E[R' (t)2 ]
+    $$
+
+    Args:
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.gamma(t))
+
+
+def expr_val_1810_06655_form_d(t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1810_06655_form_d`."""
+    return (math.gamma(pl.col(t)))
 
 
 def calc_val_1810_06655_form_3(G: float) -> float:
@@ -22381,6 +26463,61 @@ def expr_q_l_y_t_form_7(n: str = "n") -> pl.Expr:
     return (1*(pl.col(n)*pl.col(n)))
 
 
+def calc_sim_f_t_y_form_4(Q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \sim  Ft(y) = Q1(y, t) Q2(y, t)
+    $$
+
+    Args:
+        Q (float): Input parameter `Q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(1*Q)
+
+
+def expr_sim_f_t_y_form_4(Q: str = "Q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_sim_f_t_y_form_4`."""
+    return (1*pl.col(Q))
+
+
+def calc_val_12_sim_q_3_i_y_t_form_f(i: float, m: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    (12) \sim Q3i(y, t) = 1mi mi\sum  j=1 h-2 T H ( y - Yij hY ) K' ( t - tij hT ) , \sim Q4i(y, t) = 1mi mi\sum  j=1 h-2 T K' ( t - tij hT ) , \sim Q5i(y, t) = 1mi mi\sum  j=1 h-1 Y h-1 T K ( y - Yij hY ) K ( t - tij hT )
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        m (float): Input parameter `m`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(1*(m*(i*(i*m))))
+
+
+def expr_val_12_sim_q_3_i_y_t_form_f(i: str = "i", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_12_sim_q_3_i_y_t_form_f`."""
+    return (1*(pl.col(m)*(pl.col(i)*(pl.col(i)*pl.col(m)))))
+
+
 def calc_q_l_y_t_form_a(n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1810_06655.
 
@@ -22408,6 +26545,34 @@ def expr_q_l_y_t_form_a(n: str = "n") -> pl.Expr:
     return (1*(pl.col(n)*pl.col(n)))
 
 
+def calc_sim_c_1_i_t_form_9(D: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1810_06655.
+
+    **Source**:
+    - Title: Rank Dynamics for Functional Data (2018)
+    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
+    - Citation Key: `arxiv_1810_06655`
+
+    **KaTeX Formula**:
+    $$
+    \sim  C1i(t) = \sim D1(Yi(t), t) and \sim  C2i(t) = \sim D2(Yi(t), t)\sim  Y ' i (t)
+    $$
+
+    Args:
+        D (float): Input parameter `D`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(D*sim)
+
+
+def expr_sim_c_1_i_t_form_9(D: str = "D", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_sim_c_1_i_t_form_9`."""
+    return (pl.col(D)*pl.col(sim))
+
+
 def calc_q_l_y_t_form_c(n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1810_06655.
 
@@ -22433,34 +26598,6 @@ def calc_q_l_y_t_form_c(n: float) -> float:
 def expr_q_l_y_t_form_c(n: str = "n") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_q_l_y_t_form_c`."""
     return (1*(pl.col(n)*pl.col(n)))
-
-
-def calc_val_1810_06655_form_9(i: float, m: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_1810_06655.
-
-    **Source**:
-    - Title: Rank Dynamics for Functional Data (2018)
-    - Authors: Yaqing Chen, Matthew Dawson, Hans-Georg Müller
-    - Citation Key: `arxiv_1810_06655`
-
-    **KaTeX Formula**:
-    $$
-    mi\sum  mi\sum
-    $$
-
-    Args:
-        i (float): Input parameter `i`.
-        m (float): Input parameter `m`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(i*m)
-
-
-def expr_val_1810_06655_form_9(i: str = "i", m: str = "m") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_1810_06655_form_9`."""
-    return (pl.col(i)*pl.col(m))
 
 
 def calc_val_1810_06655_form_e(n: float) -> float:
@@ -22635,6 +26772,90 @@ def expr_y_0_y_1_y_2_form_3(A: str = "A", B: str = "B", H: str = "H", S: str = "
     return (pl.col(dh)*pl.col(r) + (pl.col(H)*(pl.col(B)*(pl.col(r)*pl.col(r))) + (pl.col(dh)*(pl.col(r)*(pl.col(H)*(pl.col(A)*(pl.col(B)*(pl.col(r)*pl.col(r)))))) + (pl.col(S)*pl.col(x) + pl.col(dh)*(pl.col(r)*(pl.col(H)*(pl.col(B)*(pl.col(r)*pl.col(r)))))))))
 
 
+def calc_y_m_y_d_y_y_form_9(G: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_24299.
+
+    **Source**:
+    - Title: Nonlinear Dynamic Modeling and Receding-Horizon NMPC of an Electric Unicycle on a Tensioned Cable (2026)
+    - Authors: Yousef Sweiti, Jasem Tamimi
+    - Citation Key: `arxiv_2609_24299`
+
+    **KaTeX Formula**:
+    $$
+    M(y)  y +  d(y, y) = Gu
+    $$
+
+    Args:
+        G (float): Input parameter `G`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(G*u)
+
+
+def expr_y_m_y_d_y_y_form_9(G: str = "G", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_y_m_y_d_y_y_form_9`."""
+    return (pl.col(G)*pl.col(u))
+
+
+def calc_val_2609_24299_form_b(Q: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_24299.
+
+    **Source**:
+    - Title: Nonlinear Dynamic Modeling and Receding-Horizon NMPC of an Electric Unicycle on a Tensioned Cable (2026)
+    - Authors: Yousef Sweiti, Jasem Tamimi
+    - Citation Key: `arxiv_2609_24299`
+
+    **KaTeX Formula**:
+    $$
+    [Mc + muN T v Nv + muN T w Nw ]  q + [muN T v Bvq + muN T w Bwq] s - [ (mur \sin \phi  + mabh \sin \phi  \cos \theta ) N T v - (mur \cos \phi  + mabh \cos \phi  \cos \theta ) N T w ]  \phi  - [ (mabh \cos \phi  \sin \theta ) N T v + (mabh \sin\phi \sin\theta )N T w ]  \theta  +Cc q - [ (mur \cos \phi  + mabh \cos \phi  \cos \theta ) N T v + (mur \sin\phi +mabh \sin\phi \cos \theta )N T w ] \phi 2 - [ (mabh \cos \phi  \cos \theta ) N T v + (mabh \sin\phi \cos \theta )N T w ]  \theta 2 + [2muN T v Bv q + 2muN T w Bw q] s + [ (2mabh \sin \phi  \sin \theta ) N T v - (2mabh \cos \phi  \sin \theta ) N T w ] \phi   \theta  + Kcq + mugN T v =Qq
+    $$
+
+    Args:
+        Q (float): Input parameter `Q`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Q*q)
+
+
+def expr_val_2609_24299_form_b(Q: str = "Q", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2609_24299_form_b`."""
+    return (pl.col(Q)*pl.col(q))
+
+
+def calc_val_2609_24299_form_a(Q: float, phi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_24299.
+
+    **Source**:
+    - Title: Nonlinear Dynamic Modeling and Receding-Horizon NMPC of an Electric Unicycle on a Tensioned Cable (2026)
+    - Authors: Yousef Sweiti, Jasem Tamimi
+    - Citation Key: `arxiv_2609_24299`
+
+    **KaTeX Formula**:
+    $$
+    - [ (mur \sin \phi  + mabh \sin \phi  \cos \theta ) Nv - (mur \cos \phi  + mabh \cos \phi  \cos \theta ) Nw ]  q - [ (mur \sin \phi  + mabh \sin \phi  \cos \theta ) Bvq - (mur \cos \phi  + mabh \cos \phi  \cos \theta ) Bwq] s + [mur2 + Iwx + Iax + (Ibx + mabh2) cos2 \theta  + Iby sin2 \theta  + 2mabhr \cos \theta ]  \phi  + Iax \gamma  - [2 (mur \sin\phi +mabh \sin\phi \cos \theta )Bv q - 2 (mur \cos\phi +mabhcos\phi \cos \theta )Bw q] s - [2mabhr \sin \theta  + 2 (mabh2 + Ibx - Iby ) \sin \theta  \cos \theta ] \phi   \theta  - mugr \sin \phi  - mabgh \sin \phi  \cos \theta  = Q\phi
+    $$
+
+    Args:
+        Q (float): Input parameter `Q`.
+        phi (float): Input parameter `phi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Q*phi)
+
+
+def expr_val_2609_24299_form_a(Q: str = "Q", phi: str = "phi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2609_24299_form_a`."""
+    return (pl.col(Q)*pl.col(phi))
+
+
 def calc_val_2609_24299_form_7(Q: float, theta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_24299.
 
@@ -22661,6 +26882,37 @@ def calc_val_2609_24299_form_7(Q: float, theta: float) -> float:
 def expr_val_2609_24299_form_7(Q: str = "Q", theta: str = "theta") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_24299_form_7`."""
     return (pl.col(Q)*pl.col(theta))
+
+
+def calc_theta_form_6(g: float, m: float, r: float, tau: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_10387.
+
+    **Source**:
+    - Title: Hip Energized Monopedal Hopping (2026)
+    - Authors: Shane Rozen-Levy, Griffon McMahon, Daniel Koditschek
+    - Citation Key: `arxiv_2608_10387`
+
+    **KaTeX Formula**:
+    $$
+    \theta  = \tau  mr2 + g \sin \theta  r - 2 r  \theta  r
+    $$
+
+    Args:
+        g (float): Input parameter `g`.
+        m (float): Input parameter `m`.
+        r (float): Input parameter `r`.
+        tau (float): Input parameter `tau`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(g*math.sin(r*theta) + 2*m*r*tau - 2*r**2*theta)
+
+
+def expr_theta_form_6(g: str = "g", m: str = "m", r: str = "r", tau: str = "tau", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_theta_form_6`."""
+    return (pl.col(g)*math.sin(pl.col(r)*pl.col(theta)) + 2*pl.col(m)*pl.col(r)*pl.col(tau) - 2*pl.col(r)**2*pl.col(theta))
 
 
 def calc_w_i_j_form_a(i: float, j: float) -> float:
@@ -22749,6 +27001,69 @@ def calc_val_2005_07742_form_9(r: float, v: float, x: float, y: float, z: float)
 def expr_val_2005_07742_form_9(r: str = "r", v: str = "v", x: str = "x", y: str = "y", z: str = "z") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2005_07742_form_9`."""
     return (2*pl.col(r)*pl.col(v)*pl.col(y) + math.sqrt(2)*pl.col(r)*pl.col(v)*pl.col(z)*(pl.col(r).sqrt()*pl.col(v)*pl.col(x)))
+
+
+def calc_val_2604_25278_form_5(Delta: float, o: float, p: float, r: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2604_25278.
+
+    **Source**:
+    - Title: The GMRT High-Resolution Southern Sky Survey for pulsars and transients -- VIII: Orbital Variability and the Evolution of a 1-Day He-WD Millisecond Pulsar J2101-4802 (2026)
+    - Authors: Ankita Ghosh, Bhaswati Bhattacharyya, David L. Kaplan et al.
+    - Citation Key: `arxiv_2604_25278`
+
+    **KaTeX Formula**:
+    $$
+    Pb \sim  P now b - P final b \Delta trproto = 1.21 \times  10-11 - 2.7 \times  10-14 \Delta trproto
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        o (float): Input parameter `o`.
+        p (float): Input parameter `p`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-14*Delta*o**2*p*r**2*t**2 - 25.9)
+
+
+def expr_val_2604_25278_form_5(Delta: str = "Delta", o: str = "o", p: str = "p", r: str = "r", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2604_25278_form_5`."""
+    return (-14*pl.col(Delta)*pl.col(o)**2*pl.col(p)*pl.col(r)**2*pl.col(t)**2 - 25.9)
+
+
+def calc_val_2610_01307_form_b(C: float, L: float, epsilon: float, n: float, p: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_01307.
+
+    **Source**:
+    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
+    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
+    - Citation Key: `arxiv_2610_01307`
+
+    **KaTeX Formula**:
+    $$
+    C up [n] \le  \sqrt{2\epsilon}  L , \forall n \in  N
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        L (float): Input parameter `L`.
+        epsilon (float): Input parameter `epsilon`.
+        n (float): Input parameter `n`.
+        p (float): Input parameter `p`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((C*n*p*u <= math.sqrt(2)*L*math.sqrt(epsilon)))
+
+
+def expr_val_2610_01307_form_b(C: str = "C", L: str = "L", epsilon: str = "epsilon", n: str = "n", p: str = "p", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_b`."""
+    return ((pl.col(C)*pl.col(n)*pl.col(p)*pl.col(u) <= math.sqrt(2)*pl.col(L)*(pl.col(epsilon).sqrt())))
 
 
 def calc_d_f_form_d(c: float, m: float, p: float) -> float:
@@ -23003,6 +27318,34 @@ def expr_tau_c_r_b_l_form_b(P: str = "P") -> pl.Expr:
     return ((pl.col(P).sqrt()))
 
 
+def calc_xi_m_xi_d_xi_xi_form_5(G: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_24299.
+
+    **Source**:
+    - Title: Nonlinear Dynamic Modeling and Receding-Horizon NMPC of an Electric Unicycle on a Tensioned Cable (2026)
+    - Authors: Yousef Sweiti, Jasem Tamimi
+    - Citation Key: `arxiv_2609_24299`
+
+    **KaTeX Formula**:
+    $$
+    M(\xi )  \xi  +d(\xi ,  \xi ) = Gu
+    $$
+
+    Args:
+        G (float): Input parameter `G`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(G*u)
+
+
+def expr_xi_m_xi_d_xi_xi_form_5(G: str = "G", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_xi_m_xi_d_xi_xi_form_5`."""
+    return (pl.col(G)*pl.col(u))
+
+
 def calc_epsilon_i_1312_7(B: float, alpha: float, delta: float, i: float) -> float:
     r"""Compute mathematical metric extracted from 1312_7158.
 
@@ -23059,6 +27402,38 @@ def calc_m_r_r_r_c_o_form_d(F: float, R: float) -> float:
 def expr_m_r_r_r_c_o_form_d(F: str = "F", R: str = "R") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_r_r_r_c_o_form_d`."""
     return (pl.col(F)*pl.col(R))
+
+
+def calc_t_de_t_e_c_t_form_0(P: float, b: float, m: float, r: float, s: float, sigma: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2604_25278.
+
+    **Source**:
+    - Title: The GMRT High-Resolution Southern Sky Survey for pulsars and transients -- VIII: Orbital Variability and the Evolution of a 1-Day He-WD Millisecond Pulsar J2101-4802 (2026)
+    - Authors: Ankita Ghosh, Bhaswati Bhattacharyya, David L. Kaplan et al.
+    - Citation Key: `arxiv_2604_25278`
+
+    **KaTeX Formula**:
+    $$
+    Tdetect = ( 6 \sigma rms Pb |  Pb| )1/3
+    $$
+
+    Args:
+        P (float): Input parameter `P`.
+        b (float): Input parameter `b`.
+        m (float): Input parameter `m`.
+        r (float): Input parameter `r`.
+        s (float): Input parameter `s`.
+        sigma (float): Input parameter `sigma`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*P*b*m*r*s*sigma*abs(P*b))
+
+
+def expr_t_de_t_e_c_t_form_0(P: str = "P", b: str = "b", m: str = "m", r: str = "r", s: str = "s", sigma: str = "sigma") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_t_de_t_e_c_t_form_0`."""
+    return (2*pl.col(P)*pl.col(b)*pl.col(m)*pl.col(r)*pl.col(s)*pl.col(sigma)*abs(pl.col(P)*pl.col(b)))
 
 
 def calc_m_c_p_form_8(f: float, g: float, m: float) -> float:
@@ -23571,6 +27946,36 @@ def expr_eq_e_x_e_f_y_form_8(f: str = "f") -> pl.Expr:
     return (pl.col(f))
 
 
+def calc_val_1408_4306_form_9(D: float, L: float, alpha: float, simeq: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    RLD \simeq  20\alpha 1/2R-17/8 1
+    $$
+
+    Args:
+        D (float): Input parameter `D`.
+        L (float): Input parameter `L`.
+        alpha (float): Input parameter `alpha`.
+        simeq (float): Input parameter `simeq`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(10*D*L*alpha*simeq - 17/81)
+
+
+def expr_val_1408_4306_form_9(D: str = "D", L: str = "L", alpha: str = "alpha", simeq: str = "simeq") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1408_4306_form_9`."""
+    return (10*pl.col(D)*pl.col(L)*pl.col(alpha)*pl.col(simeq) - 17/81)
+
+
 def calc_f_tau_form_c(f: float, l: float, p: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1709_07969.
 
@@ -23746,6 +28151,130 @@ def calc_val_2608_08157_form_b(i: float, m: float, n: float, phi: float, r: floa
 def expr_val_2608_08157_form_b(i: str = "i", m: str = "m", n: str = "n", phi: str = "phi", r: str = "r", w: str = "w") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_08157_form_b`."""
     return (pl.col(i)*pl.col(m)*pl.col(n)*pl.col(phi)*pl.col(r)*pl.col(w))
+
+
+def calc_i_dd_omega_dd_t_form_b(d: float, domega: float, g: float, nu: float, r: float, rho: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    Id d\omega d dt =-8\pi \rho g\nu r3d\omega d
+    $$
+
+    Args:
+        d (float): Input parameter `d`.
+        domega (float): Input parameter `domega`.
+        g (float): Input parameter `g`.
+        nu (float): Input parameter `nu`.
+        r (float): Input parameter `r`.
+        rho (float): Input parameter `rho`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-24*math.pi*d*domega*g*nu*r*rho)
+
+
+def expr_i_dd_omega_dd_t_form_b(d: str = "d", domega: str = "domega", g: str = "g", nu: str = "nu", r: str = "r", rho: str = "rho") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_i_dd_omega_dd_t_form_b`."""
+    return (-24*math.pi*pl.col(d)*pl.col(domega)*pl.col(g)*pl.col(nu)*pl.col(r)*pl.col(rho))
+
+
+def calc_beta_r_t_form_b(Delta: float, Phi: float, pi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \beta R(t) = (-1/\pi )*\Delta \Phi (t)
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        Phi (float): Input parameter `Phi`.
+        pi (float): Input parameter `pi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((-1/pi)*(Delta*Phi))
+
+
+def expr_beta_r_t_form_b(Delta: str = "Delta", Phi: str = "Phi", pi: str = "pi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_beta_r_t_form_b`."""
+    return ((-1/pl.col(pi))*(pl.col(Delta)*pl.col(Phi)))
+
+
+def calc_d_n_form_b(Sigma: float, d: float, dH: float, dm: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    nd = \Sigma d Hdmd
+    $$
+
+    Args:
+        Sigma (float): Input parameter `Sigma`.
+        d (float): Input parameter `d`.
+        dH (float): Input parameter `dH`.
+        dm (float): Input parameter `dm`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Sigma*d*dH*dm)
+
+
+def expr_d_n_form_b(Sigma: str = "Sigma", d: str = "d", dH: str = "dH", dm: str = "dm") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_d_n_form_b`."""
+    return (pl.col(Sigma)*pl.col(d)*pl.col(dH)*pl.col(dm))
+
+
+def calc_g_form_c(C: float, V: float, approx: float, d: float, o: float, phi: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    G = g*d*Cos\phi /V2 \approx  g*d/V2
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        V (float): Input parameter `V`.
+        approx (float): Input parameter `approx`.
+        d (float): Input parameter `d`.
+        o (float): Input parameter `o`.
+        phi (float): Input parameter `phi`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((1/4)*C*d**2*o*phi*s/(V**2*approx))
+
+
+def expr_g_form_c(C: str = "C", V: str = "V", approx: str = "approx", d: str = "d", o: str = "o", phi: str = "phi", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_g_form_c`."""
+    return ((1/4)*pl.col(C)*pl.col(d)**2*pl.col(o)*pl.col(phi)*pl.col(s)/(pl.col(V)**2*pl.col(approx)))
 
 
 def calc_v_f_f_form_c(G: float, M: float, r: float) -> float:
@@ -23925,6 +28454,38 @@ def expr_c_v_z_form_0(mu: str = "mu", sigma: str = "sigma", z: str = "z") -> pl.
     return (100*pl.col(mu)*pl.col(sigma)*pl.col(z)**2)
 
 
+def calc_d_f_form_0(C: float, D: float, S: float, alpha: float, delta: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    FD = q*S*(CD0 + \delta 2 *CD\alpha )
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        D (float): Input parameter `D`.
+        S (float): Input parameter `S`.
+        alpha (float): Input parameter `alpha`.
+        delta (float): Input parameter `delta`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((S*q)*(C*(0*D) + (2*delta)*(C*(D*alpha))))
+
+
+def expr_d_f_form_0(C: str = "C", D: str = "D", S: str = "S", alpha: str = "alpha", delta: str = "delta", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_d_f_form_0`."""
+    return ((pl.col(S)*pl.col(q))*(pl.col(C)*(0*pl.col(D)) + (2*pl.col(delta))*(pl.col(C)*(pl.col(D)*pl.col(alpha)))))
+
+
 def calc_m_p_p_form_4(n: float, p: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_02991.
 
@@ -23953,6 +28514,42 @@ def expr_m_p_p_form_4(n: str = "n", p: str = "p") -> pl.Expr:
     return (1/(pl.col(n)**2*pl.col(p)))
 
 
+def calc_delta_m_form_4(C: float, Delta: float, M: float, Phi: float, S: float, T: float, alpha: float, d: float, pi: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \Delta M = (T2/2)*q*S*d*(\Delta \Phi /\pi )*CM\alpha
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        Delta (float): Input parameter `Delta`.
+        M (float): Input parameter `M`.
+        Phi (float): Input parameter `Phi`.
+        S (float): Input parameter `S`.
+        T (float): Input parameter `T`.
+        alpha (float): Input parameter `alpha`.
+        d (float): Input parameter `d`.
+        pi (float): Input parameter `pi`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((C*(M*alpha))*((d*(S*(q*((2*T)/2))))*((Delta*Phi)/pi)))
+
+
+def expr_delta_m_form_4(C: str = "C", Delta: str = "Delta", M: str = "M", Phi: str = "Phi", S: str = "S", T: str = "T", alpha: str = "alpha", d: str = "d", pi: str = "pi", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_m_form_4`."""
+    return ((pl.col(C)*(pl.col(M)*pl.col(alpha)))*((pl.col(d)*(pl.col(S)*(pl.col(q)*((2*pl.col(T))/2))))*((pl.col(Delta)*pl.col(Phi))/pl.col(pi))))
+
+
 def calc_m_n_p_form_5(n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_02991.
 
@@ -23978,6 +28575,34 @@ def calc_m_n_p_form_5(n: float) -> float:
 def expr_m_n_p_form_5(n: str = "n") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_n_p_form_5`."""
     return (1/((pl.col(n)*(pl.col(n)*pl.col(n)))))
+
+
+def calc_phi_form_5(L: float, d: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_20570.
+
+    **Source**:
+    - Title: Walking on the Slope: Stable Bipedal Gaits with Genetic-Algorithm-Optimized Trajectories (2026)
+    - Authors: Madhav Rijal
+    - Citation Key: `arxiv_2609_20570`
+
+    **KaTeX Formula**:
+    $$
+    \phi  = \arccos L21 + d2 - L22 2L2d , \theta 2 = \psi  - \phi
+    $$
+
+    Args:
+        L (float): Input parameter `L`.
+        d (float): Input parameter `d`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-444*L**2*d + 2*d + math.acos(21*L))
+
+
+def expr_phi_form_5(L: str = "L", d: str = "d") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_phi_form_5`."""
+    return (-444*pl.col(L)**2*pl.col(d) + 2*pl.col(d) + math.acos(21*pl.col(L)))
 
 
 def calc_m_p_j_e_p_form_5(J: float, N: float, T: float) -> float:
@@ -24216,6 +28841,37 @@ def expr_a_j_u_form_9(K: str = "K", f: str = "f") -> pl.Expr:
     return (pl.col(K)*pl.col(f) - 1)
 
 
+def calc_alpha_t_form_9(delta: float, gamma: float, i: float, t: float, xi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \alpha (t) = \gamma 0*i + (\gamma 0 + \delta 0)*\exp[i*\xi 2(t)] + (\delta 0)*\exp[i*\xi 1(t)]
+    $$
+
+    Args:
+        delta (float): Input parameter `delta`.
+        gamma (float): Input parameter `gamma`.
+        i (float): Input parameter `i`.
+        t (float): Input parameter `t`.
+        xi (float): Input parameter `xi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((0*delta)*math.exp(i*((1*t)*xi)) + (i*(0*gamma) + (0*delta + 0*gamma)*math.exp(i*((2*t)*xi))))
+
+
+def expr_alpha_t_form_9(delta: str = "delta", gamma: str = "gamma", i: str = "i", t: str = "t", xi: str = "xi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_alpha_t_form_9`."""
+    return ((0*pl.col(delta))*(pl.col(i).exp()*((1*pl.col(t))*pl.col(xi))) + (pl.col(i)*(0*pl.col(gamma)) + (0*pl.col(delta) + 0*pl.col(gamma))*(pl.col(i).exp()*((2*pl.col(t))*pl.col(xi)))))
+
+
 def calc_w_a_p_form_9(W: float, a: float, b: float, e: float, f: float, o: float, r: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2506_02351.
 
@@ -24248,6 +28904,39 @@ def calc_w_a_p_form_9(W: float, a: float, b: float, e: float, f: float, o: float
 def expr_w_a_p_form_9(W: str = "W", a: str = "a", b: str = "b", e: str = "e", f: str = "f", o: str = "o", r: str = "r", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_a_p_form_9`."""
     return (math.e*pl.col(W)*pl.col(a)*pl.col(e)*pl.col(f)*pl.col(r)*pl.col(t) - math.e*pl.col(W)*pl.col(b)*pl.col(e)**2*pl.col(f)*pl.col(o)*pl.col(r))
+
+
+def calc_val_2608_29935_form_9(A: float, B: float, C: float, W: float, b: float, phi: float, w: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+
+    **Source**:
+    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
+    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
+    - Citation Key: `arxiv_2608_29935`
+
+    **KaTeX Formula**:
+    $$
+    CWB BAwb \phi wb,b = C wC + CWR (RwR - R ̂wwb,h ) + CWL (LwL - L ̂wwb,h ) + CWB B wA
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        B (float): Input parameter `B`.
+        C (float): Input parameter `C`.
+        W (float): Input parameter `W`.
+        b (float): Input parameter `b`.
+        phi (float): Input parameter `phi`.
+        w (float): Input parameter `w`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(A*B**2*C*W*b**2*phi*w**2)
+
+
+def expr_val_2608_29935_form_9(A: str = "A", B: str = "B", C: str = "C", W: str = "W", b: str = "b", phi: str = "phi", w: str = "w") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_29935_form_9`."""
+    return (pl.col(A)*pl.col(B)**2*pl.col(C)*pl.col(W)*pl.col(b)**2*pl.col(phi)*pl.col(w)**2)
 
 
 def calc_val_1205_2071_form_9(C: float, D: float, S: float, T: float, V: float, alpha: float, e: float, q: float) -> float:
@@ -24345,6 +29034,76 @@ def expr_e_form_a(N: str = "N") -> pl.Expr:
     return (1*(pl.col(N)*pl.col(N)))
 
 
+def calc_delta_m_p_e_a_k_form_b(C: float, Delta: float, M: float, Phi: float, S: float, alpha: float, d: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    {\Delta M}PEAK = q*S*d*(\Delta \Phi )*CM\alpha
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        Delta (float): Input parameter `Delta`.
+        M (float): Input parameter `M`.
+        Phi (float): Input parameter `Phi`.
+        S (float): Input parameter `S`.
+        alpha (float): Input parameter `alpha`.
+        d (float): Input parameter `d`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((C*(M*alpha))*((Delta*Phi)*(d*(S*q))))
+
+
+def expr_delta_m_p_e_a_k_form_b(C: str = "C", Delta: str = "Delta", M: str = "M", Phi: str = "Phi", S: str = "S", alpha: str = "alpha", d: str = "d", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_m_p_e_a_k_form_b`."""
+    return ((pl.col(C)*(pl.col(M)*pl.col(alpha)))*((pl.col(Delta)*pl.col(Phi))*(pl.col(d)*(pl.col(S)*pl.col(q)))))
+
+
+def calc_delta_m_form_b(C: float, M: float, S: float, T: float, V: float, alpha: float, d: float, g: float, pi: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \Delta M = (1/\pi )*g*(T2/2)2 *q*S*d*CM\alpha /V(t)
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        M (float): Input parameter `M`.
+        S (float): Input parameter `S`.
+        T (float): Input parameter `T`.
+        V (float): Input parameter `V`.
+        alpha (float): Input parameter `alpha`.
+        d (float): Input parameter `d`.
+        g (float): Input parameter `g`.
+        pi (float): Input parameter `pi`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(((C*(M*alpha))*(d*(S*(q*((2*((2*T)/2))*(g*(1/pi)))))))/V)
+
+
+def expr_delta_m_form_b(C: str = "C", M: str = "M", S: str = "S", T: str = "T", V: str = "V", alpha: str = "alpha", d: str = "d", g: str = "g", pi: str = "pi", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_m_form_b`."""
+    return (((pl.col(C)*(pl.col(M)*pl.col(alpha)))*(pl.col(d)*(pl.col(S)*(pl.col(q)*((2*((2*pl.col(T))/2))*(pl.col(g)*(1/pl.col(pi))))))))/pl.col(V))
+
+
 def calc_d_i_v_form_c(P: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_10457.
 
@@ -24370,6 +29129,40 @@ def calc_d_i_v_form_c(P: float) -> float:
 def expr_d_i_v_form_c(P: str = "P") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_d_i_v_form_c`."""
     return (pl.col(P)**2)
+
+
+def calc_partial_delta_e_alpha_partial_form_c(C: float, D: float, S: float, V: float, alpha: float, omega: float, pi: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \partial (\Delta E)/\partial \alpha  = \alpha *2\pi *q*S*V*CD\alpha /\omega 2
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        D (float): Input parameter `D`.
+        S (float): Input parameter `S`.
+        V (float): Input parameter `V`.
+        alpha (float): Input parameter `alpha`.
+        omega (float): Input parameter `omega`.
+        pi (float): Input parameter `pi`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(((C*(D*alpha))*(V*(S*(q*(alpha*(2*pi))))))/((2*omega)))
+
+
+def expr_partial_delta_e_alpha_partial_form_c(C: str = "C", D: str = "D", S: str = "S", V: str = "V", alpha: str = "alpha", omega: str = "omega", pi: str = "pi", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_delta_e_alpha_partial_form_c`."""
+    return (((pl.col(C)*(pl.col(D)*pl.col(alpha)))*(pl.col(V)*(pl.col(S)*(pl.col(q)*(pl.col(alpha)*(2*pl.col(pi)))))))/((2*pl.col(omega))))
 
 
 def calc_c_g_f_r_form_c(L: float, c: float) -> float:
@@ -24666,6 +29459,39 @@ def expr_val_0902_1360_form_e(p: str = "p") -> pl.Expr:
     return (pl.col(p))
 
 
+def calc_omega_2_form_e(C: float, L: float, M: float, S: float, alpha: float, d: float, q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    \omega 2 = q*S*d*CM\alpha /L
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        L (float): Input parameter `L`.
+        M (float): Input parameter `M`.
+        S (float): Input parameter `S`.
+        alpha (float): Input parameter `alpha`.
+        d (float): Input parameter `d`.
+        q (float): Input parameter `q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(((C*(M*alpha))*(d*(S*q)))/L)
+
+
+def expr_omega_2_form_e(C: str = "C", L: str = "L", M: str = "M", S: str = "S", alpha: str = "alpha", d: str = "d", q: str = "q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_omega_2_form_e`."""
+    return (((pl.col(C)*(pl.col(M)*pl.col(alpha)))*(pl.col(d)*(pl.col(S)*pl.col(q))))/pl.col(L))
+
+
 def calc_val_2512_13304_form_0(d: float, delta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_13304.
 
@@ -24751,6 +29577,38 @@ def calc_y_r_s_h_s_y_p_s_form_1(T: float, k: float, p: float, s: float, z: float
 def expr_y_r_s_h_s_y_p_s_form_1(T: str = "T", k: str = "k", p: str = "p", s: str = "s", z: str = "z") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_y_r_s_h_s_y_p_s_form_1`."""
     return (pl.col(T)*pl.col(k)*pl.col(p)**2*pl.col(s) + pl.col(T)*pl.col(s)*pl.col(z) + 1)
+
+
+def calc_val_2512_18323_form_2(Gamma: float, alpha: float, c: float, dchi: float, dt: float, propto: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    d\chi  dt \propto  \alpha c\Gamma 2
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        alpha (float): Input parameter `alpha`.
+        c (float): Input parameter `c`.
+        dchi (float): Input parameter `dchi`.
+        dt (float): Input parameter `dt`.
+        propto (float): Input parameter `propto`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*Gamma*alpha*c*dchi*dt*propto)
+
+
+def expr_val_2512_18323_form_2(Gamma: str = "Gamma", alpha: str = "alpha", c: str = "c", dchi: str = "dchi", dt: str = "dt", propto: str = "propto") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2512_18323_form_2`."""
+    return (2*pl.col(Gamma)*pl.col(alpha)*pl.col(c)*pl.col(dchi)*pl.col(dt)*pl.col(propto))
 
 
 def calc_j_0_form_2(psi: float) -> float:
@@ -24982,6 +29840,35 @@ def calc_val_2610_29565_form_4(e: float, f: float, q: float, r: float) -> float:
 def expr_val_2610_29565_form_4(e: str = "e", f: str = "f", q: str = "q", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_29565_form_4`."""
     return (pl.col(e)*pl.col(f)*pl.col(q)*pl.col(r))
+
+
+def calc_val_2610_05080_form_4(c: float, r: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_05080.
+
+    **Source**:
+    - Title: Tracing a Sparse Emotion-Control Circuit in LLM-Based Text-to-Speech (2026)
+    - Authors: Hongfei Du, Jiacheng Shi, Yanfu Zhang et al.
+    - Citation Key: `arxiv_2610_05080`
+
+    **KaTeX Formula**:
+    $$
+    Essrc,k = Mk(τ patch ssrc ) -Mk(τ (n) ) Mk(τ (e) ) -Mk(τ (n) ) .
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+        r (float): Input parameter `r`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.e*c*r*s**2)
+
+
+def expr_val_2610_05080_form_4(c: str = "c", r: str = "r", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_05080_form_4`."""
+    return (math.e*pl.col(c)*pl.col(r)*pl.col(s)**2)
 
 
 def calc_z_form_4(c: float, e: float, v: float) -> float:
@@ -25225,35 +30112,6 @@ def expr_val_2609_39852_form_9(m: str = "m", r: str = "r") -> pl.Expr:
     return (pl.col(m)*pl.col(r))
 
 
-def calc_val_2610_01307_form_9(a: float, m: float, x: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_01307.
-
-    **Source**:
-    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
-    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
-    - Citation Key: `arxiv_2610_01307`
-
-    **KaTeX Formula**:
-    $$
-    (P1.1): max P,V,A 1N N∑ n=1 Rlb b [n] (64a) s.t. (40b) - (40f), (40j), (40m) - (40p), (58), (61), (62), (63).
-    $$
-
-    Args:
-        a (float): Input parameter `a`.
-        m (float): Input parameter `m`.
-        x (float): Input parameter `x`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1.1/(a*m*x))
-
-
-def expr_val_2610_01307_form_9(a: str = "a", m: str = "m", x: str = "x") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_9`."""
-    return (1.1/(pl.col(a)*pl.col(m)*pl.col(x)))
-
-
 def calc_e_u_p_p_e_r_form_a(J: float, T: float, b: float, u: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2606_08059.
 
@@ -25284,33 +30142,6 @@ def expr_e_u_p_p_e_r_form_a(J: str = "J", T: str = "T", b: str = "b", u: str = "
     return (pl.col(T)*abs(pl.col(J)*pl.col(b)*pl.col(u)))
 
 
-def calc_val_2610_01307_form_b(f: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_01307.
-
-    **Source**:
-    - Title: Exploiting UAV Attitude for Covert Communications: Dynamics-Consistent Trajectory-Attitude Co-Design (2026)
-    - Authors: Jinpeng Xu, Lin Zhou, Xin Xie et al.
-    - Citation Key: `arxiv_2610_01307`
-
-    **KaTeX Formula**:
-    $$
-    f (yw[n, ℓ]) =  1 πσ2 0 [n] exp(- |yw[n, ℓ]|2 σ2 0 [n] ) , H0, 1 πσ2 1 [n] exp(- |yw[n, ℓ]|2 σ2 1 [n] ) , H1,
-    $$
-
-    Args:
-        f (float): Input parameter `f`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(f)
-
-
-def expr_val_2610_01307_form_b(f: str = "f") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_01307_form_b`."""
-    return (pl.col(f))
-
-
 def calc_val_2610_04813_form_b(P: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_04813.
 
@@ -25336,6 +30167,35 @@ def calc_val_2610_04813_form_b(P: float) -> float:
 def expr_val_2610_04813_form_b(P: str = "P") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_04813_form_b`."""
     return (pl.col(P))
+
+
+def calc_val_2610_27416_form_b(X: float, sigma: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    E[|Xt|2 ] \le  \sigma 2X
+    $$
+
+    Args:
+        X (float): Input parameter `X`.
+        sigma (float): Input parameter `sigma`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((2*math.e*abs(X*t) <= 2*X*sigma))
+
+
+def expr_val_2610_27416_form_b(X: str = "X", sigma: str = "sigma", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_b`."""
+    return ((2*math.e*abs(pl.col(X)*pl.col(t)) <= 2*pl.col(X)*pl.col(sigma)))
 
 
 def calc_e_s_m_o_o_h_t_form_b(F: float, T: float) -> float:
@@ -25450,6 +30310,70 @@ def calc_val_2610_04813_form_c(P: float) -> float:
 def expr_val_2610_04813_form_c(P: str = "P") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_04813_form_c`."""
     return (pl.col(P))
+
+
+def calc_val_2601_18161_form_c(C: float, G: float, R: float, Sigma: float, kappa: float, m: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2601_18161.
+
+    **Source**:
+    - Title: In-depth analysis of bar formation mechanisms of disk galaxies in halos of different concentrations (2026)
+    - Authors: T. Worrakitpoonpon
+    - Citation Key: `arxiv_2601_18161`
+
+    **KaTeX Formula**:
+    $$
+    m \sim  RCR\kappa 2 4\pi G\Sigma
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        G (float): Input parameter `G`.
+        R (float): Input parameter `R`.
+        Sigma (float): Input parameter `Sigma`.
+        kappa (float): Input parameter `kappa`.
+        m (float): Input parameter `m`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(24*math.pi*C*G*R**2*Sigma*kappa*m*sim)
+
+
+def expr_val_2601_18161_form_c(C: str = "C", G: str = "G", R: str = "R", Sigma: str = "Sigma", kappa: str = "kappa", m: str = "m", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2601_18161_form_c`."""
+    return (24*math.pi*pl.col(C)*pl.col(G)*pl.col(R)**2*pl.col(Sigma)*pl.col(kappa)*pl.col(m)*pl.col(sim))
+
+
+def calc_partial_partial_t_phi_h_r_t_form_c(Gamma: float, beta: float, c: float, k: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    \partial  \partial t \Phi H(r, t) = - \beta c\Gamma  \cos(2\theta ) k
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        beta (float): Input parameter `beta`.
+        c (float): Input parameter `c`.
+        k (float): Input parameter `k`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-beta*c*(Gamma*(k*math.cos(2*theta))))
+
+
+def expr_partial_partial_t_phi_h_r_t_form_c(Gamma: str = "Gamma", beta: str = "beta", c: str = "c", k: str = "k", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_partial_t_phi_h_r_t_form_c`."""
+    return (-pl.col(beta)*pl.col(c)*(pl.col(Gamma)*(pl.col(k)*math.cos(2*pl.col(theta)))))
 
 
 def calc_k_l_l_s_form_c(B: float) -> float:
@@ -25696,7 +30620,7 @@ def expr_val_2610_31153_form_0(T: str = "T", i: str = "i", l: str = "l", m: str 
     return (pl.col(T)*pl.col(i)*pl.col(l)*pl.col(m))
 
 
-def calc_r_s_r_s_m_i_x_form_0(eta: float) -> float:
+def calc_r_s_r_s_m_i_x_form_0(E: float, N: float, S: float, eta: float, h: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
     **Source**:
@@ -25710,17 +30634,49 @@ def calc_r_s_r_s_m_i_x_form_0(eta: float) -> float:
     $$
 
     Args:
+        E (float): Input parameter `E`.
+        N (float): Input parameter `N`.
+        S (float): Input parameter `S`.
         eta (float): Input parameter `eta`.
+        h (float): Input parameter `h`.
+        sim (float): Input parameter `sim`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(eta)
+    return float(eta*(builtins.sum(E*(h*(t*(S*sim))) for t in range(1, N+1))))
 
 
-def expr_r_s_r_s_m_i_x_form_0(eta: str = "eta") -> pl.Expr:
+def expr_r_s_r_s_m_i_x_form_0(E: str = "E", N: str = "N", S: str = "S", eta: str = "eta", h: str = "h", sim: str = "sim") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_r_s_r_s_m_i_x_form_0`."""
-    return (pl.col(eta))
+    return (pl.col(eta)*(builtins.sum(pl.col(E)*(pl.col(h)*(t*(pl.col(S)*pl.col(sim)))) for t in range(1, pl.col(N)+1))))
+
+
+def calc_val_2512_13304_form_a(alpha: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_13304.
+
+    **Source**:
+    - Title: Humanoid Robot Running Through Random Stepping Stones and Jumping Over Obstacles: Step Adaptation Using Spring-Mass Trajectories (2025)
+    - Authors: Sait Sovukluk, Johannes Englsberger, Christian Ott
+    - Citation Key: `arxiv_2512_13304`
+
+    **KaTeX Formula**:
+    $$
+    \alpha  \ge  0, (12a)
+    $$
+
+    Args:
+        alpha (float): Input parameter `alpha`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((alpha >= 0))
+
+
+def expr_val_2512_13304_form_a(alpha: str = "alpha") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2512_13304_form_a`."""
+    return ((pl.col(alpha) >= 0))
 
 
 def calc_e_a_sim_t_a_s_h_0_a_form_0(epsilon: float) -> float:
@@ -25983,34 +30939,6 @@ def expr_l_f_k_l_theta_form_a(H: str = "H") -> pl.Expr:
     return (pl.col(H)**2 - 1)
 
 
-def calc_w_form_4(l: float, theta: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2507_16328.
-
-    **Source**:
-    - Title: Design and Dimensional Optimization of Legged Structures for Construction Robots (2025)
-    - Authors: Xiao Liu, Xianlong Yang, Weijun Wang et al.
-    - Citation Key: `arxiv_2507_16328`
-
-    **KaTeX Formula**:
-    $$
-    w = |-l2l3(l1 \sin \theta 3 - l3 \sin \theta 2 + l2 \cos \theta 2 \sin \theta 3 + l3 \cos 2 \theta 3 \sin \theta 2 + l3 \cos \theta 2 \cos \theta 3 \sin \theta 3)|
-    $$
-
-    Args:
-        l (float): Input parameter `l`.
-        theta (float): Input parameter `theta`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(2*abs(l**2*(9*l*math.sin(2*theta)*math.cos(6*theta) - 9*l*math.sin(2*theta) + 9*l*math.sin(3*theta)*math.cos(2*theta)*math.cos(3*theta) + 6*l*math.sin(3*theta)*math.cos(2*theta) + 3*l*math.sin(3*theta))))
-
-
-def expr_w_form_4(l: str = "l", theta: str = "theta") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_w_form_4`."""
-    return (2*abs(pl.col(l)**2*(9*pl.col(l)*math.sin(2*pl.col(theta))*math.cos(6*pl.col(theta)) - 9*pl.col(l)*math.sin(2*pl.col(theta)) + 9*pl.col(l)*math.sin(3*pl.col(theta))*math.cos(2*pl.col(theta))*math.cos(3*pl.col(theta)) + 6*pl.col(l)*math.sin(3*pl.col(theta))*math.cos(2*pl.col(theta)) + 3*pl.col(l)*math.sin(3*pl.col(theta)))))
-
-
 def calc_r_s_r_pi_form_4(E: float, x: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
@@ -26129,6 +31057,33 @@ def calc_p_u_form_5(a: float, h: float, y: float) -> float:
 def expr_p_u_form_5(a: str = "a", h: str = "h", y: str = "y") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_u_form_5`."""
     return (pl.col(a)*pl.col(y) + pl.col(h)*pl.col(y))
+
+
+def calc_gamma_tau_form_5(tau: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2506_17505.
+
+    **Source**:
+    - Title: Learning golf swing signatures from a single wrist-worn inertial sensor (2025)
+    - Authors: Jessy Lauer
+    - Citation Key: `arxiv_2506_17505`
+
+    **KaTeX Formula**:
+    $$
+    \gamma (\tau  ) = \cos ( \pi \tau  2 )
+    $$
+
+    Args:
+        tau (float): Input parameter `tau`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.cos(2*math.pi*tau))
+
+
+def expr_gamma_tau_form_5(tau: str = "tau") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_gamma_tau_form_5`."""
+    return (math.cos(2*math.pi*pl.col(tau)))
 
 
 def calc_g_s_p_e_c_t_r_a_l_form_5(a: float, b: float, e: float, f: float, i: float, l: float, n: float, s: float) -> float:
@@ -26577,39 +31532,6 @@ def expr_val_2609_38730_form_9(R: str = "R", b: str = "b", de: str = "de", ds: s
     return (pl.col(R)*pl.col(b)*pl.col(de)*pl.col(ds)*pl.col(n)*pl.col(o)*pl.col(u))
 
 
-def calc_val_2512_13304_form_a(a: float, e: float, i: float, m: float, n: float, p: float, x: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2512_13304.
-
-    **Source**:
-    - Title: Humanoid Robot Running Through Random Stepping Stones and Jumping Over Obstacles: Step Adaptation Using Spring-Mass Trajectories (2025)
-    - Authors: Sait Sovukluk, Johannes Englsberger, Christian Ott
-    - Citation Key: `arxiv_2512_13304`
-
-    **KaTeX Formula**:
-    $$
-    min i ||xapex - x * i ||
-    $$
-
-    Args:
-        a (float): Input parameter `a`.
-        e (float): Input parameter `e`.
-        i (float): Input parameter `i`.
-        m (float): Input parameter `m`.
-        n (float): Input parameter `n`.
-        p (float): Input parameter `p`.
-        x (float): Input parameter `x`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(i**2*m*n*abs(a*e*p*x**2 - i*x))
-
-
-def expr_val_2512_13304_form_a(a: str = "a", e: str = "e", i: str = "i", m: str = "m", n: str = "n", p: str = "p", x: str = "x") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2512_13304_form_a`."""
-    return (pl.col(i)**2*pl.col(m)*pl.col(n)*abs(pl.col(a)*pl.col(e)*pl.col(p)*pl.col(x)**2 - pl.col(i)*pl.col(x)))
-
-
 def calc_val_2512_13304_form_b(d: float, delta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_13304.
 
@@ -26870,6 +31792,39 @@ def expr_j_f_k_l_theta_form_e(x: str = "x") -> pl.Expr:
     return (math.e*pl.col(x))
 
 
+def calc_l_t_r_t_form_f(Gamma: float, beta: float, c: float, t: float, theta: float, y: float, z: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_18323.
+
+    **Source**:
+    - Title: On Lorentz Variability of Magnetically Dominated Relativistic Outflows (2025)
+    - Authors: V. I. Berezhiani, N. L. Shatashvili, A. G. Tevzadze
+    - Citation Key: `arxiv_2512_18323`
+
+    **KaTeX Formula**:
+    $$
+    LT (r, t) = (\Gamma -\Gamma \theta ) \cos(\theta )y + (\Gamma +\Gamma \theta ) \sin(\theta )z -\Gamma \sin(2\theta )\beta  ct
+    $$
+
+    Args:
+        Gamma (float): Input parameter `Gamma`.
+        beta (float): Input parameter `beta`.
+        c (float): Input parameter `c`.
+        t (float): Input parameter `t`.
+        theta (float): Input parameter `theta`.
+        y (float): Input parameter `y`.
+        z (float): Input parameter `z`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-Gamma*(beta*(c*t))*math.sin(2*theta) + ((y*math.cos(theta))*(-Gamma*theta + Gamma) + (z*math.sin(theta))*(Gamma*theta + Gamma)))
+
+
+def expr_l_t_r_t_form_f(Gamma: str = "Gamma", beta: str = "beta", c: str = "c", t: str = "t", theta: str = "theta", y: str = "y", z: str = "z") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_l_t_r_t_form_f`."""
+    return (-pl.col(Gamma)*(pl.col(beta)*(pl.col(c)*pl.col(t)))*math.sin(2*pl.col(theta)) + ((pl.col(y)*math.cos(pl.col(theta)))*(-pl.col(Gamma)*pl.col(theta) + pl.col(Gamma)) + (pl.col(z)*math.sin(pl.col(theta)))*(pl.col(Gamma)*pl.col(theta) + pl.col(Gamma))))
+
+
 def calc_n_q_form_0(q: float, theta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29049.
 
@@ -26925,6 +31880,61 @@ def expr_val_2608_27423_form_0(R: str = "R") -> pl.Expr:
     return (pl.col(R))
 
 
+def calc_val_2610_27416_form_0(Y: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    E[|Yt|2 ] \le  1 8 (4 ( c\sigma  U )2 T + \sqrt 8|Y0|2 + 2)2 - 14 \le  2
+    $$
+
+    Args:
+        Y (float): Input parameter `Y`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((2*math.e*abs(Y*t) <= 18))
+
+
+def expr_val_2610_27416_form_0(Y: str = "Y", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_0`."""
+    return ((2*math.e*abs(pl.col(Y)*pl.col(t)) <= 18))
+
+
+def calc_val_2610_29049_form_0(theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29049.
+
+    **Source**:
+    - Title: ART-MPG: Autoregressive R/T Manifold Path Guiding (2026)
+    - Authors: Zehao Zhao, Yanyang Yang, Xiaole Zhang et al.
+    - Citation Key: `arxiv_2610_29049`
+
+    **KaTeX Formula**:
+    $$
+    \pi \theta (d | x) = q\theta (n | x) n\prod  i=1 q\theta (ti | t<i, n, x)
+    $$
+
+    Args:
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.pi*theta)
+
+
+def expr_val_2610_29049_form_0(theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29049_form_0`."""
+    return (math.pi*pl.col(theta))
+
+
 def calc_c_t_form_0(T: float, U: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_05500.
 
@@ -26951,34 +31961,6 @@ def calc_c_t_form_0(T: float, U: float) -> float:
 def expr_c_t_form_0(T: str = "T", U: str = "U") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_t_form_0`."""
     return (240*pl.col(T)*pl.col(U))
-
-
-def calc_val_2610_29049_form_0(Q: float, theta: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29049.
-
-    **Source**:
-    - Title: ART-MPG: Autoregressive R/T Manifold Path Guiding (2026)
-    - Authors: Zehao Zhao, Yanyang Yang, Xiaole Zhang et al.
-    - Citation Key: `arxiv_2610_29049`
-
-    **KaTeX Formula**:
-    $$
-    Q\theta (a | z) = \int  ¯\Phi -1 z ({a}) q\theta (d, \omega  | \psi (z)) d\nu (d, \omega )
-    $$
-
-    Args:
-        Q (float): Input parameter `Q`.
-        theta (float): Input parameter `theta`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(Q*theta)
-
-
-def expr_val_2610_29049_form_0(Q: str = "Q", theta: str = "theta") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_29049_form_0`."""
-    return (pl.col(Q)*pl.col(theta))
 
 
 def calc_val_2608_10387_form_1(a: float, r: float) -> float:
@@ -27036,37 +32018,6 @@ def calc_e_0_a_4_i_form_2(A: float, kappa: float, sigma: float) -> float:
 def expr_e_0_a_4_i_form_2(A: str = "A", kappa: str = "kappa", sigma: str = "sigma") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_0_a_4_i_form_2`."""
     return (12*pl.col(A)*pl.col(sigma) + pl.col(kappa))
-
-
-def calc_val_2610_29685_form_2(A: float, a: float, b: float, sigma: float, y: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29685.
-
-    **Source**:
-    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
-    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
-    - Citation Key: `arxiv_2610_29685`
-
-    **KaTeX Formula**:
-    $$
-    yayb \sigma 2A \to Bab = [C0(⃗ \theta a, ⃗ \theta b) + \alpha 2 \delta ab ]
-    $$
-
-    Args:
-        A (float): Input parameter `A`.
-        a (float): Input parameter `a`.
-        b (float): Input parameter `b`.
-        sigma (float): Input parameter `sigma`.
-        y (float): Input parameter `y`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(2*A*a*b*sigma*y**2)
-
-
-def expr_val_2610_29685_form_2(A: str = "A", a: str = "a", b: str = "b", sigma: str = "sigma", y: str = "y") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_2`."""
-    return (2*pl.col(A)*pl.col(a)*pl.col(b)*pl.col(sigma)*pl.col(y)**2)
 
 
 def calc_l_omega_b_form_3(g: float, theta: float) -> float:
@@ -27359,7 +32310,7 @@ def expr_val_2609_17701_form_8(b: str = "b") -> pl.Expr:
     return (pl.col(b))
 
 
-def calc_val_1_h_r_s_r_pi_form_8(H: float, eta: float) -> float:
+def calc_val_1_h_r_s_r_pi_form_8(E: float, H: float, N: float, S: float, eta: float, h: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
     **Source**:
@@ -27373,18 +32324,23 @@ def calc_val_1_h_r_s_r_pi_form_8(H: float, eta: float) -> float:
     $$
 
     Args:
+        E (float): Input parameter `E`.
         H (float): Input parameter `H`.
+        N (float): Input parameter `N`.
+        S (float): Input parameter `S`.
         eta (float): Input parameter `eta`.
+        h (float): Input parameter `h`.
+        sim (float): Input parameter `sim`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(H*eta)
+    return float(eta*(H*(builtins.sum(E*(h*(t*(S*sim))) for t in range(1, N+1)))))
 
 
-def expr_val_1_h_r_s_r_pi_form_8(H: str = "H", eta: str = "eta") -> pl.Expr:
+def expr_val_1_h_r_s_r_pi_form_8(E: str = "E", H: str = "H", N: str = "N", S: str = "S", eta: str = "eta", h: str = "h", sim: str = "sim") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_1_h_r_s_r_pi_form_8`."""
-    return (pl.col(H)*pl.col(eta))
+    return (pl.col(eta)*(pl.col(H)*(builtins.sum(pl.col(E)*(pl.col(h)*(t*(pl.col(S)*pl.col(sim)))) for t in range(1, pl.col(N)+1)))))
 
 
 def calc_l_g_a_p_w_form_8(A: float, B: float, H: float, a: float, y: float) -> float:
@@ -27501,6 +32457,40 @@ def calc_e_u_s_t_form_9(T: float) -> float:
 def expr_e_u_s_t_form_9(T: str = "T") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_u_s_t_form_9`."""
     return (pl.col(T))
+
+
+def calc_val_2610_27416_form_9(F: float, T: float, U: float, alpha: float, delta: float, e: float, eta: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    2\alpha F U s-1 \delta  \le  \eta e-\eta T
+    $$
+
+    Args:
+        F (float): Input parameter `F`.
+        T (float): Input parameter `T`.
+        U (float): Input parameter `U`.
+        alpha (float): Input parameter `alpha`.
+        delta (float): Input parameter `delta`.
+        e (float): Input parameter `e`.
+        eta (float): Input parameter `eta`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((2*F*U*alpha*s - delta <= -T*eta + e*eta))
+
+
+def expr_val_2610_27416_form_9(F: str = "F", T: str = "T", U: str = "U", alpha: str = "alpha", delta: str = "delta", e: str = "e", eta: str = "eta", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_9`."""
+    return ((2*pl.col(F)*pl.col(U)*pl.col(alpha)*pl.col(s) - pl.col(delta) <= -pl.col(T)*pl.col(eta) + pl.col(e)*pl.col(eta)))
 
 
 def calc_p_b_a_s_e_l_i_e_n_form_9(W: float, i: float, v: float) -> float:
@@ -27654,34 +32644,6 @@ def expr_l_p_m_form_a(a: str = "a", m: str = "m", x: str = "x") -> pl.Expr:
     return (pl.col(a)*pl.col(m)*pl.col(x))
 
 
-def calc_o_b_k_s_form_9(B: float, k: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_07617.
-
-    **Source**:
-    - Title: Forecasting the Winner of a Live Tennis Match (2026)
-    - Authors: Charles Xie, Aneesh Muppidi
-    - Citation Key: `arxiv_2609_07617`
-
-    **KaTeX Formula**:
-    $$
-    Obsk = 1 |Bk | \sum  i\in Bk yi
-    $$
-
-    Args:
-        B (float): Input parameter `B`.
-        k (float): Input parameter `k`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*abs(B*k))
-
-
-def expr_o_b_k_s_form_9(B: str = "B", k: str = "k") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_o_b_k_s_form_9`."""
-    return (1*abs(pl.col(B)*pl.col(k)))
-
-
 def calc_c_p_form_a(P: float, U: float, i: float, n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_05500.
 
@@ -27739,6 +32701,35 @@ def calc_val_2610_31153_form_a(beta: float, epsilon: float, k: float) -> float:
 def expr_val_2610_31153_form_a(beta: str = "beta", epsilon: str = "epsilon", k: str = "k") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_31153_form_a`."""
     return (pl.col(beta)*(pl.col(epsilon)*pl.col(k)))
+
+
+def calc_val_2610_29685_form_a(a: float, chi: float, equiv: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    \chi a \equiv  \sum b B-1 ab yb
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        chi (float): Input parameter `chi`.
+        equiv (float): Input parameter `equiv`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(a*chi*equiv)
+
+
+def expr_val_2610_29685_form_a(a: str = "a", chi: str = "chi", equiv: str = "equiv") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_a`."""
+    return (pl.col(a)*pl.col(chi)*pl.col(equiv))
 
 
 def calc_val_2608_10387_form_a(R: float) -> float:
@@ -27880,33 +32871,6 @@ def calc_val_2608_26548_form_b(h: float, i: float) -> float:
 def expr_val_2608_26548_form_b(h: str = "h", i: str = "i") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_26548_form_b`."""
     return (pl.col(h)*pl.col(i))
-
-
-def calc_val_2610_27416_form_c(P: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27416.
-
-    **Source**:
-    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
-    - Authors: Koichi Miyamoto
-    - Citation Key: `arxiv_2610_27416`
-
-    **KaTeX Formula**:
-    $$
-    P {|Xt| \le  U\delta  , \forall t \in  [0, T ]} \ge  1 - \delta
-    $$
-
-    Args:
-        P (float): Input parameter `P`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(P)
-
-
-def expr_val_2610_27416_form_c(P: str = "P") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_c`."""
-    return (pl.col(P))
 
 
 def calc_q_s_h_0_di_f_f_i_c_u_l_t_form_c(epsilon: float) -> float:
@@ -28133,7 +33097,39 @@ def expr_val_1610_03464_form_e(a: str = "a", b: str = "b", l: str = "l", v: str 
     return (pl.col(a)*pl.col(b)*pl.col(l)**2*pl.col(v))
 
 
-def calc_e_a_s_sim_c_a_s_h_a_form_f(eta: float) -> float:
+def calc_val_2610_31153_form_f(a: float, eta: float, forall: float, j: float, mu: float, r: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_31153.
+
+    **Source**:
+    - Title: Balanced Posted Prices in Stationary Two-Sided Markets (2026)
+    - Authors: Ilan Reuven Cohen
+    - Citation Key: `arxiv_2610_31153`
+
+    **KaTeX Formula**:
+    $$
+    \eta jr \ge  \mu j - ajr \forall j, r
+    $$
+
+    Args:
+        a (float): Input parameter `a`.
+        eta (float): Input parameter `eta`.
+        forall (float): Input parameter `forall`.
+        j (float): Input parameter `j`.
+        mu (float): Input parameter `mu`.
+        r (float): Input parameter `r`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((eta*j*r >= -a*forall*j**2*r + j*mu))
+
+
+def expr_val_2610_31153_form_f(a: str = "a", eta: str = "eta", forall: str = "forall", j: str = "j", mu: str = "mu", r: str = "r") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_31153_form_f`."""
+    return ((pl.col(eta)*pl.col(j)*pl.col(r) >= -pl.col(a)*pl.col(forall)*pl.col(j)**2*pl.col(r) + pl.col(j)*pl.col(mu)))
+
+
+def calc_e_a_s_sim_c_a_s_h_a_form_f(N: float, T: float, eta: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_31563.
 
     **Source**:
@@ -28147,17 +33143,20 @@ def calc_e_a_s_sim_c_a_s_h_a_form_f(eta: float) -> float:
     $$
 
     Args:
+        N (float): Input parameter `N`.
+        T (float): Input parameter `T`.
         eta (float): Input parameter `eta`.
+        sim (float): Input parameter `sim`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(eta)
+    return float(eta*(builtins.sum(T*sim for a in range(1, N+1))))
 
 
-def expr_e_a_s_sim_c_a_s_h_a_form_f(eta: str = "eta") -> pl.Expr:
+def expr_e_a_s_sim_c_a_s_h_a_form_f(N: str = "N", T: str = "T", eta: str = "eta", sim: str = "sim") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_a_s_sim_c_a_s_h_a_form_f`."""
-    return (pl.col(eta))
+    return (pl.col(eta)*(builtins.sum(pl.col(T)*pl.col(sim) for a in range(1, pl.col(N)+1))))
 
 
 def calc_phi_x_form_0(n: float, q: float) -> float:
@@ -28244,33 +33243,6 @@ def calc_val_2608_23163_form_1(P: float, m: float, o: float, r: float, t: float)
 def expr_val_2608_23163_form_1(P: str = "P", m: str = "m", o: str = "o", r: str = "r", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_23163_form_1`."""
     return (pl.col(P)*pl.col(m)*pl.col(o)**2*pl.col(r)*pl.col(t))
-
-
-def calc_m_r_s_form_1(P: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27193.
-
-    **Source**:
-    - Title: Low Residuals, Wrong Value: Learning the Viscosity Solution of Hamilton-Jacobi-Isaacs Equations with PINNs (2026)
-    - Authors: Raul Jimenez, Pablo Tejerina-Pérez, Leonid Sarieddine et al.
-    - Citation Key: `arxiv_2610_27193`
-
-    **KaTeX Formula**:
-    $$
-    MSR = 1P \sum  P r[VNN] 2
-    $$
-
-    Args:
-        P (float): Input parameter `P`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*P)
-
-
-def expr_m_r_s_form_1(P: str = "P") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_m_r_s_form_1`."""
-    return (1*pl.col(P))
 
 
 def calc_h_g_form_1(g: float) -> float:
@@ -29051,6 +34023,36 @@ def expr_val_2610_31153_form_e(j: str = "j", u: str = "u") -> pl.Expr:
     return (pl.col(j)*pl.col(u))
 
 
+def calc_w_alpha_beta_form_e(Z: float, alpha: float, beta: float, partial: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29685.
+
+    **Source**:
+    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
+    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
+    - Citation Key: `arxiv_2610_29685`
+
+    **KaTeX Formula**:
+    $$
+    W\alpha \beta  = - \partial  2 \ln(Z) \partial \alpha \partial \beta
+    $$
+
+    Args:
+        Z (float): Input parameter `Z`.
+        alpha (float): Input parameter `alpha`.
+        beta (float): Input parameter `beta`.
+        partial (float): Input parameter `partial`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-partial*2*((partial*(alpha*(beta*partial)))*math.log(Z, math.e)))
+
+
+def expr_w_alpha_beta_form_e(Z: str = "Z", alpha: str = "alpha", beta: str = "beta", partial: str = "partial") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_w_alpha_beta_form_e`."""
+    return (-pl.col(partial)*2*((pl.col(partial)*(pl.col(alpha)*(pl.col(beta)*pl.col(partial))))*(pl.col(Z).log(), math.e)))
+
+
 def calc_val_2_a_sigma_form_e(N: float, a: float, chi: float, i: float, n: float, r: float, t: float, y: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29685.
 
@@ -29309,6 +34311,33 @@ def expr_a_w_form_3(V: str = "V", W: str = "W") -> pl.Expr:
     return (-pl.col(V) + pl.col(W))
 
 
+def calc_dl_dt_form_3(M: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    dL/dt = M
+    $$
+
+    Args:
+        M (float): Input parameter `M`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(M)
+
+
+def expr_dl_dt_form_3(M: str = "M") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_dl_dt_form_3`."""
+    return (pl.col(M))
+
+
 def calc_d_f_form_4(C: float, D: float, S: float, q: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1205_2071.
 
@@ -29509,6 +34538,36 @@ def calc_val_2610_26568_form_d(L: float, sigma: float) -> float:
 def expr_val_2610_26568_form_d(L: str = "L", sigma: str = "sigma") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_26568_form_d`."""
     return (pl.col(L)*pl.col(sigma))
+
+
+def calc_p_s_i_j_k_form_d(A: float, i: float, j: float, k: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+
+    **Source**:
+    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
+    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
+    - Citation Key: `arxiv_2610_25605`
+
+    **KaTeX Formula**:
+    $$
+    P s ijk = \exp(Aijk) \sum j ' ,k' \exp(Aij ' k') , msi = \sum  j,k P s ijk (q1 j ⊙ q2 k )
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        k (float): Input parameter `k`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.exp(A*i*j*k))
+
+
+def expr_p_s_i_j_k_form_d(A: str = "A", i: str = "i", j: str = "j", k: str = "k") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_p_s_i_j_k_form_d`."""
+    return ((pl.col(A).exp()*pl.col(i)*pl.col(j)*pl.col(k)))
 
 
 def calc_e_y_form_6(C: float, H: float, M: float, e: float, v: float) -> float:
@@ -29797,6 +34856,34 @@ def expr_r_h_form_a(L: str = "L", gamma: str = "gamma") -> pl.Expr:
     return (pl.col(L)*(pl.col(L)*math.cos(pl.col(gamma))))
 
 
+def calc_partial_t_v_i_t_i_form_8(E: float, Q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    \partial tV I (t, i) = EQ[\int  \theta * 0 (T - t)c' (t + (T - t)u)(1 - u) - c(t + (T - t)u) du + \sim  g' (\sqrt T - tI t,i \theta * ) (\sqrt T - t\partial tI t,i \theta * - I t,i \theta * 2\sqrt T - t ) ]
+    $$
+
+    Args:
+        E (float): Input parameter `E`.
+        Q (float): Input parameter `Q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(E*Q)
+
+
+def expr_partial_t_v_i_t_i_form_8(E: str = "E", Q: str = "Q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_t_v_i_t_i_form_8`."""
+    return (pl.col(E)*pl.col(Q))
+
+
 def calc_a_l_r_form_a(L: float, R: float, a: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2603_08746.
 
@@ -29824,6 +34911,37 @@ def calc_a_l_r_form_a(L: float, R: float, a: float) -> float:
 def expr_a_l_r_form_a(L: str = "L", R: str = "R", a: str = "a") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_a_l_r_form_a`."""
     return (6*pl.col(L)**3*pl.col(R)**3*pl.col(a)**3)
+
+
+def calc_val_2608_08157_form_a(T: float, n: float, r: float, v: float, w: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_08157.
+
+    **Source**:
+    - Title: Event-Time Hybrid Optimal Control for Robotic Table Tennis Serves (2026)
+    - Authors: Thomas Gossard, Till Köpff, Andreas Ziegler
+    - Citation Key: `arxiv_2608_08157`
+
+    **KaTeX Formula**:
+    $$
+    nTr vw r \ge  0,
+    $$
+
+    Args:
+        T (float): Input parameter `T`.
+        n (float): Input parameter `n`.
+        r (float): Input parameter `r`.
+        v (float): Input parameter `v`.
+        w (float): Input parameter `w`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((T*n*r**2*v*w >= 0))
+
+
+def expr_val_2608_08157_form_a(T: str = "T", n: str = "n", r: str = "r", v: str = "v", w: str = "w") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_08157_form_a`."""
+    return ((pl.col(T)*pl.col(n)*pl.col(r)**2*pl.col(v)*pl.col(w) >= 0))
 
 
 def calc_w_form_a(i: float, v: float, x: float, y: float) -> float:
@@ -29856,32 +34974,32 @@ def expr_w_form_a(i: str = "i", v: str = "v", x: str = "x", y: str = "y") -> pl.
     return (pl.col(i)*pl.col(v)*pl.col(y) + pl.col(v)*pl.col(x))
 
 
-def calc_h_m_form_b(Q: float, m: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_28993.
+def calc_val_4_pi_3_epsilon_323_form_b(epsilon: float, simeq: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27193.
 
     **Source**:
-    - Title: Digital Quantum Simulation of Dynamics in Interacting Fields (2026)
-    - Authors: Zhiyao Li
-    - Citation Key: `arxiv_2610_28993`
+    - Title: Low Residuals, Wrong Value: Learning the Viscosity Solution of Hamilton-Jacobi-Isaacs Equations with PINNs (2026)
+    - Authors: Raul Jimenez, Pablo Tejerina-Pérez, Leonid Sarieddine et al.
+    - Citation Key: `arxiv_2610_27193`
 
     **KaTeX Formula**:
     $$
-    Hm = mQ \sum  n\in Q 1 2 (  I +  Z )n + mq \sum  n\in q 12 (  I +  Z )n + mq \sum  n\in q 12 (  I -  Z )n \to  mq 2 \sum  n\in q,q \sum  c=0,1(-1)\eta n  Z2n+c
+    4\pi  3 \epsilon 3 2 3 = \pi 6 \epsilon 3 \simeq  2.7 \times  10-4
     $$
 
     Args:
-        Q (float): Input parameter `Q`.
-        m (float): Input parameter `m`.
+        epsilon (float): Input parameter `epsilon`.
+        simeq (float): Input parameter `simeq`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(Q*m)
+    return float(486.0*math.pi*epsilon*simeq - 4)
 
 
-def expr_h_m_form_b(Q: str = "Q", m: str = "m") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_h_m_form_b`."""
-    return (pl.col(Q)*pl.col(m))
+def expr_val_4_pi_3_epsilon_323_form_b(epsilon: str = "epsilon", simeq: str = "simeq") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_4_pi_3_epsilon_323_form_b`."""
+    return (486.0*math.pi*pl.col(epsilon)*pl.col(simeq) - 4)
 
 
 def calc_o_v_x_y_e_e_i_j_k_l_form_b(X: float, Y: float, e: float, gamma: float, i: float, j: float, k: float, l: float, mu: float) -> float:
@@ -30600,33 +35718,6 @@ def expr_psi_t_form_4(n: str = "n", t: str = "t") -> pl.Expr:
     return (pl.col(n)*pl.col(t))
 
 
-def calc_n_g_n_l_s_form_5(B: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_25605.
-
-    **Source**:
-    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
-    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
-    - Citation Key: `arxiv_2610_25605`
-
-    **KaTeX Formula**:
-    $$
-    L(s) NNG = 1 |B| \sum  i\in B -1 |P (s) i | \sum  j\in P (s) i \log \exp(sim(r(s) i , r(s) j )/\tau  ) \sum l\in B\{i} \exp(sim(r(s) i , r(s) l )/\tau  )
-    $$
-
-    Args:
-        B (float): Input parameter `B`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*abs(B))
-
-
-def expr_n_g_n_l_s_form_5(B: str = "B") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_n_g_n_l_s_form_5`."""
-    return (1*abs(pl.col(B)))
-
-
 def calc_phi_eta_form_5(alpha: float, eta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_26568.
 
@@ -30746,6 +35837,69 @@ def expr_p_i_t_form_6(i: str = "i", p: str = "p") -> pl.Expr:
     return (pl.col(i)*pl.col(p))
 
 
+def calc_s_d_t_form_6(D: float, F: float, O: float, P: float, R: float, S: float, c: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1205_2071.
+
+    **Source**:
+    - Title: A Coning Theory of Bullet Motions (2012)
+    - Authors: James A. Boatright
+    - Citation Key: `arxiv_1205_2071`
+
+    **KaTeX Formula**:
+    $$
+    SD(t) = -ScF*DROP(t)
+    $$
+
+    Args:
+        D (float): Input parameter `D`.
+        F (float): Input parameter `F`.
+        O (float): Input parameter `O`.
+        P (float): Input parameter `P`.
+        R (float): Input parameter `R`.
+        S (float): Input parameter `S`.
+        c (float): Input parameter `c`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((D*(R*(O*P)))*(-S*F*c))
+
+
+def expr_s_d_t_form_6(D: str = "D", F: str = "F", O: str = "O", P: str = "P", R: str = "R", S: str = "S", c: str = "c") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_s_d_t_form_6`."""
+    return ((pl.col(D)*(pl.col(R)*(pl.col(O)*pl.col(P))))*(-pl.col(S)*pl.col(F)*pl.col(c)))
+
+
+def calc_l_form_6(b: float, d: float, dm: float, v: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    L = bvd-dmd 2 .
+    $$
+
+    Args:
+        b (float): Input parameter `b`.
+        d (float): Input parameter `d`.
+        dm (float): Input parameter `dm`.
+        v (float): Input parameter `v`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(b*d*v - d*dm)
+
+
+def expr_l_form_6(b: str = "b", d: str = "d", dm: str = "dm", v: str = "v") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_l_form_6`."""
+    return (pl.col(b)*pl.col(d)*pl.col(v) - pl.col(d)*pl.col(dm))
+
+
 def calc_c_p_form_f(m: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_1709_07969.
 
@@ -30800,6 +35954,34 @@ def calc_y_form_f(D: float, L: float, g: float) -> float:
 def expr_y_form_f(D: str = "D", L: str = "L", g: str = "g") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_y_form_f`."""
     return (-4*pl.col(D)*pl.col(g)*(pl.col(L)*pl.col(g) - 1/2) + (pl.col(L)*pl.col(g) - 2)*(pl.col(L)*pl.col(g) - 1/2) - 1)
+
+
+def calc_val_1408_4306_form_f(d: float, r: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    rd,min ≲ rd ≲ rd,max, where rd,min ≡ 9mcs,0 2σmolΣ0Ω0 Rq-p+3/2 1 , and rd,max ≡ 40√2πmR0 3(2p + 2q + 3)σmolΣ0 Rq+1 1 .
+    $$
+
+    Args:
+        d (float): Input parameter `d`.
+        r (float): Input parameter `r`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(d*r)
+
+
+def expr_val_1408_4306_form_f(d: str = "d", r: str = "r") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_1408_4306_form_f`."""
+    return (pl.col(d)*pl.col(r))
 
 
 def calc_val_2610_26568_form_7(x: float) -> float:
@@ -30911,6 +36093,34 @@ def calc_val_2601_06439_form_9(W: float, e: float, h: float, n: float) -> float:
 def expr_val_2601_06439_form_9(W: str = "W", e: str = "e", h: str = "h", n: str = "n") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2601_06439_form_9`."""
     return (pl.col(W)*pl.col(e)*pl.col(h)*pl.col(n))
+
+
+def calc_c_2_s_r_z_form_9(c: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2309_15318.
+
+    **Source**:
+    - Title: A Global 3-D Simulation of Magnetospheric Accretion: I. Magnetically Disrupted Disks and Surface Accretion (2023)
+    - Authors: Zhaohuan Zhu, James M. Stone, Nuria Calvet
+    - Citation Key: `arxiv_2309_15318`
+
+    **KaTeX Formula**:
+    $$
+    c2s (R, z) = c2s (R = R0, z = 0) ( R R0 )q .
+    $$
+
+    Args:
+        c (float): Input parameter `c`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*c*s)
+
+
+def expr_c_2_s_r_z_form_9(c: str = "c", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_c_2_s_r_z_form_9`."""
+    return (2*pl.col(c)*pl.col(s))
 
 
 def calc_p_m_form_9(V: float, i: float, m: float) -> float:
@@ -31025,31 +36235,63 @@ def expr_beta_c_v_a_r_alpha_v_p_form_9(a: str = "a", m: str = "m", x: str = "x")
     return (pl.col(m)*(pl.col(a)*pl.col(x)))
 
 
-def calc_e_s_k_n_y_form_b(Q: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+def calc_val_2610_26568_form_a(D: float, c: float, i: float, rho: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_26568.
 
     **Source**:
-    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
-    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
-    - Citation Key: `arxiv_2610_25605`
+    - Title: Reward Objectives for Robust (PO)MDPs: A Law-Preserving Equivalence with (Partially Observable) Games (2026)
+    - Authors: Durgam Latha, Dion Reji, Dorde Zikelic et al.
+    - Citation Key: `arxiv_2610_26568`
 
     **KaTeX Formula**:
     $$
-    E sk n (y) = 1 |Q| \sum  i\in Q 1n \sum  j\in N sk n (xi)(yi - yj)2
+    Disc\gamma (\rho ) \ge  0 for every play \rho , and {\rho  : Disc\gamma (\rho ) > 0} = ♢T
     $$
 
     Args:
-        Q (float): Input parameter `Q`.
+        D (float): Input parameter `D`.
+        c (float): Input parameter `c`.
+        i (float): Input parameter `i`.
+        rho (float): Input parameter `rho`.
+        s (float): Input parameter `s`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(1*abs(Q))
+    return float((D*c*i*s*math.gamma(rho) >= 0))
 
 
-def expr_e_s_k_n_y_form_b(Q: str = "Q") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_e_s_k_n_y_form_b`."""
-    return (1*abs(pl.col(Q)))
+def expr_val_2610_26568_form_a(D: str = "D", c: str = "c", i: str = "i", rho: str = "rho", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_26568_form_a`."""
+    return ((pl.col(D)*pl.col(c)*pl.col(i)*pl.col(s)*math.gamma(pl.col(rho)) >= 0))
+
+
+def calc_t_s_p_i_n_do_n_w_form_c(d: float, r: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1408_4306.
+
+    **Source**:
+    - Title: Effect of lift force on the aerodynamics of dust grains in the protoplanetary disk (2014)
+    - Authors: Masaki S. Yamaguchi, Shigeo S. Kimura
+    - Citation Key: `arxiv_1408_4306`
+
+    **KaTeX Formula**:
+    $$
+    tspindown = 3.0 \times  103 r2d,1R1/4 1 sec.
+    $$
+
+    Args:
+        d (float): Input parameter `d`.
+        r (float): Input parameter `r`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(618.0*d*r)
+
+
+def expr_t_s_p_i_n_do_n_w_form_c(d: str = "d", r: str = "r") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_t_s_p_i_n_do_n_w_form_c`."""
+    return (618.0*pl.col(d)*pl.col(r))
 
 
 def calc_val_2610_26568_form_c(G: float, L: float, sigma: float) -> float:
@@ -31281,34 +36523,6 @@ def expr_w_b_x_form_1(B: str = "B", W: str = "W", y: str = "y", z: str = "z") ->
     return (pl.col(B)**2*pl.col(W)**2*pl.col(y)*pl.col(z))
 
 
-def calc_val_2604_25278_form_2(e: float, n: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2604_25278.
-
-    **Source**:
-    - Title: The GMRT High-Resolution Southern Sky Survey for pulsars and transients -- VIII: Orbital Variability and the Evolution of a 1-Day He-WD Millisecond Pulsar J2101-4802 (2026)
-    - Authors: Ankita Ghosh, Bhaswati Bhattacharyya, David L. Kaplan et al.
-    - Citation Key: `arxiv_2604_25278`
-
-    **KaTeX Formula**:
-    $$
-    ne,sw = AAU [ 1 AU r ]2 ,
-    $$
-
-    Args:
-        e (float): Input parameter `e`.
-        n (float): Input parameter `n`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(e*n)
-
-
-def expr_val_2604_25278_form_2(e: str = "e", n: str = "n") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2604_25278_form_2`."""
-    return (pl.col(e)*pl.col(n))
-
-
 def calc_l_form_2(N: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_07617.
 
@@ -31336,7 +36550,7 @@ def expr_l_form_2(N: str = "N") -> pl.Expr:
     return (-pl.col(N)*pl.col(N))
 
 
-def calc_val_2608_12291_form_2(i: float, l: float, m: float, n: float, p: float, s: float, u: float) -> float:
+def calc_tau_infty_t_x_form_3(T: float, i: float, l: float, m: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
     **Source**:
@@ -31346,55 +36560,79 @@ def calc_val_2608_12291_form_2(i: float, l: float, m: float, n: float, p: float,
 
     **KaTeX Formula**:
     $$
-    lim sup n\to \infty  VT (tn, xn) \le  VT (t, x) + \epsilon
+    \tau  \infty (t, x) = lim T\to \infty  \tau  * T (t, x) \le  \tau D\infty (t, x) := inf{s \ge  0 : (t + s, Xx s ) \in  D\infty }
     $$
 
     Args:
+        T (float): Input parameter `T`.
         i (float): Input parameter `i`.
         l (float): Input parameter `l`.
         m (float): Input parameter `m`.
-        n (float): Input parameter `n`.
-        p (float): Input parameter `p`.
-        s (float): Input parameter `s`.
-        u (float): Input parameter `u`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(i*l*m*n*p*s*u)
+    return float(T*i*l*m)
 
 
-def expr_val_2608_12291_form_2(i: str = "i", l: str = "l", m: str = "m", n: str = "n", p: str = "p", s: str = "s", u: str = "u") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_2`."""
-    return (pl.col(i)*pl.col(l)*pl.col(m)*pl.col(n)*pl.col(p)*pl.col(s)*pl.col(u))
+def expr_tau_infty_t_x_form_3(T: str = "T", i: str = "i", l: str = "l", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tau_infty_t_x_form_3`."""
+    return (pl.col(T)*pl.col(i)*pl.col(l)*pl.col(m))
 
 
-def calc_val_2608_29935_form_3(W: float, r: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+def calc_val_2608_12291_form_2(Pi: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
     **Source**:
-    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
-    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
-    - Citation Key: `arxiv_2608_29935`
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
 
     **KaTeX Formula**:
     $$
-    W rW,C = [ W rW,B[1], W rW,B[2], 0 ]⊤
+    \Pi s := P(\theta  = 1 | Gs), s \in  [0, S]
     $$
 
     Args:
-        W (float): Input parameter `W`.
-        r (float): Input parameter `r`.
+        Pi (float): Input parameter `Pi`.
+        s (float): Input parameter `s`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(W**2*r)
+    return float(Pi*s)
 
 
-def expr_val_2608_29935_form_3(W: str = "W", r: str = "r") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_29935_form_3`."""
-    return (pl.col(W)**2*pl.col(r))
+def expr_val_2608_12291_form_2(Pi: str = "Pi", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_2`."""
+    return (pl.col(Pi)*pl.col(s))
+
+
+def calc_f_i_omega_form_3(sigma: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2601_18161.
+
+    **Source**:
+    - Title: In-depth analysis of bar formation mechanisms of disk galaxies in halos of different concentrations (2026)
+    - Authors: T. Worrakitpoonpon
+    - Citation Key: `arxiv_2601_18161`
+
+    **KaTeX Formula**:
+    $$
+    f(\omega i) = 1 \sigma \sqrt 2\pi  e- (\omega i-\omega 0)2 2\sigma 2 (1 + erf(\alpha ( \omega i -\omega 0 \sigma \sqrt 2 )))
+    $$
+
+    Args:
+        sigma (float): Input parameter `sigma`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(sigma)
+
+
+def expr_f_i_omega_form_3(sigma: str = "sigma") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_i_omega_form_3`."""
+    return (pl.col(sigma))
 
 
 def calc_p_r_dk_e_form_3(B: float, k: float) -> float:
@@ -32252,6 +37490,62 @@ def expr_val_2610_25581_form_e(alpha: str = "alpha", i: str = "i") -> pl.Expr:
     return (pl.col(alpha)*pl.col(i))
 
 
+def calc_val_2608_29935_form_e(B: float, C: float, w: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_29935.
+
+    **Source**:
+    - Title: System Identification of Admittance Models for Large Real-World Objects (2026)
+    - Authors: Nathan I. Baum, Nathaniel G. Luttmer, Mark A. Minor
+    - Citation Key: `arxiv_2608_29935`
+
+    **KaTeX Formula**:
+    $$
+    B wC,s = ντs(ϕd) e6
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+        C (float): Input parameter `C`.
+        w (float): Input parameter `w`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(B*C*w)
+
+
+def expr_val_2608_29935_form_e(B: str = "B", C: str = "C", w: str = "w") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_29935_form_e`."""
+    return (pl.col(B)*pl.col(C)*pl.col(w))
+
+
+def calc_l_2_l_s_form_e(B: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+
+    **Source**:
+    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
+    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
+    - Citation Key: `arxiv_2610_25605`
+
+    **KaTeX Formula**:
+    $$
+    L(s) l2 = 1 |B|(|B| - 1) \sum  i\in B \sum  j\in B j̸=i (\sim  \delta (s) ij - \sim  d(s) ij )2
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((abs(B) - 1)*abs(B))
+
+
+def expr_l_2_l_s_form_e(B: str = "B") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_l_2_l_s_form_e`."""
+    return ((abs(pl.col(B)) - 1)*abs(pl.col(B)))
+
+
 def calc_val_2609_10457_form_f(A: float, c: float, e: float, l: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_10457.
 
@@ -32307,6 +37601,38 @@ def calc_i_z_form_f(K: float) -> float:
 def expr_i_z_form_f(K: str = "K") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_i_z_form_f`."""
     return (pl.col(K))
+
+
+def calc_val_2610_25605_form_f(P: float, i: float, j: float, l: float, partial: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+
+    **Source**:
+    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
+    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
+    - Citation Key: `arxiv_2610_25605`
+
+    **KaTeX Formula**:
+    $$
+    \partial  \log Pi(l) \partial uij
+    $$
+
+    Args:
+        P (float): Input parameter `P`.
+        i (float): Input parameter `i`.
+        j (float): Input parameter `j`.
+        l (float): Input parameter `l`.
+        partial (float): Input parameter `partial`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(partial*math.log(P*i**2*j*l*partial*u))
+
+
+def expr_val_2610_25605_form_f(P: str = "P", i: str = "i", j: str = "j", l: str = "l", partial: str = "partial", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_25605_form_f`."""
+    return (pl.col(partial)*(pl.col(P).log()*pl.col(i)**2*pl.col(j)*pl.col(l)*pl.col(partial)*pl.col(u)))
 
 
 def calc_e_p_form_1(a: float, b: float, c: float, p: float, x: float, y: float, z: float) -> float:
@@ -32460,6 +37786,124 @@ def expr_v_t_t_x_form_5(i: str = "i", l: str = "l", m: str = "m", n: str = "n") 
     return (pl.col(i)*pl.col(l)*pl.col(m)*pl.col(n))
 
 
+def calc_v_infty_t_x_form_6(T: float, i: float, l: float, m: float, p: float, s: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    V \infty (t, x) = lim sup T\to \infty  VT (t, x) \le  V\infty (t, x) + \epsilon
+    $$
+
+    Args:
+        T (float): Input parameter `T`.
+        i (float): Input parameter `i`.
+        l (float): Input parameter `l`.
+        m (float): Input parameter `m`.
+        p (float): Input parameter `p`.
+        s (float): Input parameter `s`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(T*i*l*m*p*s*u)
+
+
+def expr_v_infty_t_x_form_6(T: str = "T", i: str = "i", l: str = "l", m: str = "m", p: str = "p", s: str = "s", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_v_infty_t_x_form_6`."""
+    return (pl.col(T)*pl.col(i)*pl.col(l)*pl.col(m)*pl.col(p)*pl.col(s)*pl.col(u))
+
+
+def calc_partial_i_v_i_t_i_form_6(E: float, Q: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    \partial iV I (t, i) = EQ [\sim  g' (\sqrt T - tI t,i \theta * ) (\sqrt T - t\partial iI t,i \theta * )]
+    $$
+
+    Args:
+        E (float): Input parameter `E`.
+        Q (float): Input parameter `Q`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(E*Q)
+
+
+def expr_partial_i_v_i_t_i_form_6(E: str = "E", Q: str = "Q") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_partial_i_v_i_t_i_form_6`."""
+    return (pl.col(E)*pl.col(Q))
+
+
+def calc_val_2608_12291_form_7(f: float, i: float, n: float, tau: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    inf \tau \ge 0 E [\int  \tau  0 c(u) du + g(X\tau  )]
+    $$
+
+    Args:
+        f (float): Input parameter `f`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        tau (float): Input parameter `tau`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((f*i*n*tau >= 0))
+
+
+def expr_val_2608_12291_form_7(f: str = "f", i: str = "i", n: str = "n", tau: str = "tau") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_7`."""
+    return ((pl.col(f)*pl.col(i)*pl.col(n)*pl.col(tau) >= 0))
+
+
+def calc_g_c_e_pi_form_7(pi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    gCE(\pi ) = -\pi  \log(\pi ) - (1 - \pi ) \log(1 - \pi )
+    $$
+
+    Args:
+        pi (float): Input parameter `pi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-pi*math.log(pi, math.e) - (1 - pi)*math.log(1 - pi, math.e))
+
+
+def expr_g_c_e_pi_form_7(pi: str = "pi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_g_c_e_pi_form_7`."""
+    return (-pl.col(pi)*(pl.col(pi).log(), math.e) - (1 - pl.col(pi))*(1 - pl.col(pi).log(), math.e))
+
+
 def calc_val_2608_29935_form_8(W: float, r: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_29935.
 
@@ -32488,7 +37932,7 @@ def expr_val_2608_29935_form_8(W: str = "W", r: str = "r") -> pl.Expr:
     return (pl.col(W)**2*pl.col(r))
 
 
-def calc_val_2608_12291_form_8(l: float) -> float:
+def calc_val_2608_12291_form_8(X: float, x: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
     **Source**:
@@ -32498,21 +37942,22 @@ def calc_val_2608_12291_form_8(l: float) -> float:
 
     **KaTeX Formula**:
     $$
-    l : {0, 1}\times D\to  [0,\infty ]
+    Xx\infty  := lim t\to \infty  Xx t \in  {0, 1}
     $$
 
     Args:
-        l (float): Input parameter `l`.
+        X (float): Input parameter `X`.
+        x (float): Input parameter `x`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(l)
+    return float(math.inf*X*x)
 
 
-def expr_val_2608_12291_form_8(l: str = "l") -> pl.Expr:
+def expr_val_2608_12291_form_8(X: str = "X", x: str = "x") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2608_12291_form_8`."""
-    return (pl.col(l))
+    return (math.inf*pl.col(X)*pl.col(x))
 
 
 def calc_w_c_x_form_9(C: float, W: float, y: float, z: float) -> float:
@@ -32543,6 +37988,35 @@ def calc_w_c_x_form_9(C: float, W: float, y: float, z: float) -> float:
 def expr_w_c_x_form_9(C: str = "C", W: str = "W", y: str = "y", z: str = "z") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_w_c_x_form_9`."""
     return (pl.col(C)**2*pl.col(W)**2*pl.col(y)*pl.col(z))
+
+
+def calc_dpi_a_s_form_a(A: float, Pi: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    d\Pi As = \sin(\pi \Pi As ) \pi \sqrt S - s dWs, s \in  [0, S)
+    $$
+
+    Args:
+        A (float): Input parameter `A`.
+        Pi (float): Input parameter `Pi`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.pi*math.sin(math.pi*A*Pi*s))
+
+
+def expr_dpi_a_s_form_a(A: str = "A", Pi: str = "Pi", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_dpi_a_s_form_a`."""
+    return (math.pi*math.sin(math.pi*pl.col(A)*pl.col(Pi)*pl.col(s)))
 
 
 def calc_i_w_form_a(i: float, sigma: float) -> float:
@@ -32765,6 +38239,34 @@ def expr_q_dt_p_form_c(a: str = "a", c: str = "c", dt: str = "dt", m: str = "m",
     return (pl.col(a)*pl.col(t) + pl.col(c)*pl.col(dt)*pl.col(m)*pl.col(q))
 
 
+def calc_l_c_e_theta_d_form_c(d: float, theta: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    lCE(\theta , d) = -\theta  \log(d) - (1 - \theta ) \log(1 - d)
+    $$
+
+    Args:
+        d (float): Input parameter `d`.
+        theta (float): Input parameter `theta`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-theta*math.log(d, math.e) - (1 - theta)*math.log(1 - d, math.e))
+
+
+def expr_l_c_e_theta_d_form_c(d: str = "d", theta: str = "theta") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_l_c_e_theta_d_form_c`."""
+    return (-pl.col(theta)*(pl.col(d).log(), math.e) - (1 - pl.col(theta))*(1 - pl.col(d).log(), math.e))
+
+
 def calc_val_2_r_phi_form_d(a: float, n: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2601_18161.
 
@@ -32819,6 +38321,34 @@ def calc_val_2602_05895_form_e(dm: float) -> float:
 def expr_val_2602_05895_form_e(dm: str = "dm") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_05895_form_e`."""
     return (pl.col(dm))
+
+
+def calc_val_2608_12291_form_f(S: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    \sim  S := R+ \times  \Psi ((0, 1))
+    $$
+
+    Args:
+        S (float): Input parameter `S`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(S*sim)
+
+
+def expr_val_2608_12291_form_f(S: str = "S", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_f`."""
+    return (pl.col(S)*pl.col(sim))
 
 
 def calc_val_2610_30212_form_0(a: float, g: float, i: float, n: float, s: float, t: float) -> float:
@@ -32879,6 +38409,35 @@ def calc_tau_t_l_form_0(f: float, i: float, n: float) -> float:
 
 def expr_tau_t_l_form_0(f: str = "f", i: str = "i", n: str = "n") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_tau_t_l_form_0`."""
+    return (pl.col(f)*pl.col(i)*pl.col(n))
+
+
+def calc_tau_f_t_x_form_0(f: float, i: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    \tau  f (t, x) = inf{0 \le  s < T - t : Xx s \in  \partial C f t+s} ∧ (T - t)
+    $$
+
+    Args:
+        f (float): Input parameter `f`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(f*i*n)
+
+
+def expr_tau_f_t_x_form_0(f: str = "f", i: str = "i", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tau_f_t_x_form_0`."""
     return (pl.col(f)*pl.col(i)*pl.col(n))
 
 
@@ -33086,6 +38645,66 @@ def expr_sigma_j_l_form_6(f: str = "f", i: str = "i", n: str = "n") -> pl.Expr:
     return (pl.col(f)*pl.col(i)*pl.col(n))
 
 
+def calc_val_2608_12291_form_9(delta: float, i: float, m: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    \delta  \le  min {\sim  \epsilon , \epsilon  K\Psi -1 } 1 K\Psi  e-T1K\sim  \epsilon
+    $$
+
+    Args:
+        delta (float): Input parameter `delta`.
+        i (float): Input parameter `i`.
+        m (float): Input parameter `m`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((delta <= i*m*n))
+
+
+def expr_val_2608_12291_form_9(delta: str = "delta", i: str = "i", m: str = "m", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_9`."""
+    return ((pl.col(delta) <= pl.col(i)*pl.col(m)*pl.col(n)))
+
+
+def calc_val_2608_12291_form_a(P: float, f: float, n: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    ||Ptfn - Ptf ||\infty  \le  ||fn - f ||\infty
+    $$
+
+    Args:
+        P (float): Input parameter `P`.
+        f (float): Input parameter `f`.
+        n (float): Input parameter `n`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((math.inf*abs(P*f*n*t - P*f*t) <= math.inf*abs(f*n - f)))
+
+
+def expr_val_2608_12291_form_a(P: str = "P", f: str = "f", n: str = "n", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_a`."""
+    return ((math.inf*abs(pl.col(P)*pl.col(f)*pl.col(n)*pl.col(t) - pl.col(P)*pl.col(f)*pl.col(t)) <= math.inf*abs(pl.col(f)*pl.col(n) - pl.col(f))))
+
+
 def calc_val_2604_13861_form_6(T: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2604_13861.
 
@@ -33170,6 +38789,94 @@ def expr_s_form_c(H: str = "H") -> pl.Expr:
     return (pl.col(H))
 
 
+def calc_abs_v_infty_s_y_v_infty_t_x_form_c(T: float, i: float, l: float, m: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    |V\infty (t, x) -V\infty (s, y)| = lim T\to \infty  |VT (t, x) - VT (s, y)| \le  2(Ktime + Kspace)|(t, x) - (s, y)|2
+    $$
+
+    Args:
+        T (float): Input parameter `T`.
+        i (float): Input parameter `i`.
+        l (float): Input parameter `l`.
+        m (float): Input parameter `m`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(T*i*l*m)
+
+
+def expr_abs_v_infty_s_y_v_infty_t_x_form_c(T: str = "T", i: str = "i", l: str = "l", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_abs_v_infty_s_y_v_infty_t_x_form_c`."""
+    return (pl.col(T)*pl.col(i)*pl.col(l)*pl.col(m))
+
+
+def calc_tau_t_t_x_form_c(f: float, i: float, n: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    \tau  * T (t, x) = inf{0 \le  u < T - t : Xx u ̸\in  (1 - bT (t + u), bT (t + u))} ∧ (T - t)
+    $$
+
+    Args:
+        f (float): Input parameter `f`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(f*i*n)
+
+
+def expr_tau_t_t_x_form_c(f: str = "f", i: str = "i", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tau_t_t_x_form_c`."""
+    return (pl.col(f)*pl.col(i)*pl.col(n))
+
+
+def calc_val_2608_12291_form_d(dP: float, dQ: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    dQx dP |||Ft = Z x t
+    $$
+
+    Args:
+        dP (float): Input parameter `dP`.
+        dQ (float): Input parameter `dQ`.
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(dP*dQ*x)
+
+
+def expr_val_2608_12291_form_d(dP: str = "dP", dQ: str = "dQ", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_d`."""
+    return (pl.col(dP)*pl.col(dQ)*pl.col(x))
+
+
 def calc_v_beta_t_t_x_form_f(E: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
@@ -33195,36 +38902,6 @@ def calc_v_beta_t_t_x_form_f(E: float) -> float:
 def expr_v_beta_t_t_x_form_f(E: str = "E") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_v_beta_t_t_x_form_f`."""
     return (pl.col(E))
-
-
-def calc_val_2608_12291_form_f(i: float, l: float, m: float, n: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2608_12291.
-
-    **Source**:
-    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
-    - Authors: Steven Campbell, Karl Kristian Engelund
-    - Citation Key: `arxiv_2608_12291`
-
-    **KaTeX Formula**:
-    $$
-    lim n\to \infty  \partial xVT (tn, xn) = lim n\to \infty  E [g' (Xxn \tau  * T (tn,xn) )\partial xXxn \tau  * T (tn,xn)] = g' (bT (t))
-    $$
-
-    Args:
-        i (float): Input parameter `i`.
-        l (float): Input parameter `l`.
-        m (float): Input parameter `m`.
-        n (float): Input parameter `n`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(i*l*m*n)
-
-
-def expr_val_2608_12291_form_f(i: str = "i", l: str = "l", m: str = "m", n: str = "n") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_f`."""
-    return (pl.col(i)*pl.col(l)*pl.col(m)*pl.col(n))
 
 
 def calc_val_2610_31563_form_f(A: float, D: float, O: float, P: float, S: float) -> float:
@@ -33623,6 +39300,35 @@ def expr_pi_i_j_form_7(P: str = "P") -> pl.Expr:
     return (pl.col(P))
 
 
+def calc_val_2610_29066_form_6(L: float, R: float, c: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29066.
+
+    **Source**:
+    - Title: Zero Knowledge for Free up to Linear Query Bounds: Quasilinear-Size Constant-Query Zero-Knowledge PCPs (2026)
+    - Authors: Inhyuk Park, Chenglin Fan
+    - Citation Key: `arxiv_2610_29066`
+
+    **KaTeX Formula**:
+    $$
+    (R1) c < 1 4L1L2 2 , (R2) c \le  1 8 , (R3) 3 \cdot  2 2/3 (L1L2 + L2(1 + c) 1/3 )c1/3 \le  2(1 - 2c).
+    $$
+
+    Args:
+        L (float): Input parameter `L`.
+        R (float): Input parameter `R`.
+        c (float): Input parameter `c`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((R*c < 308*L**2))
+
+
+def expr_val_2610_29066_form_6(L: str = "L", R: str = "R", c: str = "c") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29066_form_6`."""
+    return ((pl.col(R)*pl.col(c) < 308*pl.col(L)**2))
+
+
 def calc_omega_s_form_6(B: float, Omega: float, R: float, k: float, phi: float, rho: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2309_15318.
 
@@ -33680,6 +39386,34 @@ def calc_sigma_a_x_form_7(x: float) -> float:
 def expr_sigma_a_x_form_7(x: str = "x") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_sigma_a_x_form_7`."""
     return (math.pi*math.sin(math.pi*pl.col(x)))
+
+
+def calc_a_s_form_7(s: float, xi: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    A(s) = \log(1+ s\xi  2 ), \Gamma (t) = \exp(t) -1 \xi  2
+    $$
+
+    Args:
+        s (float): Input parameter `s`.
+        xi (float): Input parameter `xi`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(math.log(2*s*xi + 1))
+
+
+def expr_a_s_form_7(s: str = "s", xi: str = "xi") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_a_s_form_7`."""
+    return ((2*pl.col(s).log()*pl.col(xi) + 1))
 
 
 def calc_val_2604_13861_form_7(T: float) -> float:
@@ -33854,33 +39588,6 @@ def expr_val_2610_30212_form_9(e: str = "e", h: str = "h", m: str = "m", n: str 
     return (pl.col(e)*pl.col(h)*pl.col(m)*pl.col(n)*pl.col(o)*pl.col(p)*pl.col(r)*pl.col(t))
 
 
-def calc_val_2608_12291_form_a(P: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2608_12291.
-
-    **Source**:
-    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
-    - Authors: Steven Campbell, Karl Kristian Engelund
-    - Citation Key: `arxiv_2608_12291`
-
-    **KaTeX Formula**:
-    $$
-    P(\sim  \tau  * > \tau r, \tau r < t2 - t) E[\sim  \tau  * ∧ \tau r + 1{\sim  \tau  *>\tau r,\tau r<t2-t}] \le  1
-    $$
-
-    Args:
-        P (float): Input parameter `P`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(P)
-
-
-def expr_val_2608_12291_form_a(P: str = "P") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_a`."""
-    return (pl.col(P))
-
-
 def calc_val_2610_30212_form_a(e: float, h: float, m: float, n: float, o: float, p: float, r: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_30212.
 
@@ -33915,7 +39622,7 @@ def expr_val_2610_30212_form_a(e: str = "e", h: str = "h", m: str = "m", n: str 
     return (pl.col(e)*pl.col(h)*pl.col(m)*pl.col(n)*pl.col(o)*pl.col(p)*pl.col(r)*pl.col(t))
 
 
-def calc_val_2608_12291_form_d(F: float, u: float, x: float) -> float:
+def calc_tau_r_t_l_form_d(f: float, i: float, n: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
     **Source**:
@@ -33925,23 +39632,23 @@ def calc_val_2608_12291_form_d(F: float, u: float, x: float) -> float:
 
     **KaTeX Formula**:
     $$
-    F \beta  (u, x) := c(u)1{x\in C\beta  u } - Lg(x)1{x̸\in C\beta  u }
+    \tau r(t, l) = inf{u \ge  0 : Llu ̸\in  J } ∧ (t2 - t)
     $$
 
     Args:
-        F (float): Input parameter `F`.
-        u (float): Input parameter `u`.
-        x (float): Input parameter `x`.
+        f (float): Input parameter `f`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(F*(math.gamma(u)*math.gamma(x)/math.gamma(u + x)))
+    return float(f*i*n)
 
 
-def expr_val_2608_12291_form_d(F: str = "F", u: str = "u", x: str = "x") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_d`."""
-    return (pl.col(F)*(math.gamma(pl.col(u))*math.gamma(pl.col(x))/math.gamma(pl.col(u) + pl.col(x))))
+def expr_tau_r_t_l_form_d(f: str = "f", i: str = "i", n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_tau_r_t_l_form_d`."""
+    return (pl.col(f)*pl.col(i)*pl.col(n))
 
 
 def calc_val_2610_31153_form_d(B: float, j: float, q: float) -> float:
@@ -34068,62 +39775,6 @@ def calc_val_2610_30212_form_f(a: float, g: float, i: float, n: float, s: float,
 def expr_val_2610_30212_form_f(a: str = "a", g: str = "g", i: str = "i", n: str = "n", s: str = "s", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2610_30212_form_f`."""
     return (63.07*pl.col(a)**2*pl.col(g)*pl.col(i)*pl.col(n)*pl.col(s)*pl.col(t))
-
-
-def calc_val_2610_31153_form_f(a: float, j: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_31153.
-
-    **Source**:
-    - Title: Balanced Posted Prices in Stationary Two-Sided Markets (2026)
-    - Authors: Ilan Reuven Cohen
-    - Citation Key: `arxiv_2610_31153`
-
-    **KaTeX Formula**:
-    $$
-    aj := min r∈Rj ajr, vj :=max k∈K vk({j}), J := {j ∈M : aj < vj}.
-    $$
-
-    Args:
-        a (float): Input parameter `a`.
-        j (float): Input parameter `j`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(a*j)
-
-
-def expr_val_2610_31153_form_f(a: str = "a", j: str = "j") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_31153_form_f`."""
-    return (pl.col(a)*pl.col(j))
-
-
-def calc_val_2610_27416_form_0(a: float, f: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27416.
-
-    **Source**:
-    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
-    - Authors: Koichi Miyamoto
-    - Citation Key: `arxiv_2610_27416`
-
-    **KaTeX Formula**:
-    $$
-    f a,c,n MAdd (i) := {(i + c -a mod 2n -a+1) +a ; i \ge  a i ; otherwise ,
-    $$
-
-    Args:
-        a (float): Input parameter `a`.
-        f (float): Input parameter `f`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(a*f)
-
-
-def expr_val_2610_27416_form_0(a: str = "a", f: str = "f") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_0`."""
-    return (pl.col(a)*pl.col(f))
 
 
 def calc_val_2610_27416_form_1(Y: float) -> float:
@@ -34582,7 +40233,7 @@ def expr_n_i_form_6(N: str = "N", i: str = "i", tau: str = "tau") -> pl.Expr:
     return (-pl.col(i)*pl.col(tau) + (pl.col(N)*(pl.col(i)*pl.col(tau)) + 1*pl.col(N)))
 
 
-def calc_e_s_form_6(M: float) -> float:
+def calc_e_s_form_6(M: float, N: float, p: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2508_19848.
 
     **Source**:
@@ -34597,16 +40248,18 @@ def calc_e_s_form_6(M: float) -> float:
 
     Args:
         M (float): Input parameter `M`.
+        N (float): Input parameter `N`.
+        p (float): Input parameter `p`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(1*M)
+    return float((1*M)*(builtins.sum(2*(1 - m*p) for m in range(1, N+1))))
 
 
-def expr_e_s_form_6(M: str = "M") -> pl.Expr:
+def expr_e_s_form_6(M: str = "M", N: str = "N", p: str = "p") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_s_form_6`."""
-    return (1*pl.col(M))
+    return ((1*pl.col(M))*(builtins.sum(2*(1 - m*pl.col(p)) for m in range(1, pl.col(N)+1))))
 
 
 def calc_val_2610_27416_form_6(A: float, j: float) -> float:
@@ -35002,41 +40655,6 @@ def expr_t_a_b_form_c(a: str = "a", b: str = "b", kappa: str = "kappa") -> pl.Ex
     return (pl.col(b)*pl.col(kappa) + pl.col(kappa) + (pl.col(a).log()))
 
 
-def calc_val_2610_29685_form_c(N: float, c: float, e: float, f: float, i: float, n: float, o: float, s: float, t: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29685.
-
-    **Source**:
-    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
-    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
-    - Citation Key: `arxiv_2610_29685`
-
-    **KaTeX Formula**:
-    $$
-    Ncoefficients(K \le  0) = 1, (85) Ncoefficients(K \le  1) = Npars + 1, Ncoefficients(K \le  2) = (Npars +1)(Npars +2)/2, Ncoefficients(K \le  3) = (Npars +1)((Npars +2)(Npars +3)/6, ...
-    $$
-
-    Args:
-        N (float): Input parameter `N`.
-        c (float): Input parameter `c`.
-        e (float): Input parameter `e`.
-        f (float): Input parameter `f`.
-        i (float): Input parameter `i`.
-        n (float): Input parameter `n`.
-        o (float): Input parameter `o`.
-        s (float): Input parameter `s`.
-        t (float): Input parameter `t`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(N*(c*(o*(e*(f*(f*(i*(c*(i*(e*(n*(s*t))))))))))))
-
-
-def expr_val_2610_29685_form_c(N: str = "N", c: str = "c", e: str = "e", f: str = "f", i: str = "i", n: str = "n", o: str = "o", s: str = "s", t: str = "t") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_c`."""
-    return (pl.col(N)*(pl.col(c)*(pl.col(o)*(pl.col(e)*(pl.col(f)*(pl.col(f)*(pl.col(i)*(pl.col(c)*(pl.col(i)*(pl.col(e)*(pl.col(n)*(pl.col(s)*pl.col(t)))))))))))))
-
-
 def calc_val_2610_29066_form_d(c: float, i: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29066.
 
@@ -35092,6 +40710,33 @@ def calc_val_2604_13861_form_d(c: float, o: float) -> float:
 def expr_val_2604_13861_form_d(c: str = "c", o: str = "o") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2604_13861_form_d`."""
     return (pl.col(c)*pl.col(o))
+
+
+def calc_val_2602_19513_form_f(x: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2602_19513.
+
+    **Source**:
+    - Title: Real-time Win Probability and Latent Player Ability via STATS X in Team Sports (2026)
+    - Authors: Yasutaka Shimizu, Atsushi Yamanobe
+    - Citation Key: `arxiv_2602_19513`
+
+    **KaTeX Formula**:
+    $$
+    x1 < x2 \Rightarrow  h(x1) \le  h(x2)
+    $$
+
+    Args:
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((x < 2*x))
+
+
+def expr_val_2602_19513_form_f(x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2602_19513_form_f`."""
+    return ((pl.col(x) < 2*pl.col(x)))
 
 
 def calc_pi_s_form_d(P: float) -> float:
@@ -35206,41 +40851,6 @@ def expr_v_b_t_r_b_w_form_e(W: str = "W", p: str = "p") -> pl.Expr:
     return (pl.col(W)*pl.col(p))
 
 
-def calc_val_2610_29685_form_e(N: float, c: float, e: float, f: float, i: float, n: float, o: float, s: float, t: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_29685.
-
-    **Source**:
-    - Title: Optimally Emulating Smooth Functions for Bayesian Analyses (2026)
-    - Authors: Scott Pratt, Oleh Savchuk, Eren Erdogan et al.
-    - Citation Key: `arxiv_2610_29685`
-
-    **KaTeX Formula**:
-    $$
-    Ncoefficients(K = 0) = 1, (84) Ncoefficients(K = 1) = Npars, Ncoefficients(K = 2) = Npars(Npars + 1)/2, Ncoefficients(K = 3) = Npars(Npars + 1)(Npars + 2)/6, ...
-    $$
-
-    Args:
-        N (float): Input parameter `N`.
-        c (float): Input parameter `c`.
-        e (float): Input parameter `e`.
-        f (float): Input parameter `f`.
-        i (float): Input parameter `i`.
-        n (float): Input parameter `n`.
-        o (float): Input parameter `o`.
-        s (float): Input parameter `s`.
-        t (float): Input parameter `t`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(N*(c*(o*(e*(f*(f*(i*(c*(i*(e*(n*(s*t))))))))))))
-
-
-def expr_val_2610_29685_form_e(N: str = "N", c: str = "c", e: str = "e", f: str = "f", i: str = "i", n: str = "n", o: str = "o", s: str = "s", t: str = "t") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_29685_form_e`."""
-    return (pl.col(N)*(pl.col(c)*(pl.col(o)*(pl.col(e)*(pl.col(f)*(pl.col(f)*(pl.col(i)*(pl.col(c)*(pl.col(i)*(pl.col(e)*(pl.col(n)*(pl.col(s)*pl.col(t)))))))))))))
-
-
 def calc_c_e_x_a_c_t_form_f(C: float, L: float, a: float, g: float, l: float, o: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_29066.
 
@@ -35273,36 +40883,7 @@ def expr_c_e_x_a_c_t_form_f(C: str = "C", L: str = "L", a: str = "a", g: str = "
     return (2*pl.col(a)*pl.col(g)*pl.col(l)*pl.col(o) + 280*pl.col(g)*pl.col(l)*pl.col(o) + (math.e*pl.col(C) + math.e*pl.col(L))*(22660*pl.col(g)*pl.col(l)*pl.col(o) + 15) + 27)
 
 
-def calc_val_2602_19513_form_f(R: float, delta: float, k: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2602_19513.
-
-    **Source**:
-    - Title: Real-time Win Probability and Latent Player Ability via STATS X in Team Sports (2026)
-    - Authors: Yasutaka Shimizu, Atsushi Yamanobe
-    - Citation Key: `arxiv_2602_19513`
-
-    **KaTeX Formula**:
-    $$
-    Rk\delta  := {r = 0, 1, . . . , R - 1 |||| ∆(r)mT k ∆ > \delta }
-    $$
-
-    Args:
-        R (float): Input parameter `R`.
-        delta (float): Input parameter `delta`.
-        k (float): Input parameter `k`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(R*delta*k)
-
-
-def expr_val_2602_19513_form_f(R: str = "R", delta: str = "delta", k: str = "k") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2602_19513_form_f`."""
-    return (pl.col(R)*pl.col(delta)*pl.col(k))
-
-
-def calc_e_a_g_v_form_0(N: float) -> float:
+def calc_e_a_g_v_form_0(N: float, a: float, c: float, e: float, s: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_04435.
 
     **Source**:
@@ -35317,16 +40898,20 @@ def calc_e_a_g_v_form_0(N: float) -> float:
 
     Args:
         N (float): Input parameter `N`.
+        a (float): Input parameter `a`.
+        c (float): Input parameter `c`.
+        e (float): Input parameter `e`.
+        s (float): Input parameter `s`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(1*N)
+    return float(1*(N*(builtins.sum(c*(a*(e*s)) for E in range(1, N+1)))))
 
 
-def expr_e_a_g_v_form_0(N: str = "N") -> pl.Expr:
+def expr_e_a_g_v_form_0(N: str = "N", a: str = "a", c: str = "c", e: str = "e", s: str = "s") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_a_g_v_form_0`."""
-    return (1*pl.col(N))
+    return (1*(pl.col(N)*(builtins.sum(pl.col(c)*(pl.col(a)*(pl.col(e)*pl.col(s))) for E in range(1, pl.col(N)+1)))))
 
 
 def calc_i_z_form_1(T: float, i: float, k: float, q: float, u: float) -> float:
@@ -35512,31 +41097,32 @@ def expr_ds_h_o_e_r_form_2(a: str = "a", alpha: str = "alpha", c: str = "c", e: 
     return (pl.col(a)**2*pl.col(c)*pl.col(e)*pl.col(h)*pl.col(m)*pl.col(r)*math.tan(pl.col(alpha)))
 
 
-def calc_val_2610_27416_form_3(f: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+def calc_abs_n_b_f_f_p_form_3(g: float, m: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_1709_07969.
 
     **Source**:
-    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
-    - Authors: Koichi Miyamoto
-    - Citation Key: `arxiv_2610_27416`
+    - Title: Optimal-power Configurations for Hover Solutions in Mono-spinners (2017)
+    - Authors: Mojtaba Hedayatpour, Mehran Mehrandezh, Farrokh Janabi-Sharifi
+    - Citation Key: `arxiv_1709_07969`
 
     **KaTeX Formula**:
     $$
-    f := r∑ n=1 N∑ i=1 Cn,iXi tn ,
+    |(  f p+  f B) \cdot  n| =m|g|
     $$
 
     Args:
-        f (float): Input parameter `f`.
+        g (float): Input parameter `g`.
+        m (float): Input parameter `m`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(f)
+    return float(m*abs(g))
 
 
-def expr_val_2610_27416_form_3(f: str = "f") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_3`."""
-    return (pl.col(f))
+def expr_abs_n_b_f_f_p_form_3(g: str = "g", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_abs_n_b_f_f_p_form_3`."""
+    return (pl.col(m)*abs(pl.col(g)))
 
 
 def calc_val_2608_23776_form_3(B: float) -> float:
@@ -35945,33 +41531,6 @@ def calc_val_2602_19513_form_8(L: float, delta: float) -> float:
 def expr_val_2602_19513_form_8(L: str = "L", delta: str = "delta") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2602_19513_form_8`."""
     return (pl.col(L)*pl.col(delta))
-
-
-def calc_g_c_r_form_8(N: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2508_19848.
-
-    **Source**:
-    - Title: Hierarchy and ranking in pairwise sports contests (2025)
-    - Authors: Bogdán Asztalos, Boldizsár Balázs, Gergely Palla et al.
-    - Citation Key: `arxiv_2508_19848`
-
-    **KaTeX Formula**:
-    $$
-    GRC= 1 N-1 \cdot  \sum  i\in V [2RC max - 2RC(i)]
-    $$
-
-    Args:
-        N (float): Input parameter `N`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*N - 1)
-
-
-def expr_g_c_r_form_8(N: str = "N") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_g_c_r_form_8`."""
-    return (1*pl.col(N) - 1)
 
 
 def calc_a_s_t_form_1(n: float, s: float) -> float:
@@ -36623,33 +42182,6 @@ def expr_l_o_s_s_2206_0(N: str = "N") -> pl.Expr:
     return (1*(pl.col(N)*pl.col(N)))
 
 
-def calc_delta_r_e_e_v_e_n_t_2208_0(N: float) -> float:
-    r"""Compute mathematical metric extracted from 2208_03492.
-
-    **Source**:
-    - Title: Pitching strategy evaluation via stratified analysis using propensity score (2022)
-    - Authors: Hiroshi Nakahara, Kazuya Takeda, Keisuke Fujii
-    - Citation Key: `2208_03492`
-
-    **KaTeX Formula**:
-    $$
-    \Delta RE(event) = 1N N\sum  i\in event \Delta REi
-    $$
-
-    Args:
-        N (float): Input parameter `N`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*(N*N))
-
-
-def expr_delta_r_e_e_v_e_n_t_2208_0(N: str = "N") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_delta_r_e_e_v_e_n_t_2208_0`."""
-    return (1*(pl.col(N)*pl.col(N)))
-
-
 def calc_w_k_form_0(N: float, i: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2512_18467.
 
@@ -36910,6 +42442,33 @@ def calc_i_y_i_y_form_2(k: float) -> float:
 def expr_i_y_i_y_form_2(k: str = "k") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_i_y_i_y_form_2`."""
     return (pl.col(k))
+
+
+def calc_val_2610_25605_form_3(k: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+
+    **Source**:
+    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
+    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
+    - Citation Key: `arxiv_2610_25605`
+
+    **KaTeX Formula**:
+    $$
+    (yi -  yi)2 \le  1 k \sum  j\in N (s) k (i)(yi - yj)2
+    $$
+
+    Args:
+        k (float): Input parameter `k`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((0 <= k))
+
+
+def expr_val_2610_25605_form_3(k: str = "k") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_25605_form_3`."""
+    return ((0 <= pl.col(k)))
 
 
 def calc_c_t_form_3(R: float, T: float, t: float) -> float:
@@ -37854,34 +43413,6 @@ def expr_val_2610_25581_form_3(K: str = "K", R: str = "R", S: str = "S", W: str 
     return (pl.col(R)*(pl.col(W)*(pl.col(K)*pl.col(S))))
 
 
-def calc_p_k_form_5(N: float, k: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_36769.
-
-    **Source**:
-    - Title: Externalizing Hand Grip Pressure Through Real-Time Visual Feedback (2026)
-    - Authors: Andrew L. Huard, Avinash Ajit Nargund, Misha Sra
-    - Citation Key: `arxiv_2610_36769`
-
-    **KaTeX Formula**:
-    $$
-    Pk = 1 Nk \sum  i\in Zk Pnorm,i
-    $$
-
-    Args:
-        N (float): Input parameter `N`.
-        k (float): Input parameter `k`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*(N*k))
-
-
-def expr_p_k_form_5(N: str = "N", k: str = "k") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_p_k_form_5`."""
-    return (1*(pl.col(N)*pl.col(k)))
-
-
 def calc_val_2610_25605_form_5(ds: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_25605.
 
@@ -38141,35 +43672,6 @@ def expr_val_2610_27057_form_8(B: str = "B") -> pl.Expr:
     return (5*pl.col(B))
 
 
-def calc_val_2609_10498_form_9(i: float, v: float, w: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_10498.
-
-    **Source**:
-    - Title: Field Converter: Geometry-Initialized Temporal Residual Refinement for World-Grounded Player Pose Estimation from Soccer Broadcasts (2026)
-    - Authors: Simon Khan, Laurent Gajny, Jennyfer Lecompte et al.
-    - Citation Key: `arxiv_2609_10498`
-
-    **KaTeX Formula**:
-    $$
-    vw i,t,k =R^Tt (vc i,t,k - tt )
-    $$
-
-    Args:
-        i (float): Input parameter `i`.
-        v (float): Input parameter `v`.
-        w (float): Input parameter `w`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(i*v*w)
-
-
-def expr_val_2609_10498_form_9(i: str = "i", v: str = "v", w: str = "w") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2609_10498_form_9`."""
-    return (pl.col(i)*pl.col(v)*pl.col(w))
-
-
 def calc_val_2507_16328_form_9(C: float, T: float, u: float, v: float, w: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2507_16328.
 
@@ -38228,33 +43730,6 @@ def calc_l_r_o_o_t_form_9(N: float, Omega: float, r: float) -> float:
 def expr_l_r_o_o_t_form_9(N: str = "N", Omega: str = "Omega", r: str = "r") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_l_r_o_o_t_form_9`."""
     return (1*(pl.col(N)*(pl.col(Omega)*pl.col(r))))
-
-
-def calc_val_2610_26568_form_a(X: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_26568.
-
-    **Source**:
-    - Title: Reward Objectives for Robust (PO)MDPs: A Law-Preserving Equivalence with (Partially Observable) Games (2026)
-    - Authors: Durgam Latha, Dion Reji, Dorde Zikelic et al.
-    - Citation Key: `arxiv_2610_26568`
-
-    **KaTeX Formula**:
-    $$
-    X
-    $$
-
-    Args:
-        X (float): Input parameter `X`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(X)
-
-
-def expr_val_2610_26568_form_a(X: str = "X") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_26568_form_a`."""
-    return (pl.col(X))
 
 
 def calc_val_2609_10498_form_a(X: float, c: float, i: float) -> float:
@@ -38697,36 +44172,6 @@ def expr_i_z_2609_0(T: str = "T", i: str = "i", k: str = "k", q: str = "q", u: s
     return (pl.col(i)*pl.col(k)*pl.col(q)*pl.col(u)**pl.col(T))
 
 
-def calc_t_s_e_delta_brown_(E: float, P: float, S: float, delta: float) -> float:
-    r"""Compute mathematical metric extracted from brown_2008_aoas.
-
-    **Source**:
-    - Title: Supplement to 'In-season prediction of batting averages...': Major league batting records for 2005 (2008)
-    - Authors: Brown, L. D.
-    - Citation Key: `brown_2008_aoas`
-
-    **KaTeX Formula**:
-    $$
-    TSE[\delta ] =SSPE[\delta ]- \sum  i\in S1\cap S2 1 4N2i
-    $$
-
-    Args:
-        E (float): Input parameter `E`.
-        P (float): Input parameter `P`.
-        S (float): Input parameter `S`.
-        delta (float): Input parameter `delta`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(S*(S*(P*(E*delta))))
-
-
-def expr_t_s_e_delta_brown_(E: str = "E", P: str = "P", S: str = "S", delta: str = "delta") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_t_s_e_delta_brown_`."""
-    return (pl.col(S)*(pl.col(S)*(pl.col(P)*(pl.col(E)*pl.col(delta)))))
-
-
 def calc_delta_t_e_s_brown_(E: float, S: float, T: float, delta: float) -> float:
     r"""Compute mathematical metric extracted from brown_2008_aoas.
 
@@ -38995,36 +44440,6 @@ def calc_e_j_form_6(R: float, T: float, e: float, j: float) -> float:
 def expr_e_j_form_6(R: str = "R", T: str = "T", e: str = "e", j: str = "j") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_e_j_form_6`."""
     return (pl.col(R)*pl.col(T)*pl.col(e)**2*pl.col(j)**2)
-
-
-def calc_l_v_form_6(N: float, i: float, n: float, t: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27193.
-
-    **Source**:
-    - Title: Low Residuals, Wrong Value: Learning the Viscosity Solution of Hamilton-Jacobi-Isaacs Equations with PINNs (2026)
-    - Authors: Raul Jimenez, Pablo Tejerina-Pérez, Leonid Sarieddine et al.
-    - Citation Key: `arxiv_2610_27193`
-
-    **KaTeX Formula**:
-    $$
-    L[V ] = 1 Nint \sum  i r[V ](\Delta i, \tau i) 2 + \lambda  1 N0 \sum  j V (\Delta j , 0) 2 + \lambda  1 N\epsilon  \sum  k V (\Delta k, \tau k) 2
-    $$
-
-    Args:
-        N (float): Input parameter `N`.
-        i (float): Input parameter `i`.
-        n (float): Input parameter `n`.
-        t (float): Input parameter `t`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(1*(N*(i*(n*t))))
-
-
-def expr_l_v_form_6(N: str = "N", i: str = "i", n: str = "n", t: str = "t") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_l_v_form_6`."""
-    return (1*(pl.col(N)*(pl.col(i)*(pl.col(n)*pl.col(t)))))
 
 
 def calc_val_2610_25581_form_7(R: float, i: float) -> float:
@@ -39318,6 +44733,35 @@ def expr_val_2610_25581_form_d(K: str = "K", R: str = "R", S: str = "S", W: str 
     return (pl.col(R)*(pl.col(W)*(pl.col(K)*pl.col(S))))
 
 
+def calc_val_2610_25605_form_e(S: float, dT: float, dlog: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_25605.
+
+    **Source**:
+    - Title: PRISM: Prior Relational Information for Self-supervised Modeling to Enhance Solubility OOD Generalization (2026)
+    - Authors: Xinyi Chen, Jiahuan Pang, Titus Chima et al.
+    - Citation Key: `arxiv_2610_25605`
+
+    **KaTeX Formula**:
+    $$
+    d log S dT
+    $$
+
+    Args:
+        S (float): Input parameter `S`.
+        dT (float): Input parameter `dT`.
+        dlog (float): Input parameter `dlog`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(dlog*(S*dT))
+
+
+def expr_val_2610_25605_form_e(S: str = "S", dT: str = "dT", dlog: str = "dlog") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_25605_form_e`."""
+    return (pl.col(dlog)*(pl.col(S)*pl.col(dT)))
+
+
 def calc_val_2610_27193_form_e(V: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_27193.
 
@@ -39607,6 +45051,33 @@ def expr_sim_omega_l_l_r_form_3(p: str = "p") -> pl.Expr:
     return (-pl.col(p))
 
 
+def calc_abs_x_i_h_c_sim_form_3(J: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    |(I + h \sim  C)x| =  J\sum  j=1 |||(I + h \sim  Aj,j )xj + hAj,j-2xj-2 + hAj,j+s-1xj+s-1|||21/2
+    $$
+
+    Args:
+        J (float): Input parameter `J`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(J)
+
+
+def expr_abs_x_i_h_c_sim_form_3(J: str = "J") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_abs_x_i_h_c_sim_form_3`."""
+    return (pl.col(J))
+
+
 def calc_val_2610_27416_form_4(P: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_27416.
 
@@ -39667,6 +45138,35 @@ def expr_val_2609_25525_form_4(P: str = "P", g: str = "g", i: str = "i", l: str 
     return (pl.col(P)*pl.col(g)*pl.col(i)*pl.col(l)*pl.col(o)*pl.col(r)*pl.col(t))
 
 
+def calc_f_s_form_5(S: float, c: float, s: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2608_12291.
+
+    **Source**:
+    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
+    - Authors: Steven Campbell, Karl Kristian Engelund
+    - Citation Key: `arxiv_2608_12291`
+
+    **KaTeX Formula**:
+    $$
+    f(s) = c0 S - s ,
+    $$
+
+    Args:
+        S (float): Input parameter `S`.
+        c (float): Input parameter `c`.
+        s (float): Input parameter `s`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((0*S)*c - s)
+
+
+def expr_f_s_form_5(S: str = "S", c: str = "c", s: str = "s") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_s_form_5`."""
+    return ((0*pl.col(S))*pl.col(c) - pl.col(s))
+
+
 def calc_p_form_5(L: float, R: float, phi: float, psi: float, theta: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2603_08746.
 
@@ -39696,33 +45196,6 @@ def calc_p_form_5(L: float, R: float, phi: float, psi: float, theta: float) -> f
 def expr_p_form_5(L: str = "L", R: str = "R", phi: str = "phi", psi: str = "psi", theta: str = "theta") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_form_5`."""
     return (pl.col(L)*pl.col(R)*pl.col(phi) - math.sin(pl.col(L)**2*pl.col(R)**2*pl.col(psi)*pl.col(theta)))
-
-
-def calc_val_2610_27416_form_5(P: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27416.
-
-    **Source**:
-    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
-    - Authors: Koichi Miyamoto
-    - Citation Key: `arxiv_2610_27416`
-
-    **KaTeX Formula**:
-    $$
-    P { sup t\in In |\Delta Jnt | > U '' \delta  } \le  \exp (- L (U '' \delta  -E [supt\in In |\Delta Jnt |])2 4\sigma 2T )
-    $$
-
-    Args:
-        P (float): Input parameter `P`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(P)
-
-
-def expr_val_2610_27416_form_5(P: str = "P") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_5`."""
-    return (pl.col(P))
 
 
 def calc_sigma_a_c_form_5(l: float) -> float:
@@ -39869,7 +45342,7 @@ def expr_partial_v_tau_form_6(Delta: str = "Delta", V: str = "V", nabla: str = "
     return (-pl.col(Delta)*pl.col(v)*abs(pl.col(V)*pl.col(nabla)) + 1)
 
 
-def calc_val_2608_12291_form_7(S: float, T: float) -> float:
+def calc_f_s_form_8(k: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
     **Source**:
@@ -39879,51 +45352,21 @@ def calc_val_2608_12291_form_7(S: float, T: float) -> float:
 
     **KaTeX Formula**:
     $$
-    ST := [0, T) \times  (0, 1),
+    f (s) = k, c(t) = ke-t ,
     $$
 
     Args:
-        S (float): Input parameter `S`.
-        T (float): Input parameter `T`.
+        k (float): Input parameter `k`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(S*T)
+    return float(k)
 
 
-def expr_val_2608_12291_form_7(S: str = "S", T: str = "T") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_7`."""
-    return (pl.col(S)*pl.col(T))
-
-
-def calc_val_2608_12291_form_9(C: float, f: float, t: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2608_12291.
-
-    **Source**:
-    - Title: When should one stop the most exciting game? Sequential Inference for win-martingales (2026)
-    - Authors: Steven Campbell, Karl Kristian Engelund
-    - Citation Key: `arxiv_2608_12291`
-
-    **KaTeX Formula**:
-    $$
-    C f t := {x : x ∈ (1- f(t), f(t))}
-    $$
-
-    Args:
-        C (float): Input parameter `C`.
-        f (float): Input parameter `f`.
-        t (float): Input parameter `t`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(C*f*t)
-
-
-def expr_val_2608_12291_form_9(C: str = "C", f: str = "f", t: str = "t") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2608_12291_form_9`."""
-    return (pl.col(C)*pl.col(f)*pl.col(t))
+def expr_f_s_form_8(k: str = "k") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_s_form_8`."""
+    return (pl.col(k))
 
 
 def calc_r_form_9(L: float, R: float, phi: float, psi: float, theta: float) -> float:
@@ -40696,34 +46139,6 @@ def expr_xi_e_form_a(de: str = "de", e: str = "e", omega: str = "omega", psi: st
     return (pl.col(de)*pl.col(psi) - 2*math.pi*pl.col(e)*pl.col(omega))
 
 
-def calc_val_2610_27416_form_b(X: float, t: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2610_27416.
-
-    **Source**:
-    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
-    - Authors: Koichi Miyamoto
-    - Citation Key: `arxiv_2610_27416`
-
-    **KaTeX Formula**:
-    $$
-    Xt := Xt max {1, |Xt| c }
-    $$
-
-    Args:
-        X (float): Input parameter `X`.
-        t (float): Input parameter `t`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(X*t)
-
-
-def expr_val_2610_27416_form_b(X: str = "X", t: str = "t") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_b`."""
-    return (pl.col(X)*pl.col(t))
-
-
 def calc_val_2608_12291_form_b(A: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2608_12291.
 
@@ -40776,6 +46191,33 @@ def calc_c_t_form_b(c: float) -> float:
 def expr_c_t_form_b(c: str = "c") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_c_t_form_b`."""
     return (pl.col(c))
+
+
+def calc_abs_c_x_form_c(J: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    |Cx| =  J\sum  j=1 ||Aj,j (t)xj + Aj,j-2 (t)xj-2 + Aj,j+s-1 (t)xj+s-1||21/2 \le  \sqrt 3 ((J |A(t)|)2 + ( J(J - 1) 2 | B(t) BT (t)|F)2 + (J|  F (t)|)2)1/2 \le  \sqrt 3 (J |A(t)| + J(J - 1) 2 | B(t) BT (t)|F +J|  F (t)|) \le  \sqrt 3 (J |A(t)| + J(J - 1)\gamma  2 2 |B(t)BT (t)|F + J \gamma  s-1 |F (t)|)
+    $$
+
+    Args:
+        J (float): Input parameter `J`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(J)
+
+
+def expr_abs_c_x_form_c(J: str = "J") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_abs_c_x_form_c`."""
+    return (pl.col(J))
 
 
 def calc_omega_l_l_r_sim_j_l_c_form_e(J: float, L: float, M: float, R: float, c: float, omega: float, sim: float) -> float:
@@ -40966,6 +46408,41 @@ def expr_val_2512_18467_form_2(P: str = "P") -> pl.Expr:
     return (pl.col(P))
 
 
+def calc_val_2512_00312_form_3(E: float, P: float, e: float, i: float, l: float, n: float, o: float, t: float, u: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2512_00312.
+
+    **Source**:
+    - Title: Kicking for Goal or Touch? An Expected Points Framework for Penalty Decisions in Rugby Union (2025)
+    - Authors: Kenny Watts, Jonathan Pipping-Gamón
+    - Citation Key: `arxiv_2512_00312`
+
+    **KaTeX Formula**:
+    $$
+    EPlineout(xLO),
+    $$
+
+    Args:
+        E (float): Input parameter `E`.
+        P (float): Input parameter `P`.
+        e (float): Input parameter `e`.
+        i (float): Input parameter `i`.
+        l (float): Input parameter `l`.
+        n (float): Input parameter `n`.
+        o (float): Input parameter `o`.
+        t (float): Input parameter `t`.
+        u (float): Input parameter `u`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(E*(P*(l*(i*(n*(e*(o*(t*u))))))))
+
+
+def expr_val_2512_00312_form_3(E: str = "E", P: str = "P", e: str = "e", i: str = "i", l: str = "l", n: str = "n", o: str = "o", t: str = "t", u: str = "u") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2512_00312_form_3`."""
+    return (pl.col(E)*(pl.col(P)*(pl.col(l)*(pl.col(i)*(pl.col(n)*(pl.col(e)*(pl.col(o)*(pl.col(t)*pl.col(u)))))))))
+
+
 def calc_val_2503_11669_form_3(i: float, q: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2503_11669.
 
@@ -40992,33 +46469,6 @@ def calc_val_2503_11669_form_3(i: float, q: float) -> float:
 def expr_val_2503_11669_form_3(i: str = "i", q: str = "q") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_3`."""
     return (-pl.col(i)*pl.col(q) + 1)
-
-
-def calc_val_2512_00312_form_3(P: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2512_00312.
-
-    **Source**:
-    - Title: Kicking for Goal or Touch? An Expected Points Framework for Penalty Decisions in Rugby Union (2025)
-    - Authors: Kenny Watts, Jonathan Pipping-Gamón
-    - Citation Key: `arxiv_2512_00312`
-
-    **KaTeX Formula**:
-    $$
-    P(make | d, θ) = logit-1{β0 + f(d, θ)},
-    $$
-
-    Args:
-        P (float): Input parameter `P`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(P)
-
-
-def expr_val_2512_00312_form_3(P: str = "P") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2512_00312_form_3`."""
-    return (pl.col(P))
 
 
 def calc_val_2503_11669_form_5(a: float, h: float) -> float:
@@ -41355,6 +46805,34 @@ def expr_k_p_form_8(B: str = "B", c: str = "c", h: str = "h", i: str = "i", k: s
     return (12*pl.col(B)*pl.col(k) + pl.col(c)*pl.col(h)*pl.col(i)**2*pl.col(m)*pl.col(n)*pl.col(p)*pl.col(t))
 
 
+def calc_val_2609_06739_form_8(b: float, h: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_06739.
+
+    **Source**:
+    - Title: The profit-bias identity in sports betting: bookmaker profit as the public's prediction error (2026)
+    - Authors: Jacek P. Dmochowski
+    - Citation Key: `arxiv_2609_06739`
+
+    **KaTeX Formula**:
+    $$
+    Q(s) \equiv  bh,L(s) Pr(M < s) + bv,L(s) Pr(M > s)
+    $$
+
+    Args:
+        b (float): Input parameter `b`.
+        h (float): Input parameter `h`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(b*h)
+
+
+def expr_val_2609_06739_form_8(b: str = "b", h: str = "h") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2609_06739_form_8`."""
+    return (pl.col(b)*pl.col(h))
+
+
 def calc_val_2503_11669_form_8(g: float, k: float, m: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2503_11669.
 
@@ -41382,6 +46860,34 @@ def calc_val_2503_11669_form_8(g: float, k: float, m: float) -> float:
 def expr_val_2503_11669_form_8(g: str = "g", k: str = "k", m: str = "m") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2503_11669_form_8`."""
     return (pl.col(g)*pl.col(m) - pl.col(k) - 1)
+
+
+def calc_i_pi_form_8(C: float, i: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_06739.
+
+    **Source**:
+    - Title: The profit-bias identity in sports betting: bookmaker profit as the public's prediction error (2026)
+    - Authors: Jacek P. Dmochowski
+    - Citation Key: `arxiv_2609_06739`
+
+    **KaTeX Formula**:
+    $$
+    \pi i = Ci [(1 - bh,i) - \phi h,ibh,i ] + (1 - Ci)[bh,i - \phi v,i(1 - bh,i)]
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        i (float): Input parameter `i`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(C*i)
+
+
+def expr_i_pi_form_8(C: str = "C", i: str = "i") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_i_pi_form_8`."""
+    return (pl.col(C)*pl.col(i))
 
 
 def calc_g_x_form_9(e: float, t: float, w: float, x: float) -> float:
@@ -43272,6 +48778,34 @@ def expr_a_c_c_b_m_guo_20(B: str = "B", m: str = "m") -> pl.Expr:
     return (abs(pl.col(B)*pl.col(m)))
 
 
+def calc_c_o_n_f_b_m_guo_20(B: float, m: float) -> float:
+    r"""Compute mathematical metric extracted from guo_2017_calibration.
+
+    **Source**:
+    - Title: arxiv1706.04599
+    - Authors: Scientific Literature
+    - Citation Key: `guo_2017_calibration`
+
+    **KaTeX Formula**:
+    $$
+    conf(Bm) = 1 |Bm| \sum  i\in Bm  pi
+    $$
+
+    Args:
+        B (float): Input parameter `B`.
+        m (float): Input parameter `m`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(abs(B*m))
+
+
+def expr_c_o_n_f_b_m_guo_20(B: str = "B", m: str = "m") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_c_o_n_f_b_m_guo_20`."""
+    return (abs(pl.col(B)*pl.col(m)))
+
+
 def calc_p_i_k_2103_1(i: float, k: float, r: float, theta: float) -> float:
     r"""Compute mathematical metric extracted from 2103_12094.
 
@@ -43392,6 +48926,39 @@ def expr_delta_e_r_2208_0(R: str = "R", a: str = "a", b: str = "b", e: str = "e"
     return (math.e*pl.col(R)*pl.col(a)*pl.col(e)*pl.col(f)*pl.col(r)*pl.col(t) - math.e*pl.col(R)*pl.col(b)*pl.col(e)**2*pl.col(f)*pl.col(o)*pl.col(r))
 
 
+def calc_a_s_a_m_2208_0(i: float, n: float, o: float, s: float, t: float, u: float, x: float) -> float:
+    r"""Compute mathematical metric extracted from 2208_03492.
+
+    **Source**:
+    - Title: Pitching strategy evaluation via stratified analysis using propensity score (2022)
+    - Authors: Hiroshi Nakahara, Kazuya Takeda, Keisuke Fujii
+    - Citation Key: `2208_03492`
+
+    **KaTeX Formula**:
+    $$
+    ASAM = |xin -xout| s
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        o (float): Input parameter `o`.
+        s (float): Input parameter `s`.
+        t (float): Input parameter `t`.
+        u (float): Input parameter `u`.
+        x (float): Input parameter `x`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(s*abs(x*(i*n) - x*o*(t*u)))
+
+
+def expr_a_s_a_m_2208_0(i: str = "i", n: str = "n", o: str = "o", s: str = "s", t: str = "t", u: str = "u", x: str = "x") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_a_s_a_m_2208_0`."""
+    return (pl.col(s)*abs(pl.col(x)*(pl.col(i)*pl.col(n)) - pl.col(x)*pl.col(o)*(pl.col(t)*pl.col(u))))
+
+
 def calc_x_p_2209_0(N: float, p: float) -> float:
     r"""Compute mathematical metric extracted from 2209_07274.
 
@@ -43472,6 +49039,37 @@ def calc_u_2210_0(m: float) -> float:
 def expr_u_2210_0(m: str = "m") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_u_2210_0`."""
     return (pl.col(m)**2)
+
+
+def calc_val_2210_02383_2210_0(Q: float, T: float, nu: float, sim: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from 2210_02383.
+
+    **Source**:
+    - Title: Filling the Gaps: A Multiple Imputation Approach to Estimating Aging Curves in Baseball (2022)
+    - Authors: Quang Nguyen, Gregory J. Matthews
+    - Citation Key: `2210_02383`
+
+    **KaTeX Formula**:
+    $$
+    Q - Q \sqrt T \sim  t\nu
+    $$
+
+    Args:
+        Q (float): Input parameter `Q`.
+        T (float): Input parameter `T`.
+        nu (float): Input parameter `nu`.
+        sim (float): Input parameter `sim`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-Q*math.sqrt(T)*(sim*(nu*t)) + Q)
+
+
+def expr_val_2210_02383_2210_0(Q: str = "Q", T: str = "T", nu: str = "nu", sim: str = "sim", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2210_02383_2210_0`."""
+    return (-pl.col(Q)*(pl.col(T).sqrt())*(pl.col(sim)*(pl.col(nu)*pl.col(t))) + pl.col(Q))
 
 
 def calc_x_w_o_b_a_t_x_2210_0(K: float) -> float:
@@ -43586,6 +49184,34 @@ def expr_theta_2402_0(T: str = "T", U: str = "U", V: str = "V") -> pl.Expr:
     return (pl.col(T)*pl.col(U)*pl.col(V))
 
 
+def calc_i_pi_form_6(i: float, o: float) -> float:
+    r"""Compute mathematical metric extracted from strumbelj_2014_ijf.
+
+    **Source**:
+    - Title: Strumbelj_WorkingPaper2013
+    - Authors: Scientific Literature
+    - Citation Key: `strumbelj_2014_ijf`
+
+    **KaTeX Formula**:
+    $$
+    \pi i = 1 oi
+    $$
+
+    Args:
+        i (float): Input parameter `i`.
+        o (float): Input parameter `o`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(i*o)
+
+
+def expr_i_pi_form_6(i: str = "i", o: str = "o") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_i_pi_form_6`."""
+    return (pl.col(i)*pl.col(o))
+
+
 def calc_val_2501_09153_2501_0(f: float) -> float:
     r"""Compute mathematical metric extracted from 2501_09153.
 
@@ -43695,33 +49321,6 @@ def calc_psi_p_2602_2(P: float) -> float:
 def expr_psi_p_2602_2(P: str = "P") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_psi_p_2602_2`."""
     return (math.e*pl.col(P))
-
-
-def calc_psi_r_a_da_n_2602_2(m: float) -> float:
-    r"""Compute mathematical metric extracted from 2602_23233.
-
-    **Source**:
-    - Title: The Counterfactual Combine: A Causal Framework for Player Evaluation (2026)
-    - Authors: Herbert P. Susmann, Antonio D'Alessandro
-    - Citation Key: `2602_23233`
-
-    **KaTeX Formula**:
-    $$
-    \psi rand a = 1m m\sum  a'=1 E [E[Y | A = a' ,X] | A = a,X \in  X ' ] = 1m m\sum  a'=1 E [\mu P(a' ,X) | A = a,X \in  X ' ]
-    $$
-
-    Args:
-        m (float): Input parameter `m`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(m**2)
-
-
-def expr_psi_r_a_da_n_2602_2(m: str = "m") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_psi_r_a_da_n_2602_2`."""
-    return (pl.col(m)**2)
 
 
 def calc_psi_r_a_da_n_psi_r_a_da_n_2602_2(P: float, o: float) -> float:
@@ -44075,38 +49674,6 @@ def calc_z_i_brown_(X: float, i: float) -> float:
 def expr_z_i_brown_(X: str = "X", i: str = "i") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_z_i_brown_`."""
     return (-pl.col(X)*pl.col(i))
-
-
-def calc_brown_2008_arxiv_brown_(V: float, a: float, i: float, o: float, r: float, t: float) -> float:
-    r"""Compute mathematical metric extracted from brown_2008_arxiv.
-
-    **Source**:
-    - Title: In-season prediction of batting averages: a field test of empirical Bayes and Bayes methodologies (2008)
-    - Authors: Brown, L. D.
-    - Citation Key: `brown_2008_arxiv`
-
-    **KaTeX Formula**:
-    $$
-    Var ratio* = { Varp(Y (c) )/( 14 N), for c=0, 1/4, Varp(Y (3/8) )/(1/(4N + 2)), for c=3/8}
-    $$
-
-    Args:
-        V (float): Input parameter `V`.
-        a (float): Input parameter `a`.
-        i (float): Input parameter `i`.
-        o (float): Input parameter `o`.
-        r (float): Input parameter `r`.
-        t (float): Input parameter `t`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(V*a**2*i*o*r**2*t)
-
-
-def expr_brown_2008_arxiv_brown_(V: str = "V", a: str = "a", i: str = "i", o: str = "o", r: str = "r", t: str = "t") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_brown_2008_arxiv_brown_`."""
-    return (pl.col(V)*pl.col(a)**2*pl.col(i)*pl.col(o)*pl.col(r)**2*pl.col(t))
 
 
 def calc_p_s_i_bt_sec(i: float) -> float:
@@ -45965,6 +51532,37 @@ def expr_p_form_1(P: str = "P", c: str = "c", i: str = "i", r: str = "r", t: str
     return (pl.col(P)*pl.col(c)*pl.col(i)*pl.col(r)*pl.col(t))
 
 
+def calc_nguyen_matthews_2022_aging_form_1(Q: float, T: float, nu: float, sim: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from nguyen_matthews_2022_aging.
+
+    **Source**:
+    - Title: 2210.02383
+    - Authors: Scientific Literature
+    - Citation Key: `nguyen_matthews_2022_aging`
+
+    **KaTeX Formula**:
+    $$
+    Q - Q \sqrt T \sim  t\nu
+    $$
+
+    Args:
+        Q (float): Input parameter `Q`.
+        T (float): Input parameter `T`.
+        nu (float): Input parameter `nu`.
+        sim (float): Input parameter `sim`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(-Q*math.sqrt(T)*(sim*(nu*t)) + Q)
+
+
+def expr_nguyen_matthews_2022_aging_form_1(Q: str = "Q", T: str = "T", nu: str = "nu", sim: str = "sim", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_nguyen_matthews_2022_aging_form_1`."""
+    return (-pl.col(Q)*(pl.col(T).sqrt())*(pl.col(sim)*(pl.col(nu)*pl.col(t))) + pl.col(Q))
+
+
 def calc_h_p_form_1(P: float) -> float:
     r"""Compute mathematical metric extracted from strumbelj_2014_ijf.
 
@@ -46457,6 +52055,36 @@ def expr_nabla_a_f_dagger_form_7(F: str = "F", J: str = "J", T: str = "T", dagge
     return (pl.col(F)*pl.col(J)*pl.col(T)*pl.col(dagger)**2*pl.col(kappa)*pl.col(n)*pl.col(nabla)*pl.col(omega)**2 + pl.col(dagger)*pl.col(kappa))
 
 
+def calc_nguyen_matthews_2022_aging_form_7(Q: float, nu: float, pm: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from nguyen_matthews_2022_aging.
+
+    **Source**:
+    - Title: 2210.02383
+    - Authors: Scientific Literature
+    - Citation Key: `nguyen_matthews_2022_aging`
+
+    **KaTeX Formula**:
+    $$
+    Q \pm  t\nu ,1-\alpha /2\sqrt T
+    $$
+
+    Args:
+        Q (float): Input parameter `Q`.
+        nu (float): Input parameter `nu`.
+        pm (float): Input parameter `pm`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Q*(pm*(nu*t)))
+
+
+def expr_nguyen_matthews_2022_aging_form_7(Q: str = "Q", nu: str = "nu", pm: str = "pm", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_nguyen_matthews_2022_aging_form_7`."""
+    return (pl.col(Q)*(pl.col(pm)*(pl.col(nu)*pl.col(t))))
+
+
 def calc_val_2610_27416_form_7(P: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_27416.
 
@@ -46511,7 +52139,7 @@ def expr_shin_family_2024_cambridge_form_7(z: str = "z") -> pl.Expr:
     return (pl.col(z))
 
 
-def calc_val_2609_21639_form_8(P: float, dg: float, e: float) -> float:
+def calc_val_2609_21639_form_8(P: float, c: float, i: float, n: float, r: float, t: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_21639.
 
     **Source**:
@@ -46521,23 +52149,26 @@ def calc_val_2609_21639_form_8(P: float, dg: float, e: float) -> float:
 
     **KaTeX Formula**:
     $$
-    Pedge,0 = 0Pa
+    Pn \ge  Pcrit
     $$
 
     Args:
         P (float): Input parameter `P`.
-        dg (float): Input parameter `dg`.
-        e (float): Input parameter `e`.
+        c (float): Input parameter `c`.
+        i (float): Input parameter `i`.
+        n (float): Input parameter `n`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(P*dg*e**2)
+    return float((P*n >= P*c*i*r*t))
 
 
-def expr_val_2609_21639_form_8(P: str = "P", dg: str = "dg", e: str = "e") -> pl.Expr:
+def expr_val_2609_21639_form_8(P: str = "P", c: str = "c", i: str = "i", n: str = "n", r: str = "r", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_21639_form_8`."""
-    return (pl.col(P)*pl.col(dg)*pl.col(e)**2)
+    return ((pl.col(P)*pl.col(n) >= pl.col(P)*pl.col(c)*pl.col(i)*pl.col(r)*pl.col(t)))
 
 
 def calc_val_2607_24066_form_9(n: float, u: float) -> float:
@@ -46623,35 +52254,6 @@ def expr_val_0911_4503_form_9(mu: str = "mu") -> pl.Expr:
     return (pl.col(mu))
 
 
-def calc_equiv_tan_gamma_u_q_u_form_9(v: float, w: float, z: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_30305.
-
-    **Source**:
-    - Title: Exact turning invariants for projectile motion under quadratic drag and a vertical-axis Magnus force (2026)
-    - Authors: Pragyaan Gaur
-    - Citation Key: `arxiv_2609_30305`
-
-    **KaTeX Formula**:
-    $$
-    Q(u) \equiv  \tan\gamma (u) = vz |w|
-    $$
-
-    Args:
-        v (float): Input parameter `v`.
-        w (float): Input parameter `w`.
-        z (float): Input parameter `z`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(v*(z*abs(w)))
-
-
-def expr_equiv_tan_gamma_u_q_u_form_9(v: str = "v", w: str = "w", z: str = "z") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_equiv_tan_gamma_u_q_u_form_9`."""
-    return (pl.col(v)*(pl.col(z)*abs(pl.col(w))))
-
-
 def calc_val_2609_21639_form_a(P: float, dg: float, e: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_21639.
 
@@ -46679,6 +52281,42 @@ def calc_val_2609_21639_form_a(P: float, dg: float, e: float) -> float:
 def expr_val_2609_21639_form_a(P: str = "P", dg: str = "dg", e: str = "e") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_val_2609_21639_form_a`."""
     return (pl.col(P)*pl.col(dg)*pl.col(e)**2)
+
+
+def calc_val_2609_21639_form_c(P: float, a: float, c: float, f: float, i: float, l: float, n: float, o: float, r: float, t: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_21639.
+
+    **Source**:
+    - Title: Liquid-Nitrogen Micropillar-Wick Cooling for Cryogenic Electronics: A Numerical Study of Thermal Performance and Capillary Dry-Out Limits (2026)
+    - Authors: Felix Mende, Marcus Wislicenus, Dianping Jiang et al.
+    - Citation Key: `arxiv_2609_21639`
+
+    **KaTeX Formula**:
+    $$
+    Pn < Pcrit for all n
+    $$
+
+    Args:
+        P (float): Input parameter `P`.
+        a (float): Input parameter `a`.
+        c (float): Input parameter `c`.
+        f (float): Input parameter `f`.
+        i (float): Input parameter `i`.
+        l (float): Input parameter `l`.
+        n (float): Input parameter `n`.
+        o (float): Input parameter `o`.
+        r (float): Input parameter `r`.
+        t (float): Input parameter `t`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((P*n < P*a*c*f*i*l**2*n*o*r**2*t))
+
+
+def expr_val_2609_21639_form_c(P: str = "P", a: str = "a", c: str = "c", f: str = "f", i: str = "i", l: str = "l", n: str = "n", o: str = "o", r: str = "r", t: str = "t") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2609_21639_form_c`."""
+    return ((pl.col(P)*pl.col(n) < pl.col(P)*pl.col(a)*pl.col(c)*pl.col(f)*pl.col(i)*pl.col(l)**2*pl.col(n)*pl.col(o)*pl.col(r)**2*pl.col(t)))
 
 
 def calc_f_t_y_0_sigma_y_y_0_form_c(h: float, omega: float) -> float:
@@ -46824,6 +52462,103 @@ def expr_a_phi_z_form_e(A: str = "A", D: str = "D", S: str = "S", phi: str = "ph
     return (-1*pl.col(A)*(pl.col(A)*pl.col(D)) + (pl.col(S) + (pl.col(S) - 1*pl.col(A)*(pl.col(A)*(pl.col(A)*(pl.col(S)*(pl.col(A)*(pl.col(phi)*pl.col(z)))))))))
 
 
+def calc_alpha_phi_sim_form_2(e: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    \alpha \sim \Phi  = 1+ e, a\sim \Phi  = O(K(aC + logK))
+    $$
+
+    Args:
+        e (float): Input parameter `e`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(e + 1)
+
+
+def expr_alpha_phi_sim_form_2(e: str = "e") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_alpha_phi_sim_form_2`."""
+    return (pl.col(e) + 1)
+
+
+def calc_f_mu_form_4(C: float, F: float, U: float, Y: float, f: float, m: float, mu: float, r: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    \mu f = 4r \sim UmY |C|F \mu 'f
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        F (float): Input parameter `F`.
+        U (float): Input parameter `U`.
+        Y (float): Input parameter `Y`.
+        f (float): Input parameter `f`.
+        m (float): Input parameter `m`.
+        mu (float): Input parameter `mu`.
+        r (float): Input parameter `r`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(4*F*U*Y*f*m*mu*r*sim*abs(C))
+
+
+def expr_f_mu_form_4(C: str = "C", F: str = "F", U: str = "U", Y: str = "Y", f: str = "f", m: str = "m", mu: str = "mu", r: str = "r", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_f_mu_form_4`."""
+    return (4*pl.col(F)*pl.col(U)*pl.col(Y)*pl.col(f)*pl.col(m)*pl.col(mu)*pl.col(r)*pl.col(sim)*abs(pl.col(C)))
+
+
+def calc_epsilon_e_o_form_5(C: float, F: float, U: float, Y: float, epsilon: float, gamma: float, m: float, r: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    \epsilon OE = \gamma \epsilon  12r \sim UmY |C|F
+    $$
+
+    Args:
+        C (float): Input parameter `C`.
+        F (float): Input parameter `F`.
+        U (float): Input parameter `U`.
+        Y (float): Input parameter `Y`.
+        epsilon (float): Input parameter `epsilon`.
+        gamma (float): Input parameter `gamma`.
+        m (float): Input parameter `m`.
+        r (float): Input parameter `r`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(gamma*(epsilon*(12*(r*(sim*(U*(m*(Y*(F*abs(C))))))))))
+
+
+def expr_epsilon_e_o_form_5(C: str = "C", F: str = "F", U: str = "U", Y: str = "Y", epsilon: str = "epsilon", gamma: str = "gamma", m: str = "m", r: str = "r", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_epsilon_e_o_form_5`."""
+    return (pl.col(gamma)*(pl.col(epsilon)*(12*(pl.col(r)*(pl.col(sim)*(pl.col(U)*(pl.col(m)*(pl.col(Y)*(pl.col(F)*abs(pl.col(C)))))))))))
+
+
 def calc_nabla_p_f_dagger_form_7(F: float, dagger: float, kappa: float, nabla: float, p: float, sim: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_01307.
 
@@ -46856,7 +52591,7 @@ def expr_nabla_p_f_dagger_form_7(F: str = "F", dagger: str = "dagger", kappa: st
     return (pl.col(F)*pl.col(dagger)**2*pl.col(kappa)*pl.col(nabla)*pl.col(p)*pl.col(sim) + pl.col(F)*pl.col(dagger)**2*pl.col(kappa)*pl.col(nabla)*pl.col(p) + pl.col(dagger)*pl.col(kappa) + 11)
 
 
-def calc_val_2610_27416_form_9(P: float) -> float:
+def calc_gamma_form_7(epsilon: float, gamma: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2610_27416.
 
     **Source**:
@@ -46866,21 +52601,50 @@ def calc_val_2610_27416_form_9(P: float) -> float:
 
     **KaTeX Formula**:
     $$
-    P {|J\tau n | \ge  U '\delta  } = P {\exp ( |J\tau n |2 83 \sigma 2T ) \ge  \exp ( (U '\delta  )2 83 \sigma 2T )} \le  \exp (- (U '\delta  )2 83 \sigma 2T ) E [\exp ( |J\tau n |2 83 \sigma 2T )] \le  \delta  2L
+    \gamma  = \gamma \epsilon ,c := cU
     $$
 
     Args:
-        P (float): Input parameter `P`.
+        epsilon (float): Input parameter `epsilon`.
+        gamma (float): Input parameter `gamma`.
 
     Returns:
         float: Calculated metric value.
     """
-    return float(P)
+    return float(epsilon*gamma)
 
 
-def expr_val_2610_27416_form_9(P: str = "P") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2610_27416_form_9`."""
-    return (pl.col(P))
+def expr_gamma_form_7(epsilon: str = "epsilon", gamma: str = "gamma") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_gamma_form_7`."""
+    return (pl.col(epsilon)*pl.col(gamma))
+
+
+def calc_j_form_d(J: float, epsilon: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27416.
+
+    **Source**:
+    - Title: Quantum algorithm for high-dimensional nonlinear stochastic differential equations based on Carleman linearization (2026)
+    - Authors: Koichi Miyamoto
+    - Citation Key: `arxiv_2610_27416`
+
+    **KaTeX Formula**:
+    $$
+    J = J\epsilon ,c := ⌈ 1 \log ( 1c ) (\log ( 1\sim  \epsilon  ) + \sqrt 2 (\log ( 1\sim  \epsilon  ) - 1))⌉
+    $$
+
+    Args:
+        J (float): Input parameter `J`.
+        epsilon (float): Input parameter `epsilon`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(J*epsilon)
+
+
+def expr_j_form_d(J: str = "J", epsilon: str = "epsilon") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_j_form_d`."""
+    return (pl.col(J)*pl.col(epsilon))
 
 
 def calc_q_c_f_h_form_e(W: float, c: float, m: float, pm: float) -> float:
@@ -47120,6 +52884,35 @@ def calc_m_z_form_0(Delta: float, m: float, s: float) -> float:
 def expr_m_z_form_0(Delta: str = "Delta", m: str = "m", s: str = "s") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_z_form_0`."""
     return (pl.col(Delta) - pl.col(m)*pl.col(s))
+
+
+def calc_val_2610_29565_form_1(L: float, theta: float, v: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_29565.
+
+    **Source**:
+    - Title: Preserving Operator Intent Under Actuation Constraints: Teleoperation of Manipulators with Coupled Transmissions (2026)
+    - Authors: Xuhan Miao, Zijin Han, Yutong Shen et al.
+    - Citation Key: `arxiv_2610_29565`
+
+    **KaTeX Formula**:
+    $$
+    |  \theta L| \le   v, |  \theta R| \le   v, |\kappa p  qp -\kappa r  qr| \le   v, |\kappa p  qp +\kappa r  qr| \le   v
+    $$
+
+    Args:
+        L (float): Input parameter `L`.
+        theta (float): Input parameter `theta`.
+        v (float): Input parameter `v`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float((abs(L*theta) <= v))
+
+
+def expr_val_2610_29565_form_1(L: str = "L", theta: str = "theta", v: str = "v") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_29565_form_1`."""
+    return ((abs(pl.col(L)*pl.col(theta)) <= pl.col(v)))
 
 
 def calc_r_b_p_a_form_1(N: float) -> float:
@@ -47718,6 +53511,33 @@ def expr_delta_t_form_0(delta: str = "delta", n: str = "n", r: str = "r") -> pl.
     return (pl.col(delta)*pl.col(n)*pl.col(r))
 
 
+def calc_delta_phi_form_1(n: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_18116.
+
+    **Source**:
+    - Title: Chirality Inversion and Giant Optical Activity in Scalable Self-Assembled Metamaterials (2026)
+    - Authors: Antonio Carone, Aso Rahimzadegan, Birgül Kalkan et al.
+    - Citation Key: `arxiv_2610_18116`
+
+    **KaTeX Formula**:
+    $$
+    \Delta \phi  = n \pi  2
+    $$
+
+    Args:
+        n (float): Input parameter `n`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(2*math.pi*n)
+
+
+def expr_delta_phi_form_1(n: str = "n") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_delta_phi_form_1`."""
+    return (2*math.pi*pl.col(n))
+
+
 def calc_t_c_form_2(M: float, T: float, c: float, q: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_24299.
 
@@ -48062,6 +53882,35 @@ def expr_m_form_c(q: str = "q", t: str = "t") -> pl.Expr:
     return (pl.col(q)*pl.col(t))
 
 
+def calc_val_2610_27576_form_c(Delta: float, V: float, approx: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2610_27576.
+
+    **Source**:
+    - Title: Who Gains When the Umpire Is a Machine? Evidence from the Automated Ball-Strike System (ABS) (2026)
+    - Authors: Seung Jin Cho, Jun Yeong Lee
+    - Citation Key: `arxiv_2610_27576`
+
+    **KaTeX Formula**:
+    $$
+    \Delta V \approx  - \sum  taken pitches \Delta S(l, ℎ, \theta ) \Delta v(\theta ) = -E \times \Delta v
+    $$
+
+    Args:
+        Delta (float): Input parameter `Delta`.
+        V (float): Input parameter `V`.
+        approx (float): Input parameter `approx`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(Delta*V*approx)
+
+
+def expr_val_2610_27576_form_c(Delta: str = "Delta", V: str = "V", approx: str = "approx") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_val_2610_27576_form_c`."""
+    return (pl.col(Delta)*pl.col(V)*pl.col(approx))
+
+
 def calc_val_2609_02306_form_d(approx: float, c: float, delta: float, e: float, h: float, k: float, m: float, n: float, q: float) -> float:
     r"""Compute mathematical metric extracted from arxiv_2609_02306.
 
@@ -48151,6 +54000,35 @@ def calc_m_y_t_form_d(Y: float, t: float) -> float:
 def expr_m_y_t_form_d(Y: str = "Y", t: str = "t") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_m_y_t_form_d`."""
     return (math.e*pl.col(Y)*pl.col(t))
+
+
+def calc_alpha_form_d(alpha: float, epsilon: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_39364.
+
+    **Source**:
+    - Title: Imperfect bifurcations in a laminar 3D bluff body wake: effect of pitch and yaw (2026)
+    - Authors: Atharva Lagwankar, Alessandro Chiarini, François Gallaire et al.
+    - Citation Key: `arxiv_2609_39364`
+
+    **KaTeX Formula**:
+    $$
+    \alpha  = \epsilon  3 \sim \alpha , \beta  = \epsilon  3 \sim  \beta , (A 5)
+    $$
+
+    Args:
+        alpha (float): Input parameter `alpha`.
+        epsilon (float): Input parameter `epsilon`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(3*alpha*epsilon*sim)
+
+
+def expr_alpha_form_d(alpha: str = "alpha", epsilon: str = "epsilon", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_alpha_form_d`."""
+    return (3*pl.col(alpha)*pl.col(epsilon)*pl.col(sim))
 
 
 def calc_e_w_o_k_r_form_d(T: float, w: float) -> float:
@@ -48355,6 +54233,35 @@ def calc_omega_t_a_alpha_form_f(A: float) -> float:
 def expr_omega_t_a_alpha_form_f(A: str = "A") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_omega_t_a_alpha_form_f`."""
     return (pl.col(A))
+
+
+def calc_alpha_form_f(alpha: float, epsilon: float, sim: float) -> float:
+    r"""Compute mathematical metric extracted from arxiv_2609_39364.
+
+    **Source**:
+    - Title: Imperfect bifurcations in a laminar 3D bluff body wake: effect of pitch and yaw (2026)
+    - Authors: Atharva Lagwankar, Alessandro Chiarini, François Gallaire et al.
+    - Citation Key: `arxiv_2609_39364`
+
+    **KaTeX Formula**:
+    $$
+    \alpha  = \epsilon  3 \sim \alpha , \beta  = \epsilon  3 \sim  \beta
+    $$
+
+    Args:
+        alpha (float): Input parameter `alpha`.
+        epsilon (float): Input parameter `epsilon`.
+        sim (float): Input parameter `sim`.
+
+    Returns:
+        float: Calculated metric value.
+    """
+    return float(3*alpha*epsilon*sim)
+
+
+def expr_alpha_form_f(alpha: str = "alpha", epsilon: str = "epsilon", sim: str = "sim") -> pl.Expr:
+    r"""Return vectorized Polars expression for `calc_alpha_form_f`."""
+    return (3*pl.col(alpha)*pl.col(epsilon)*pl.col(sim))
 
 
 def calc_val_2609_24299_form_0(Q: float, gamma: float) -> float:
@@ -48582,62 +54489,6 @@ def calc_p_i_n_form_a(F: float, M: float, h: float, theta: float, y: float, z: f
 def expr_p_i_n_form_a(F: str = "F", M: str = "M", h: str = "h", theta: str = "theta", y: str = "y", z: str = "z") -> pl.Expr:
     r"""Return vectorized Polars expression for `calc_p_i_n_form_a`."""
     return (pl.col(F)*pl.col(h)*pl.col(y) + pl.col(M)*pl.col(theta)*pl.col(z))
-
-
-def calc_val_2609_24299_form_a(Q: float, phi: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_24299.
-
-    **Source**:
-    - Title: Nonlinear Dynamic Modeling and Receding-Horizon NMPC of an Electric Unicycle on a Tensioned Cable (2026)
-    - Authors: Yousef Sweiti, Jasem Tamimi
-    - Citation Key: `arxiv_2609_24299`
-
-    **KaTeX Formula**:
-    $$
-    d dt ( \partial L \partial  \phi  ) - \partial L \partial \phi  = Q\phi
-    $$
-
-    Args:
-        Q (float): Input parameter `Q`.
-        phi (float): Input parameter `phi`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(Q*phi)
-
-
-def expr_val_2609_24299_form_a(Q: str = "Q", phi: str = "phi") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2609_24299_form_a`."""
-    return (pl.col(Q)*pl.col(phi))
-
-
-def calc_val_2609_24299_form_b(Q: float, s: float) -> float:
-    r"""Compute mathematical metric extracted from arxiv_2609_24299.
-
-    **Source**:
-    - Title: Nonlinear Dynamic Modeling and Receding-Horizon NMPC of an Electric Unicycle on a Tensioned Cable (2026)
-    - Authors: Yousef Sweiti, Jasem Tamimi
-    - Citation Key: `arxiv_2609_24299`
-
-    **KaTeX Formula**:
-    $$
-    d dt ( \partial L \partial  s ) - \partial L \partial s = Qs
-    $$
-
-    Args:
-        Q (float): Input parameter `Q`.
-        s (float): Input parameter `s`.
-
-    Returns:
-        float: Calculated metric value.
-    """
-    return float(Q*s)
-
-
-def expr_val_2609_24299_form_b(Q: str = "Q", s: str = "s") -> pl.Expr:
-    r"""Return vectorized Polars expression for `calc_val_2609_24299_form_b`."""
-    return (pl.col(Q)*pl.col(s))
 
 
 def calc_omega_form_e(Omega: float, cup: float, n: float) -> float:

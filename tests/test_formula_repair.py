@@ -142,3 +142,31 @@ def test_grade_f_recovery_heuristics(repairer: CorpusFormulaRepairer) -> None:
     res5 = repairer.repair_single("|||x||| = 5")
     assert res5.is_valid is True
 
+
+def test_unicode_math_and_structure_recovery(repairer: CorpusFormulaRepairer) -> None:
+    """Verifies that Unicode mathematical symbols, combining marks, and unbraced operators are recovered."""
+    # 1. Unicode Math Alphanumeric partial differential continuity equation with fullwidth tag
+    raw_continuity = "\U0001d715\U0001d462\u0305\U0001d456 \\partial x_i = 0 \uff081\uff09"
+    res1 = repairer.repair_single(raw_continuity)
+    assert res1.is_valid is True
+    assert res1.is_equality is True
+
+    # 2. Combining vector arrow and Hadamard product
+    raw_vector = "\u20d7r = D \u2299 x"
+    res2 = repairer.repair_single(raw_vector)
+    assert res2.is_valid is True
+    assert res2.is_equality is True
+
+    # 3. Equivalence operator with unbraced summation
+    raw_equiv = "P \\equiv \\sum i x_i"
+    res3 = repairer.repair_single(raw_equiv)
+    assert res3.is_valid is True
+    assert res3.is_equality is True
+
+    # 4. CJK expectation angle brackets
+    raw_expect = "\u3008x(t)\u3009 = y"
+    res4 = repairer.repair_single(raw_expect)
+    assert res4.is_valid is True
+    assert res4.is_equality is True
+
+
