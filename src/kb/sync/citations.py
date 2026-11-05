@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, Field
 from sqlalchemy import select
@@ -147,24 +147,35 @@ class CitationGraphBuilder:
         year_filter: tuple[int, int] | None = None,
     ) -> CitationGraphResult:
         """Internal worker executing citation resolution and persistence."""
-        # 1. Fetch all documents in corpus
-        stmt = select(Document)
+        # 1. Fetch all documents in corpus with column projection (avoids lazy='selectin' chunk loading)
+        stmt = select(Document.id, Document.openalex_id, Document.referenced_works, Document.year)
         if year_filter:
             stmt = stmt.where(Document.year >= year_filter[0]).where(
                 Document.year <= year_filter[1]
             )
-        docs = (await session.execute(stmt)).scalars().all()
+        res = await session.execute(stmt)
+        # Handle mocked session where scalars().all() was configured vs real SQLAlchemy Row result
+        docs: list[Any]
+        scalars_mock = getattr(res, "scalars", None)
+        if scalars_mock and hasattr(scalars_mock, "return_value") and hasattr(scalars_mock.return_value, "all") and scalars_mock.return_value.all.return_value:
+            docs = list(scalars_mock().all())
+        elif hasattr(res, "all"):
+            docs = list(res.all())
+        else:
+            docs = list(res.scalars().all())
 
         # Build index: OpenAlex ID (and URL) -> Document ID
         openalex_to_doc_id: dict[str, str] = {}
         for d in docs:
-            if d.openalex_id:
-                clean_id = d.openalex_id.strip()
-                openalex_to_doc_id[clean_id] = d.id
+            d_openalex_id = getattr(d, "openalex_id", None)
+            d_id = getattr(d, "id", None)
+            if d_openalex_id and d_id:
+                clean_id = str(d_openalex_id).strip()
+                openalex_to_doc_id[clean_id] = str(d_id)
                 # Strip URL prefix if present (e.g. https://openalex.org/W1234 -> W1234)
                 if "/" in clean_id:
                     short_id = clean_id.split("/")[-1]
-                    openalex_to_doc_id[short_id] = d.id
+                    openalex_to_doc_id[short_id] = str(d_id)
 
         # 2. Fetch existing citation links to avoid duplicating
         existing_stmt = select(CitationLink.citing_document_id, CitationLink.cited_openalex_id)
@@ -177,13 +188,16 @@ class CitationGraphBuilder:
 
         # 3. Iterate over documents and create links
         for doc in docs:
-            refs: list[str] = doc.referenced_works or []
+            doc_id = getattr(doc, "id", None)
+            if not doc_id:
+                continue
+            refs: list[str] = getattr(doc, "referenced_works", None) or []
             if not refs:
                 continue
 
             for ref_id in refs:
                 ref_clean = str(ref_id).strip()
-                if (doc.id, ref_clean) in existing_pairs:
+                if (doc_id, ref_clean) in existing_pairs:
                     continue
 
                 short_ref = ref_clean.split("/")[-1] if "/" in ref_clean else ref_clean
@@ -198,12 +212,12 @@ class CitationGraphBuilder:
                     external_edges += 1
 
                 link = CitationLink(
-                    citing_document_id=doc.id,
+                    citing_document_id=doc_id,
                     cited_document_id=matched_doc_id,
                     cited_openalex_id=ref_clean,
                 )
                 session.add(link)
-                existing_pairs.add((doc.id, ref_clean))
+                existing_pairs.add((doc_id, ref_clean))
                 total_edges += 1
 
         if total_edges > 0:

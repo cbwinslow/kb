@@ -1,0 +1,72 @@
+[
+  {
+    "formula_id": "form_a0a508c3582ee17d674949e0",
+    "citekey": "arxiv_2609_25525",
+    "fixture_name": "golden_sabermetric_dataset",
+    "metrics": {
+      "mae": 0.072144,
+      "rmse": 0.087985,
+      "r_squared": -0.412576,
+      "max_relative_error": 0.357552,
+      "num_samples": 1000,
+      "throughput_rows_per_sec": 186863.5,
+      "passed": false
+    }
+  },
+  {
+    "formula_id": "form_313ccbf49cc6454e92a4a571",
+    "citekey": "arxiv_2610_39088",
+    "fixture_name": "golden_sabermetric_dataset",
+    "metrics": {
+      "mae": 411.721407,
+      "rmse": 427.905384,
+      "r_squared": -12.475507,
+      "max_relative_error": 0.999152,
+      "num_samples": 1000,
+      "throughput_rows_per_sec": 409987.3,
+      "passed": false
+    }
+  },
+  {
+    "formula_id": "form_e94874c9cc5d8ebfc85ed5ef",
+    "citekey": "arxiv_2608_02081",
+    "fixture_name": "golden_sabermetric_dataset",
+    "metrics": {
+      "mae": 411.950843,
+      "rmse": 428.126147,
+      "r_squared": -33445802.505182,
+      "max_relative_error": 1957.259781,
+      "num_samples": 1000,
+      "throughput_rows_per_sec": 1279263.2,
+      "passed": false
+    }
+  },
+  {
+    "formula_id": "form_97aae668f7885433f0715879",
+    "citekey": "arxiv_2610_39088",
+    "fixture_name": "golden_sabermetric_dataset",
+    "metrics": {
+      "mae": 866835.206841,
+      "rmse": 906656.770828,
+      "r_squared": -149997474644785.8,
+      "max_relative_error": 4806766.648704,
+      "num_samples": 1000,
+      "throughput_rows_per_sec": 191614.9,
+      "passed": false
+    }
+  },
+  {
+    "formula_id": "form_495a79adaad9e9bd39213da3",
+    "citekey": "arxiv_2610_39088",
+    "fixture_name": "golden_sabermetric_dataset",
+    "metrics": {
+      "mae": 2883335.55896,
+      "rmse": 2935444.906116,
+      "r_squared": -1572338311250900.8,
+      "max_relative_error": 8655208.831888,
+      "num_samples": 1000,
+      "throughput_rows_per_sec": 860585.2,
+      "passed": false
+    }
+  }
+]

@@ -5,23 +5,35 @@ Quantify the mathematical accuracy and empirical predictive fidelity of extracte
 
 ## Requirements
 
-### Requirement 1: Dataset Dynamic Column Binding
+### Requirement: Dataset Dynamic Column Binding
 `EmpiricalAccuracyRunner` MUST dynamically map formula symbols to dataset column names and resolve standard physical/mathematical constants without manual user coding.
 
-### Requirement 2: Vectorized Expression Compilation
+#### Scenario: Auto-binding formula symbols to dataset columns
+- **WHEN** runner evaluates a formula against a dataset fixture
+- **THEN** runner dynamically binds formula parameters to matching columns and constants
+
+### Requirement: Vectorized Expression Compilation
 Formula ASTs MUST compile directly into native Polars expression trees (`polars.Expr`), executing calculations across millions of rows in C++/Rust without Python per-row iteration loops.
 
-### Requirement 3: Empirical Error Metrics
-The runner MUST calculate:
-- **Mean Absolute Error (MAE)**
-- **Root Mean Squared Error (RMSE)**
-- **Max Relative Error**
-- **Coefficient of Determination ($R^2$)**
+#### Scenario: Compiling formula AST to Polars expression
+- **WHEN** formula expression is compiled for tabular evaluation
+- **THEN** system produces a native Polars expression tree executing across all rows in Rust
 
-### Requirement 4: Quality Gate Credit Scoring
+### Requirement: Empirical Error Metrics
+The runner MUST calculate Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), Max Relative Error, and Coefficient of Determination ($R^2$).
+
+#### Scenario: Computing regression error metrics
+- **WHEN** formula predictions are evaluated against ground-truth target columns
+- **THEN** system computes MAE, RMSE, max relative error, and R² scores
+
+### Requirement: Quality Gate Credit Scoring
 High empirical fidelity ($R^2 \ge 0.85$ or low relative error) MUST award Tier 4 score credits to formulas in `kb_formulas.validation_details`, raising their quality score toward Grade A.
 
-### Requirement 5: Heuristic Fuzzy Column Matching
+#### Scenario: Awarding quality gate score credits
+- **WHEN** a formula achieves an R² score >= 0.85 on empirical data
+- **THEN** formula quality gate awards Tier 4 accuracy score credits
+
+### Requirement: Heuristic Fuzzy Column Matching
 The `EmpiricalAccuracyRunner` MUST employ fuzzy string matching and domain symbol synonym dictionaries to resolve naming discrepancies between mathematical AST symbols and tabular tracking columns.
 
 #### Scenario: Auto-binding abbreviated trajectory columns
@@ -35,3 +47,16 @@ The benchmarking suite SHALL automatically register and discover real-world trac
 - **WHEN** user executes `kb benchmark accuracy --all`
 - **THEN** the runner discovers available Parquet fixtures, matches relevant formulas, and produces comprehensive MAE, RMSE, and $R^2$ scorecards
 
+### Requirement: Empirical Accuracy Leaderboard Reporting
+The empirical accuracy benchmarking engine SHALL generate structured leaderboard artifacts in Markdown and JSON formats, ranking evaluated formulas by $R^2$, RMSE, and empirical coverage.
+
+#### Scenario: Generating global accuracy leaderboard
+- **WHEN** user executes `kb benchmark accuracy --all --output data/benchmarks/accuracy_leaderboard.md`
+- **THEN** system evaluates all matching Grade A formulas against Parquet fixtures, writes the formatted leaderboard report, and summarizes top-performing quantitative models
+
+### Requirement: Web UI Empirical Accuracy Score Display
+The Web UI dashboard SHALL surface empirical accuracy metrics ($R^2$, MAE, RMSE) and validation badges on formula entity rows and detail drawers.
+
+#### Scenario: Viewing empirical accuracy in formula table
+- **WHEN** user inspects a formula in the Web UI Formulas tab that has empirical benchmark results
+- **THEN** system displays an empirical fidelity badge ($R^2$ score) alongside symbolic quality grades

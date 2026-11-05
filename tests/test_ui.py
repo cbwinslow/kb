@@ -357,3 +357,71 @@ async def test_ui_figures_crud_and_detail() -> None:
     assert doc_figs[0]["vlm_summary"] is not None
 
     await db.close()
+
+
+def test_ui_compiled_formulas_list(test_client: TestClient) -> None:
+    """Verify /api/formulas/compiled lists standalone compiled formulas."""
+    res = test_client.get("/api/formulas/compiled?limit=10")
+    assert res.status_code == 200
+    data = res.json()
+    assert "total" in data
+    assert "formulas" in data
+    assert data["total"] > 0
+    assert len(data["formulas"]) <= 10
+    first = data["formulas"][0]
+    assert first["name"].startswith("calc_")
+    assert "parameters" in first
+    assert isinstance(first["parameters"], list)
+
+
+def test_ui_compiled_formulas_search(test_client: TestClient) -> None:
+    """Verify /api/formulas/compiled supports query filtering."""
+    res = test_client.get("/api/formulas/compiled?q=miller&limit=5")
+    assert res.status_code == 200
+    data = res.json()
+    for f in data["formulas"]:
+        assert "miller" in f["name"].lower() or "miller" in f["doc"].lower()
+
+
+def test_ui_compiled_formula_eval_success(test_client: TestClient) -> None:
+    """Verify /api/formulas/compiled/{func_name}/eval calculates results and sensitivity curves."""
+    # Test with calc_val_2609_25525_form_a which accepts C and m
+    res = test_client.post(
+        "/api/formulas/compiled/calc_val_2609_25525_form_a/eval",
+        json={"parameters": {"C": 10.0, "m": 2.0}},
+    )
+    assert res.status_code == 200
+    data = res.json()
+    assert data["function"] == "calc_val_2609_25525_form_a"
+    assert "result" in data
+    assert isinstance(data["result"], float)
+    assert "sensitivity_curve" in data
+    assert isinstance(data["sensitivity_curve"], list)
+    assert len(data["sensitivity_curve"]) > 0
+    assert "code_snippets" in data
+    assert "python" in data["code_snippets"]
+    assert "polars" in data["code_snippets"]
+    assert "curl" in data["code_snippets"]
+
+
+def test_ui_compiled_formula_eval_missing_params(test_client: TestClient) -> None:
+    """Verify /api/formulas/compiled/{func_name}/eval rejects missing required parameters."""
+    res = test_client.post(
+        "/api/formulas/compiled/calc_val_2609_25525_form_a/eval",
+        json={"parameters": {"C": 10.0}},  # Missing 'm'
+    )
+    assert res.status_code == 400
+    data = res.json()
+    assert "Missing required parameter" in data["error"]
+    assert "m" in data["missing"]
+
+
+def test_ui_compiled_formula_eval_not_found(test_client: TestClient) -> None:
+    """Verify /api/formulas/compiled/{func_name}/eval returns 404 for invalid function."""
+    res = test_client.post(
+        "/api/formulas/compiled/nonexistent_calc_func/eval",
+        json={"parameters": {"x": 1.0}},
+    )
+    assert res.status_code == 404
+    assert "not found" in res.json()["error"]
+

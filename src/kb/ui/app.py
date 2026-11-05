@@ -241,6 +241,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                             "validation_status": f.validation_status,
                             "letter_grade": grade,
                             "scorecard": f.validation_details,
+                            "accuracy_metrics": (f.validation_details or {}).get("accuracy_metrics") if isinstance(f.validation_details, dict) else None,
                         }
                     )
                     if len(results) >= limit:
@@ -767,6 +768,168 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             ]
         )
 
+    async def get_compiled_formulas(request: Request) -> JSONResponse:
+        """Return list of standalone compiled formulas from packages/kb_formulas."""
+        import inspect
+
+        from kb.library import generated
+
+        query = request.query_params.get("q", "").strip().lower()
+        limit = min(int(request.query_params.get("limit", 50)), 200)
+
+        results: list[dict[str, Any]] = []
+        for name in dir(generated):
+            if not name.startswith("calc_"):
+                continue
+            func = getattr(generated, name)
+            if not callable(func):
+                continue
+
+            doc = inspect.getdoc(func) or ""
+            latex_match = ""
+            if "$$" in doc:
+                parts = doc.split("$$")
+                if len(parts) >= 3:
+                    latex_match = parts[1].strip()
+
+            title_match = ""
+            citekey_match = ""
+            for line in doc.splitlines():
+                if "Title:" in line:
+                    title_match = line.split("Title:", 1)[1].strip()
+                elif "Citation Key:" in line:
+                    citekey_match = line.split("Citation Key:", 1)[1].strip().strip("`")
+
+            search_str = f"{name} {doc} {title_match} {citekey_match}".lower()
+            if query and query not in search_str:
+                continue
+
+            sig = inspect.signature(func)
+            params = []
+            for p_name, p_param in sig.parameters.items():
+                default_val = None if p_param.default == inspect.Parameter.empty else p_param.default
+                params.append({"name": p_name, "default": default_val})
+
+            expr_name = f"expr_{name[5:]}"
+            has_polars = hasattr(generated, expr_name)
+
+            results.append(
+                {
+                    "name": name,
+                    "polars_name": expr_name if has_polars else None,
+                    "title": title_match or name,
+                    "citekey": citekey_match or "",
+                    "latex": latex_match,
+                    "parameters": params,
+                    "doc": doc,
+                }
+            )
+            if len(results) >= limit:
+                break
+
+        return JSONResponse({"total": len(results), "formulas": results})
+
+    async def eval_compiled_formula(request: Request) -> JSONResponse:
+        """Execute a compiled formula function with provided parameter values."""
+        import inspect
+        import math
+
+        from kb.library import generated
+
+        func_name = request.path_params.get("func_name", "").strip()
+        func = getattr(generated, func_name, None)
+        if not func or not callable(func) or not func_name.startswith("calc_"):
+            return JSONResponse(
+                {"error": f"Compiled formula '{func_name}' not found"}, status_code=404
+            )
+
+        try:
+            body = await request.json()
+        except Exception:
+            body = {}
+
+        params_dict = body.get("parameters") if isinstance(body, dict) else {}
+        if not isinstance(params_dict, dict):
+            params_dict = {}
+
+        sig = inspect.signature(func)
+        missing: list[str] = []
+        call_kwargs: dict[str, float] = {}
+
+        for p_name, p_param in sig.parameters.items():
+            if p_name in params_dict:
+                try:
+                    call_kwargs[p_name] = float(params_dict[p_name])
+                except (ValueError, TypeError):
+                    return JSONResponse(
+                        {"error": f"Parameter '{p_name}' must be a valid number"},
+                        status_code=400,
+                    )
+            elif p_param.default != inspect.Parameter.empty:
+                call_kwargs[p_name] = float(p_param.default)
+            else:
+                missing.append(p_name)
+
+        if missing:
+            return JSONResponse(
+                {"error": f"Missing required parameter(s): {', '.join(missing)}", "missing": missing},
+                status_code=400,
+            )
+
+        callable_func: Any = func
+        try:
+            result = float(callable_func(**call_kwargs))
+        except (ZeroDivisionError, ValueError, FloatingPointError, OverflowError) as math_err:
+            return JSONResponse(
+                {"error": f"Mathematical evaluation error: {math_err}"},
+                status_code=422,
+            )
+        except Exception as exc:
+            return JSONResponse({"error": str(exc)}, status_code=500)
+
+        sensitivity_points: list[dict[str, float]] = []
+        sweep_param: str | None = None
+        if call_kwargs:
+            sweep_param = list(call_kwargs.keys())[0]
+            base_val = call_kwargs[sweep_param]
+            if abs(base_val) > 1e-6:
+                low = base_val * 0.5
+                high = base_val * 1.5
+            else:
+                low = -5.0
+                high = 5.0
+            step = (high - low) / 20.0
+            for i in range(21):
+                val_i = low + i * step
+                sim_kwargs = dict(call_kwargs)
+                sim_kwargs[sweep_param] = val_i
+                try:
+                    res_i = float(callable_func(**sim_kwargs))
+                    if math.isfinite(res_i):
+                        sensitivity_points.append({"x": round(val_i, 4), "y": round(res_i, 4)})
+                except Exception:
+                    pass
+
+        polars_name = f"expr_{func_name[5:]}"
+        py_args = ", ".join(f"{k}={v}" for k, v in call_kwargs.items())
+        pl_args = ", ".join(f'{k}="{k}"' for k in call_kwargs)
+        code_snippets = {
+            "python": f"{func_name}({py_args})",
+            "polars": f"{polars_name}({pl_args})" if hasattr(generated, polars_name) else None,
+            "curl": f"curl -X POST http://localhost:8080/api/formulas/compiled/{func_name}/eval \\\n  -H 'Content-Type: application/json' \\\n  -d '{json.dumps({'parameters': call_kwargs})}'",
+        }
+
+        return JSONResponse(
+            {
+                "function": func_name,
+                "result": result,
+                "parameters": call_kwargs,
+                "sweep_param": sweep_param,
+                "sensitivity_curve": sensitivity_points,
+                "code_snippets": code_snippets,
+            }
+        )
+
     async def chain_endpoint(request: Request) -> JSONResponse:
         """Chain component equations into unified closed-form formula."""
         formula_id = request.query_params.get("formula_id")
@@ -1132,18 +1295,32 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
 
     <!-- View 3: Interactive Calculation Playground -->
     <section id="view-playground" class="flex-1 hidden flex flex-col space-y-4 overflow-y-auto custom-scroll">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 class="text-base font-semibold text-slate-200">Interactive Formula Playground & Visual Sensitivity Sandbox</h2>
-          <p class="text-xs text-slate-400">Dynamically evaluate mathematical models with live parameter sliders, LaTeX KaTeX preview, and real-time response curves.</p>
+          <p class="text-xs text-slate-400">Dynamically evaluate mathematical models with live parameter sliders, LaTeX KaTeX preview, real-time response curves, and 1-click code export.</p>
         </div>
-        <div class="flex items-center space-x-3 text-xs">
-          <label class="text-slate-400">Formula Preset:</label>
-          <select id="preset-selector" onchange="onPresetChange()" class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-xs outline-none focus:ring-1 focus:ring-sky-500">
-            <option value="pythagorean">Pythagorean Expectation (Bill James)</option>
-            <option value="fip">Fielding Independent Pitching (FIP)</option>
-            <option value="woba">Weighted On-Base Average (wOBA)</option>
-          </select>
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <div class="flex items-center space-x-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+            <button id="pg-mode-presets" onclick="setPlaygroundMode('preset')" class="px-3 py-1 rounded bg-sky-500 text-white font-medium">Presets</button>
+            <button id="pg-mode-compiled" onclick="setPlaygroundMode('compiled')" class="px-3 py-1 rounded text-slate-400 hover:text-white font-medium">1,743 Compiled Formulas</button>
+          </div>
+          <!-- Preset Controls -->
+          <div id="pg-preset-controls" class="flex items-center space-x-2">
+            <label class="text-slate-400">Preset:</label>
+            <select id="preset-selector" onchange="onPresetChange()" class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-xs outline-none focus:ring-1 focus:ring-sky-500">
+              <option value="pythagorean">Pythagorean Expectation (Bill James)</option>
+              <option value="fip">Fielding Independent Pitching (FIP)</option>
+              <option value="woba">Weighted On-Base Average (wOBA)</option>
+            </select>
+          </div>
+          <!-- Compiled Controls -->
+          <div id="pg-compiled-controls" class="hidden flex items-center space-x-2">
+            <input id="pg-compiled-search" type="text" placeholder="Filter 1,743 formulas..." oninput="onCompiledSearch()" class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-xs outline-none focus:ring-1 focus:ring-sky-500 w-44">
+            <select id="pg-compiled-selector" onchange="onCompiledFormulaChange()" class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-xs outline-none focus:ring-1 focus:ring-sky-500 max-w-[260px] truncate">
+              <option value="">Loading compiled formulas...</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -1151,7 +1328,10 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         <!-- Left: Interactive Controls -->
         <div class="lg:col-span-5 glass-card rounded-xl p-5 space-y-5 flex flex-col">
           <div class="border-b border-slate-700 pb-3">
-            <h3 class="text-sm font-semibold text-sky-400" id="pg-formula-title">Pythagorean Expectation</h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-sky-400" id="pg-formula-title">Pythagorean Expectation</h3>
+              <span id="pg-formula-citekey" class="text-[10px] font-mono text-slate-500">bill_james</span>
+            </div>
             <div id="pg-latex-display" class="mt-2 p-3 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center min-h-[50px] text-slate-200 font-mono text-sm overflow-x-auto"></div>
           </div>
 
@@ -1161,7 +1341,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
           </div>
 
           <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
-            <span>Dynamic Backend Engine: <strong class="text-emerald-400 font-mono">/api/eval</strong></span>
+            <span>Dynamic Engine: <strong id="pg-engine-label" class="text-emerald-400 font-mono">/api/eval</strong></span>
             <button onclick="evaluatePlayground()" class="px-4 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition">Re-compute</button>
           </div>
         </div>
@@ -1173,15 +1353,15 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             <div class="space-y-1">
               <span class="text-xs text-slate-400 uppercase font-semibold">Calculated Value</span>
               <div id="pg-result-value" class="text-3xl font-bold font-mono text-sky-400">0.5651</div>
-              <div class="text-[11px] text-slate-500" id="pg-result-label">Win Expectancy</div>
+              <div class="text-[11px] text-slate-500" id="pg-result-label">Metric Output</div>
             </div>
             <div class="space-y-1">
               <span class="text-xs text-slate-400 uppercase font-semibold">Evaluation Mode</span>
               <div class="text-sm font-mono text-emerald-400 flex items-center space-x-1.5">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Reactive AST</span>
+                <span id="pg-mode-status">Reactive AST</span>
               </div>
-              <div class="text-[11px] text-slate-500">Vectorized Polars Parity</div>
+              <div class="text-[11px] text-slate-500">Vectorized Parity</div>
             </div>
             <div class="space-y-1 col-span-2 md:col-span-1">
               <span class="text-xs text-slate-400 uppercase font-semibold">Latency</span>
@@ -1195,13 +1375,26 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
             <div class="flex items-center justify-between">
               <div>
                 <h4 class="text-sm font-semibold text-slate-200">Sensitivity Curve</h4>
-                <p class="text-xs text-slate-400" id="pg-curve-desc">Varying Runs Scored while holding other parameters fixed</p>
+                <p class="text-xs text-slate-400" id="pg-curve-desc">Varying parameter while holding others fixed</p>
               </div>
               <span class="text-[11px] px-2 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800">Live Operating Point</span>
             </div>
-            <div class="flex-1 min-h-[260px] bg-slate-900/90 rounded-lg border border-slate-800 p-3 relative flex items-center justify-center">
+            <div class="flex-1 min-h-[220px] bg-slate-900/90 rounded-lg border border-slate-800 p-3 relative flex items-center justify-center">
               <svg id="pg-curve-svg" class="w-full h-full" viewBox="0 0 500 240"></svg>
             </div>
+          </div>
+
+          <!-- Code Generation & Export Card -->
+          <div class="glass-card rounded-xl p-4 flex flex-col space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-slate-200">1-Click Code Generation & Export</span>
+              <div class="flex space-x-2">
+                <button onclick="copySnippet('python')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 rounded font-medium transition">📋 Python</button>
+                <button onclick="copySnippet('polars')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 rounded font-medium transition">📋 Polars</button>
+                <button onclick="copySnippet('curl')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 rounded font-medium transition">📋 curl</button>
+              </div>
+            </div>
+            <pre id="pg-code-preview" class="p-3 bg-slate-950 rounded-lg border border-slate-800 text-emerald-400 font-mono text-[11px] overflow-x-auto max-h-[70px]"># Live code snippet will appear here</pre>
           </div>
         </div>
       </div>
@@ -1354,6 +1547,12 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     let playgroundPresets = [];
     let currentPreset = null;
     let playgroundInputs = {};
+    let playgroundMode = 'preset';
+    let compiledFormulasList = [];
+    let currentCompiledFormula = null;
+    let compiledInputs = {};
+    let compiledCodeSnippets = { python: '', polars: '', curl: '' };
+    let compiledSearchTimeout = null;
 
     function switchTab(tabId) {
       ['lineage', 'figures', 'formulas', 'chaining', 'playground', 'tables', 'search', 'coverage', 'quality', 'explorer'].forEach(t => {
@@ -1839,6 +2038,193 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       }
     }
 
+    async function setPlaygroundMode(mode) {
+      playgroundMode = mode;
+      const presetControls = document.getElementById('pg-preset-controls');
+      const compiledControls = document.getElementById('pg-compiled-controls');
+      const btnPreset = document.getElementById('pg-mode-presets');
+      const btnCompiled = document.getElementById('pg-mode-compiled');
+      const engineLabel = document.getElementById('pg-engine-label');
+      const modeStatus = document.getElementById('pg-mode-status');
+
+      if (mode === 'preset') {
+        if (presetControls) presetControls.classList.remove('hidden');
+        if (compiledControls) compiledControls.classList.add('hidden');
+        if (btnPreset) btnPreset.className = 'px-3 py-1 rounded bg-sky-500 text-white font-medium';
+        if (btnCompiled) btnCompiled.className = 'px-3 py-1 rounded text-slate-400 hover:text-white font-medium';
+        if (engineLabel) engineLabel.innerText = '/api/eval';
+        if (modeStatus) modeStatus.innerText = 'Reactive AST';
+        if (currentPreset) selectPreset(currentPreset.id);
+      } else {
+        if (presetControls) presetControls.classList.add('hidden');
+        if (compiledControls) compiledControls.classList.remove('hidden');
+        if (btnPreset) btnPreset.className = 'px-3 py-1 rounded text-slate-400 hover:text-white font-medium';
+        if (btnCompiled) btnCompiled.className = 'px-3 py-1 rounded bg-sky-500 text-white font-medium';
+        if (engineLabel) engineLabel.innerText = '/api/formulas/compiled/{func}/eval';
+        if (modeStatus) modeStatus.innerText = 'Compiled Native';
+        if (!compiledFormulasList.length) {
+          await loadCompiledFormulasList();
+        } else if (currentCompiledFormula) {
+          onCompiledFormulaChange();
+        }
+      }
+    }
+
+    async function loadCompiledFormulasList(query = '') {
+      const selector = document.getElementById('pg-compiled-selector');
+      if (!selector) return;
+      selector.innerHTML = '<option value="">Loading compiled formulas...</option>';
+
+      try {
+        const res = await fetch(`/api/formulas/compiled?q=${encodeURIComponent(query)}&limit=100`);
+        const data = await res.json();
+        compiledFormulasList = data.formulas || [];
+
+        if (compiledFormulasList.length === 0) {
+          selector.innerHTML = '<option value="">No matching compiled formulas</option>';
+          return;
+        }
+
+        selector.innerHTML = compiledFormulasList.map(f =>
+          `<option value="${f.name}">${f.title ? escapeHtml(f.title) : f.name} (${f.citekey || f.name})</option>`
+        ).join('');
+
+        selector.value = compiledFormulasList[0].name;
+        onCompiledFormulaChange();
+      } catch (err) {
+        console.error('Failed to load compiled formulas:', err);
+        selector.innerHTML = '<option value="">Failed to load formulas</option>';
+      }
+    }
+
+    function onCompiledSearch() {
+      if (compiledSearchTimeout) clearTimeout(compiledSearchTimeout);
+      compiledSearchTimeout = setTimeout(() => {
+        const input = document.getElementById('pg-compiled-search');
+        if (input) loadCompiledFormulasList(input.value.trim());
+      }, 300);
+    }
+
+    function onCompiledFormulaChange() {
+      const selector = document.getElementById('pg-compiled-selector');
+      if (!selector) return;
+      const funcName = selector.value;
+      currentCompiledFormula = compiledFormulasList.find(f => f.name === funcName);
+      if (!currentCompiledFormula) return;
+
+      const titleEl = document.getElementById('pg-formula-title');
+      if (titleEl) titleEl.innerText = currentCompiledFormula.title || currentCompiledFormula.name;
+
+      const citekeyEl = document.getElementById('pg-formula-citekey');
+      if (citekeyEl) citekeyEl.innerText = currentCompiledFormula.citekey || currentCompiledFormula.name;
+
+      const latexEl = document.getElementById('pg-latex-display');
+      const latexStr = currentCompiledFormula.latex || currentCompiledFormula.name;
+      if (latexEl) {
+        if (window.katex) {
+          try {
+            katex.render(latexStr, latexEl, { displayMode: true, throwOnError: false });
+          } catch (_) {
+            latexEl.innerText = latexStr;
+          }
+        } else {
+          latexEl.innerText = latexStr;
+        }
+      }
+
+      // Build parameters
+      compiledInputs = {};
+      const container = document.getElementById('pg-params-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const params = currentCompiledFormula.parameters || [];
+      if (params.length === 0) {
+        container.innerHTML = '<div class="text-xs text-slate-500 italic p-3">No input parameters required for this formula.</div>';
+      } else {
+        params.forEach(p => {
+          const key = p.name;
+          const defaultVal = (p.default !== null && p.default !== undefined) ? Number(p.default) : 10.0;
+          compiledInputs[key] = defaultVal;
+
+          const minVal = defaultVal > 0 ? 0 : defaultVal * 2;
+          const maxVal = defaultVal > 0 ? (defaultVal * 2 || 100) : 0;
+          const stepVal = Math.abs(defaultVal) > 10 ? 1 : 0.05;
+
+          const row = document.createElement('div');
+          row.className = 'space-y-1.5';
+          row.innerHTML = `
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-300 font-mono font-medium">${key}</span>
+              <input type="number" id="pg-cnum-${key}" value="${defaultVal}" step="${stepVal}"
+                class="w-24 px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-right font-mono text-xs text-sky-400 focus:ring-1 focus:ring-sky-500 outline-none"
+                oninput="onCompiledParamInput('${key}', this.value, true)">
+            </div>
+            <input type="range" id="pg-crange-${key}" value="${defaultVal}" min="${minVal}" max="${maxVal}" step="${stepVal}"
+              class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+              oninput="onCompiledParamInput('${key}', this.value, false)">
+          `;
+          container.appendChild(row);
+        });
+      }
+
+      evaluateCompiledPlayground();
+    }
+
+    function onCompiledParamInput(key, val, fromNum) {
+      const numVal = parseFloat(val);
+      if (isNaN(numVal)) return;
+      compiledInputs[key] = numVal;
+
+      if (fromNum) {
+        const rangeEl = document.getElementById(`pg-crange-${key}`);
+        if (rangeEl) rangeEl.value = numVal;
+      } else {
+        const numEl = document.getElementById(`pg-cnum-${key}`);
+        if (numEl) numEl.value = numVal;
+      }
+
+      evaluateCompiledPlayground();
+    }
+
+    async function evaluateCompiledPlayground() {
+      if (!currentCompiledFormula) return;
+      const t0 = performance.now();
+
+      try {
+        const res = await fetch(`/api/formulas/compiled/${encodeURIComponent(currentCompiledFormula.name)}/eval`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ parameters: compiledInputs })
+        });
+        const data = await res.json();
+        const latency = Math.round(performance.now() - t0);
+        const latEl = document.getElementById('pg-latency');
+        if (latEl) latEl.innerText = `${latency} ms`;
+
+        const resEl = document.getElementById('pg-result-value');
+        if (resEl) {
+          if (data.result !== undefined && data.result !== null) {
+            resEl.innerText = typeof data.result === 'number' ? data.result.toFixed(4) : String(data.result);
+          } else {
+            resEl.innerText = 'Error';
+          }
+        }
+
+        compiledCodeSnippets = data.code_snippets || { python: '', polars: '', curl: '' };
+        const previewEl = document.getElementById('pg-code-preview');
+        if (previewEl) {
+          previewEl.innerText = compiledCodeSnippets.python || '# No code preview available';
+        }
+
+        if (data.sensitivity_curve && data.sensitivity_curve.points) {
+          renderCurveFromPoints(data.sensitivity_curve.points, data.sensitivity_curve.parameter, data.sensitivity_curve.operating_point, data.result);
+        }
+      } catch (err) {
+        console.error('Compiled eval error:', err);
+      }
+    }
+
     function onPresetChange() {
       const select = document.getElementById('preset-selector');
       selectPreset(select.value);
@@ -1849,6 +2235,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       if (!currentPreset) return;
 
       document.getElementById('pg-formula-title').innerText = currentPreset.name;
+      const citekeyEl = document.getElementById('pg-formula-citekey');
+      if (citekeyEl) citekeyEl.innerText = currentPreset.id;
+
       const latexEl = document.getElementById('pg-latex-display');
       if (window.katex) {
         try {
@@ -1905,6 +2294,9 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
     }
 
     async function evaluatePlayground() {
+      if (playgroundMode === 'compiled') {
+        return evaluateCompiledPlayground();
+      }
       if (!currentPreset) return;
       const t0 = performance.now();
 
@@ -1937,10 +2329,6 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
 
     function renderSensitivityCurve() {
       if (!currentPreset) return;
-      const svg = document.getElementById('pg-curve-svg');
-      if (!svg) return;
-      svg.innerHTML = '';
-
       const sweepKey = currentPreset.curve_param;
       const sweepParam = currentPreset.params.find(p => p.name === sweepKey || p.alt_name === sweepKey);
       const minX = currentPreset.curve_min || (sweepParam ? sweepParam.min : 0);
@@ -1959,14 +2347,28 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       const currentX = playgroundInputs[sweepKey] || minX;
       const currentY = localEvaluate(currentPreset.id, playgroundInputs);
 
+      renderCurveFromPoints(points, sweepKey, currentX, currentY);
+    }
+
+    function renderCurveFromPoints(points, paramName, opX, opY) {
+      const svg = document.getElementById('pg-curve-svg');
+      if (!svg || !points || points.length === 0) return;
+      svg.innerHTML = '';
+
+      const descEl = document.getElementById('pg-curve-desc');
+      if (descEl) descEl.innerText = `Varying ${paramName} while holding other parameters fixed`;
+
+      const allX = points.map(p => p.x);
+      const allY = points.map(p => p.y);
+      const minX = Math.min(...allX);
+      const maxX = Math.max(...allX) || (minX + 1);
+      const minY = Math.min(...allY) * 0.95;
+      const maxY = Math.max(...allY) * 1.05 || (minY + 1.0);
+
       // SVG dimensions: 500 x 240, padding: 40
       const padL = 50, padR = 25, padT = 20, padB = 40;
       const plotW = 500 - padL - padR;
       const plotH = 240 - padT - padB;
-
-      const allY = points.map(p => p.y);
-      const minY = Math.min(...allY) * 0.9;
-      const maxY = Math.max(...allY) * 1.1 || 1.0;
 
       const mapX = (x) => padL + ((x - minX) / (maxX - minX)) * plotW;
       const mapY = (y) => padT + plotH - ((y - minY) / (maxY - minY)) * plotH;
@@ -1996,25 +2398,27 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       curvePath.setAttribute('stroke-width', '2.5');
       svg.appendChild(curvePath);
 
-      // Operating point dot
-      const cx = mapX(currentX);
-      const cy = mapY(currentY);
+      // Operating point dot & halo
+      if (opX !== undefined && opY !== undefined) {
+        const cx = mapX(opX);
+        const cy = mapY(opY);
 
-      const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      halo.setAttribute('cx', cx);
-      halo.setAttribute('cy', cy);
-      halo.setAttribute('r', '10');
-      halo.setAttribute('fill', 'rgba(56, 189, 248, 0.25)');
-      svg.appendChild(halo);
+        const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        halo.setAttribute('cx', cx);
+        halo.setAttribute('cy', cy);
+        halo.setAttribute('r', '10');
+        halo.setAttribute('fill', 'rgba(56, 189, 248, 0.25)');
+        svg.appendChild(halo);
 
-      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      dot.setAttribute('cx', cx);
-      dot.setAttribute('cy', cy);
-      dot.setAttribute('r', '5');
-      dot.setAttribute('fill', '#38bdf8');
-      dot.setAttribute('stroke', '#0f172a');
-      dot.setAttribute('stroke-width', '2');
-      svg.appendChild(dot);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', cx);
+        dot.setAttribute('cy', cy);
+        dot.setAttribute('r', '5');
+        dot.setAttribute('fill', '#38bdf8');
+        dot.setAttribute('stroke', '#0f172a');
+        dot.setAttribute('stroke-width', '2');
+        svg.appendChild(dot);
+      }
 
       // Labels
       const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -2023,7 +2427,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       xLabel.setAttribute('fill', '#94a3b8');
       xLabel.setAttribute('font-size', '11');
       xLabel.setAttribute('text-anchor', 'middle');
-      xLabel.textContent = `${sweepKey} (Operating Point: ${currentX.toFixed(1)})`;
+      xLabel.textContent = `${paramName} (Operating Point: ${(opX || 0).toFixed(1)})`;
       svg.appendChild(xLabel);
 
       const yLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -2031,8 +2435,27 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
       yLabel.setAttribute('y', 14);
       yLabel.setAttribute('fill', '#94a3b8');
       yLabel.setAttribute('font-size', '11');
-      yLabel.textContent = `Y = ${currentY.toFixed(4)}`;
+      yLabel.textContent = `Y = ${(opY || 0).toFixed(4)}`;
       svg.appendChild(yLabel);
+    }
+
+    function copySnippet(type) {
+      const code = compiledCodeSnippets[type] || '';
+      if (!code) {
+        alert('No snippet available to copy.');
+        return;
+      }
+      const preview = document.getElementById('pg-code-preview');
+      if (preview) preview.innerText = code;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(() => {
+          alert(`Copied ${type.toUpperCase()} snippet to clipboard!`);
+        }).catch(() => {
+          alert(`Selected ${type.toUpperCase()} code preview!`);
+        });
+      } else {
+        alert(`Selected ${type.toUpperCase()} code preview!`);
+      }
     }
 
     function localEvaluate(presetId, inputs) {
@@ -2160,6 +2583,7 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
                 <span class="text-[11px] font-mono text-slate-500">ID: ${(f.formula_id || '').slice(0, 8)}</span>
               </div>
               <div class="flex items-center space-x-2">
+                ${f.accuracy_metrics && f.accuracy_metrics.r_squared !== undefined ? `<span class="text-xs px-2 py-0.5 rounded font-mono font-bold bg-sky-950 text-sky-300 border border-sky-800" title="Empirical R² Accuracy">R² ${f.accuracy_metrics.r_squared.toFixed(3)}</span>` : ''}
                 <span id="grade-badge-${f.formula_id}" class="text-xs px-2.5 py-0.5 rounded font-mono font-bold ${badgeColor} border">Grade ${grade} (${score})</span>
                 <button onclick="toggleDiagnosticDrawer('${f.formula_id}')" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">Diagnostics</button>
                 <button onclick="repairFormula('${f.formula_id}')" id="repair-btn-${f.formula_id}" class="px-3 py-1 text-xs rounded bg-sky-600 hover:bg-sky-500 text-white font-medium flex items-center space-x-1">
@@ -2305,6 +2729,8 @@ def create_app(db_manager: DatabaseManager | None = None) -> Starlette:
         Route("/api/figures/{id}", endpoint=get_figure_detail, methods=["GET"]),
         Route("/api/lineage", endpoint=get_lineage, methods=["GET"]),
         Route("/api/formulas", endpoint=get_formulas, methods=["GET"]),
+        Route("/api/formulas/compiled", endpoint=get_compiled_formulas, methods=["GET"]),
+        Route("/api/formulas/compiled/{func_name}/eval", endpoint=eval_compiled_formula, methods=["POST"]),
         Route("/api/formulas/{id}/repair", endpoint=repair_formula_endpoint, methods=["POST"]),
         Route("/api/tables", endpoint=get_tables, methods=["GET"]),
         Route("/api/search", endpoint=search_endpoint, methods=["GET"]),

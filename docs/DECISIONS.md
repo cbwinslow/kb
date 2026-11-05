@@ -645,6 +645,33 @@ This document records the architectural, technical, and mathematical decisions m
   - Successfully recovers Grade F mathematical expressions into verified Grade A/B ASTs with exact symbolic bindings.
   - Keeps web UI, REST API, CLI, and standalone formula package tightly synchronized.
 
+---
+
+## ADR-039: Citation Lineage Optimization, Live Compiled Formula Playground, and Empirical Accuracy Leaderboard
+- **Status**: Accepted
+- **Context**:
+  - `CitationGraphBuilder` suffered from severe database query overhead due to SQLAlchemy's default `lazy="selectin"` relationship loading on `Document.chunks` and `Document.formulas`, resulting in eager loads of 37,006 chunks and 6,199 formulas during a simple citation lineage scan across 50 documents (~30.71 seconds).
+  - While 1,743 compiled formulas existed in `src/kb/library/generated.py`, the Web UI formula playground was previously limited to hardcoded presets, preventing dynamic reflection, numeric slider evaluation, and sensitivity curves for all 1,743 formulas.
+  - The empirical accuracy evaluation engine lacked automated leaderboard ranking and persistent reporting (Markdown/JSON) across golden benchmarks, and formula accuracy metrics ($R^2$, RMSE) were not surfaced in formula catalog cards.
+- **Decision**:
+  1. **Citation Graph Column Projection & Bulk Enrichment (`src/kb/sync/citations.py`, `src/kb/cli.py`)**:
+     - Refactored `CitationGraphBuilder.build_graph()` to query only necessary columns (`select(Document.id, Document.openalex_id, Document.referenced_works, Document.year)`), bypassing entity relationship hydration.
+     - Reduced citation graph construction time from 30.71s to 0.08s (383x speedup).
+     - Optimized `async_enrich_openalex` with targeted column queries and batched commits.
+  2. **Live Compiled Formula Reflection & Interactive Playground (`src/kb/ui/app.py`)**:
+     - Implemented `GET /api/formulas/compiled` to reflectively introspect all callable functions, docstrings, and signature parameter types in `kb.library.generated`.
+     - Implemented `POST /api/formulas/compiled/{func_name}/eval` performing type-coerced evaluation, numerical sensitivity sweeps (21-point parameter variance curves), and 1-click code export in Python, Polars, and curl.
+     - Enhanced Playground UI with a toggle between `Presets` and `1,743 Compiled Formulas`, real-time parameter sliders, SVG sensitivity curve visualization, and operating point KPIs.
+  3. **Empirical Accuracy Runner, Leaderboard & UI Integration (`src/kb/qa/accuracy.py`, `src/kb/benchmark/accuracy.py`, `src/kb/cli.py`)**:
+     - Added `EmpiricalAccuracyRunner.generate_leaderboard()` exporting formatted ranking reports in Markdown and JSON.
+     - Added `--output` flag to `kb benchmark accuracy` for automated file export.
+     - Added `data/fixtures/golden_sabermetric_dataset.parquet` and surfaced empirical $R^2$ accuracy badges in the Web UI formula catalog cards.
+- **Consequences**:
+  - Eliminates citation build bottlenecks, making corpus lineage indexing virtually instantaneous.
+  - Transforms the Web UI into an interactive scientific computation workbench where any compiled mathematical model in the knowledge base can be executed, swept, and exported in real time.
+  - Establishes a reproducible benchmarking workflow connecting symbolic formulas with empirical tracking datasets.
+
+
 
 
 

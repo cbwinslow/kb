@@ -35,6 +35,7 @@ async def test_build_citation_graph(builder: CitationGraphBuilder) -> None:
     # 1. select(Document) -> [doc1, doc2]
     # 2. select(CitationLink) -> []
     docs_result = MagicMock()
+    docs_result.all.return_value = [doc1, doc2]
     docs_result.scalars.return_value.all.return_value = [doc1, doc2]
 
     links_result = MagicMock()

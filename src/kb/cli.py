@@ -362,10 +362,14 @@ async def async_embed(
 async def async_enrich_openalex(
     citekey: str | None = None,
     enrich_all: bool = False,
+    force: bool = False,
+    limit: int | None = None,
     client: OpenAlexClient | None = None,
     manager: DatabaseManager | None = None,
 ) -> int:
     """Enriches stored documents with OpenAlex bibliometric metadata and topics."""
+    from sqlalchemy import update
+
     from kb.enrich.openalex import OpenAlexClient
 
     if not citekey and not enrich_all:
@@ -378,12 +382,23 @@ async def async_enrich_openalex(
     openalex_client = client or OpenAlexClient()
 
     async with db_manager.get_session() as session:
-        stmt = select(Document)
+        # Lightweight column projection bypassing chunk selectin load
+        stmt = select(
+            Document.id,
+            Document.citekey,
+            Document.title,
+            Document.doi,
+            Document.arxiv_id,
+            Document.authors,
+            Document.year,
+            Document.openalex_id,
+            Document.referenced_works,
+        )
         if citekey:
             stmt = stmt.where(Document.citekey == citekey)
 
         res = await session.execute(stmt)
-        docs = list(res.scalars().all())
+        docs = list(res.all())
 
         if not docs:
             print("[*] No documents found to enrich.")
@@ -391,36 +406,59 @@ async def async_enrich_openalex(
                 await db_manager.close()
             return 0
 
+        # Filter to only documents missing openalex_id or referenced_works unless force=True
+        if enrich_all and not force and not citekey:
+            docs = [d for d in docs if not d.openalex_id or not d.referenced_works]
+
+        if limit is not None:
+            docs = docs[:limit]
+
         print(f"[*] Querying OpenAlex for {len(docs)} documents...")
         enriched_count = 0
-        for doc in docs:
-            print(f"[*] Resolving: {doc.citekey} - '{doc.title[:40]}'...")
-            work = await openalex_client.resolve_work(
-                doi=doc.doi,
-                arxiv_id=doc.arxiv_id,
-                title=doc.title,
-                authors=doc.authors,
-                year=doc.year,
-            )
+        batch_size = 10
+
+        for idx, doc in enumerate(docs, 1):
+            print(f"[{idx}/{len(docs)}] Resolving: {doc.citekey} - '{doc.title[:40]}'...")
+            try:
+                work = await openalex_client.resolve_work(
+                    doi=doc.doi,
+                    arxiv_id=doc.arxiv_id,
+                    title=doc.title,
+                    authors=doc.authors,
+                    year=doc.year,
+                )
+            except Exception as err:
+                logger.warning("Error querying OpenAlex for %s: %s", doc.citekey, err)
+                continue
+
             if work:
-                doc.openalex_id = work.id
-                doc.citation_count = work.cited_by_count
-                doc.topics = work.topics
-                doc.referenced_works = work.referenced_works
+                await session.execute(
+                    update(Document)
+                    .where(Document.id == doc.id)
+                    .values(
+                        openalex_id=work.id,
+                        citation_count=work.cited_by_count,
+                        topics=work.topics,
+                        referenced_works=work.referenced_works,
+                    )
+                )
                 enriched_count += 1
                 print(
                     f"    [MATCH] OpenAlex ID: {work.short_id} | "
-                    f"Citations: {work.cited_by_count} | Topics: {len(work.topics)}"
+                    f"Citations: {work.cited_by_count} | Topics: {len(work.topics)} | Refs: {len(work.referenced_works)}"
                 )
             else:
                 print(f"    [WARN] No match found on OpenAlex for {doc.citekey}")
 
-        await session.flush()
+            if idx % batch_size == 0:
+                await session.commit()
+
+        await session.commit()
 
     if manager is None:
         await db_manager.close()
 
-    print(f"[SUCCESS] Successfully enriched {enriched_count}/{len(docs)} documents!")
+    print(f"\n[SUCCESS] Successfully enriched {enriched_count}/{len(docs)} documents!")
     return 0
 
 
@@ -1107,6 +1145,7 @@ async def async_benchmark_accuracy(
     limit: int = 50,
     as_json: bool = False,
     run_all: bool = False,
+    output: Path | None = None,
 ) -> int:
     """Run empirical accuracy benchmarks against tabular datasets or benchmark tables."""
     from kb.qa.accuracy import EmpiricalAccuracyRunner
@@ -1120,6 +1159,10 @@ async def async_benchmark_accuracy(
         limit=limit,
         run_all=run_all,
     )
+
+    if output:
+        runner.generate_leaderboard(results, output_path=output)
+        print(f"[OK] Accuracy leaderboard exported to: {output}")
     if as_json:
         import json
 
@@ -1928,6 +1971,17 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Enrich all stored documents",
     )
+    openalex_sub.add_argument(
+        "--force",
+        action="store_true",
+        help="Force re-enrichment of already enriched documents",
+    )
+    openalex_sub.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum documents to enrich (default: all eligible)",
+    )
 
     # migrate commands
     migrate_parser = subparsers.add_parser(
@@ -2584,6 +2638,8 @@ def main(argv: Sequence[str] | None = None) -> None:
                 async_enrich_openalex(
                     citekey=args.citekey,
                     enrich_all=args.enrich_all,
+                    force=getattr(args, "force", False),
+                    limit=getattr(args, "limit", None),
                 )
             )
             sys.exit(code)
@@ -2787,6 +2843,7 @@ def main(argv: Sequence[str] | None = None) -> None:
                     limit=args.limit,
                     as_json=args.json,
                     run_all=getattr(args, "all", False),
+                    output=getattr(args, "output", None),
                 )
             )
         else:
