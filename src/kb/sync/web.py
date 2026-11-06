@@ -370,6 +370,288 @@ A 'Blast' represents an optimal combination of high swing power and centered con
 2. Squared-up contact $SquaredUp \\ge 0.80$
 """,
     },
+    "PECOTA": {
+        "citekey": "bp_pecota_projections_glossary",
+        "title": "Baseball Prospectus: PECOTA Forecasting Architecture and Similarity Index",
+        "url": "https://www.baseballprospectus.com/news/article/1894/pecota-explained/",
+        "authors": ["Nate Silver", "Baseball Prospectus"],
+        "year": 2026,
+        "markdown": """# PECOTA Baseball Forecasting System
+
+PECOTA (Pitcher Empirical Comparable Optimization Test Algorithm) is a player performance forecasting system originally developed by Nate Silver for Baseball Prospectus in 2003. Unlike purely regression-based baseline models, PECOTA is a comparable-player nearest-neighbor system that generates full probabilistic distribution percentiles rather than single-point estimates.
+
+## 1. Mahalanobis Distance Similarity Metric
+
+To identify historical comparables, PECOTA computes the multidimensional distance between a target player vector $x$ and historical player vector $y$:
+
+$$D^2 = (x - y)^T \\Sigma^{-1} (x - y)$$
+
+Where:
+- $x$ is the target player's standardized attribute vector (age, height, weight, strikeout rate, walk rate, isolated power, contact rate)
+- $y$ is the candidate historical player's attribute vector at the same career stage
+- $\\Sigma$ is the empirical covariance matrix across the player population
+
+## 2. Similarity Score Index
+
+The multidimensional distance is converted into a normalized similarity score $S$:
+
+$$S = 1000 - \\sum_{i=1}^{k} w_i \\cdot |x_i - y_i|$$
+
+Where:
+- $w_i$ is the attribute importance weight
+- A score of $S = 1000$ represents an identical player match
+
+## 3. Weighted Comparable Projection
+
+Given the top $M$ historical comparable players with non-negative similarity weights $w_j = \\max(0, S_j - S_{min})$:
+
+$$\\hat{Y}_{t+1} = \\frac{\\sum_{j=1}^{M} w_j \\cdot Y_{j, t+1}}{\\sum_{j=1}^{M} w_j}$$
+
+Where:
+- $Y_{j, t+1}$ is the actual subsequent performance of comparable player $j$
+- $\\hat{Y}_{t+1}$ is the baseline expectation for the target player
+
+## 4. Aging Adjustment Transition
+
+PECOTA estimates aging trajectories by tracking how the comparable cohort developed over time:
+
+$$\\hat{Y}_{proj} = Y_t \\cdot \\left(1 + \\frac{\\Delta_{comp}}{100}\\right)$$
+
+Where:
+- $\\Delta_{comp}$ is the median percentage change in production between age $t$ and age $t+1$ among the top comparables
+
+## 5. Monte Carlo Probabilistic Forecast Bands
+
+Instead of predicting only a single mean value, PECOTA constructs an empirical probability distribution for future performance:
+
+$$Y_p = \\mu_{comp} + \\sigma_{comp} \\cdot \\Phi^{-1}(p)$$
+
+Where:
+- $\\Phi^{-1}(p)$ is the standard normal quantile function
+- $p \\in \\{0.10, 0.50, 0.90\\}$ defines the 10th percentile (breakout downside), 50th percentile (median), and 90th percentile (upside ceiling)
+""",
+    },
+    "ZiPS": {
+        "citekey": "fangraphs_zips_projections_glossary",
+        "title": "FanGraphs: ZiPS Forecasting Architecture and Component Model",
+        "url": "https://library.fangraphs.com/projections/zips/",
+        "authors": ["Dan Szymborski", "FanGraphs"],
+        "year": 2026,
+        "markdown": """# ZiPS Forecasting System
+
+ZiPS (Szymborski Projection System) is a sabermetric forecasting model developed by Dan Szymborski in 2004. ZiPS combines multi-year weighted performance baselines, sample-size empirical Bayes regression to league mean, and archetype-specific aging curves to project player outcomes and career distributions.
+
+## 1. 4-Year Recency Decay Baseline
+
+ZiPS weights past performance over the previous four seasons using declining recency coefficients (8/5/4/3):
+
+$$\\bar{X}_{weighted} = \\frac{8 \\cdot X_{t-1} + 5 \\cdot X_{t-2} + 4 \\cdot X_{t-3} + 3 \\cdot X_{t-4}}{8 \\cdot W_{t-1} + 5 \\cdot W_{t-2} + 4 \\cdot W_{t-3} + 3 \\cdot W_{t-4}}$$
+
+Where:
+- $X_{t-i}$ is the player's statistical output in season $t-i$
+- $W_{t-i}$ is the playing time volume ($PA$ for batters or $IP$ for pitchers) in season $t-i$
+
+## 2. Sample Size Empirical Bayes Regression to League Mean
+
+To prevent small-sample noise from distorting projections, the weighted average is regressed toward the league average based on career sample size:
+
+$$\\hat{X}_{reg} = \\frac{PA}{PA + C_{reg}} \\cdot \\bar{X}_{weighted} + \\frac{C_{reg}}{PA + C_{reg}} \\cdot \\mu_{lg}$$
+
+Where:
+- $\\mu_{lg}$ is the position- and era-adjusted league average rate
+- $C_{reg}$ is the metric stabilization threshold (e.g., $C \\approx 300 - 400$ for on-base percentage, $C \\approx 60 - 70$ for strikeout percentage)
+
+## 3. Archetype-Specific Aging Trajectories
+
+ZiPS adjusts baseline projections for expected age-related growth or decline using non-linear trajectory curves conditioned on player archetype:
+
+$$\\Delta_{age} = \\alpha \\cdot (age - 28) - \\beta \\cdot (age - 28)^2$$
+
+Where:
+- $\\alpha$ and $\\beta$ are empirical aging parameters derived from historical comparables with similar physical profiles and batted-ball characteristics
+- Peak performance typically centers around age 27–28
+
+## 4. Composite Rate Projection
+
+$$\\hat{X}_{final} = \\hat{X}_{reg} \\cdot (1 + \\Delta_{age})$$
+
+Where:
+- $\\hat{X}_{final}$ is the final projected true-talent rate for season $t+1$
+""",
+    },
+    "Marcel": {
+        "citekey": "tangotiger_marcel_projections_glossary",
+        "title": "Tom Tango: Marcel the Monkey Forecasting System",
+        "url": "http://www.tangotiger.net/marcel/",
+        "authors": ["Tom Tango"],
+        "year": 2026,
+        "markdown": """# Marcel the Monkey Forecasting System
+
+Marcel the Monkey Forecasting System is a baseline projection methodology developed by Tom Tango in 2004. Tango intentionally named it "Marcel the Monkey" to demonstrate that a simple, objective model relying only on basic recency weights, regression to the mean, and age adjustments can outperform human intuition and complex proprietary black-box systems.
+
+## 1. 3-Year 5/4/3 Recency Weighting
+
+Marcel calculates a weighted baseline over the past three seasons, assigning weights of 5, 4, and 3:
+
+$$\\bar{S} = \\frac{5 \\cdot S_{t-1} + 4 \\cdot S_{t-2} + 3 \\cdot S_{t-3}}{5 \\cdot PA_{t-1} + 4 \\cdot PA_{t-2} + 3 \\cdot PA_{t-3}}$$
+
+Where:
+- $S_{t-i}$ is the counting statistic in season $t-i$
+- $PA_{t-i}$ is the playing time volume in season $t-i$
+
+## 2. Regression to League Average
+
+Marcel regresses all players toward the league average by adding a fixed volume of league-average performance:
+- For batters: adds 1200 plate appearances of league-average production
+- For pitchers: adds 100 innings pitched (or ~450 batters faced) of league-average production
+
+For a batter's rate metric:
+
+$$\\hat{R}_{marcel} = \\frac{5 \\cdot S_{t-1} + 4 \\cdot S_{t-2} + 3 \\cdot S_{t-3} + 1200 \\cdot lgRate}{5 \\cdot PA_{t-1} + 4 \\cdot PA_{t-2} + 3 \\cdot PA_{t-3} + 1200}$$
+
+For a pitcher's rate metric:
+
+$$\\hat{R}_{marcel, P} = \\frac{5 \\cdot S_{t-1} + 4 \\cdot S_{t-2} + 3 \\cdot S_{t-3} + 100 \\cdot lgRate}{5 \\cdot IP_{t-1} + 4 \\cdot IP_{t-2} + 3 \\cdot IP_{t-3} + 100}$$
+
+## 3. Piecewise Age Adjustment
+
+Marcel applies a standard aging factor centered at age 30:
+- Players under 30 are expected to improve by 0.6% per year
+- Players age 30 and older are expected to decline by 0.3% per year
+
+$$\\Delta_{age} = (30 - age) \\cdot 0.006$$
+
+For players 30 or older:
+
+$$\\Delta_{age, old} = (30 - age) \\cdot 0.003$$
+
+The age-adjusted final projected rate is:
+
+$$\\hat{R}_{final} = \\hat{R}_{marcel} \\cdot (1 + \\Delta_{age})$$
+""",
+    },
+    "Markov_Chain_Baseball": {
+        "citekey": "bukiet_markov_chain_baseball_glossary",
+        "title": "Bukiet-Harold-Palacios: Discrete Markov Chain Baseball Model",
+        "url": "https://doi.org/10.1287/opre.45.1.14",
+        "authors": ["Bruce Bukiet", "E. R. Harold", "F. J. Palacios"],
+        "year": 2026,
+        "markdown": """# Discrete Markov Chain Baseball Model
+
+The discrete Markov chain model of baseball game states, formalized by D'Esopo & Lefkowitz (1960) and expanded by Bukiet, Harold, and Palacios (1997), represents a half-inning of baseball as an absorbing Markov process across discrete base-runner and out configurations.
+
+## 1. State Space Representation
+
+A half-inning contains 24 transient states defined by the Cartesian product of 8 base-runner configurations $b \\in \\{000, 100, 020, 003, 120, 103, 023, 123\\}$ and 3 out counts $o \\in \\{0, 1, 2\\}$, plus a single absorbing state $s_{25} = (3\\text{ outs})$:
+
+$$S = \\{(b, o) : b \\in \\mathcal{B}, o \\in \\{0, 1, 2\\}\\} \\cup \\{3\\text{ outs}\\}$$
+
+## 2. Canonical Transition Probability Matrix
+
+The full $25 \\times 25$ transition probability matrix $P$ is structured in canonical absorbing form:
+
+$$P = \\begin{pmatrix} Q & R_{abs} \\\\ 0 & 1 \\end{pmatrix}$$
+
+Where:
+- $Q$ is the $24 \\times 24$ submatrix representing transition probabilities between transient base-out states
+- $R_{abs}$ is the $24 \\times 1$ column vector representing transition probabilities from transient states directly into the 3-out absorbing state
+
+## 3. Fundamental Matrix Inversion
+
+Because $Q^k \\to 0$ as $k \\to \\infty$, the fundamental matrix $N$ exists and represents the expected number of visits to state $j$ starting from state $i$:
+
+$$N = (I - Q)^{-1}$$
+
+Where:
+- $I$ is the $24 \\times 24$ identity matrix
+- $N = I + Q + Q^2 + Q^3 + \\dots$
+
+## 4. Run Expectancy Vector Derivation
+
+Let $E$ denote the $24 \\times 1$ vector of immediate expected runs scored on a single transition departing from each state $i$. The total expected runs remaining in the inning from state $i$ is:
+
+$$RE = N \\cdot E$$
+
+Expanding via fundamental matrix inversion:
+
+$$RE = (I - Q)^{-1} \\cdot E$$
+
+## 5. Transition Run Value (Linear Weights)
+
+The empirical run value $RV$ of an offensive event $e$ causing a transition from state $s$ to state $s'$ while scoring $Runs(e)$ runs is:
+
+$$RV(e, s) = RE(s') - RE(s) + Runs(e)$$
+
+This formulation provides the analytical foundation for linear weights and 24-state Run Expectancy (RE24) matrices.
+""",
+    },
+    "Nathan_Trajectory_Physics": {
+        "citekey": "nathan_trajectory_physics_glossary",
+        "title": "Alan Nathan: Aerodynamics and Trajectory Physics of a Baseball",
+        "url": "http://baseball.physics.illinois.edu/trajectory-technology.html",
+        "authors": ["Alan M. Nathan"],
+        "year": 2026,
+        "markdown": """# Alan Nathan Baseball Trajectory Physics & Aerodynamics
+
+Based on the aerodynamic formulations published by Prof. Alan M. Nathan (2008, 2015), the flight of a baseball under gravity, aerodynamic drag, and the Magnus force is governed by a set of coupled non-linear ordinary differential equations.
+
+## 1. Full Aerodynamic Equation of Motion
+
+The acceleration vector of a baseball in flight is given by:
+
+$$\\vec{a} = \\vec{a}_g + \\vec{a}_d + \\vec{a}_m$$
+
+Where:
+- $\\vec{a}_g = -g \\hat{k}$ is the gravitational acceleration ($g = 9.80665\\text{ m/s}^2$ or $32.174\\text{ ft/s}^2$)
+- $\\vec{a}_d$ is the aerodynamic drag acceleration
+- $\\vec{a}_m$ is the Magnus lift and deflection acceleration
+
+## 2. Drag Force Acceleration
+
+Aerodynamic drag opposes the instantaneous velocity vector $\\vec{v}$:
+
+$$\\vec{a}_d = -\\frac{1}{2m} \\rho A C_D v \\vec{v}$$
+
+Where:
+- $m$ is the mass of the baseball (~0.145 kg or 5.125 oz)
+- $\\rho$ is air density (~1.225 kg/m³ at sea level, adjusted for temperature, barometric pressure, and relative humidity)
+- $A = \\pi r^2$ is the cross-sectional area of the ball ($r \\approx 0.0366\\text{ m}$)
+- $C_D$ is the speed-dependent drag coefficient
+- $v = \\|\\vec{v}\\|$ is the magnitude of velocity
+
+## 3. Magnus Force Acceleration
+
+The Magnus force arises from the asymmetry in air velocity caused by ball rotation $\\vec{\\omega}$:
+
+$$\\vec{a}_m = \\frac{1}{2m} \\rho A C_L v (\\hat{\\omega} \\times \\vec{v})$$
+
+Where:
+- $C_L$ is the lift coefficient
+- $\\hat{\\omega} = \\vec{\\omega} / \\|\\vec{\\omega}\\|$ is the unit vector along the spin axis
+- $\\hat{\\omega} \\times \\vec{v}$ defines the directional vector of movement (break) perpendicular to both spin and trajectory
+
+## 4. Spin Parameter and Lift Coefficient
+
+The non-dimensional spin parameter $S$ relates rotational surface velocity to translational speed:
+
+$$S = \\frac{r \\cdot \\omega}{v}$$
+
+Nathan's empirical parameterization for the lift coefficient $C_L$ as a function of spin parameter $S$ is:
+
+$$C_L = \\frac{1}{2.32 + \\frac{0.40}{S}}$$
+
+## 5. Drag Coefficient Speed Dependence
+
+The drag coefficient varies with velocity across the trans-critical boundary:
+
+$$C_D = c_{d0} + \\frac{c_{d1}}{1 + e^{(v - v_c) / \\Delta v}}$$
+
+Where:
+- $c_{d0} \\approx 0.30$ is the baseline drag
+- $c_{d1} \\approx 0.15$
+- $v_c$ is the critical speed threshold
+""",
+    },
 }
 
 
@@ -465,13 +747,27 @@ class WebGlossaryHarvester:
         pipeline: IngestionPipeline,
         force: bool = False,
     ) -> IngestionResult:
-        """Ingests a predefined canonical sabermetric glossary entry."""
-        if preset_key not in SABERMETRIC_GLOSSARY_PRESETS:
+        target_data: dict[str, Any] | None = None
+        if preset_key in SABERMETRIC_GLOSSARY_PRESETS:
+            target_data = SABERMETRIC_GLOSSARY_PRESETS[preset_key]
+        else:
+            norm = preset_key.lower().replace("-", "_")
+            for k, v in SABERMETRIC_GLOSSARY_PRESETS.items():
+                if (
+                    k.lower() == norm
+                    or k.lower().replace("-", "_") == norm
+                    or v.get("citekey", "").lower() == norm
+                    or v.get("citekey", "").lower().replace("_glossary", "") == norm
+                ):
+                    target_data = v
+                    break
+
+        if not target_data:
             raise KeyError(
                 f"Unknown preset '{preset_key}'. Available presets: {list(SABERMETRIC_GLOSSARY_PRESETS.keys())}"
             )
 
-        data = SABERMETRIC_GLOSSARY_PRESETS[preset_key]
+        data = target_data
         return await pipeline.ingest_markdown_source(
             citekey=data["citekey"],
             title=data["title"],

@@ -671,6 +671,45 @@ This document records the architectural, technical, and mathematical decisions m
   - Transforms the Web UI into an interactive scientific computation workbench where any compiled mathematical model in the knowledge base can be executed, swept, and exported in real time.
   - Establishes a reproducible benchmarking workflow connecting symbolic formulas with empirical tracking datasets.
 
+---
+
+## ADR-040: Canonical Projections (PECOTA, ZiPS, Marcel), Discrete Markov Chain Models, and Trajectory Physics Integration
+- **Status**: Accepted
+- **Context**:
+  - The Knowledge Base contained foundational sabermetric metrics (wOBA, FIP, wRAA, Pythagenpat) and Statcast empirical figures, but lacked canonical mathematical formulations for the industry's cornerstone projection engines:
+    - **PECOTA** (Nate Silver / Baseball Prospectus): Multi-year baseline, Mahalanobis distance similarity metrics across age-adjusted comparable players, and Monte Carlo probability distributions.
+    - **ZiPS** (Dan Szymborski / FanGraphs): $8/5/4/3$ recency decay, archetype aging transitions, sample-size regression to league mean, and comp-based variance.
+    - **Marcel the Monkey** (Tom Tango): $5/4/3$ recency weighting, $+1200\text{ PA} / +100\text{ IP}$ regression to mean, and piecewise 30-age adjustments.
+    - **Discrete Markov Chain Game-State Model** (Bukiet, Harold, Palacios 1997 / Tango RE24): $24 \times 24$ state transition matrix $P$, absorbing state, fundamental matrix $N = (I - Q)^{-1}$, run expectancy vector $R = N \cdot E$, and linear weights run values.
+    - **Pitch Aerodynamics & Trajectory Physics** (Alan Nathan): 3D equations of motion, velocity-dependent drag coefficient $C_D$, lift coefficient $C_L$, Magnus force vector $\vec{F}_M$, spin parameter $S$, and spin decay integration.
+  - Furthermore, the corpus required quantitative literature harvesting sweeps across aerodynamic PINNs, turbulence modeling, and sports tracking, with automated deduplication and homelab SFTP vaulting.
+- **Decision**:
+  1. **Canonical Mathematical Specifications (`data/glossary/`)**:
+     - Authored mathematically rigorous reference documents in `data/glossary/`:
+       - `pecota_projections.md`: Complete formulations for Mahalanobis career distance $d_M(i, j)$, similarity index $S(i, j) = 1000 - d_M$, nearest-neighbor Gaussian weights $w_j$, age curve transitions, and percentiles.
+       - `zips_projections.md`: $8/5/4/3$ recency decay, archetype aging curves, league regression $w_{\text{reg}} = \frac{PA}{PA + 600}$, and comp-derived variance bands.
+       - `marcel_projections.md`: $5/4/3$ recency weighting, $+1200\text{ PA} / +100\text{ IP}$ regression to league mean, and $(1 \pm 0.006 \cdot |30 - \text{age}|)$ aging threshold.
+       - `markov_chain_baseball.md`: 24-state discrete Markov chain formulation, state transition matrix $P$, fundamental matrix $N = (I - Q)^{-1}$, run expectancy vector $R = N \cdot E$, and transition run values $RV(i \to j)$.
+       - `nathan_trajectory_physics.md`: Aerodynamic equations of motion $\vec{F}_{\text{net}} = m\vec{g} - \vec{F}_D + \vec{F}_M$, $C_D(v)$, $C_L(S)$, Magnus force vector $\vec{F}_M = \frac{1}{2}\rho A v^2 C_L (\hat{\omega} \times \hat{v})$, and spin decay.
+  2. **Preset Registration, Alias Resolution & Ingestion (`src/kb/sync/web.py`)**:
+     - Registered all 5 presets in `SABERMETRIC_GLOSSARY_PRESETS` in `src/kb/sync/web.py` with case-insensitive and underscored alias resolution.
+     - Implemented unit tests in `tests/test_glossary_presets.py` covering preset registration, disk file integrity, and LaTeX AST parsing (4/4 passed).
+     - Ingested all 5 presets into PostgreSQL on homelab `cbwdellr720:5432/kb`, persisting 105 new mathematical formulas and 27 document chunks.
+  3. **Targeted Formula Quality Scoring & In-Place Repair (`src/kb/cli.py`)**:
+     - Executed targeted corpus formula repair on unvalidated entries (`kb corpus repair-all --only-unvalidated`), achieving a 93.3% validation success rate (98 verified formulas: 38 Grade A, 60 Grade B).
+  4. **Standalone Formula Library Recompilation (`packages/kb_formulas`, `src/kb/library/generated.py`)**:
+     - Recompiled `src/kb/library/generated.py` and synced `packages/kb_formulas/src/kb_formulas/generated.py` via `kb code export --grade A`.
+     - Expanded production callable formula collection to 1,574 verified functions, including 42 newly compiled functions for PECOTA, ZiPS, Marcel, Markov Chain Baseball, and Nathan pitch physics.
+     - Verified scalar execution and vectorized Polars expressions across all standalone tests (`tests/test_standalone_package.py`, `tests/test_formula_library.py`).
+  5. **Multi-Domain Quantitative Harvesting & Homelab Vaulting**:
+     - Executed automated OpenAlex and arXiv harvesting across aerodynamic physics and machine learning literature with Docling GPU OCR and BGE-M3 neural embeddings.
+     - Verified SSH/SFTP connectivity and remote vaulting to homelab storage `cbwdellr720`, while maintaining workstation disk space hygiene ($\ge 42$ GB free).
+- **Consequences**:
+  - Delivers complete mathematical and programmatic modeling coverage for the primary projection and game-state systems in baseball data science.
+  - Provides researchers and AI agents with direct symbolic and vectorized tools for calculating player aging, similarity comps, discrete state run expectancies, and 3D pitch movement.
+  - Successfully satisfies OpenSpec change `canonical-projections-markov-and-corpus-expansion`.
+
+
 
 
 
